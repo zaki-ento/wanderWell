@@ -63,7 +63,7 @@
         "show_ticker": true,
         "ticker_label": "Made for",
         "layout_width": "page",
-        "layout_height": "large",
+        "layout_height": "medium",
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -148,7 +148,30 @@
     },
     "ww_product": {
       "type": "ww-product",
-      "settings": {}
+      "settings": {
+        "label": "Our Products",
+        "heading": "Made to travel with you",
+        "subheading": "Each product comes in individually-sealed sachets.\nDesigned to toss in your bag and take on the go.",
+        "badge_1_text": "Plant-based",
+        "badge_2_text": "3rd-party tested",
+        "product_1": "",
+        "prod_1_title": "Digestive Support",
+        "prod_1_subtitle": "Capsules · Ginger",
+        "prod_1_desc_1": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Forget the stomach drama.",
+        "prod_1_desc_2": "Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere.",
+        "product_2": "",
+        "prod_2_title": "Immune Support",
+        "prod_2_subtitle": "Powder · Vitamin C",
+        "prod_2_desc_1": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Your immune system deserves a travel buddy.",
+        "prod_2_desc_2": "Vitamin C helps support your immune function wherever you go. One sachet mixes into water.",
+        "product_3": "",
+        "prod_3_title": "The Travel Duo",
+        "prod_3_subtitle": "Both · save up to 10%",
+        "prod_3_desc_1": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together.",
+        "layout_width": "page",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     }
   },
   "order": [
