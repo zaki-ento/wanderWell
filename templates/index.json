@@ -61,18 +61,8 @@
         "supergraphic_image": "shopify://shop_images/2e8cd122-35ea-455b-8f68-7fb4678c14ee.png",
         "show_ticker": true,
         "ticker_label": "Made for",
-        "layout_direction": "horizontal",
-        "layout_alignment": "left",
-        "layout_position": "center",
-        "layout_gap": 16,
         "layout_width": "full",
         "layout_height": "large",
-        "bg_color": "#E8632B",
-        "show_media_overlay": true,
-        "media_overlay_color": "#E8632B",
-        "media_overlay_style": "gradient",
-        "media_overlay_gradient_direction": "down",
-        "enable_blurred_reflection": false,
         "padding_top": 40,
         "padding_bottom": 40
       }
