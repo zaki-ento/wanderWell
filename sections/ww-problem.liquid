@@ -106,7 +106,7 @@
         
         <ul class="bridge-chips">
           {%- for block in section.blocks -%}
-            {%- if block.type == 'outro_chip' -%}
+            {%- if block.type == 'outro_pill' -%}
               <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
             {%- endif -%}
           {%- endfor -%}
@@ -582,13 +582,13 @@
       ]
     },
     {
-      "type": "outro_chip",
-      "name": "Outro Chip",
+      "type": "outro_pill",
+      "name": "Autro Pills",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Chip Text",
+          "label": "Pill Text",
           "default": "Individually sacheted"
         }
       ]
@@ -627,25 +627,25 @@
           }
         },
         {
-          "type": "outro_chip",
+          "type": "outro_pill",
           "settings": {
             "text": "Individually sacheted"
           }
         },
         {
-          "type": "outro_chip",
+          "type": "outro_pill",
           "settings": {
             "text": "Doses that make sense"
           }
         },
         {
-          "type": "outro_chip",
+          "type": "outro_pill",
           "settings": {
             "text": "Ingredients you recognize"
           }
         },
         {
-          "type": "outro_chip",
+          "type": "outro_pill",
           "settings": {
             "text": "Third-party tested"
           }
