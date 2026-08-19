@@ -91,7 +91,12 @@
         {%- endif -%}
       </div> {% endcomment %}
       
-      {{ section.settings.video_backdrop | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'ww-herovid-el', preload: 'metadata', aria-label: 'wanderWell hero film' }}
+      {{ section.settings.video_backdrop | video_tag:
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false,
+        playsinline: true, class: 'ww-herovid-el', preload: 'metadata', aria-label: 'wanderWell hero film' }}
 
       <button type="button" class="ww-herovid-toggle" aria-pressed="false" aria-label="Pause video">
         <span class="ww-herovid-icon" aria-hidden="true"></span>
