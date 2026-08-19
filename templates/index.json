@@ -69,7 +69,29 @@
     },
     "ww_problem": {
       "type": "ww-problem",
-      "settings": {}
+      "blocks": {
+        "story_step_XGqiaK": {
+          "type": "story_step",
+          "settings": {
+            "title": "SomewheSomewhere between leaving home and the first night somewhere else, something shifts.re between leaving home...",
+            "subtitle": "New New surroundings, new pace, new normal, for a whileYou planned the trip. Your body's still catching up.surroundings, new pace..."
+          }
+        }
+      },
+      "block_order": [
+        "story_step_XGqiaK"
+      ],
+      "settings": {
+        "heading": "You didn't come here to stick to a routine",
+        "subheading": "New places, later nights, food you can't pronounce. Your body notices. That's where we come in.",
+        "outro_heading": "Say yes to the second gelato.",
+        "outro_subheading": "Built for the version of the trip you actually get to enjoy.",
+        "outro_button_label": "Explore the products",
+        "outro_button_link": "",
+        "layout_width": "page",
+        "padding_top": 64,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
