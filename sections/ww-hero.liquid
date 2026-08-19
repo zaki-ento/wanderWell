@@ -22,11 +22,13 @@
         {%- endif -%}
 
         {%- if section.settings.heading != blank -%}
-          <h1 class="ww-hero__title">{{ section.settings.heading }}</h1>
+          <h1 class="ww-hero__title">{{ section.settings.heading }}
+             {%- if section.settings.heading2 != blank -%}
+            <em><strong>{{ section.settings.heading2 }}</strong></em>
+          {%- endif -%}
+          </h1>
         {%- endif -%}
-         {%- if section.settings.heading2 != blank -%}
-          <h2 class="ww-hero__sub_head"><em><strong>{{ section.settings.heading2 }}</strong></em></h2>
-        {%- endif -%}
+        
 
         {%- if section.settings.subheading != blank -%}
           <div class="ww-hero__subtitle">{{ section.settings.subheading }}</div>
@@ -194,7 +196,7 @@
     max-width: 16ch;
   }
 
-  .ww-hero__sub_head {
+  .ww-hero__title em strong {
     font-size: 60px;
     font-style: italic;
     font-weight: 700;
