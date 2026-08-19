@@ -124,7 +124,11 @@
     }
 
     function paint(idx, p) {
-      if(!L) return;
+      if(!L) {
+        layout();
+        if(!L) return;
+      }
+      console.log('paint idx:', idx, 'p:', p, 'L:', L);
       maskPath.setAttribute('stroke-dashoffset', L * (1 - p));
       var pt = route.getPointAtLength(Math.max(0.001, p) * L);
       pin.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ') scale(1.15)');
@@ -263,6 +267,7 @@
           lead = vh * LEAD,
           total = track.offsetHeight - vh + lead;
       var p = total > 0 ? Math.min(1, Math.max(0, (-top + lead) / total)) : 0;
+      console.log('update() -> top:', top, 'lead:', lead, 'total:', total, 'p:', p);
       lastP = p;
       if(bgGrid) bgGrid.style.transform = 'translate3d(0,' + (p * -26).toFixed(1) + 'px,0)';
       if(world) world.style.transform = 'translate3d(' + (p * -38).toFixed(1) + 'px,' + (p * -16).toFixed(1) + 'px,0)';
@@ -287,7 +292,7 @@
         });
       }
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { capture: true, passive: true });
     
     var rt;
     var onResize = function() {
@@ -300,7 +305,7 @@
     window.addEventListener('resize', onResize);
 
     sectionEl.addEventListener('ww-cleanup', function() {
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', onScroll, { capture: true });
       window.removeEventListener('resize', onResize);
     });
 
