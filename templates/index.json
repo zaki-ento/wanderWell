@@ -70,6 +70,18 @@
     "ww_problem": {
       "type": "ww-problem",
       "blocks": {
+        "outro_pill_nkgNNk": {
+          "type": "outro_pill",
+          "settings": {
+            "text": "Doses that make sense"
+          }
+        },
+        "outro_pill_EhjXR9": {
+          "type": "outro_pill",
+          "settings": {
+            "text": "Individually sacheted"
+          }
+        },
         "story_step_BVppwq": {
           "type": "story_step",
           "settings": {
@@ -100,6 +112,8 @@
         }
       },
       "block_order": [
+        "outro_pill_nkgNNk",
+        "outro_pill_EhjXR9",
         "story_step_BVppwq",
         "story_step_DWd8QK",
         "story_step_AAq3KF",
