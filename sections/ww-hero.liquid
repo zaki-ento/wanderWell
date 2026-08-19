@@ -92,10 +92,16 @@
             <span class="made-for-item made-for-dot"></span>
           {%- endif -%}
         {%- endfor -%}
-
-      
-
-        {%- comment -%} Seamless loop duplicate {%- endcomment -%}
+        {%- comment -%} Seamless loop duplicate 1 {%- endcomment -%}
+        {%- if has_blocks -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
+              <span class="made-for-item">{{ block.settings.text | escape }}</span>
+              <span class="made-for-item made-for-dot"></span>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+         {%- comment -%} Seamless loop duplicate 2 {%- endcomment -%}
         {%- if has_blocks -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
