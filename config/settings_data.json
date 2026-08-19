@@ -9,7 +9,6 @@
  */
 {
   "current": {
-    "logo": "{{ shop.brand.logo }}",
     "logo_height": 36,
     "logo_height_mobile": 28,
     "page_text_color": "{{ settings.color_palette.foreground }}",
