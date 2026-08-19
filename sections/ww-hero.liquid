@@ -1,18 +1,16 @@
 {% comment %}
   Section: WW Hero
-  Description: Custom video/image hero section with BEM classes, ticker, and accessibility pause states.
+  Description: Custom hero section with background video backdrop, supergraphic logo overlay, and animated ticker strip.
 {% endcomment %}
 
 <div class="ww-hero section-{{ section.id }}" {{ section.shopify_attributes }}>
-  {%- if section.settings.supergraphic_image != blank -%}
-    <div class="ww-hero__supergraphic">
-      {{ section.settings.supergraphic_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.supergraphic_image.alt, class: 'ww-hero__supergraphic-img' }}
-    </div>
-  {%- elsif settings.logo_inverse != blank -%}
-    <div class="ww-hero__supergraphic">
-      {{ settings.logo_inverse | image_url: width: 1400 | image_tag: loading: 'lazy', alt: settings.logo_inverse.alt, class: 'ww-hero__supergraphic-img' }}
-    </div>
-  {%- endif -%}
+  <div class="ww-hero__supergraphic">
+    {%- if section.settings.supergraphic_image != blank -%}
+      {{ section.settings.supergraphic_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.supergraphic_image.alt }}
+    {%- elsif settings.logo_inverse != blank -%}
+      {{ settings.logo_inverse | image_url: width: 1400 | image_tag: loading: 'lazy', alt: 'wanderWell supergraphic' }}
+    {%- endif -%}
+  </div>
 
   <div class="ww-hero__inner container">
     <div class="ww-hero__content">
@@ -20,20 +18,18 @@
         {%- if section.settings.badge != blank -%}
           <div class="ww-hero__badge">{{ section.settings.badge | escape }}</div>
         {%- endif -%}
-
         {%- if section.settings.heading != blank -%}
-          <h1 class="ww-hero__title">{{ section.settings.heading }}</h1>
+          <h1 class="ww-hero__heading">{{ section.settings.heading }}</h1>
         {%- endif -%}
-
         {%- if section.settings.subheading != blank -%}
-          <div class="ww-hero__subtitle">{{ section.settings.subheading }}</div>
+          <p class="ww-hero__sub">{{ section.settings.subheading }}</p>
         {%- endif -%}
-
+        
         {%- if section.settings.button_label != blank -%}
           <div class="ww-hero__buy">
             <div class="ww-hero__cta-stack">
               <div class="ww-hero__cta-row">
-                <a href="{{ section.settings.button_link | default: '#' }}" class="btn-cta btn-cta--wide" aria-label="{{ section.settings.button_label | escape }}">
+                <a href="{{ section.settings.button_link | default: '#products' }}" class="btn-cta btn-cta--wide" aria-label="{{ section.settings.button_label | escape }}">
                   <span class="cta-label cta-label--single">{{ section.settings.button_label | escape }}</span>
                   <span class="cta-arrow" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -50,68 +46,79 @@
     </div>
   </div>
 
-  {%- comment -%} Background Backdrop (Video / Fallback Image) {%- endcomment -%}
-  <div class="ww-herovid">
-    {%- if section.settings.video_backdrop != blank -%}
+  <!-- HERO VIDEO backdrop -->
+  {%- if section.settings.video_backdrop != blank -%}
+    <div class="ww-herovid">
       <div class="ww-herovid-poster" aria-hidden="true">
         {%- if section.settings.image_backdrop != blank -%}
-          {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: loading: 'eager', class: 'ww-herovid-poster-img' }}
+          {{ section.settings.image_backdrop | image_url: width: 1920 | image_tag: loading: 'eager', alt: 'Hero Video Background Poster' }}
         {%- endif -%}
       </div>
-      
       {{ section.settings.video_backdrop | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'ww-herovid-el', preload: 'metadata', aria-label: 'wanderWell hero film' }}
-
       <button type="button" class="ww-herovid-toggle" aria-pressed="false" aria-label="Pause video">
         <span class="ww-herovid-icon" aria-hidden="true"></span>
       </button>
-    {%- elsif section.settings.image_backdrop != blank -%}
-      <div class="ww-herovid-poster" aria-hidden="true">
-        {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: loading: 'eager', class: 'ww-herovid-poster-img' }}
+    </div>
+  {%- elsif section.settings.image_backdrop != blank -%}
+    <div class="ww-herovid">
+      <div class="ww-herovid-poster">
+        {{ section.settings.image_backdrop | image_url: width: 1920 | image_tag: loading: 'eager', alt: 'Hero Background Image' }}
       </div>
-    {%- endif -%}
-  </div>
+    </div>
+  {%- endif -%}
 </div>
 
+<!-- MADE FOR TICKER -->
 {%- if section.settings.show_ticker -%}
   <div class="made-for-strip">
-    {%- if section.settings.ticker_label != blank -%}
-      <div class="made-for-label">{{ section.settings.ticker_label | escape }}</div>
-    {%- endif -%}
-    <div style="overflow:hidden; flex:1; min-width:0;">
-      <div class="made-for-track ww-made-for-track-{{ section.id }}">
-        {%- assign has_blocks = false -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
-            {%- assign has_blocks = true -%}
-            <span class="made-for-item">{{ block.settings.text | escape }}</span>
-            <span class="made-for-item made-for-dot"></span>
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- if has_blocks == false -%}
-          {%- assign default_items = "travelers,van-lifers,voyagers,sightseers,backsacheters,tourists,adventurers,globe-trotters,commuters,vacationers,daytrippers,wanderers" | split: ',' -%}
-          {%- for item in default_items -%}
-            <span class="made-for-item">{{ item }}</span>
-            <span class="made-for-item made-for-dot"></span>
-          {%- endfor -%}
-        {%- endif -%}
-
-        {%- comment -%} Seamless loop duplicate {%- endcomment -%}
+    <div class="made-for-label">{{ section.settings.ticker_label | default: 'Made for' | escape }}</div>
+    <div style="overflow:hidden; flex:1; min-width:0; display: flex; align-items: center;">
+      <div class="made-for-track" id="made-for-track-{{ section.id }}">
+        {%- liquid
+          assign ticker_items_default = 'travelers,van-lifers,voyagers,sightseers,backsacheters,tourists,adventurers,globe-trotters,commuters,vacationers,daytrippers,wanderers' | split: ','
+          
+          # Gather items from blocks or fall back to default
+          assign has_blocks = false
+          for block in section.blocks
+            if block.type == 'ticker_item' and block.settings.text != blank
+              assign has_blocks = true
+            endif
+          endfor
+        -%}
+        
         {%- if has_blocks -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
-              <span class="made-for-item">{{ block.settings.text | escape }}</span>
-              <span class="made-for-item made-for-dot"></span>
+              <span class="made-for-item" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>
+              <span class="made-for-item made-for-dot" aria-hidden="true">·</span>
             {%- endif -%}
           {%- endfor -%}
+          {%- comment -%} Duplicate items once for seamless loop {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
+              <span class="made-for-item">{{ block.settings.text | escape }}</span>
+              <span class="made-for-item made-for-dot" aria-hidden="true">·</span>
+            {%- endif -%-}
+          {%- endfor -%}
         {%- else -%}
-          {%- for item in default_items -%}
+          {%- for item in ticker_items_default -%}
             <span class="made-for-item">{{ item }}</span>
-            <span class="made-for-item made-for-dot"></span>
+            <span class="made-for-item made-for-dot" aria-hidden="true">·</span>
+          {%- endfor -%}
+          {%- for item in ticker_items_default -%}
+            <span class="made-for-item">{{ item }}</span>
+            <span class="made-for-item made-for-dot" aria-hidden="true">·</span>
           {%- endfor -%}
         {%- endif -%}
       </div>
     </div>
+    {%- comment -%} Add pause button for accessibility (WCAG 2.2.2 compliance) {%- endcomment -%}
+    <button type="button" class="ticker-pause" aria-label="Pause scrolling text" onclick="toggleTicker(this, 'made-for-track-{{ section.id }}')">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+        <rect x="1" y="0" width="3" height="10"/>
+        <rect x="6" y="0" width="3" height="10"/>
+      </svg>
+    </button>
   </div>
 {%- endif -%}
 
@@ -121,9 +128,6 @@
     background: linear-gradient(135deg, #F5C842 0%, #F0845A 40%, #E8632B 100%);
     position: relative;
     overflow: hidden;
-    min-height: 560px;
-    display: flex;
-    align-items: center;
   }
 
   .ww-hero__supergraphic {
@@ -134,21 +138,15 @@
     user-select: none;
     pointer-events: none;
     overflow: hidden;
+    opacity: 0.12;
     z-index: 1;
   }
-  .ww-hero__supergraphic-img {
+
+  .ww-hero__supergraphic img,
+  .ww-hero__supergraphic svg {
     width: 100%;
-    height: auto;
-    opacity: 0.12;
     display: block;
     pointer-events: none;
-    user-select: none;
-  }
-
-  .ww-hero__inner {
-    width: 100%;
-    position: relative;
-    z-index: 2;
   }
 
   .ww-hero__content {
@@ -180,8 +178,8 @@
     text-transform: uppercase;
   }
 
-  .ww-hero__title {
-    font-family: var(--font-primary);
+  .ww-hero__heading {
+    font-family: var(--font-tertiary);
     font-weight: 500;
     font-size: 50px;
     line-height: 0.9;
@@ -191,18 +189,18 @@
     max-width: 16ch;
   }
 
-  .ww-hero__title em strong {
+  .ww-hero__heading em strong {
     font-size: 60px;
     font-style: italic;
     font-weight: 700;
   }
 
-  .ww-hero__title em {
+  .ww-hero__heading em {
     font-style: italic;
     color: rgba(255,255,255,0.85);
   }
 
-  .ww-hero__subtitle {
+  .ww-hero__sub {
     font-size: 1.1rem;
     font-weight: 400;
     color: rgba(255,255,255,0.85);
@@ -211,31 +209,40 @@
     max-width: 480px;
     letter-spacing: -0.02em;
   }
-  
-  .ww-hero__subtitle br {
-    display: block;
+
+  .ww-hero__buy {
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
   }
 
-  /* Background Video/Image Backdrop */
+  .ww-hero__cta-stack {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ww-hero__cta-row {
+    display: flex;
+  }
+
+  /* Video Background styling (from v2.css) */
   .ww-herovid {
     position: absolute;
     inset: 0;
     z-index: 0;
     overflow: hidden;
-    background: linear-gradient(150deg, #FFDCA4, #F8AC72 60%, #F2936C);
+    background: linear-gradient(150deg,#FFDCA4,#F8AC72 60%,#F2936C);
   }
-
   .ww-herovid-poster {
     position: absolute;
     inset: 0;
   }
-  .ww-herovid-poster-img {
+  .ww-herovid-poster img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-
   .ww-herovid-el {
     position: absolute;
     inset: 0;
@@ -247,16 +254,14 @@
   .ww-herovid-el[src] {
     display: block;
   }
-
   .ww-herovid::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 3;
     pointer-events: none;
-    background: linear-gradient(100deg, rgba(138,54,20,0.8) 0%, rgba(150,64,26,0.58) 42%, rgba(160,76,32,0.28) 72%, rgba(150,64,26,0.44) 100%);
+    background: linear-gradient(100deg,rgba(138,54,20,.8) 0%,rgba(150,64,26,.58) 42%,rgba(160,76,32,.28) 72%,rgba(150,64,26,.44) 100%);
   }
-
   .ww-herovid-toggle {
     position: absolute;
     right: clamp(16px, 3vw, 32px);
@@ -265,28 +270,30 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.55);
-    background: rgba(30,12,4,0.34);
+    border: 1px solid rgba(255,255,255,.55);
+    background: rgba(30,12,4,.34);
     backdrop-filter: blur(6px);
     display: grid;
     place-items: center;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition: background .2s ease, transform .2s ease;
+    padding: 0;
   }
   .ww-herovid-toggle:hover {
-    background: rgba(30,12,4,0.55);
+    background: rgba(30,12,4,.55);
     transform: scale(1.05);
   }
   .ww-herovid-toggle:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 3px;
   }
-
   .ww-herovid-icon {
     width: 12px;
     height: 14px;
     border-left: 3.5px solid #fff;
     border-right: 3.5px solid #fff;
+    display: inline-block;
+    box-sizing: border-box;
   }
   .ww-herovid-toggle[aria-pressed="true"] .ww-herovid-icon {
     width: 0;
@@ -298,7 +305,7 @@
     margin-left: 3px;
   }
 
-  /* Made For Strip Ticker */
+  /* Made For Ticker styling (from styles.css) */
   .made-for-strip {
     background: linear-gradient(90deg, var(--orange-dark), var(--orange));
     padding: 0;
@@ -306,7 +313,6 @@
     align-items: center;
     position: relative;
     z-index: 2;
-    border-top: 1px solid rgba(255,255,255,0.1);
   }
   .made-for-label {
     padding: 0 24px 0 40px;
@@ -366,105 +372,104 @@
       grid-template-columns: 1fr;
       gap: 40px;
     }
-    .ww-hero__title {
-      font-size: 34px;
+    .ww-hero__heading {
+      font-size: 2.8rem;
     }
-    .ww-hero__title em strong {
-      font-size: 40px;
+    .ww-hero__heading em strong {
+      font-size: 3.2rem;
     }
   }
 
   @media (max-width: 640px) {
+    .ww-hero {
+      padding: 100px 0 50px;
+    }
+    .ww-hero__heading {
+      font-size: 2.4rem;
+    }
+    .ww-hero__heading em strong {
+      font-size: 2.8rem;
+    }
     .ww-herovid::after {
-      background: linear-gradient(to bottom, rgba(150,60,24,0.5), rgba(138,54,20,0.84));
+      background: linear-gradient(to bottom, rgba(150,60,24,.5), rgba(138,54,20,.84));
     }
-    .ww-hero__title {
-      font-size: 28px;
-    }
-    .ww-hero__title em strong {
-      font-size: 34px;
+    .ww-hero__badge {
+      font-size: 0.85rem;
     }
     .made-for-item {
       font-size: 0.85rem;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .made-for-track {
+      animation-play-state: paused;
+    }
+  }
 {% endstylesheet %}
 
 {% javascript %}
-  // Hero Video Control observer and play/pause behavior
-  (function() {
-    const wrap = document.querySelector('.ww-herovid');
+  // Ticker play/pause control
+  window.toggleTicker = function(btn, trackId) {
+    var track = document.getElementById(trackId);
+    if (!track) return;
+    var isPaused = track.style.animationPlayState === 'paused';
+    track.style.animationPlayState = isPaused ? 'running' : 'paused';
+    btn.setAttribute('aria-label', isPaused ? 'Pause scrolling text' : 'Resume scrolling text');
+    btn.innerHTML = isPaused
+      ? '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="3" height="10"/><rect x="6" y="0" width="3" height="10"/></svg>'
+      : '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><polygon points="1,0 9,5 1,10"/></svg>';
+  };
+
+  // Hero video controls
+  document.addEventListener('DOMContentLoaded', function() {
+    var wrap = document.querySelector('.ww-herovid');
     if (!wrap) return;
-    const vid = wrap.querySelector('.ww-herovid-el');
-    const btn = wrap.querySelector('.ww-herovid-toggle');
+    var vid = wrap.querySelector('.ww-herovid-el');
+    var btn = wrap.querySelector('.ww-herovid-toggle');
     if (!vid || !btn) return;
-
-    let userPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+    
+    var RM = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var userPaused = RM.matches;
+    
     function sync() {
-      const paused = vid.paused;
+      var paused = vid.paused;
       btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
       btn.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
     }
-
+    
     btn.addEventListener('click', function() {
       if (vid.paused) {
         userPaused = false;
-        vid.play().catch(function() {});
+        vid.play().catch(function(){});
       } else {
         userPaused = true;
         vid.pause();
       }
       sync();
     });
-
+    
     vid.addEventListener('play', sync);
     vid.addEventListener('pause', sync);
-
-    if (userPaused) vid.pause();
-
+    
+    if (userPaused) {
+      vid.pause();
+    }
+    
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            if (!userPaused) vid.play().catch(function() {});
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            if (!userPaused) vid.play().catch(function(){});
           } else {
             vid.pause();
           }
         });
       }, { threshold: 0.1 }).observe(wrap);
     }
+    
     sync();
-  })();
-
-  // Ticker pause toggle control for accessibility (ADA compliance)
-  (function() {
-    const strip = document.querySelector('.made-for-strip');
-    if (!strip) return;
-    const track = strip.querySelector('.made-for-track');
-    if (!track) return;
-
-    if (!track.id) {
-      track.id = 'made-for-track';
-    }
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'ticker-pause';
-    btn.setAttribute('aria-label', 'Pause scrolling text');
-    btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="3" height="10"/><rect x="6" y="0" width="3" height="10"/></svg>';
-
-    btn.addEventListener('click', function() {
-      const isPaused = track.style.animationPlayState === 'paused';
-      track.style.animationPlayState = isPaused ? 'running' : 'paused';
-      btn.setAttribute('aria-label', isPaused ? 'Pause scrolling text' : 'Resume scrolling text');
-      btn.innerHTML = isPaused
-        ? '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="3" height="10"/><rect x="6" y="0" width="3" height="10"/></svg>'
-        : '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><polygon points="1,0 9,5 1,10"/></svg>';
-    });
-
-    strip.appendChild(btn);
-  })();
+  });
 {% endjavascript %}
 
 {% schema %}
@@ -475,7 +480,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Content Settings"
+      "content": "Content"
     },
     {
       "type": "text",
@@ -484,51 +489,46 @@
       "default": "Just Launched — Limited Stock"
     },
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "heading",
-      "label": "Heading Title",
+      "label": "Heading",
       "default": "Because your health shouldn't take a <em><strong>vacation</strong></em>."
     },
     {
-      "type": "richtext",
+      "type": "inline_richtext",
       "id": "subheading",
-      "label": "Subheading / Description",
-      "default": "<p>Transparent ingredients. Thoughtful formulations.<br>Designed to travel well.</p>"
-    },
-    {
-      "type": "header",
-      "content": "CTA Button Settings"
+      "label": "Subheading",
+      "default": "Transparent ingredients. Thoughtful formulations.<br>Designed to travel well."
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button Label",
+      "label": "Button label",
       "default": "Shop now"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button Link"
+      "label": "Button link"
     },
     {
       "type": "header",
-      "content": "Backdrop Settings"
+      "content": "Media Backdrops"
     },
     {
       "type": "video",
       "id": "video_backdrop",
-      "label": "Background Video Loop"
+      "label": "Video backdrop"
     },
     {
       "type": "image_picker",
       "id": "image_backdrop",
-      "label": "Fallback Background Image"
+      "label": "Fallback image / Poster frame"
     },
     {
       "type": "image_picker",
       "id": "supergraphic_image",
-      "label": "Supergraphic Brand Logo Overlay",
-      "info": "Overlaid at the bottom behind the text. Falls back to inverse theme logo if left empty."
+      "label": "Supergraphic overlay"
     },
     {
       "type": "header",
@@ -537,13 +537,13 @@
     {
       "type": "checkbox",
       "id": "show_ticker",
-      "label": "Show 'Made for' Ticker Strip",
+      "label": "Show ticker",
       "default": true
     },
     {
       "type": "text",
       "id": "ticker_label",
-      "label": "Ticker Label Prefix",
+      "label": "Ticker label",
       "default": "Made for"
     }
   ],
@@ -555,14 +555,29 @@
         {
           "type": "text",
           "id": "text",
-          "label": "Item Text"
+          "label": "Word",
+          "placeholder": "e.g., travelers"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "WW Hero"
+      "name": "WW Hero",
+      "blocks": [
+        { "type": "ticker_item", "settings": { "text": "travelers" } },
+        { "type": "ticker_item", "settings": { "text": "van-lifers" } },
+        { "type": "ticker_item", "settings": { "text": "voyagers" } },
+        { "type": "ticker_item", "settings": { "text": "sightseers" } },
+        { "type": "ticker_item", "settings": { "text": "backsacheters" } },
+        { "type": "ticker_item", "settings": { "text": "tourists" } },
+        { "type": "ticker_item", "settings": { "text": "adventurers" } },
+        { "type": "ticker_item", "settings": { "text": "globe-trotters" } },
+        { "type": "ticker_item", "settings": { "text": "commuters" } },
+        { "type": "ticker_item", "settings": { "text": "vacationers" } },
+        { "type": "ticker_item", "settings": { "text": "daytrippers" } },
+        { "type": "ticker_item", "settings": { "text": "wanderers" } }
+      ]
     }
   ]
 }

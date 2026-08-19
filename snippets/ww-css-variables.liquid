@@ -1,22 +1,20 @@
 {% comment %}
   Snippet: WW CSS Variables
-  Description: Brand CSS custom properties.
+  Description: Loads WanderWell Brand CSS Variables and font-face declarations.
 {% endcomment %}
 
 {% style %}
-  {%- if settings.font_heading != blank -%}
-    {{ settings.font_heading | font_face: font_display: 'swap' }}
+  {{ settings.font_heading | font_face: font_display: 'swap' }}
+  {{ settings.font_body | font_face: font_display: 'swap' }}
+  
+  {%- assign font_body_bold = settings.font_body | font_modify: 'weight', 'bold' -%}
+  {%- if font_body_bold -%}
+    {{ font_body_bold | font_face: font_display: 'swap' }}
   {%- endif -%}
-  {%- if settings.font_body != blank -%}
-    {{ settings.font_body | font_face: font_display: 'swap' }}
-    {%- assign font_body_bold = settings.font_body | font_modify: 'weight', 'bold' -%}
-    {%- if font_body_bold -%}
-      {{ font_body_bold | font_face: font_display: 'swap' }}
-    {%- endif -%}
-    {%- assign font_body_italic = settings.font_body | font_modify: 'style', 'italic' -%}
-    {%- if font_body_italic -%}
-      {{ font_body_italic | font_face: font_display: 'swap' }}
-    {%- endif -%}
+
+  {%- assign font_body_italic = settings.font_body | font_modify: 'style', 'italic' -%}
+  {%- if font_body_italic -%}
+    {{ font_body_italic | font_face: font_display: 'swap' }}
   {%- endif -%}
 
   :root {
@@ -26,17 +24,8 @@
     --ww-color-text-light: {{ settings.color_text_light | default: '#5C5C5C' }};
     --ww-color-white: #FFFFFF;
 
-    {%- if settings.font_heading != blank -%}
-      --ww-font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
-    {%- else -%}
-      --ww-font-heading: 'sofia-pro', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-    {%- endif -%}
-
-    {%- if settings.font_body != blank -%}
-      --ww-font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
-    {%- else -%}
-      --ww-font-body: 'sofia-pro', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-    {%- endif -%}
+    --ww-font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+    --ww-font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
 
     --ww-space-xs: 0.5rem;
     --ww-space-sm: 1rem;
@@ -46,8 +35,8 @@
 
     --ww-radius: 8px;
     --ww-radius-lg: 16px;
-
-    /* Mapping design system color tokens to UI Kit equivalents */
+    
+    /* Mapping to design tokens */
     --orange:          var(--ww-color-primary);
     --orange-dark:     {{ settings.color_primary_dark | default: '#D15523' }};
     --orange-light:    {{ settings.color_primary_light | default: '#F0845A' }};
@@ -56,8 +45,9 @@
     --cream:           {{ settings.color_cream | default: '#F2EDE4' }};
     --charcoal:        var(--ww-color-text);
     --charcoal-light:  var(--ww-color-text-light);
-    --white:           var(--ww-color-white);
-
+    --white:           #FFFFFF;
+    --black:           #000000;
+    
     --font-primary:    var(--ww-font-body);
     --font-tertiary:   var(--ww-font-heading);
   }

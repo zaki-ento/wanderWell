@@ -1,13 +1,14 @@
 /* ============================================================
-   WanderWell Global Styles & Brand Design Tokens
+   WanderWell Global Brand Styles
    ============================================================ */
 
 /* ── Custom Scrollbars ── */
 html {
+  scroll-behavior: smooth;
   scrollbar-color: var(--orange-dark) var(--cream);
 }
 ::-webkit-scrollbar {
-  width: 100px;
+  width: 12px;
 }
 ::-webkit-scrollbar-track {
   background: var(--cream);
@@ -18,7 +19,7 @@ html {
   border: 2px solid var(--cream);
 }
 
-/* ── CTA Buttons ── */
+/* ── CTA Button Design ── */
 .btn-cta {
   --cta-bg: #ffffff;
   --cta-fg: var(--charcoal);
@@ -39,7 +40,6 @@ html {
   cursor: pointer;
   overflow: hidden;
   isolation: isolate;
-  text-decoration: none;
   box-shadow:
     0 1px 0 rgba(255,255,255,0.8) inset,
     0 18px 36px -10px rgba(180,60,20,0.45),
@@ -48,6 +48,7 @@ html {
               box-shadow 0.25s ease,
               background 0.2s ease;
   animation: ctaFloat 4.5s ease-in-out infinite;
+  text-decoration: none;
 }
 .btn-cta::before {
   content: "";
@@ -63,17 +64,8 @@ html {
   pointer-events: none;
   z-index: 1;
 }
-.btn-cta > * {
-  position: relative;
-  z-index: 2;
-}
-.btn-cta .cta-label {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 1;
-  gap: 4px;
-}
+.btn-cta > * { position: relative; z-index: 2; }
+.btn-cta .cta-label { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1; gap: 4px; }
 .btn-cta .cta-label--single {
   flex-direction: row;
   align-items: center;
@@ -107,7 +99,7 @@ html {
 .btn-cta .cta-arrow svg {
   width: 16px;
   height: 16px;
-  stroke: #white;
+  stroke: #fff;
   stroke-width: 2.4;
   transition: transform 0.35s cubic-bezier(0.4,0.2,0.2,1);
 }
@@ -120,15 +112,9 @@ html {
     0 10px 22px rgba(180,60,20,0.32);
   animation-play-state: paused;
 }
-.btn-cta:hover .cta-arrow {
-  background: var(--orange-light);
-}
-.btn-cta:hover .cta-arrow svg {
-  transform: translateX(3px);
-}
-.btn-cta:active {
-  transform: translateY(-1px);
-}
+.btn-cta:hover .cta-arrow { background: var(--orange-light); }
+.btn-cta:hover .cta-arrow svg { transform: translateX(3px); }
+.btn-cta:active { transform: translateY(-1px); }
 .btn-cta:focus-visible {
   outline: none;
   box-shadow:
@@ -136,7 +122,6 @@ html {
     0 0 0 6px var(--charcoal),
     0 24px 44px -8px rgba(44,44,44,0.6);
 }
-
 @keyframes ctaFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
@@ -144,6 +129,25 @@ html {
 @keyframes ctaShimmer {
   0% { transform: translateX(-110%); }
   60%, 100% { transform: translateX(110%); }
+}
+
+@media (max-width: 640px) {
+  .btn-cta--wide {
+    min-width: 0;
+    width: 100%;
+    padding: 18px 24px;
+  }
+}
+
+/* ── Scroll-in animation ── */
+.will-animate {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.will-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Ticker Pause Button (ADA 2.2.2 compliance) ── */
@@ -184,16 +188,15 @@ html {
   color: var(--charcoal);
 }
 
-@media (max-width: 900px) {
-  .btn-cta--wide {
-    min-width: 0;
-    width: 100%;
-    padding: 18px 24px;
-  }
-}
 @media (max-width: 640px) {
   .ticker-pause, .ticker-pause--light {
     width: 34px;
     height: 34px;
+  }
+}
+@media (min-width: 900px) {
+  .ticker-pause, .ticker-pause--light {
+    width: 40px;
+    height: 40px;
   }
 }
