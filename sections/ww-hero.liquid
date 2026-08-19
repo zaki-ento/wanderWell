@@ -108,6 +108,10 @@
               <span class="made-for-item">{{ block.settings.text | escape }}</span>
               <span class="made-for-item made-for-dot"></span>
             {%- endif -%}
+             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
+              <span class="made-for-item">{{ block.settings.text | escape }}</span>
+              <span class="made-for-item made-for-dot"></span>
+            {%- endif -%}
           {%- endfor -%}
         {%- else -%}
           {%- for item in default_items -%}
