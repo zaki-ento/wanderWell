@@ -98,7 +98,7 @@
             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
               <span class="made-for-item">{{ block.settings.text | escape }}</span>
               <span class="made-for-item made-for-dot" aria-hidden="true">·</span>
-            {%- endif -%-}
+            {%- endif -%}
           {%- endfor -%}
         {%- else -%}
           {%- for item in ticker_items_default -%}
