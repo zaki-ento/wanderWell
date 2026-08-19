@@ -70,54 +70,68 @@
     "ww_problem": {
       "type": "ww-problem",
       "blocks": {
-        "outro_pill_nkgNNk": {
-          "type": "outro_pill",
-          "settings": {
-            "text": "Doses that make sense"
-          }
-        },
-        "outro_pill_EhjXR9": {
-          "type": "outro_pill",
-          "settings": {
-            "text": "Individually sacheted"
-          }
-        },
-        "story_step_BVppwq": {
+        "story_step_1": {
           "type": "story_step",
           "settings": {
-            "title": "That's what we're here for.",
-            "subtitle": "Wherever the journey takes you"
+            "title": "Somewhere between leaving home and the first night somewhere else, something shifts.",
+            "subtitle": "New surroundings, new pace, new normal, for a while"
           }
         },
-        "story_step_DWd8QK": {
-          "type": "story_step",
-          "settings": {
-            "title": "So it asks for a little more than usual.",
-            "subtitle": "More water. More rest. More support."
-          }
-        },
-        "story_step_AAq3KF": {
+        "story_step_2": {
           "type": "story_step",
           "settings": {
             "title": "You planned the trip. Your body's still catching up.",
             "subtitle": "Different food, different sleep, a different clock"
           }
         },
-        "story_step_XGqiaK": {
+        "story_step_3": {
           "type": "story_step",
           "settings": {
-            "title": "Somewhere between leaving home and the first night somewhere else, something shifts.",
-            "subtitle": "New surroundings, new pace, new normal, for a while"
+            "title": "So it asks for a little more than usual.",
+            "subtitle": "More water. More rest. More support."
+          }
+        },
+        "story_step_4": {
+          "type": "story_step",
+          "settings": {
+            "title": "That's what we're here for.",
+            "subtitle": "Wherever the journey takes you"
+          }
+        },
+        "outro_pill_1": {
+          "type": "outro_pill",
+          "settings": {
+            "text": "Individually sacheted"
+          }
+        },
+        "outro_pill_2": {
+          "type": "outro_pill",
+          "settings": {
+            "text": "Doses that make sense"
+          }
+        },
+        "outro_pill_3": {
+          "type": "outro_pill",
+          "settings": {
+            "text": "Ingredients you recognize"
+          }
+        },
+        "outro_pill_4": {
+          "type": "outro_pill",
+          "settings": {
+            "text": "Third-party tested"
           }
         }
       },
       "block_order": [
-        "outro_pill_nkgNNk",
-        "outro_pill_EhjXR9",
-        "story_step_BVppwq",
-        "story_step_DWd8QK",
-        "story_step_AAq3KF",
-        "story_step_XGqiaK"
+        "story_step_1",
+        "story_step_2",
+        "story_step_3",
+        "story_step_4",
+        "outro_pill_1",
+        "outro_pill_2",
+        "outro_pill_3",
+        "outro_pill_4"
       ],
       "settings": {
         "heading": "You didn't come here to stick to a routine",
