@@ -171,8 +171,8 @@
         "immune_tab": {
           "type": "product_tab",
           "settings": {
-            "product": "",
-            "title": "Immune Support",
+            "product": "immune-support",
+            "title": "{{ block.settings.product.title }}",
             "subtitle": "Powder · Vitamin C",
             "description": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Vitamin C helps support your immune function wherever you go. One sachet mixes into water. Lightly flavored with notes of passionfruit, pineapple and citrus.",
             "fallback_color_theme": "default",
@@ -189,8 +189,8 @@
         "bundle_tab": {
           "type": "product_tab",
           "settings": {
-            "product": "",
-            "title": "The Travel Duo",
+            "product": "the-travel-duo",
+            "title": "{{ block.settings.product.title }}",
             "subtitle": "Both · save up to 10%",
             "description": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together.",
             "fallback_color_theme": "warm",
