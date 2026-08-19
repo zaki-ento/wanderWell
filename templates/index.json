@@ -70,22 +70,39 @@
     "ww_problem": {
       "type": "ww-problem",
       "blocks": {
-        "outro_chip_aeyqQR": {
-          "type": "outro_chip",
+        "story_step_BVppwq": {
+          "type": "story_step",
           "settings": {
-            "text": "Individually sacheted"
+            "title": "That's what we're here for.",
+            "subtitle": "Wherever the journey takes you"
+          }
+        },
+        "story_step_DWd8QK": {
+          "type": "story_step",
+          "settings": {
+            "title": "So it asks for a little more than usual.",
+            "subtitle": "More water. More rest. More support."
+          }
+        },
+        "story_step_AAq3KF": {
+          "type": "story_step",
+          "settings": {
+            "title": "You planned the trip. Your body's still catching up.",
+            "subtitle": "Different food, different sleep, a different clock"
           }
         },
         "story_step_XGqiaK": {
           "type": "story_step",
           "settings": {
-            "title": "SomewheSomewhere between leaving home and the first night somewhere else, something shifts.re between leaving home...",
-            "subtitle": "New New surroundings, new pace, new normal, for a whileYou planned the trip. Your body's still catching up.surroundings, new pace..."
+            "title": "Somewhere between leaving home and the first night somewhere else, something shifts.",
+            "subtitle": "New surroundings, new pace, new normal, for a while"
           }
         }
       },
       "block_order": [
-        "outro_chip_aeyqQR",
+        "story_step_BVppwq",
+        "story_step_DWd8QK",
+        "story_step_AAq3KF",
         "story_step_XGqiaK"
       ],
       "settings": {
