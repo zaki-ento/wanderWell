@@ -19,7 +19,7 @@
   
   {%- if section.settings.layout_width == 'full' -%}
     .section-{{ section.id }} .ww-hero__inner {
-      max-width: none;
+      max-width: none !important;
       width: 100%;
       padding-left: 40px;
       padding-right: 40px;
@@ -41,7 +41,7 @@
     </div>
   {%- endif -%}
 
-  <div class="ww-hero__inner container">
+  <div class="ww-hero__inner container max-w-breakpoint-xl">
     <div class="ww-hero__content">
       <div class="ww-hero__text">
         {%- if section.settings.badge != blank -%}
@@ -177,6 +177,8 @@
     position: relative;
     z-index: 2;
   }
+
+
 
   .ww-hero__content {
     display: grid;
