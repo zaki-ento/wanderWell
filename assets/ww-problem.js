@@ -53,21 +53,61 @@
       dots.push(d);
     }
 
+    // function buildPath(w, h) {
+    //   var wide = w > 900;
+    //   var pts = NORM.map(function(p) {
+    //     var x = wide ? (0.04 * w + p[0] * 0.56 * w) : (0.5 * w + (p[0] - 0.5) * 0.64 * w);
+    //     return { x: x, y: 0.07 * h + p[1] * 0.82 * h };
+    //   });
+    //   var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+    //   for(var i = 0; i < pts.length - 1; i++) {
+    //     var p0 = pts[i-1] || pts[i], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2] || pts[i+1];
+    //     d += ' C' + (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' + (p1.y + (p2.y - p0.y) / 6).toFixed(1)
+    //       + ' ' + (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' + (p2.y - (p3.y - p1.y) / 6).toFixed(1)
+    //       + ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
+    //   }
+    //   return d;
+    // }
     function buildPath(w, h) {
-      var wide = w > 900;
-      var pts = NORM.map(function(p) {
-        var x = wide ? (0.04 * w + p[0] * 0.56 * w) : (0.5 * w + (p[0] - 0.5) * 0.64 * w);
-        return { x: x, y: 0.07 * h + p[1] * 0.82 * h };
-      });
-      var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
-      for(var i = 0; i < pts.length - 1; i++) {
-        var p0 = pts[i-1] || pts[i], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2] || pts[i+1];
-        d += ' C' + (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' + (p1.y + (p2.y - p0.y) / 6).toFixed(1)
-          + ' ' + (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' + (p2.y - (p3.y - p1.y) / 6).toFixed(1)
-          + ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
-      }
-      return d;
+  var desktop = w > 980;
+  var tablet = w > 700 && w <= 980;
+
+  var pts = NORM.map(function(p) {
+    var x;
+
+    if (desktop) {
+      x = 0.04 * w + p[0] * 0.56 * w;
+    } else if (tablet) {
+      x = 0.04 * w + p[0] * 0.62 * w;
+    } else {
+      x = 0.5 * w + (p[0] - 0.5) * 0.64 * w;
     }
+
+    return {
+      x: x,
+      y: 0.07 * h + p[1] * 0.82 * h
+    };
+  });
+
+  var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+
+  for (var i = 0; i < pts.length - 1; i++) {
+    var p0 = pts[i - 1] || pts[i];
+    var p1 = pts[i];
+    var p2 = pts[i + 1];
+    var p3 = pts[i + 2] || pts[i + 1];
+
+    d += ' C' +
+      (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' +
+      (p1.y + (p2.y - p0.y) / 6).toFixed(1) + ' ' +
+      (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' +
+      (p2.y - (p3.y - p1.y) / 6).toFixed(1) + ' ' +
+      p2.x.toFixed(1) + ',' +
+      p2.y.toFixed(1);
+  }
+
+  return d;
+}
 
     function currentIdx(p) {
       var idx = -1;
