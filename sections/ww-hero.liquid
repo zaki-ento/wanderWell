@@ -84,13 +84,7 @@
 
   {%- comment -%} Background Backdrop (Video / Fallback Image) {%- endcomment -%}
   <div class="ww-herovid">
-    {%- if section.settings.video_backdrop != blank -%}
-      {% comment %} <div class="ww-herovid-poster" aria-hidden="true">
-        {%- if section.settings.image_backdrop != blank -%}
-          {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: loading: 'eager', class: 'ww-herovid-poster-img' }}
-        {%- endif -%}
-      </div> {% endcomment %}
-      
+    {%- if section.settings.video_backdrop != blank -%} 
       {{ section.settings.video_backdrop | video_tag:
         autoplay: true,
         loop: true,
