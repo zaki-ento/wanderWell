@@ -57,6 +57,7 @@
         "subheading": "<p>Transparent ingredients. Thoughtful formulations.<br/>Designed to travel well.</p>",
         "button_label": "Shop now",
         "button_link": "shopify://collections/all",
+        "video_backdrop": "shopify://files/videos/hero-loop.mp4",
         "image_backdrop": "shopify://shop_images/Screenshot_at_Aug_19_13-48-20.png",
         "supergraphic_image": "shopify://shop_images/2e8cd122-35ea-455b-8f68-7fb4678c14ee.png",
         "show_ticker": true,
