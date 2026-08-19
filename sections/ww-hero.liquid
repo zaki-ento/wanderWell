@@ -93,13 +93,7 @@
           {%- endif -%}
         {%- endfor -%}
 
-        {%- if has_blocks == false -%}
-          {%- assign default_items = "travelers,van-lifers,voyagers,sightseers,backsacheters,tourists,adventurers,globe-trotters,commuters,vacationers,daytrippers,wanderers" | split: ',' -%}
-          {%- for item in default_items -%}
-            <span class="made-for-item">{{ item }}</span>
-            <span class="made-for-item made-for-dot"></span>
-          {%- endfor -%}
-        {%- endif -%}
+      
 
         {%- comment -%} Seamless loop duplicate {%- endcomment -%}
         {%- if has_blocks -%}
@@ -108,11 +102,6 @@
               <span class="made-for-item">{{ block.settings.text | escape }}</span>
               <span class="made-for-item made-for-dot"></span>
             {%- endif -%}
-          {%- endfor -%}
-        {%- else -%}
-          {%- for item in default_items -%}
-            <span class="made-for-item">{{ item }}</span>
-            <span class="made-for-item made-for-dot"></span>
           {%- endfor -%}
         {%- endif -%}
       </div>
