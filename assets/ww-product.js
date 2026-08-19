@@ -3,13 +3,13 @@
   
   // Tab control switching
   function initTabs() {
-    var shop = document.querySelector('.v2-shop');
+    var shop = document.querySelector('.ww-shop');
     if (!shop) return;
     
-    var seg = shop.querySelector('.v2-seg');
-    var ind = shop.querySelector('.v2-seg-ind');
-    var buttons = Array.prototype.slice.call(shop.querySelectorAll('.v2-seg-btn'));
-    var panels = Array.prototype.slice.call(shop.querySelectorAll('.v2-panel'));
+    var seg = shop.querySelector('.ww-seg');
+    var ind = shop.querySelector('.ww-seg-ind');
+    var buttons = Array.prototype.slice.call(shop.querySelectorAll('.ww-seg-btn'));
+    var panels = Array.prototype.slice.call(shop.querySelectorAll('.ww-panel'));
     
     function moveInd(btn) {
       if (!ind || !btn) return;
@@ -44,16 +44,16 @@
     }
     
     window.addEventListener('resize', function() {
-      var active = shop.querySelector('.v2-seg-btn.on');
+      var active = shop.querySelector('.ww-seg-btn.on');
       if (active) moveInd(active);
     });
   }
   
   // Media Gallery Slider
   function initGallery() {
-    document.querySelectorAll('.v2-media').forEach(function(media) {
-      var slides = media.querySelectorAll('.v2-media-stage > .v2-ph');
-      var thumbs = media.querySelectorAll('.v2-media-thumbs > .v2-ph');
+    document.querySelectorAll('.ww-media').forEach(function(media) {
+      var slides = media.querySelectorAll('.ww-media-stage > .ww-media-slide');
+      var thumbs = media.querySelectorAll('.ww-media-thumbs > .ww-media-thumb');
       if (slides.length < 2) return;
       
       var currentIdx = 0;
@@ -81,8 +81,8 @@
         });
       });
       
-      var prev = media.querySelector('.v2-media-nav--prev');
-      var next = media.querySelector('.v2-media-nav--next');
+      var prev = media.querySelector('.ww-media-nav--prev');
+      var next = media.querySelector('.ww-media-nav--next');
       if (prev) {
         prev.addEventListener('click', function() { show(currentIdx - 1); });
       }
@@ -96,9 +96,9 @@
   
   // Accordions mutually-exclusive expander
   function initAccordions() {
-    var accordions = document.querySelectorAll('.v2-info');
+    var accordions = document.querySelectorAll('.ww-info');
     accordions.forEach(function(wrapper) {
-      var details = wrapper.querySelectorAll('.v2-acc');
+      var details = wrapper.querySelectorAll('.ww-acc');
       details.forEach(function(detail) {
         detail.addEventListener('toggle', function() {
           if (detail.open) {
@@ -113,8 +113,8 @@
   
   // Quantity steppers
   function initQuantity() {
-    document.querySelectorAll('.v2-buy').forEach(function(buyBox) {
-      var qtyWrapper = buyBox.querySelector('.v2-qty');
+    document.querySelectorAll('.ww-buy').forEach(function(buyBox) {
+      var qtyWrapper = buyBox.querySelector('.ww-qty');
       var form = buyBox.querySelector('.ww-product-form');
       if (!qtyWrapper || !form) return;
       
@@ -153,7 +153,7 @@
         e.preventDefault();
         
         var form = e.target;
-        var btn = form.querySelector('.v2-add');
+        var btn = form.querySelector('.ww-add');
         if (!btn || btn.disabled) return;
         
         var fd = new FormData(form);
