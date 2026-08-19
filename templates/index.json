@@ -145,10 +145,15 @@
         "padding_top": 64,
         "padding_bottom": 72
       }
+    },
+    "ww_product": {
+      "type": "ww-product",
+      "settings": {}
     }
   },
   "order": [
     "ww_hero",
-    "ww_problem"
+    "ww_problem",
+    "ww_product"
   ]
 }

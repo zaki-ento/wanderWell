@@ -1,0 +1,1860 @@
+{% comment %}
+  Section: WW Products Hub
+  Description: Custom interactive tabbed product interface for up to 3 products.
+{% endcomment %}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  {%- if section.settings.layout_width == 'full' -%}
+    .section-{{ section.id }} .container {
+      max-width: none !important;
+      width: 100%;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+{%- assign p1 = section.settings.product_1 -%}
+{%- assign p2 = section.settings.product_2 -%}
+{%- assign p3 = section.settings.product_3 -%}
+
+<section class="products section-{{ section.id }}" id="products" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="products-header">
+      {%- if section.settings.label != blank -%}
+        <span class="section-label">{{ section.settings.label | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="section-subtitle">{{ section.settings.subheading | newline_to_br }}</p>
+      {%- endif -%}
+      
+      <div class="products-badges">
+        {%- if section.settings.badge_1_text != blank -%}
+          <span class="product-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21v-9"></path>
+              <path d="M12 12c0-4 -3-6-7-6 0 4 3 6 7 6z"></path>
+              <path d="M12 12c0-5 3-8 8-8 0 5-3 8-8 8z"></path>
+            </svg>
+            {{ section.settings.badge_1_text | escape }}
+          </span>
+        {%- endif -%}
+        {%- if section.settings.badge_2_text != blank -%}
+          <span class="product-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+            {{ section.settings.badge_2_text | escape }}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="v2-shop">
+      <div class="v2-seg-wrap">
+        <div class="v2-seg" role="tablist" aria-label="Choose a product">
+          <span class="v2-seg-ind" aria-hidden="true"></span>
+          <button class="v2-seg-btn on" data-prod="digestive" role="tab">
+            {{ section.settings.prod_1_title | escape }}
+            <span class="v2-seg-sub">{{ section.settings.prod_1_subtitle | escape }}</span>
+          </button>
+          <button class="v2-seg-btn" data-prod="immune" role="tab">
+            {{ section.settings.prod_2_title | escape }}
+            <span class="v2-seg-sub">{{ section.settings.prod_2_subtitle | escape }}</span>
+          </button>
+          <button class="v2-seg-btn" data-prod="bundle" role="tab">
+            {{ section.settings.prod_3_title | escape }}
+            <span class="v2-seg-sub">{{ section.settings.prod_3_subtitle | escape }}</span>
+          </button>
+        </div>
+      </div>
+
+      {%- comment -%} DIGESTIVE PANEL {%- endcomment -%}
+      <div class="v2-panel on" data-prod="digestive" role="tabpanel">
+        <div class="v2-panel-inner">
+          <div class="v2-media">
+            <div class="v2-media-main">
+              <div class="v2-media-stage">
+                {%- assign p1_images = p1.images -%}
+                {%- if section.settings.prod_1_img_1 != blank or section.settings.prod_1_img_2 != blank -%}
+                  {%- if section.settings.prod_1_img_1 != blank -%}
+                    <div class="v2-ph is-on">
+                      {{ section.settings.prod_1_img_1 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                    </div>
+                  {%- endif -%}
+                  {%- if section.settings.prod_1_img_2 != blank -%}
+                    <div class="v2-ph">
+                      {{ section.settings.prod_1_img_2 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                    </div>
+                  {%- endif -%}
+                {%- elsif p1_images.size > 0 -%}
+                  {%- for image in p1_images limit: 4 -%}
+                    <div class="v2-ph {% if forloop.first %}is-on{% endif %}">
+                      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', alt: image.alt }}
+                    </div>
+                  {%- endfor -%}
+                {%- else -%}
+                  <div class="v2-ph v2-ph--green is-on">
+                    {%- if settings.logo_inverse != blank -%}
+                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'v2-media-logo', loading: 'lazy' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="v2-ph v2-ph--green"></div>
+                  <div class="v2-ph v2-ph--green"></div>
+                  <div class="v2-ph v2-ph--green"></div>
+                {%- endif -%}
+              </div>
+              <button class="v2-media-nav v2-media-nav--prev" type="button" aria-label="Previous image">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+              </button>
+              <button class="v2-media-nav v2-media-nav--next" type="button" aria-label="Next image">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+              </button>
+            </div>
+            
+            <div class="v2-media-thumbs">
+              {%- if section.settings.prod_1_img_1 != blank or section.settings.prod_1_img_2 != blank -%}
+                {%- if section.settings.prod_1_img_1 != blank -%}
+                  <div class="v2-ph is-active">
+                    {{ section.settings.prod_1_img_1 | image_url: width: 120 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+                {%- if section.settings.prod_1_img_2 != blank -%}
+                  <div class="v2-ph">
+                    {{ section.settings.prod_1_img_2 | image_url: width: 120 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+              {%- elsif p1_images.size > 0 -%}
+                {%- for image in p1_images limit: 4 -%}
+                  <div class="v2-ph {% if forloop.first %}is-active{% endif %}">
+                    {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: image.alt }}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="v2-ph is-active"></div>
+                <div class="v2-ph"></div>
+                <div class="v2-ph"></div>
+                <div class="v2-ph"></div>
+              {%- endif -%}
+            </div>
+          </div>
+          
+          <div class="v2-detail">
+            <div class="v2-detail-eyebrow">{{ section.settings.prod_1_title | escape }} · Ginger</div>
+            <h3 class="v2-detail-title">{{ section.settings.prod_1_title | escape }}</h3>
+            {%- if section.settings.prod_1_desc_1 != blank -%}
+              <p class="v2-detail-lede">{{ section.settings.prod_1_desc_1 | escape }}</p>
+            {%- endif -%}
+            {%- if section.settings.prod_1_desc_2 != blank -%}
+              <p class="v2-detail-lede">{{ section.settings.prod_1_desc_2 | escape }}</p>
+            {%- endif -%}
+            
+            <div class="v2-buy">
+              <div class="v2-price-container">
+                <span class="v2-price-label">Price</span>
+                <span class="v2-price-amount">
+                  {%- if p1 != blank -%}
+                    {{ p1.price | money }}
+                  {%- else -%}
+                    $29.99
+                  {%- endif -%}
+                </span>
+              </div>
+              
+              <form action="/cart/add" method="post" enctype="multipart/form-data" class="ww-product-form">
+                <input type="hidden" name="id" value="{% if p1 != blank %}{{ p1.selected_or_first_available_variant.id }}{% endif %}">
+                <input type="hidden" name="quantity" value="1" class="ww-qty-input">
+                
+                <div class="v2-buy-row">
+                  <div class="v2-qty">
+                    <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
+                    <span class="v">1</span>
+                    <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
+                  </div>
+                  <button class="v2-add" type="submit" {% if p1 != blank and p1.available == false %}disabled{% endif %}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 8H6"></path>
+                      <circle cx="10" cy="20" r="1.3"></circle>
+                      <circle cx="17" cy="20" r="1.3"></circle>
+                    </svg>
+                    {% if p1 != blank and p1.available == false %}Sold out{% else %}Add to cart{% endif %}
+                  </button>
+                </div>
+              </form>
+              
+              <div class="v2-buy-trust">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                  </svg>
+                  Free shipping $50+
+                </span>
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                  3rd-party tested
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="v2-info">
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Ingredients</span>
+              <span class="v2-acc-c">4 items</span>
+            </summary>
+            <div class="v2-acc-body">
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Organic Ginger Root Extract <span class="amt">550 mg</span></h4>
+                  <p>Standardized to contain 5% gingerols to deliver a consistent amount in every serving. Ginger has traditionally been used to support digestive comfort and maintain healthy gut motility*</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Rice Hulls</h4>
+                  <p>Ground rice hulls from whole rice grain are used as a natural flow agent in the manufacturing process to support consistent dosing in every capsule.</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Rice Extract Blend</h4>
+                  <p>A blend of rice extract, rice hulls, gum arabic, and sunflower oil that helps the capsules fill smoothly, so your serving is consistent every time.</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Hypromellose Capsule</h4>
+                  <p>Vegetarian capsule made from plant-derived cellulose, with no gelatin or animal products.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Product Information</span>
+            </summary>
+            <div class="v2-acc-body">
+              <p class="v2-detail-lede" style="margin:0 0 14px"><strong>Directions:</strong> As a dietary supplement, take 2 capsules between meals.</p>
+              <p class="v2-detail-lede" style="margin:0 0 14px"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p>
+              <p class="v2-detail-lede" style="margin:0 0 20px"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p>
+              <div class="v2-sf-panel">
+                <h4 class="v2-sf-h">Supplement Facts Panel</h4>
+                <div class="v2-sf">
+                  <div class="v2-sf-meta">Serving size: 2 capsules &nbsp;·&nbsp; Servings per container: 15</div>
+                  <div class="v2-sf-row v2-sf-row--h"><span>&nbsp;</span><span>Amount per serving</span><span>% DV</span></div>
+                  <div class="v2-sf-row"><span>Organic Ginger Root Extract (Zingiber officinale) (standardized to contain 5% gingerols)</span><span>550 mg</span><span>†</span></div>
+                  <p class="v2-sf-note">† Daily Value (DV) not established.<br>Other ingredients: Hypromellose (cellulose) capsule, Rice Hulls, Rice Extract Blend.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Capsule size</span>
+            </summary>
+            <div class="v2-acc-body">
+              <div class="v2-capsize">
+                <div class="v2-capsize-h">Capsule size, to scale</div>
+                <p class="v2-capsize-sub">We wanted a capsule you don't have to psych yourself up for. So we made ours small enough to swallow without thinking about it. See for yourself.</p>
+                <div class="v2-capsize-rows">
+                  <div class="v2-caprow v2-caprow--ours">
+                    <div class="v2-caplabel v2-caplabel--ours">
+                      {%- if settings.logo_inverse != blank -%}
+                        {{ settings.logo_inverse | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
+                      {%- else -%}
+                        <span>wanderWell</span>
+                      {%- endif -%}
+                      <small>Size 4</small>
+                    </div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:114px;height:42px"></div>
+                      <span class="v2-capdim">14.3 × 5.31 mm</span>
+                    </div>
+                  </div>
+                  <div class="v2-caprow">
+                    <div class="v2-caplabel">Common<small>Size 1</small></div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:155px;height:55px"></div>
+                      <span class="v2-capdim">19.4 × 6.91 mm</span>
+                    </div>
+                  </div>
+                  <div class="v2-caprow">
+                    <div class="v2-caplabel">Common<small>Size 0</small></div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:174px;height:61px"></div>
+                      <span class="v2-capdim">21.7 × 7.64 mm</span>
+                    </div>
+                  </div>
+                  <div class="v2-caprow">
+                    <div class="v2-caplabel">Typical<small>Size 00</small></div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:186px;height:68px"></div>
+                      <span class="v2-capdim">23.3 × 8.53 mm</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <div class="v2-info-trust">
+            <div class="v2-info-trust-h">Commitment to Quality</div>
+            <div class="v2-info-trust-grid">
+              <div>
+                <h4>Third-party testing</h4>
+                <p>Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications.</p>
+              </div>
+              <div>
+                <h4>Manufacturing excellence</h4>
+                <p>Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} IMMUNE PANEL {%- endcomment -%}
+      <div class="v2-panel" data-prod="immune" role="tabpanel">
+        <div class="v2-panel-inner">
+          <div class="v2-media">
+            <div class="v2-media-main">
+              <div class="v2-media-stage">
+                {%- assign p2_images = p2.images -%}
+                {%- if section.settings.prod_2_img_1 != blank or section.settings.prod_2_img_2 != blank -%}
+                  {%- if section.settings.prod_2_img_1 != blank -%}
+                    <div class="v2-ph is-on">
+                      {{ section.settings.prod_2_img_1 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                    </div>
+                  {%- endif -%}
+                  {%- if section.settings.prod_2_img_2 != blank -%}
+                    <div class="v2-ph">
+                      {{ section.settings.prod_2_img_2 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                    </div>
+                  {%- endif -%}
+                {%- elsif p2_images.size > 0 -%}
+                  {%- for image in p2_images limit: 4 -%}
+                    <div class="v2-ph {% if forloop.first %}is-on{% endif %}">
+                      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', alt: image.alt }}
+                    </div>
+                  {%- endfor -%}
+                {%- else -%}
+                  <div class="v2-ph is-on">
+                    {%- if settings.logo_inverse != blank -%}
+                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'v2-media-logo', loading: 'lazy' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="v2-ph"></div>
+                  <div class="v2-ph"></div>
+                  <div class="v2-ph"></div>
+                {%- endif -%}
+              </div>
+              <button class="v2-media-nav v2-media-nav--prev" type="button" aria-label="Previous image">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+              </button>
+              <button class="v2-media-nav v2-media-nav--next" type="button" aria-label="Next image">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+              </button>
+            </div>
+            
+            <div class="v2-media-thumbs">
+              {%- if section.settings.prod_2_img_1 != blank or section.settings.prod_2_img_2 != blank -%}
+                {%- if section.settings.prod_2_img_1 != blank -%}
+                  <div class="v2-ph is-active">
+                    {{ section.settings.prod_2_img_1 | image_url: width: 120 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+                {%- if section.settings.prod_2_img_2 != blank -%}
+                  <div class="v2-ph">
+                    {{ section.settings.prod_2_img_2 | image_url: width: 120 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+              {%- elsif p2_images.size > 0 -%}
+                {%- for image in p2_images limit: 4 -%}
+                  <div class="v2-ph {% if forloop.first %}is-active{% endif %}">
+                    {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: image.alt }}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="v2-ph is-active"></div>
+                <div class="v2-ph"></div>
+                <div class="v2-ph"></div>
+                <div class="v2-ph"></div>
+              {%- endif -%}
+            </div>
+          </div>
+          
+          <div class="v2-detail">
+            <div class="v2-detail-eyebrow">{{ section.settings.prod_2_title | escape }} · Vitamin C</div>
+            <h3 class="v2-detail-title">{{ section.settings.prod_2_title | escape }}</h3>
+            {%- if section.settings.prod_2_desc_1 != blank -%}
+              <p class="v2-detail-lede">{{ section.settings.prod_2_desc_1 | escape }}</p>
+            {%- endif -%}
+            {%- if section.settings.prod_2_desc_2 != blank -%}
+              <p class="v2-detail-lede">{{ section.settings.prod_2_desc_2 | escape }}</p>
+            {%- endif -%}
+            
+            <div class="v2-buy">
+              <div class="v2-price-container">
+                <span class="v2-price-label">Price</span>
+                <span class="v2-price-amount">
+                  {%- if p2 != blank -%}
+                    {{ p2.price | money }}
+                  {%- else -%}
+                    $29.99
+                  {%- endif -%}
+                </span>
+              </div>
+              
+              <form action="/cart/add" method="post" enctype="multipart/form-data" class="ww-product-form">
+                <input type="hidden" name="id" value="{% if p2 != blank %}{{ p2.selected_or_first_available_variant.id }}{% endif %}">
+                <input type="hidden" name="quantity" value="1" class="ww-qty-input">
+                
+                <div class="v2-buy-row">
+                  <div class="v2-qty">
+                    <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
+                    <span class="v">1</span>
+                    <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
+                  </div>
+                  <button class="v2-add" type="submit" {% if p2 != blank and p2.available == false %}disabled{% endif %}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 8H6"></path>
+                      <circle cx="10" cy="20" r="1.3"></circle>
+                      <circle cx="17" cy="20" r="1.3"></circle>
+                    </svg>
+                    {% if p2 != blank and p2.available == false %}Sold out{% else %}Add to cart{% endif %}
+                  </button>
+                </div>
+              </form>
+              
+              <div class="v2-buy-trust">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                  </svg>
+                  Free shipping $50+
+                </span>
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                  3rd-party tested
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="v2-info">
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Ingredients</span>
+              <span class="v2-acc-c">6 items</span>
+            </summary>
+            <div class="v2-acc-body">
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Vitamin C <span class="amt">300 mg</span></h4>
+                  <p>300 mg per serving to support immune function.*</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Zinc <span class="amt">16 mg</span></h4>
+                  <p>An essential mineral your immune cells need to develop and function properly.*</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Lysine <span class="amt">96 mg</span></h4>
+                  <p>An essential amino acid that works alongside other nutrients to support immune function.*</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Niacinamide (Vitamin B3) <span class="amt">25 mg</span></h4>
+                  <p>The no-flush form, to avoid the redness and tingling other forms can trigger. Supports the cellular energy your immune cells need to function.*</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Vitamin B1 <span class="amt">1 mg</span></h4>
+                  <p>A B vitamin that helps your immune cells form and function.*</p>
+                </div>
+              </div>
+              <div class="v2-ing">
+                <div class="v2-ing-dot"></div>
+                <div>
+                  <h4>Rice Extract</h4>
+                  <p>A rice extract that aids in the manufacturing process and improves powder flow to support consistent dosing in every sachet.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Product Information</span>
+            </summary>
+            <div class="v2-acc-body">
+              <p class="v2-detail-lede" style="margin:0 0 14px"><strong>Directions:</strong> Tear and pour into 8–10 oz of room temperature or cold water. Shake or mix well before use!</p>
+              <p class="v2-detail-lede" style="margin:0 0 14px">We proudly use rice extract (natural silica) as a natural flow agent instead of the synthetic alternative. Because of this, some settling is completely normal and does not affect product quality.</p>
+              <p class="v2-detail-lede" style="margin:0 0 14px"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p>
+              <p class="v2-detail-lede" style="margin:0 0 20px"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p>
+              <div class="v2-sf-panel">
+                <h4 class="v2-sf-h">Supplement Facts Panel</h4>
+                <div class="v2-sf">
+                  <div class="v2-sf-meta">Serving size: 1 sachet (7 g) &nbsp;·&nbsp; Servings per carton: 15</div>
+                  <div class="v2-sf-row v2-sf-row--h"><span>&nbsp;</span><span>Amount per serving</span><span>% DV</span></div>
+                  <div class="v2-sf-row"><span>Vitamin C (ascorbic acid)</span><span>300 mg</span><span>333%</span></div>
+                  <div class="v2-sf-row"><span>Zinc (as zinc citrate)</span><span>16 mg</span><span>145%</span></div>
+                  <div class="v2-sf-row"><span>Niacinamide (vitamin B3)</span><span>25 mg</span><span>156%</span></div>
+                  <div class="v2-sf-row"><span>Thiamine (vitamin B1)</span><span>1 mg</span><span>83%</span></div>
+                  <div class="v2-sf-row"><span>L-Lysine HCl</span><span>96 mg</span><span>**</span></div>
+                  <p class="v2-sf-note">** Daily Value not established.<br>Other ingredients: natural tropical-citrus flavor, citric acid, monk fruit extract, cane sugar.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <div class="v2-info-trust">
+            <div class="v2-info-trust-h">Commitment to Quality</div>
+            <div class="v2-info-trust-grid">
+              <div>
+                <h4>Third-party testing</h4>
+                <p>Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications.</p>
+              </div>
+              <div>
+                <h4>Manufacturing excellence</h4>
+                <p>Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} BUNDLE PANEL {%- endcomment -%}
+      <div class="v2-panel" data-prod="bundle" role="tabpanel">
+        <div class="v2-panel-inner">
+          <div class="v2-media">
+            <div class="v2-media-main">
+              <div class="v2-media-stage">
+                {%- assign p3_images = p3.images -%}
+                {%- if section.settings.prod_3_img_1 != blank or section.settings.prod_3_img_2 != blank -%}
+                  {%- if section.settings.prod_3_img_1 != blank -%}
+                    <div class="v2-ph is-on">
+                      {{ section.settings.prod_3_img_1 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                    </div>
+                  {%- endif -%}
+                  {%- if section.settings.prod_3_img_2 != blank -%}
+                    <div class="v2-ph">
+                      {{ section.settings.prod_3_img_2 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                    </div>
+                  {%- endif -%}
+                {%- elsif p3_images.size > 0 -%}
+                  {%- for image in p3_images limit: 4 -%}
+                    <div class="v2-ph {% if forloop.first %}is-on{% endif %}">
+                      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', alt: image.alt }}
+                    </div>
+                  {%- endfor -%}
+                {%- else -%}
+                  <div class="v2-ph is-on">
+                    {%- if settings.logo_inverse != blank -%}
+                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'v2-media-logo', loading: 'lazy' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="v2-ph v2-ph--green"></div>
+                  <div class="v2-ph"></div>
+                  <div class="v2-ph v2-ph--warm"></div>
+                {%- endif -%}
+              </div>
+              <button class="v2-media-nav v2-media-nav--prev" type="button" aria-label="Previous image">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+              </button>
+              <button class="v2-media-nav v2-media-nav--next" type="button" aria-label="Next image">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+              </button>
+            </div>
+            
+            <div class="v2-media-thumbs">
+              {%- if section.settings.prod_3_img_1 != blank or section.settings.prod_3_img_2 != blank -%}
+                {%- if section.settings.prod_3_img_1 != blank -%}
+                  <div class="v2-ph is-active">
+                    {{ section.settings.prod_3_img_1 | image_url: width: 120 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+                {%- if section.settings.prod_3_img_2 != blank -%}
+                  <div class="v2-ph">
+                    {{ section.settings.prod_3_img_2 | image_url: width: 120 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+              {%- elsif p3_images.size > 0 -%}
+                {%- for image in p3_images limit: 4 -%}
+                  <div class="v2-ph {% if forloop.first %}is-active{% endif %}">
+                    {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: image.alt }}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="v2-ph is-active"></div>
+                <div class="v2-ph v2-ph--green"></div>
+                <div class="v2-ph"></div>
+                <div class="v2-ph v2-ph--warm"></div>
+              {%- endif -%}
+            </div>
+          </div>
+          
+          <div class="v2-detail">
+            <div class="v2-detail-eyebrow">{{ section.settings.prod_3_title | escape }} · Save up to 10%</div>
+            <h3 class="v2-detail-title">{{ section.settings.prod_3_title | escape }}</h3>
+            {%- if section.settings.prod_3_desc_1 != blank -%}
+              <p class="v2-detail-lede">{{ section.settings.prod_3_desc_1 | escape }}</p>
+            {%- endif -%}
+            
+            <div class="v2-buy">
+              <div class="v2-price-container">
+                <span class="v2-price-label">Price</span>
+                <span class="v2-price-amount">
+                  {%- if p3 != blank -%}
+                    {{ p3.price | money }}
+                  {%- else -%}
+                    $56.98
+                  {%- endif -%}
+                </span>
+              </div>
+              
+              <form action="/cart/add" method="post" enctype="multipart/form-data" class="ww-product-form">
+                <input type="hidden" name="id" value="{% if p3 != blank %}{{ p3.selected_or_first_available_variant.id }}{% endif %}">
+                <input type="hidden" name="quantity" value="1" class="ww-qty-input">
+                
+                <div class="v2-buy-row">
+                  <div class="v2-qty">
+                    <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
+                    <span class="v">1</span>
+                    <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
+                  </div>
+                  <button class="v2-add" type="submit" {% if p3 != blank and p3.available == false %}disabled{% endif %}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 8H6"></path>
+                      <circle cx="10" cy="20" r="1.3"></circle>
+                      <circle cx="17" cy="20" r="1.3"></circle>
+                    </svg>
+                    {% if p3 != blank and p3.available == false %}Sold out{% else %}Add to cart{% endif %}
+                  </button>
+                </div>
+              </form>
+              
+              <div class="v2-buy-trust">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                  </svg>
+                  Free shipping
+                </span>
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                  3rd-party tested
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="v2-info">
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">What’s inside</span>
+              <span class="v2-acc-c">2 products</span>
+            </summary>
+            <div class="v2-acc-body">
+              <div class="v2-bundle-items">
+                <div class="v2-bundle-item">
+                  <div class="v2-ph v2-ph--green"></div>
+                  <div>
+                    <h4>Digestive Support</h4>
+                    <p>15 sachets · organic ginger capsules for steady digestion on the go.</p>
+                  </div>
+                </div>
+                <div class="v2-bundle-item">
+                  <div class="v2-ph"></div>
+                  <div>
+                    <h4>Immune Support</h4>
+                    <p>15 sachets · tropical-citrus powder for everyday immune support.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="v2-bundle-save">You save $3.00 vs. buying separately</div>
+            </div>
+          </details>
+          
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Product Information</span>
+              <span class="v2-acc-c">2 steps</span>
+            </summary>
+            <div class="v2-acc-body">
+              <div class="v2-steps">
+                <div class="v2-step">
+                  <div class="v2-step-n">1</div>
+                  <div>
+                    <h4>Morning: Immune</h4>
+                    <p>Mix one Immune sachet into water and sip with breakfast.</p>
+                  </div>
+                </div>
+                <div class="v2-step">
+                  <div class="v2-step-n">2</div>
+                  <div>
+                    <h4>Between meals: Digestive</h4>
+                    <p>Take one Digestive sachet (2 capsules) with water.</p>
+                  </div>
+                </div>
+                <p class="v2-steps-note">Or take your Digestive Support capsules with your Immune Support drink.</p>
+              </div>
+              <p class="v2-detail-lede" style="margin:20px 0 14px"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p>
+              <p class="v2-detail-lede" style="margin:0 0 20px"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p>
+              <div class="v2-sf-panel">
+                <h4 class="v2-sf-h">Supplement Facts Panel</h4>
+                <div class="v2-sf">
+                  <div class="v2-sf-meta"><strong>Digestive Support</strong><br>Serving size: 2 capsules · servings per container: 15</div>
+                  <div class="v2-sf-row v2-sf-row--h"><span>&nbsp;</span><span>Amount per serving</span><span>% DV</span></div>
+                  <div class="v2-sf-row"><span>Organic Ginger Root Extract (Zingiber officinale) (standardized to contain 5% gingerols)</span><span>550 mg</span><span>†</span></div>
+                  <p class="v2-sf-note" style="margin-top:8px">† Daily Value (DV) not established.<br>Other ingredients: Hypromellose (cellulose) capsule, Rice Hulls, Rice Extract Blend.</p>
+                  
+                  <div class="v2-sf-meta" style="margin-top:22px"><strong>Immune Support</strong><br>Serving size: 1 sachet (7 g) · 15 servings</div>
+                  <div class="v2-sf-row v2-sf-row--h"><span>&nbsp;</span><span>Amount per serving</span><span>% DV</span></div>
+                  <div class="v2-sf-row"><span>Vitamin C (ascorbic acid)</span><span>300 mg</span><span>333%</span></div>
+                  <div class="v2-sf-row"><span>Zinc (as zinc citrate)</span><span>16 mg</span><span>145%</span></div>
+                  <div class="v2-sf-row"><span>Niacinamide (vitamin B3)</span><span>25 mg</span><span>156%</span></div>
+                  <div class="v2-sf-row"><span>Thiamine (vitamin B1)</span><span>1 mg</span><span>83%</span></div>
+                  <div class="v2-sf-row"><span>L-Lysine HCl</span><span>96 mg</span><span>†</span></div>
+                  <p class="v2-sf-note">† Daily Value (DV) not established.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <details class="v2-acc">
+            <summary>
+              <span class="v2-acc-plus">+</span>
+              <span class="v2-acc-t">Capsule size</span>
+            </summary>
+            <div class="v2-acc-body">
+              <div class="v2-capsize">
+                <div class="v2-capsize-h">Capsule size, to scale</div>
+                <p class="v2-capsize-sub">We wanted a capsule you don't have to psych yourself up for. So we made ours small enough to swallow without thinking about it. See for yourself.</p>
+                <div class="v2-capsize-rows">
+                  <div class="v2-caprow v2-caprow--ours">
+                    <div class="v2-caplabel v2-caplabel--ours">
+                      {%- if settings.logo_inverse != blank -%}
+                        {{ settings.logo_inverse | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
+                      {%- else -%}
+                        <span>wanderWell</span>
+                      {%- endif -%}
+                      <small>Size 4</small>
+                    </div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:114px;height:42px"></div>
+                      <span class="v2-capdim">14.3 × 5.31 mm</span>
+                    </div>
+                  </div>
+                  <div class="v2-caprow">
+                    <div class="v2-caplabel">Common<small>Size 1</small></div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:155px;height:55px"></div>
+                      <span class="v2-capdim">19.4 × 6.91 mm</span>
+                    </div>
+                  </div>
+                  <div class="v2-caprow">
+                    <div class="v2-caplabel">Common<small>Size 0</small></div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:174px;height:61px"></div>
+                      <span class="v2-capdim">21.7 × 7.64 mm</span>
+                    </div>
+                  </div>
+                  <div class="v2-caprow">
+                    <div class="v2-caplabel">Typical<small>Size 00</small></div>
+                    <div class="v2-capbar">
+                      <div class="v2-cap" style="width:186px;height:68px"></div>
+                      <span class="v2-capdim">23.3 × 8.53 mm</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <div class="v2-info-trust">
+            <div class="v2-info-trust-h">Commitment to Quality</div>
+            <div class="v2-info-trust-grid">
+              <div>
+                <h4>Third-party testing</h4>
+                <p>Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications.</p>
+              </div>
+              <div>
+                <h4>Manufacturing excellence</h4>
+                <p>Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'ww-product.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .products {
+    background-color: var(--offwhite);
+  }
+  .products-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .products-header .section-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .products-header .section-title {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin: 0 0 12px;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .products-header .section-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--charcoal-light);
+    margin: 0 0 20px;
+  }
+  .products-badges {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .product-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--charcoal);
+    background-color: var(--cream);
+    padding: 6px 12px;
+    border-radius: 99px;
+  }
+  .product-badge svg {
+    width: 14px;
+    height: 14px;
+    color: var(--orange);
+  }
+
+  .v2-shop {
+    margin-top: 8px;
+  }
+  .v2-seg {
+    display: flex;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid rgba(44,44,44,.1);
+    border-radius: 999px;
+    padding: 6px;
+    max-width: 640px;
+    margin: 0 auto 40px;
+    box-shadow: 0 1px 4px rgba(28,28,26,.08);
+  }
+  .v2-seg-btn {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 13px 10px;
+    border-radius: 999px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: .82rem;
+    letter-spacing: .02em;
+    color: var(--charcoal);
+    text-transform: uppercase;
+    transition: color .25s;
+    min-height: 46px;
+  }
+  .v2-seg-btn .v2-seg-sub {
+    display: block;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: .62rem;
+    letter-spacing: .06em;
+    opacity: .6;
+    margin-top: 2px;
+    text-transform: none;
+  }
+  .v2-seg-btn.on {
+    color: #fff;
+  }
+  .v2-seg-ind {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    border-radius: 999px;
+    background: var(--orange);
+    z-index: 0;
+    transition: left .35s cubic-bezier(.4,0,.2,1), width .35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 4px 24px rgba(242,101,48,.2);
+  }
+  .v2-seg-wrap {
+    position: relative;
+  }
+
+  .v2-panel {
+    display: none;
+    animation: v2-fade-up .5s cubic-bezier(.22,.61,.36,1);
+  }
+  .v2-panel.on {
+    display: block;
+  }
+  @keyframes v2-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .v2-panel-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    background: #fff;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(28,28,26,.1);
+    border: 1px solid rgba(44,44,44,.06);
+  }
+
+  /* Media side */
+  .v2-media {
+    position: relative;
+  }
+  .v2-media-main {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+  .v2-media-stage {
+    display: flex;
+    width: 100%;
+    aspect-ratio: 4/5;
+    position: relative;
+  }
+  .v2-media-stage .v2-ph {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background-color: var(--cream);
+    overflow: hidden;
+  }
+  .v2-media-stage .v2-ph.is-on {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+  }
+  .v2-media-stage .v2-ph img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .v2-ph--green {
+    background: linear-gradient(135deg, #e3ede3 0%, #c8dcd0 100%) !important;
+  }
+  .v2-ph--warm {
+    background: linear-gradient(135deg, #fbeee7 0%, #f4d4c5 100%) !important;
+  }
+  .v2-media-logo {
+    position: relative;
+    z-index: 2;
+    width: 56%;
+    opacity: .9;
+  }
+  
+  .v2-media-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .v2-media-nav:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.05);
+  }
+  .v2-media-nav svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--charcoal);
+    stroke-width: 2.5;
+    fill: none;
+  }
+  .v2-media-nav--prev {
+    left: 12px;
+  }
+  .v2-media-nav--next {
+    right: 12px;
+  }
+  
+  .v2-media-thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .v2-media-thumbs .v2-ph {
+    width: calc(25% - 6px);
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: var(--cream);
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .v2-media-thumbs .v2-ph.is-active {
+    border-color: var(--orange);
+  }
+  .v2-media-thumbs .v2-ph img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Detail side */
+  .v2-detail-eyebrow {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .v2-detail-title {
+    font-family: var(--font-tertiary);
+    font-weight: 500;
+    font-size: 2.1rem;
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+  }
+  .v2-detail-lede {
+    font-size: .98rem;
+    line-height: 1.6;
+    color: var(--charcoal-light);
+    margin-bottom: 18px;
+    letter-spacing: -.01em;
+  }
+
+  /* Buy box */
+  .v2-buy {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(44,44,44,.12);
+  }
+  .v2-price-container {
+    margin-bottom: 20px;
+  }
+  .v2-price-label {
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 0.05em;
+  }
+  .v2-price-amount {
+    font-family: var(--font-tertiary);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    letter-spacing: -0.02em;
+  }
+
+  .v2-buy-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .v2-qty {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid rgba(44,44,44,.15);
+    border-radius: 999px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .v2-qty button {
+    border: none;
+    background: transparent;
+    width: 44px;
+    height: 52px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--charcoal);
+    line-height: 1;
+  }
+  .v2-qty .v {
+    min-width: 26px;
+    text-align: center;
+    font-weight: 700;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    color: var(--charcoal);
+  }
+  .v2-add {
+    flex: 1;
+    border: none;
+    border-radius: 999px;
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: .95rem;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 52px;
+    transition: background .2s, transform .1s;
+  }
+  .v2-add svg {
+    width: 18px;
+    height: 18px;
+  }
+  .v2-add:hover {
+    background: var(--orange-dark);
+  }
+  .v2-add:active {
+    transform: scale(.98);
+  }
+  .v2-add.is-added {
+    background: #5AB08A !important;
+  }
+  .v2-buy-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 14px;
+    font-family: var(--font-primary);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+  }
+  .v2-buy-trust span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .v2-buy-trust svg {
+    width: 14px;
+    height: 14px;
+    color: var(--orange);
+  }
+
+  /* Info and Accordions */
+  .v2-info {
+    margin-top: 24px;
+  }
+  .v2-acc {
+    border-bottom: 1px solid rgba(44,44,44,.1);
+    padding: 18px 0;
+  }
+  .v2-acc:first-child {
+    border-top: 1px solid rgba(44,44,44,.1);
+  }
+  .v2-acc summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--charcoal);
+  }
+  .v2-acc summary::-webkit-details-marker {
+    display: none;
+  }
+  .v2-acc-plus {
+    font-size: 1.25rem;
+    margin-right: 12px;
+    color: var(--orange);
+    font-weight: 600;
+    transition: transform 0.25s;
+    line-height: 1;
+  }
+  .v2-acc[open] .v2-acc-plus {
+    transform: rotate(45deg);
+  }
+  .v2-acc-t {
+    flex: 1;
+  }
+  .v2-acc-c {
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--charcoal-light);
+    background: var(--cream);
+    padding: 4px 10px;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .v2-acc-body {
+    padding: 16px 12px 8px;
+    animation: v2-fade-in .3s ease-out;
+  }
+  @keyframes v2-fade-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .v2-ing {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(44,44,44,.08);
+  }
+  .v2-ing:last-child {
+    border-bottom: none;
+  }
+  .v2-ing-dot {
+    flex: 0 0 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-top: 5px;
+  }
+  .v2-ing h4 {
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    font-size: .92rem;
+    color: var(--charcoal);
+    margin: 0 0 3px;
+    letter-spacing: -.01em;
+  }
+  .v2-ing p {
+    font-size: .85rem;
+    line-height: 1.5;
+    color: var(--charcoal-light);
+    margin: 0;
+  }
+  .v2-ing .amt {
+    font-family: var(--font-primary);
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: .04em;
+    margin-left: 6px;
+  }
+
+  .v2-sf-panel {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 14px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .v2-sf-h {
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0 0 10px;
+    color: var(--charcoal);
+    border-bottom: 2px solid var(--charcoal);
+    padding-bottom: 6px;
+  }
+  .v2-sf-meta {
+    font-size: 0.8rem;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .v2-sf-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(44,44,44,0.12);
+    font-size: 0.8rem;
+  }
+  .v2-sf-row span:nth-child(1) {
+    flex: 1;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+  .v2-sf-row span:nth-child(2) {
+    width: 90px;
+    text-align: right;
+    font-weight: 600;
+  }
+  .v2-sf-row span:nth-child(3) {
+    width: 60px;
+    text-align: right;
+    font-weight: 600;
+  }
+  .v2-sf-row--h {
+    font-weight: 700;
+    border-bottom: 1.5px solid var(--charcoal);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+  .v2-sf-row--h span {
+    color: var(--charcoal) !important;
+  }
+  .v2-sf-note {
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: var(--charcoal-light);
+    margin: 8px 0 0;
+  }
+
+  .v2-capsize {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .v2-capsize-h {
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .v2-capsize-sub {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--charcoal-light);
+    margin: 0 0 16px;
+  }
+  .v2-capsize-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .v2-caprow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .v2-caplabel {
+    width: 90px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--charcoal-light);
+    line-height: 1.1;
+  }
+  .v2-caplabel small {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+  .v2-caplabel--ours {
+    color: var(--orange);
+  }
+  .v2-capbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+  .v2-cap {
+    background: #c3d9c7;
+    border-radius: 99px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .v2-caprow--ours .v2-cap {
+    background: var(--orange);
+  }
+  .v2-capdim {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--charcoal-light);
+  }
+
+  .v2-info-trust {
+    margin-top: 24px;
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .v2-info-trust-h {
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--charcoal);
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding-bottom: 8px;
+  }
+  .v2-info-trust-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .v2-info-trust-grid h4 {
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin: 0 0 4px;
+    color: var(--charcoal);
+  }
+  .v2-info-trust-grid p {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--charcoal-light);
+    margin: 0;
+  }
+
+  /* Steps and Bundles */
+  .v2-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .v2-step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .v2-step-n {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--orange);
+    font-family: var(--font-tertiary);
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    font-size: .9rem;
+  }
+  .v2-step h4 {
+    font-size: .92rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin: 2px 0 2px;
+  }
+  .v2-step p {
+    font-size: .85rem;
+    line-height: 1.5;
+    color: var(--charcoal-light);
+    margin: 0;
+  }
+  .v2-steps-note {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--charcoal-light);
+    margin: 8px 0 0;
+  }
+
+  .v2-bundle-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .v2-bundle-item {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .v2-bundle-item .v2-ph {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background-color: var(--cream);
+    background-size: cover;
+    background-position: center;
+  }
+  .v2-bundle-item .v2-ph:nth-child(1) {
+    background-color: #c8dcd0;
+  }
+  .v2-bundle-item .v2-ph:nth-child(2) {
+    background-color: #fbeee7;
+  }
+  .v2-bundle-item h4 {
+    font-family: var(--font-tertiary);
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin: 0 0 2px;
+  }
+  .v2-bundle-item p {
+    font-size: .8rem;
+    color: var(--charcoal-light);
+    margin: 0;
+  }
+  .v2-bundle-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange-pale);
+    color: var(--orange-dark);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: .85rem;
+    margin-top: 14px;
+  }
+
+  /* Responsive styles */
+  @media screen and (min-width: 760px) {
+    .products-header .section-title {
+      font-size: 3rem;
+    }
+    .v2-panel-inner {
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 36px;
+      padding: 28px;
+    }
+    .v2-detail-title {
+      font-size: 2.6rem;
+    }
+    .v2-info {
+      margin-top: 36px;
+    }
+    .v2-info-trust-grid {
+      flex-direction: row;
+      gap: 24px;
+    }
+    .v2-info-trust-grid > div {
+      flex: 1;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .v2-detail-title {
+      font-size: 3rem;
+    }
+    .v2-panel-inner {
+      padding: 36px;
+      gap: 48px;
+    }
+  }
+
+  @media screen and (max-width: 759px) {
+    .v2-seg {
+      max-width: 100%;
+    }
+    .v2-seg-btn {
+      font-size: .72rem;
+      padding: 11px 4px;
+    }
+    .v2-buy-row {
+      flex-wrap: wrap;
+    }
+    .v2-add {
+      flex: 1 1 100%;
+      order: 2;
+    }
+    .v2-qty {
+      order: 1;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Products Hub",
+  "tag": "section",
+  "class": "ww-section-products",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Our Products"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Made to travel with you"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Each product comes in individually-sealed sachets.\nDesigned to toss in your bag and take on the go."
+    },
+    {
+      "type": "text",
+      "id": "badge_1_text",
+      "label": "Badge 1 Label",
+      "default": "Plant-based"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_text",
+      "label": "Badge 2 Label",
+      "default": "3rd-party tested"
+    },
+    {
+      "type": "header",
+      "content": "Product 1: Digestive Support"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Select Product"
+    },
+    {
+      "type": "text",
+      "id": "prod_1_title",
+      "label": "Custom Title",
+      "default": "Digestive Support"
+    },
+    {
+      "type": "text",
+      "id": "prod_1_subtitle",
+      "label": "Custom Subtitle",
+      "default": "Capsules · Ginger"
+    },
+    {
+      "type": "textarea",
+      "id": "prod_1_desc_1",
+      "label": "Description Paragraph 1",
+      "default": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Forget the stomach drama."
+    },
+    {
+      "type": "textarea",
+      "id": "prod_1_desc_2",
+      "label": "Description Paragraph 2",
+      "default": "Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere."
+    },
+    {
+      "type": "image_picker",
+      "id": "prod_1_img_1",
+      "label": "Custom Image 1 (Fallback)"
+    },
+    {
+      "type": "image_picker",
+      "id": "prod_1_img_2",
+      "label": "Custom Image 2 (Fallback)"
+    },
+    {
+      "type": "header",
+      "content": "Product 2: Immune Support"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Select Product"
+    },
+    {
+      "type": "text",
+      "id": "prod_2_title",
+      "label": "Custom Title",
+      "default": "Immune Support"
+    },
+    {
+      "type": "text",
+      "id": "prod_2_subtitle",
+      "label": "Custom Subtitle",
+      "default": "Powder · Vitamin C"
+    },
+    {
+      "type": "textarea",
+      "id": "prod_2_desc_1",
+      "label": "Description Paragraph 1",
+      "default": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Your immune system deserves a travel buddy."
+    },
+    {
+      "type": "textarea",
+      "id": "prod_2_desc_2",
+      "label": "Description Paragraph 2",
+      "default": "Vitamin C helps support your immune function wherever you go. One sachet mixes into water."
+    },
+    {
+      "type": "image_picker",
+      "id": "prod_2_img_1",
+      "label": "Custom Image 1 (Fallback)"
+    },
+    {
+      "type": "image_picker",
+      "id": "prod_2_img_2",
+      "label": "Custom Image 2 (Fallback)"
+    },
+    {
+      "type": "header",
+      "content": "Product 3: Travel Duo (Bundle)"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Select Product"
+    },
+    {
+      "type": "text",
+      "id": "prod_3_title",
+      "label": "Custom Title",
+      "default": "The Travel Duo"
+    },
+    {
+      "type": "text",
+      "id": "prod_3_subtitle",
+      "label": "Custom Subtitle",
+      "default": "Both · save up to 10%"
+    },
+    {
+      "type": "textarea",
+      "id": "prod_3_desc_1",
+      "label": "Description Paragraph",
+      "default": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together."
+    },
+    {
+      "type": "image_picker",
+      "id": "prod_3_img_1",
+      "label": "Custom Image 1 (Fallback)"
+    },
+    {
+      "type": "image_picker",
+      "id": "prod_3_img_2",
+      "label": "Custom Image 2 (Fallback)"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "layout_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page", "label": "Page width (max 1200px)" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "page"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Products Hub"
+    }
+  ]
+}
+{% endschema %}

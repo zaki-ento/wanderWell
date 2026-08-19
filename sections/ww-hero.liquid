@@ -9,11 +9,14 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     
     {%- if section.settings.layout_height == 'small' -%}
-      min-height: 400px;
+      min-height: 65vh;
+      min-height: 65svh;
     {%- elsif section.settings.layout_height == 'medium' -%}
-      min-height: 500px;
+      min-height: 80vh;
+      min-height: 80svh;
     {%- else -%}
-      min-height: 650px;
+      min-height: 100vh;
+      min-height: 100svh;
     {%- endif -%}
   }
   
