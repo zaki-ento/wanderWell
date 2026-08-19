@@ -61,7 +61,7 @@
         "supergraphic_image": "shopify://shop_images/2e8cd122-35ea-455b-8f68-7fb4678c14ee.png",
         "show_ticker": true,
         "ticker_label": "Made for",
-        "layout_width": "full",
+        "layout_width": "page",
         "layout_height": "large",
         "padding_top": 40,
         "padding_bottom": 40
