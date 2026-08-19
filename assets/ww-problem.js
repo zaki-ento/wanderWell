@@ -27,8 +27,21 @@
     // Clear any existing stop dots (in case of re-init in editor)
     stopsG.innerHTML = '';
 
-    for(var i = 0; i < n; i++) {
-      fracs.push(0.12 + i * (0.88 - 0.12) / (n - 1));
+    if (n > 1) {
+      for(var i = 0; i < n; i++) {
+        fracs.push(0.12 + i * (0.88 - 0.12) / (n - 1));
+        var d = document.createElementNS(NS, 'circle');
+        d.setAttribute('class', 'ww-route-stop');
+        d.setAttribute('r', 6);
+        d.setAttribute('fill', 'var(--cream)');
+        d.setAttribute('stroke', 'var(--white)');
+        d.setAttribute('stroke-width', 3);
+        d.setAttribute('opacity', '0.3');
+        stopsG.appendChild(d);
+        dots.push(d);
+      }
+    } else if (n === 1) {
+      fracs.push(0.5);
       var d = document.createElementNS(NS, 'circle');
       d.setAttribute('class', 'ww-route-stop');
       d.setAttribute('r', 6);
@@ -70,6 +83,7 @@
       var pt = route.getPointAtLength(Math.max(0.001, p) * L);
       pin.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ') scale(1.15)');
       pin.setAttribute('opacity', p > 0.01 ? 1 : 0);
+      if (n === 0) return;
       if(idx === active) return;
       active = idx;
       lines.forEach(function(l, i) {
