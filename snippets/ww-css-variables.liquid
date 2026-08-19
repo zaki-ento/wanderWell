@@ -80,4 +80,31 @@
   .max-w-breakpoint-lg { max-width: var(--breakpoint-lg); }
   .max-w-breakpoint-xl { max-width: var(--breakpoint-xl); }
   .max-w-breakpoint-2xl { max-width: var(--breakpoint-2xl); }
+
+  /* Brand Typography Base Resets */
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--font-tertiary);
+  }
+
+  body, p, span, div, a, li, input, textarea, button {
+    font-family: var(--font-primary);
+  }
+
+  /* Brand component layout reset to remove default margins and paddings */
+  [class^="ww-"],
+  [class*=" ww-"],
+  [class^="ww-"] h1, [class*=" ww-"] h1,
+  [class^="ww-"] h2, [class*=" ww-"] h2,
+  [class^="ww-"] h3, [class*=" ww-"] h3,
+  [class^="ww-"] h4, [class*=" ww-"] h4,
+  [class^="ww-"] h5, [class*=" ww-"] h5,
+  [class^="ww-"] h6, [class*=" ww-"] h6,
+  [class^="ww-"] p, [class*=" ww-"] p,
+  [class^="ww-"] ul, [class*=" ww-"] ul,
+  [class^="ww-"] ol, [class*=" ww-"] ol,
+  [class^="ww-"] li, [class*=" ww-"] li {
+    margin: 0;
+    padding: 0;
+  }
 {% endstyle %}
