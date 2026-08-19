@@ -14,29 +14,45 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
-        "announcement_BxgCk9": {
+        "announcement_BDDeyE": {
           "type": "_announcement",
+          "name": "t:names.announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "<strong>FREE SHIPPING ON ORDERS OVER $50</strong>",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
             "weight": "",
             "letter_spacing": "normal",
             "case": "none",
-            "text_color": ""
+            "text_color": "#DFDFDF"
+          },
+          "blocks": {}
+        },
+        "announcement_BxgCk9": {
+          "type": "_announcement",
+          "settings": {
+            "text": "<strong>SUBSCRIBE & SAVE 10%</strong>",
+            "link": "",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "text_color": "#E8E0D0"
           },
           "blocks": {}
         }
       },
       "block_order": [
+        "announcement_BDDeyE",
         "announcement_BxgCk9"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
         "speed": 5,
         "section_width": "page-width",
-        "background_color": "{{ settings.color_palette.background }}",
+        "background_color": "#2C2C2C",
         "divider_width": 1,
         "divider_color": "{{ settings.color_palette.color2 }}",
         "padding-block-start": 15,
@@ -108,8 +124,8 @@
         "actions_font_size": "0.875rem",
         "actions_font": "body",
         "actions_text_case": "none",
-        "background_color_top": "{{ settings.color_palette.background }}",
-        "text_color_top": "",
+        "background_color_top": "#E8E0D0",
+        "text_color_top": "#2C2C2C",
         "background_color_bottom": "",
         "text_color_bottom": "",
         "bubble_style": "default",
