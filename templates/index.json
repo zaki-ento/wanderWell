@@ -1,8 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "ww_hero": {
       "type": "ww-hero",
-      "settings": {}
+      "settings": {
+        "badge": "Just Launched — Limited Stock",
+        "heading": "Because your health shouldn't take a vacation.",
+        "subheading": "<p>Transparent ingredients. Thoughtful formulations.<br/>Designed to travel well.</p>",
+        "button_label": "Shop now",
+        "button_link": "",
+        "show_ticker": true,
+        "ticker_label": "Made for"
+      }
     },
     "product_list_fa6P9H": {
       "type": "product-list",
@@ -45,7 +62,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>{{ closest.collection.title }}<\/h3>",
+                "text": "<h3>{{ closest.collection.title }}</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
