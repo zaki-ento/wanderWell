@@ -153,27 +153,15 @@
           "type": "product_tab",
           "settings": {
             "product": "digestive-support",
-            "title": "Digestive Support",
+            "title": "{{ block.settings.product.title }}",
             "subtitle": "Capsules · Ginger",
-            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere."
-          }
-        },
-        "digestive_accordion_1": {
-          "type": "accordion_list",
-          "settings": {
-            "title": "Ingredients"
-          }
-        },
-        "digestive_accordion_2": {
-          "type": "accordion_card",
-          "settings": {
-            "title": "Product Information"
-          }
-        },
-        "digestive_accordion_3": {
-          "type": "accordion_capsule",
-          "settings": {
-            "title": "Capsule size",
+            "description": "",
+            "accordion_1_title": "",
+            "accordion_1_content": "",
+            "accordion_2_title": "",
+            "accordion_2_content": "",
+            "accordion_3_title": "",
+            "accordion_3_content": "",
             "show_capsule_scale": true
           }
         },
@@ -181,64 +169,22 @@
           "type": "product_tab",
           "settings": {
             "product": "immune-support",
-            "title": "Immune Support",
+            "title": "{{ block.settings.product.title }}",
             "subtitle": "Powder · Vitamin C",
-            "description": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Vitamin C helps support your immune function wherever you go. One sachet mixes into water. Lightly flavored with notes of passionfruit, pineapple and citrus."
-          }
-        },
-        "immune_accordion_1": {
-          "type": "accordion_list",
-          "settings": {
-            "title": "Ingredients"
-          }
-        },
-        "immune_accordion_2": {
-          "type": "accordion_card",
-          "settings": {
-            "title": "Product Information"
-          }
-        },
-        "bundle_tab": {
-          "type": "product_tab",
-          "settings": {
-            "product": "the-travel-duo",
-            "title": "The Travel Duo",
-            "subtitle": "Both · save up to 10%",
-            "description": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together."
-          }
-        },
-        "bundle_accordion_1": {
-          "type": "accordion_list",
-          "settings": {
-            "title": "What's inside"
-          }
-        },
-        "bundle_accordion_2": {
-          "type": "accordion_card",
-          "settings": {
-            "title": "Product Information"
-          }
-        },
-        "bundle_accordion_3": {
-          "type": "accordion_capsule",
-          "settings": {
-            "title": "Capsule size",
-            "show_capsule_scale": true
+            "description": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Vitamin C helps support your immune function wherever you go. One sachet mixes into water. Lightly flavored with notes of passionfruit, pineapple and citrus.",
+            "accordion_1_title": "Ingredients",
+            "accordion_1_content": "<div class=\"ww-ing\">\n<div class=\"ww-ing-dot\"></div>\n<div>\n<h4>Vitamin C <span class=\"amt\">300 mg</span>\n</h4>\n<p>300 mg per serving to support immune function.*</p>\n</div>\n</div><div class=\"ww-ing\">\n<div class=\"ww-ing-dot\"></div>\n<div>\n<h4>Zinc <span class=\"amt\">16 mg</span>\n</h4>\n<p>An essential mineral your immune cells need to develop and function properly.*</p>\n</div>\n</div><div class=\"ww-ing\">\n<div class=\"ww-ing-dot\"></div>\n<div>\n<h4>Lysine <span class=\"amt\">96 mg</span>\n</h4>\n<p>An essential amino acid that works alongside other nutrients to support immune function.*</p>\n</div>\n</div><div class=\"ww-ing\">\n<div class=\"ww-ing-dot\"></div>\n<div>\n<h4>Niacinamide (Vitamin B3) <span class=\"amt\">25 mg</span>\n</h4>\n<p>The no-flush form, to avoid the redness and tingling other forms can trigger. Supports the cellular energy your immune cells need to function.*</p>\n</div>\n</div><div class=\"ww-ing\">\n<div class=\"ww-ing-dot\"></div>\n<div>\n<h4>Vitamin B1 <span class=\"amt\">1 mg</span>\n</h4>\n<p>A B vitamin that helps your immune cells form and function.*</p>\n</div>\n</div><div class=\"ww-ing\">\n<div class=\"ww-ing-dot\"></div>\n<div>\n<h4>Rice Extract</h4>\n<p>A rice extract that aids in the manufacturing process and improves powder flow to support consistent dosing in every sachet.</p>\n</div>\n</div>",
+            "accordion_2_title": "Product Information",
+            "accordion_2_content": "<p class=\"ww-detail-lede\" style=\"margin:0 0 14px\"><strong>Directions:</strong> Tear and pour into 8–10 oz of room temperature or cold water. Shake or mix well before use!</p><p class=\"ww-detail-lede\" style=\"margin:0 0 14px\">We proudly use rice extract (natural silica) as a natural flow agent instead of the synthetic alternative. Because of this, some settling is normal.</p><p class=\"ww-detail-lede\" style=\"margin:0 0 14px\"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p><p class=\"ww-detail-lede\" style=\"margin:0 0 20px\"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p><div class=\"ww-sf-panel\">\n<h4 class=\"ww-sf-h\">Supplement Facts Panel</h4>\n<div class=\"ww-sf\">\n<div class=\"ww-sf-meta\">Serving size: 1 sachet (7 g)  ·  Servings per carton: 15</div>\n<div class=\"ww-sf-row ww-sf-row--h\">\n<span> </span><span>Amount per serving</span><span>% DV</span>\n</div>\n<div class=\"ww-sf-row\">\n<span>Vitamin C (ascorbic acid)</span><span>300 mg</span><span>333%</span>\n</div>\n<div class=\"ww-sf-row\">\n<span>Zinc (as zinc citrate)</span><span>16 mg</span><span>145%</span>\n</div>\n<div class=\"ww-sf-row\">\n<span>Niacinamide (vitamin B3)</span><span>25 mg</span><span>156%</span>\n</div>\n<div class=\"ww-sf-row\">\n<span>Thiamine (vitamin B1)</span><span>1 mg</span><span>83%</span>\n</div>\n<div class=\"ww-sf-row\">\n<span>L-Lysine HCl</span><span>96 mg</span><span>**</span>\n</div>\n<p class=\"ww-sf-note\">** Daily Value not established.<br>Other ingredients: natural tropical-citrus flavor, citric acid, monk fruit extract, cane sugar.</p>\n</div>\n</div>",
+            "accordion_3_title": "Capsule size",
+            "accordion_3_content": "dfghjk",
+            "show_capsule_scale": false
           }
         }
       },
       "block_order": [
         "digestive_tab",
-        "digestive_accordion_1",
-        "digestive_accordion_2",
-        "digestive_accordion_3",
-        "immune_tab",
-        "immune_accordion_1",
-        "immune_accordion_2",
-        "bundle_tab",
-        "bundle_accordion_1",
-        "bundle_accordion_2",
-        "bundle_accordion_3"
+        "immune_tab"
       ],
       "settings": {
         "label": "Our Products",
