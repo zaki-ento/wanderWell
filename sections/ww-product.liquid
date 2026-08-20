@@ -100,44 +100,8 @@
         </div>
       </div>
 
-      {%- assign opened_tab = false -%}
-      {%- assign current_prod = blank -%}
-      {%- assign bundle_products = blank -%}
-
       {%- for block in section.blocks -%}
         {%- if block.type == 'product_tab' -%}
-          {%- if opened_tab -%}
-                {%- if section.settings.trust_heading != blank -%}
-                  <div class="ww-info-trust">
-                    <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
-                    <div class="ww-info-trust-grid">
-                      {%- if section.settings.trust_item_1_title != blank or section.settings.trust_item_1_text != blank -%}
-                        <div>
-                          {%- if section.settings.trust_item_1_title != blank -%}
-                            <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
-                          {%- endif -%}
-                          {%- if section.settings.trust_item_1_text != blank -%}
-                            <p>{{ section.settings.trust_item_1_text | escape }}</p>
-                          {%- endif -%}
-                        </div>
-                      {%- endif -%}
-                      {%- if section.settings.trust_item_2_title != blank or section.settings.trust_item_2_text != blank -%}
-                        <div>
-                          {%- if section.settings.trust_item_2_title != blank -%}
-                            <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
-                          {%- endif -%}
-                          {%- if section.settings.trust_item_2_text != blank -%}
-                            <p>{{ section.settings.trust_item_2_text | escape }}</p>
-                          {%- endif -%}
-                        </div>
-                      {%- endif -%}
-                    </div>
-                  </div>
-                {%- endif -%}
-                </div> <!-- Close .ww-info -->
-              </div> <!-- Close .ww-panel -->
-          {%- endif -%}
-
           {%- assign current_prod = block.settings.product -%}
           {%- assign key = 'block-' | append: block.id -%}
           
@@ -153,7 +117,7 @@
           {%- assign subtitle = block.settings.subtitle | default: current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
           {%- assign desc = block.settings.description | default: current_prod.description -%}
 
-          <div class="ww-panel {% if opened_tab == false %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
+          <div class="ww-panel {% if forloop.first %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
             <div class="ww-panel-inner">
               <div class="ww-media">
                 <div class="ww-media-main">
@@ -284,135 +248,142 @@
             </div>
             
             <div class="ww-info">
-          {%- assign opened_tab = true -%}
-        {%- endif -%}
-        
-        {%- if block.type == 'accordion' and current_prod != blank -%}
-          {%- assign acc_title = block.settings.title -%}
-          {%- assign acc_type = block.settings.content_type -%}
-          {%- assign acc_content = "" -%}
-
-          {%- if acc_type == 'custom' -%}
-            {%- assign acc_content = block.settings.content -%}
-          {%- elsif acc_type == 'ingredients' -%}
-            {%- assign acc_content = current_prod.metafields.custom.ingredients.value | default: current_prod.metafields.custom.ingredients -%}
-            {%- if acc_content == blank -%}
-              {%- capture default_ingredients -%}
-                {%- render 'ww-product-ingredients', product: current_prod -%}
-              {%- endcapture -%}
-              {%- assign acc_content = default_ingredients -%}
-            {%- endif -%}
-          {%- elsif acc_type == 'supplement_facts' -%}
-            {%- assign acc_content = current_prod.metafields.custom.product_information.value | default: current_prod.metafields.custom.product_information -%}
-            {%- if acc_content == blank -%}
-              {%- capture default_supplement_facts -%}
-                {%- render 'ww-product-supplement-facts', product: current_prod -%}
-              {%- endcapture -%}
-              {%- assign acc_content = default_supplement_facts -%}
-            {%- endif -%}
-          {%- elsif acc_type == 'capsule_size' -%}
-            {%- assign acc_content = current_prod.metafields.custom.capsule_details.value | default: current_prod.metafields.custom.capsule_details -%}
-            {%- capture default_capsule -%}
-              {%- render 'ww-product-capsule' -%}
-            {%- endcapture -%}
-            {%- if acc_content == blank -%}
-              {%- assign acc_content = default_capsule -%}
-            {%- else -%}
-              {%- assign acc_content = acc_content | append: default_capsule -%}
-            {%- endif -%}
-          {%- endif -%}
-
-          {%- assign show_acc = false -%}
-          {%- if acc_content != blank or bundle_products != blank -%}
-            {%- assign show_acc = true -%}
-          {%- endif -%}
-
-          {%- if show_acc -%}
-            <details class="ww-acc" {{ block.shopify_attributes }}>
-              <summary>
-                <span class="ww-acc-plus">+</span>
-                <span class="ww-acc-t">{{ acc_title | escape }}</span>
-                {%- if acc_type == 'ingredients' and bundle_products != blank -%}
-                  <span class="ww-acc-c">{{ bundle_products.size }} products</span>
-                {%- else -%}
-                  {%- assign title_dc = acc_title | downcase -%}
-                  {%- if title_dc contains 'ingredients' -%}
-                    <span class="ww-acc-c">
-                      {%- if current_prod.handle contains 'digestive' -%}4 items{%- else -%}6 items{%- endif -%}
-                    </span>
+              {%- assign found_our_tab = false -%}
+              {%- for sub_block in section.blocks -%}
+                {%- if sub_block.id == block.id -%}
+                  {%- assign found_our_tab = true -%}
+                {%- elsif sub_block.type == 'product_tab' -%}
+                  {%- if found_our_tab -%}
+                    {%- break -%}
                   {%- endif -%}
                 {%- endif -%}
-              </summary>
-              <div class="ww-acc-body">
-                {%- if acc_type == 'ingredients' and bundle_products != blank -%}
-                  <div class="ww-bundle-items">
-                    {%- for prod_item in bundle_products -%}
-                      {%- assign prod_title = prod_item.title -%}
-                      {%- assign prod_image = prod_item.featured_media -%}
-                      {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
-                      
-                      {%- if prod_item.product != blank -%}
-                        {%- assign parent_product = prod_item.product -%}
-                        {%- assign prod_title = parent_product.title -%}
-                        {%- assign prod_image = prod_item.featured_media | default: parent_product.featured_media -%}
-                        {%- assign prod_subtitle = parent_product.metafields.custom.subtitle.value | default: parent_product.metafields.custom.subtitle -%}
-                      {%- endif -%}
-                      
-                      <div class="ww-bundle-item">
-                        <div class="ww-bundle-thumb">
-                          {%- if prod_image != blank -%}
-                            {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+                
+                {%- if found_our_tab and sub_block.type == 'accordion' -%}
+                  {%- assign acc_title = sub_block.settings.title | default: "Ingredients" -%}
+                  {%- assign acc_type = sub_block.settings.content_type -%}
+                  {%- assign acc_content = "" -%}
+
+                  {%- if acc_type == 'custom' -%}
+                    {%- assign acc_content = sub_block.settings.content -%}
+                  {%- elsif acc_type == 'ingredients' -%}
+                    {%- assign acc_content = current_prod.metafields.custom.ingredients.value | default: current_prod.metafields.custom.ingredients -%}
+                    {%- if acc_content == blank -%}
+                      {%- capture default_ingredients -%}
+                        {%- render 'ww-product-ingredients', product: current_prod -%}
+                      {%- endcapture -%}
+                      {%- assign acc_content = default_ingredients -%}
+                    {%- endif -%}
+                  {%- elsif acc_type == 'supplement_facts' -%}
+                    {%- assign acc_content = current_prod.metafields.custom.product_information.value | default: current_prod.metafields.custom.product_information -%}
+                    {%- if acc_content == blank -%}
+                      {%- capture default_supplement_facts -%}
+                        {%- render 'ww-product-supplement-facts', product: current_prod -%}
+                      {%- endcapture -%}
+                      {%- assign acc_content = default_supplement_facts -%}
+                    {%- endif -%}
+                  {%- elsif acc_type == 'capsule_size' -%}
+                    {%- assign acc_content = current_prod.metafields.custom.capsule_details.value | default: current_prod.metafields.custom.capsule_details -%}
+                    {%- capture default_capsule -%}
+                      {%- render 'ww-product-capsule' -%}
+                    {%- endcapture -%}
+                    {%- if acc_content == blank -%}
+                      {%- assign acc_content = default_capsule -%}
+                    {%- else -%}
+                      {%- assign acc_content = acc_content | append: default_capsule -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- assign show_acc = false -%}
+                  {%- if acc_content != blank or bundle_products != blank -%}
+                    {%- assign show_acc = true -%}
+                  {%- endif -%}
+
+                  {%- if show_acc -%}
+                    <details class="ww-acc" {{ sub_block.shopify_attributes }}>
+                      <summary>
+                        <span class="ww-acc-plus">+</span>
+                        <span class="ww-acc-t">{{ acc_title | escape }}</span>
+                        {%- if acc_type == 'ingredients' and bundle_products != blank -%}
+                          <span class="ww-acc-c">{{ bundle_products.size }} products</span>
+                        {%- else -%}
+                          {%- assign title_dc = acc_title | downcase -%}
+                          {%- if title_dc contains 'ingredients' -%}
+                            <span class="ww-acc-c">
+                              {%- if current_prod.handle contains 'digestive' -%}4 items{%- else -%}6 items{%- endif -%}
+                            </span>
                           {%- endif -%}
-                        </div>
-                        <div>
-                          <h4>{{ prod_title | escape }}</h4>
-                          {%- if prod_subtitle != blank -%}
-                            <p>{{ prod_subtitle | escape }}</p>
-                          {%- endif -%}
-                        </div>
+                        {%- endif -%}
+                      </summary>
+                      <div class="ww-acc-body">
+                        {%- if acc_type == 'ingredients' and bundle_products != blank -%}
+                          <div class="ww-bundle-items">
+                            {%- for prod_item in bundle_products -%}
+                              {%- assign prod_title = prod_item.title -%}
+                              {%- assign prod_image = prod_item.featured_media -%}
+                              {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
+                              
+                              {%- if prod_item.product != blank -%}
+                                {%- assign parent_product = prod_item.product -%}
+                                {%- assign prod_title = parent_product.title -%}
+                                {%- assign prod_image = prod_item.featured_media | default: parent_product.featured_media -%}
+                                {%- assign prod_subtitle = parent_product.metafields.custom.subtitle.value | default: parent_product.metafields.custom.subtitle -%}
+                              {%- endif -%}
+                              
+                              <div class="ww-bundle-item">
+                                <div class="ww-bundle-thumb">
+                                  {%- if prod_image != blank -%}
+                                    {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+                                  {%- endif -%}
+                                </div>
+                                <div>
+                                  <h4>{{ prod_title | escape }}</h4>
+                                  {%- if prod_subtitle != blank -%}
+                                    <p>{{ prod_subtitle | escape }}</p>
+                                  {%- endif -%}
+                                </div>
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        {%- else -%}
+                          {{ acc_content }}
+                        {%- endif -%}
                       </div>
-                    {%- endfor -%}
-                  </div>
-                {%- else -%}
-                  {{ acc_content }}
+                    </details>
+                  {%- endif -%}
                 {%- endif -%}
-              </div>
-            </details>
-          {%- endif -%}
-        {%- endif -%}
-      {%- endfor -%}
+              {%- endfor -%}
 
-      {%- if opened_tab -%}
-            {%- if section.settings.trust_heading != blank -%}
-              <div class="ww-info-trust">
-                <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
-                <div class="ww-info-trust-grid">
-                  {%- if section.settings.trust_item_1_title != blank or section.settings.trust_item_1_text != blank -%}
-                    <div>
-                      {%- if section.settings.trust_item_1_title != blank -%}
-                        <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
-                      {%- endif -%}
-                      {%- if section.settings.trust_item_1_text != blank -%}
-                        <p>{{ section.settings.trust_item_1_text | escape }}</p>
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-                  {%- if section.settings.trust_item_2_title != blank or section.settings.trust_item_2_text != blank -%}
-                    <div>
-                      {%- if section.settings.trust_item_2_title != blank -%}
-                        <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
-                      {%- endif -%}
-                      {%- if section.settings.trust_item_2_text != blank -%}
-                        <p>{{ section.settings.trust_item_2_text | escape }}</p>
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
+              {%- if section.settings.trust_heading != blank -%}
+                <div class="ww-info-trust">
+                  <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
+                  <div class="ww-info-trust-grid">
+                    {%- if section.settings.trust_item_1_title != blank or section.settings.trust_item_1_text != blank -%}
+                      <div>
+                        {%- if section.settings.trust_item_1_title != blank -%}
+                          <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
+                        {%- endif -%}
+                        {%- if section.settings.trust_item_1_text != blank -%}
+                          <p>{{ section.settings.trust_item_1_text | escape }}</p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if section.settings.trust_item_2_title != blank or section.settings.trust_item_2_text != blank -%}
+                      <div>
+                        {%- if section.settings.trust_item_2_title != blank -%}
+                          <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
+                        {%- endif -%}
+                        {%- if section.settings.trust_item_2_text != blank -%}
+                          <p>{{ section.settings.trust_item_2_text | escape }}</p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
                 </div>
-              </div>
-            {%- endif -%}
+              {%- endif -%}
             </div> <!-- Close .ww-info -->
           </div> <!-- Close .ww-panel -->
-      {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
