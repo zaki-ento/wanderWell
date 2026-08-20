@@ -141,7 +141,7 @@
           {%- assign bundle_products = current_prod.metafields.shopify--bundle.component_reference.value -%}
         {%- endif -%}
 
-        {{  current_prod }}
+        {{  current_prod.metafields.custom.is_bundle.value }}
         
         <div class="ww-panel {% if forloop.first %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
           <div class="ww-panel-inner">
