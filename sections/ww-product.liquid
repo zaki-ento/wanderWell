@@ -266,12 +266,43 @@
                   {%- if acc_type == 'custom' -%}
                     {%- assign acc_content = sub_block.settings.content -%}
                   {%- elsif acc_type == 'ingredients' -%}
-                    {%- assign acc_content = current_prod.metafields.custom.ingredients.value | default: current_prod.metafields.custom.ingredients -%}
-                    {%- if acc_content == blank -%}
-                      {%- capture default_ingredients -%}
-                        {%- render 'ww-product-ingredients', product: current_prod -%}
-                      {%- endcapture -%}
-                      {%- assign acc_content = default_ingredients -%}
+                    {%- assign custom_ingredients_html = "" -%}
+                    {%- assign found_accordion = false -%}
+                    {%- for inner_block in section.blocks -%}
+                      {%- if inner_block.id == sub_block.id -%}
+                        {%- assign found_accordion = true -%}
+                      {%- elsif inner_block.type == 'accordion' or inner_block.type == 'product_tab' -%}
+                        {%- if found_accordion -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endif -%}
+                      
+                      {%- if found_accordion and inner_block.type == 'ingredient_item' -%}
+                        {%- capture item_html -%}
+                          <div class="ww-ing" {{ inner_block.shopify_attributes }}>
+                            <div class="ww-ing-dot"></div>
+                            <div>
+                              <h4>{{ inner_block.settings.title | escape }}{% if inner_block.settings.amount != blank %} <span class="amt">{{ inner_block.settings.amount | escape }}</span>{% endif %}</h4>
+                              {%- if inner_block.settings.description != blank -%}
+                                <p>{{ inner_block.settings.description | escape }}</p>
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        {%- endcapture -%}
+                        {%- assign custom_ingredients_html = custom_ingredients_html | append: item_html -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+
+                    {%- if custom_ingredients_html != blank -%}
+                      {%- assign acc_content = custom_ingredients_html -%}
+                    {%- else -%}
+                      {%- assign acc_content = current_prod.metafields.custom.ingredients.value | default: current_prod.metafields.custom.ingredients -%}
+                      {%- if acc_content == blank -%}
+                        {%- capture default_ingredients -%}
+                          {%- render 'ww-product-ingredients', product: current_prod -%}
+                        {%- endcapture -%}
+                        {%- assign acc_content = default_ingredients -%}
+                      {%- endif -%}
                     {%- endif -%}
                   {%- elsif acc_type == 'supplement_facts' -%}
                     {%- assign acc_content = current_prod.metafields.custom.product_information.value | default: current_prod.metafields.custom.product_information -%}
@@ -1373,6 +1404,30 @@
           "type": "html",
           "id": "content",
           "label": "Custom Content HTML"
+        }
+      ]
+    },
+    {
+      "type": "ingredient_item",
+      "name": "Ingredient Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ingredient Name",
+          "default": "Organic Ginger Root Extract"
+        },
+        {
+          "type": "text",
+          "id": "amount",
+          "label": "Amount / Serving",
+          "default": "550 mg"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
         }
       ]
     }
