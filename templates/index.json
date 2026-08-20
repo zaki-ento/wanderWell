@@ -191,7 +191,7 @@
           "settings": {
             "product": "the-travel-duo",
             "title": "{{ block.settings.product.title }}",
-            "subtitle": "Both · save up to 10%",
+            "subtitle": "{{ block.settings.product.metafields.custom.subtitle.value }}",
             "description": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together.",
             "fallback_color_theme": "warm",
             "accordion_1_title": "What's inside",
