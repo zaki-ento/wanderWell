@@ -145,83 +145,11 @@
       updateQty(1);
     });
   }
-  
-  // AJAX Add To Cart Submission
-  function initAddToCart() {
-    document.addEventListener('submit', function(e) {
-      if (e.target && e.target.classList.contains('ww-product-form')) {
-        e.preventDefault();
-        
-        var form = e.target;
-        var btn = form.querySelector('.ww-add');
-        if (!btn || btn.disabled) return;
-        
-        var fd = new FormData(form);
-        var variantId = fd.get('id');
-        var quantity = fd.get('quantity');
-        
-        if (!variantId) {
-          console.warn('[WanderWell Products] No variant selected.');
-          return;
-        }
-        
-        btn.disabled = true;
-        
-        // Add to Shopify cart
-        fetch('/cart/add.js', {
-          method: 'POST',
-          body: fd
-        })
-        .then(function(res) {
-          if (!res.ok) {
-            throw new Error('Network response error');
-          }
-          return res.json();
-        })
-        .then(function(item) {
-          btn.disabled = false;
-          
-          // Flash "Added!" text state
-          var origHTML = btn.innerHTML;
-          btn.classList.add('is-added');
-          btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Added!';
-          setTimeout(function() {
-            btn.classList.remove('is-added');
-            btn.innerHTML = origHTML;
-          }, 1800);
-          
-          // Dispatch native cart refresh event
-          document.dispatchEvent(new CustomEvent('shopify:cart:lines-update', {
-            bubbles: true,
-            detail: {
-              action: 'add',
-              lines: [{
-                merchandiseId: variantId.toString(),
-                quantity: parseInt(quantity, 10)
-              }]
-            }
-          }));
-          
-          // Open the native side drawer cart
-          var drawer = document.querySelector('theme-drawer#cart-drawer');
-          if (drawer && typeof drawer.open === 'function') {
-            drawer.open();
-          }
-        })
-        .catch(function(err) {
-          btn.disabled = false;
-          console.error('[WanderWell Products] Add to cart failed:', err);
-        });
-      }
-    });
-  }
-  
   function boot() {
     initTabs();
     initGallery();
     initAccordions();
     initQuantity();
-    initAddToCart();
   }
   
   if (document.readyState === 'loading') {
