@@ -149,14 +149,6 @@
     "ww_product": {
       "type": "ww-product",
       "blocks": {
-        "ingredient_item_gqCbeD": {
-          "type": "ingredient_item",
-          "settings": {
-            "title": "Organic Ginger Root Extract",
-            "amount": "550 mg",
-            "description": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
-          }
-        },
         "digestive_tab": {
           "type": "product_tab",
           "settings": {
@@ -174,11 +166,19 @@
             "content": ""
           }
         },
-        "ingredient_item_JkNVge": {
+        "ingredient_item_gqCbeD": {
           "type": "ingredient_item",
           "settings": {
             "title": "Organic Ginger Root Extract",
             "amount": "550 mg",
+            "description": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
+          }
+        },
+        "ingredient_item_JkNVge": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Organic Ginger Root Extract 2",
+            "amount": "",
             "description": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
           }
         },
@@ -225,9 +225,9 @@
         }
       },
       "block_order": [
-        "ingredient_item_gqCbeD",
         "digestive_tab",
         "digestive_accordion_1",
+        "ingredient_item_gqCbeD",
         "ingredient_item_JkNVge",
         "digestive_accordion_2",
         "digestive_accordion_3",
