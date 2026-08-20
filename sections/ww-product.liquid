@@ -108,8 +108,7 @@
         {%- if block.type == 'product_tab' -%}
           {%- if opened_tab -%}
                 </div> <!-- Close .ww-info -->
-              </div> <!-- Close .ww-panel-inner -->
-            </div> <!-- Close .ww-panel -->
+              </div> <!-- Close .ww-panel -->
           {%- endif -%}
 
           {%- assign current_prod = block.settings.product -%}
@@ -259,7 +258,9 @@
             
             <div class="ww-info">
           {%- assign opened_tab = true -%}
-        {%- endif -%}        {%- if block.type == 'accordion' and current_prod != blank -%}
+        {%- endif -%}
+        
+        {%- if block.type == 'accordion' and current_prod != blank -%}
           {%- assign acc_title = block.settings.title -%}
           {%- assign acc_type = block.settings.content_type -%}
           {%- assign acc_content = "" -%}
@@ -356,8 +357,7 @@
 
       {%- if opened_tab -%}
             </div> <!-- Close .ww-info -->
-          </div> <!-- Close .ww-panel-inner -->
-        </div> <!-- Close .ww-panel -->
+          </div> <!-- Close .ww-panel -->
       {%- endif -%}
     </div>
   </div>
