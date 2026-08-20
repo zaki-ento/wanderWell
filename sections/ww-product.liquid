@@ -137,6 +137,9 @@
         {%- endif -%}
         
         {%- assign bundle_products = current_prod.metafields.custom.bundle_products.value -%}
+        {%- if bundle_products == blank -%}
+          {%- assign bundle_products = current_prod.metafields.shopify--bundle.component_reference.value -%}
+        {%- endif -%}
         
         <div class="ww-panel {% if forloop.first %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
           <div class="ww-panel-inner">
@@ -293,16 +296,27 @@
                   {%- if bundle_products != blank -%}
                     <div class="ww-bundle-items">
                       {%- for prod_item in bundle_products -%}
+                        {%- assign prod_title = prod_item.title -%}
+                        {%- assign prod_image = prod_item.featured_media -%}
+                        {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
+                        
+                        {%- if prod_item.product != blank -%}
+                          {%- assign parent_product = prod_item.product -%}
+                          {%- assign prod_title = parent_product.title -%}
+                          {%- assign prod_image = prod_item.featured_media | default: parent_product.featured_media -%}
+                          {%- assign prod_subtitle = parent_product.metafields.custom.subtitle.value | default: parent_product.metafields.custom.subtitle -%}
+                        {%- endif -%}
+                        
                         <div class="ww-bundle-item">
                           <div class="ww-bundle-thumb">
-                            {%- if prod_item.featured_media != blank -%}
-                              {{ prod_item.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_item.featured_media.alt }}
+                            {%- if prod_image != blank -%}
+                              {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
                             {%- endif -%}
                           </div>
                           <div>
-                            <h4>{{ prod_item.title | escape }}</h4>
-                            {%- if prod_item.metafields.custom.subtitle != blank -%}
-                              <p>{{ prod_item.metafields.custom.subtitle | escape }}</p>
+                            <h4>{{ prod_title | escape }}</h4>
+                            {%- if prod_subtitle != blank -%}
+                              <p>{{ prod_subtitle | escape }}</p>
                             {%- endif -%}
                           </div>
                         </div>
