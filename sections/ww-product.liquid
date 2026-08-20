@@ -107,6 +107,33 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'product_tab' -%}
           {%- if opened_tab -%}
+                {%- if section.settings.trust_heading != blank -%}
+                  <div class="ww-info-trust">
+                    <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
+                    <div class="ww-info-trust-grid">
+                      {%- if section.settings.trust_item_1_title != blank or section.settings.trust_item_1_text != blank -%}
+                        <div>
+                          {%- if section.settings.trust_item_1_title != blank -%}
+                            <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
+                          {%- endif -%}
+                          {%- if section.settings.trust_item_1_text != blank -%}
+                            <p>{{ section.settings.trust_item_1_text | escape }}</p>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                      {%- if section.settings.trust_item_2_title != blank or section.settings.trust_item_2_text != blank -%}
+                        <div>
+                          {%- if section.settings.trust_item_2_title != blank -%}
+                            <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
+                          {%- endif -%}
+                          {%- if section.settings.trust_item_2_text != blank -%}
+                            <p>{{ section.settings.trust_item_2_text | escape }}</p>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endif -%}
                 </div> <!-- Close .ww-info -->
               </div> <!-- Close .ww-panel -->
           {%- endif -%}
@@ -356,6 +383,33 @@
       {%- endfor -%}
 
       {%- if opened_tab -%}
+            {%- if section.settings.trust_heading != blank -%}
+              <div class="ww-info-trust">
+                <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
+                <div class="ww-info-trust-grid">
+                  {%- if section.settings.trust_item_1_title != blank or section.settings.trust_item_1_text != blank -%}
+                    <div>
+                      {%- if section.settings.trust_item_1_title != blank -%}
+                        <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
+                      {%- endif -%}
+                      {%- if section.settings.trust_item_1_text != blank -%}
+                        <p>{{ section.settings.trust_item_1_text | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if section.settings.trust_item_2_title != blank or section.settings.trust_item_2_text != blank -%}
+                    <div>
+                      {%- if section.settings.trust_item_2_title != blank -%}
+                        <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
+                      {%- endif -%}
+                      {%- if section.settings.trust_item_2_text != blank -%}
+                        <p>{{ section.settings.trust_item_2_text | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
             </div> <!-- Close .ww-info -->
           </div> <!-- Close .ww-panel -->
       {%- endif -%}
