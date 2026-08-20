@@ -259,13 +259,14 @@
             
             <div class="ww-info">
           {%- assign opened_tab = true -%}
-        {%- endif -%}
+        {%- endif -%}        {%- if block.type == 'accordion' and current_prod != blank -%}
+          {%- assign acc_title = block.settings.title -%}
+          {%- assign acc_type = block.settings.content_type -%}
+          {%- assign acc_content = "" -%}
 
-        {%- if block.type == 'accordion_list' and current_prod != blank -%}
-          {%- assign acc_title = block.settings.title | default: "Ingredients" -%}
-          {%- assign acc_content = block.settings.content -%}
-          
-          {%- if acc_content == blank -%}
+          {%- if acc_type == 'custom' -%}
+            {%- assign acc_content = block.settings.content -%}
+          {%- elsif acc_type == 'ingredients' -%}
             {%- assign acc_content = current_prod.metafields.custom.ingredients.value | default: current_prod.metafields.custom.ingredients -%}
             {%- if acc_content == blank -%}
               {%- capture default_ingredients -%}
@@ -273,19 +274,37 @@
               {%- endcapture -%}
               {%- assign acc_content = default_ingredients -%}
             {%- endif -%}
+          {%- elsif acc_type == 'supplement_facts' -%}
+            {%- assign acc_content = current_prod.metafields.custom.product_information.value | default: current_prod.metafields.custom.product_information -%}
+            {%- if acc_content == blank -%}
+              {%- capture default_supplement_facts -%}
+                {%- render 'ww-product-supplement-facts', product: current_prod -%}
+              {%- endcapture -%}
+              {%- assign acc_content = default_supplement_facts -%}
+            {%- endif -%}
+          {%- elsif acc_type == 'capsule_size' -%}
+            {%- assign acc_content = current_prod.metafields.custom.capsule_details.value | default: current_prod.metafields.custom.capsule_details -%}
+            {%- capture default_capsule -%}
+              {%- render 'ww-product-capsule' -%}
+            {%- endcapture -%}
+            {%- if acc_content == blank -%}
+              {%- assign acc_content = default_capsule -%}
+            {%- else -%}
+              {%- assign acc_content = acc_content | append: default_capsule -%}
+            {%- endif -%}
           {%- endif -%}
-          
+
           {%- assign show_acc = false -%}
           {%- if acc_content != blank or bundle_products != blank -%}
             {%- assign show_acc = true -%}
           {%- endif -%}
-          
+
           {%- if show_acc -%}
             <details class="ww-acc" {{ block.shopify_attributes }}>
               <summary>
                 <span class="ww-acc-plus">+</span>
                 <span class="ww-acc-t">{{ acc_title | escape }}</span>
-                {%- if bundle_products != blank -%}
+                {%- if acc_type == 'ingredients' and bundle_products != blank -%}
                   <span class="ww-acc-c">{{ bundle_products.size }} products</span>
                 {%- else -%}
                   {%- assign title_dc = acc_title | downcase -%}
@@ -297,7 +316,7 @@
                 {%- endif -%}
               </summary>
               <div class="ww-acc-body">
-                {%- if bundle_products != blank -%}
+                {%- if acc_type == 'ingredients' and bundle_products != blank -%}
                   <div class="ww-bundle-items">
                     {%- for prod_item in bundle_products -%}
                       {%- assign prod_title = prod_item.title -%}
@@ -326,59 +345,6 @@
                       </div>
                     {%- endfor -%}
                   </div>
-                {%- else -%}
-                  {{ acc_content }}
-                {%- endif -%}
-              </div>
-            </details>
-          {%- endif -%}
-        {%- endif -%}
-
-        {%- if block.type == 'accordion_card' and current_prod != blank -%}
-          {%- assign acc_title = block.settings.title | default: "Product Information" -%}
-          {%- assign acc_content = block.settings.content -%}
-          
-          {%- if acc_content == blank -%}
-            {%- assign acc_content = current_prod.metafields.custom.product_information.value | default: current_prod.metafields.custom.product_information -%}
-            {%- if acc_content == blank -%}
-              {%- capture default_supplement_facts -%}
-                {%- render 'ww-product-supplement-facts', product: current_prod -%}
-              {%- endcapture -%}
-              {%- assign acc_content = default_supplement_facts -%}
-            {%- endif -%}
-          {%- endif -%}
-          
-          {%- if acc_content != blank -%}
-            <details class="ww-acc" {{ block.shopify_attributes }}>
-              <summary>
-                <span class="ww-acc-plus">+</span>
-                <span class="ww-acc-t">{{ acc_title | escape }}</span>
-              </summary>
-              <div class="ww-acc-body">
-                {{ acc_content }}
-              </div>
-            </details>
-          {%- endif -%}
-        {%- endif -%}
-
-        {%- if block.type == 'accordion_capsule' and current_prod != blank -%}
-          {%- assign acc_title = block.settings.title | default: "Capsule size" -%}
-          {%- assign acc_content = block.settings.content | default: current_prod.metafields.custom.capsule_details.value | default: current_prod.metafields.custom.capsule_details -%}
-          
-          {%- assign show_acc = false -%}
-          {%- if acc_content != blank or block.settings.show_capsule_scale -%}
-            {%- assign show_acc = true -%}
-          {%- endif -%}
-          
-          {%- if show_acc -%}
-            <details class="ww-acc" {{ block.shopify_attributes }}>
-              <summary>
-                <span class="ww-acc-plus">+</span>
-                <span class="ww-acc-t">{{ acc_title | escape }}</span>
-              </summary>
-              <div class="ww-acc-body">
-                {%- if block.settings.show_capsule_scale -%}
-                  {%- render 'ww-product-capsule' -%}
                 {%- else -%}
                   {{ acc_content }}
                 {%- endif -%}
@@ -1357,8 +1323,8 @@
       ]
     },
     {
-      "type": "accordion_list",
-      "name": "Accordion (List / Ingredients)",
+      "type": "accordion",
+      "name": "Accordion Row",
       "settings": [
         {
           "type": "text",
@@ -1367,49 +1333,21 @@
           "default": "Ingredients"
         },
         {
-          "type": "html",
-          "id": "content",
-          "label": "Custom Content HTML"
-        }
-      ]
-    },
-    {
-      "type": "accordion_card",
-      "name": "Accordion (Card / Info)",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Product Information"
+          "type": "select",
+          "id": "content_type",
+          "label": "Content Source",
+          "options": [
+            { "value": "ingredients", "label": "Ingredients list (Default Template)" },
+            { "value": "supplement_facts", "label": "Product Information / Facts (Default Template)" },
+            { "value": "capsule_size", "label": "Capsule Size Scale Graphic" },
+            { "value": "custom", "label": "Custom HTML Override" }
+          ],
+          "default": "ingredients"
         },
         {
           "type": "html",
           "id": "content",
           "label": "Custom Content HTML"
-        }
-      ]
-    },
-    {
-      "type": "accordion_capsule",
-      "name": "Accordion (Capsule size)",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Capsule size"
-        },
-        {
-          "type": "html",
-          "id": "content",
-          "label": "Custom Content HTML"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_capsule_scale",
-          "label": "Show Capsule Size Graphic",
-          "default": true
         }
       ]
     }
@@ -1427,22 +1365,24 @@
           }
         },
         {
-          "type": "accordion_list",
+          "type": "accordion",
           "settings": {
-            "title": "Ingredients"
+            "title": "Ingredients",
+            "content_type": "ingredients"
           }
         },
         {
-          "type": "accordion_card",
+          "type": "accordion",
           "settings": {
-            "title": "Product Information"
+            "title": "Product Information",
+            "content_type": "supplement_facts"
           }
         },
         {
-          "type": "accordion_capsule",
+          "type": "accordion",
           "settings": {
             "title": "Capsule size",
-            "show_capsule_scale": true
+            "content_type": "capsule_size"
           }
         },
         {
@@ -1454,15 +1394,17 @@
           }
         },
         {
-          "type": "accordion_list",
+          "type": "accordion",
           "settings": {
-            "title": "Ingredients"
+            "title": "Ingredients",
+            "content_type": "ingredients"
           }
         },
         {
-          "type": "accordion_card",
+          "type": "accordion",
           "settings": {
-            "title": "Product Information"
+            "title": "Product Information",
+            "content_type": "supplement_facts"
           }
         },
         {
@@ -1474,22 +1416,24 @@
           }
         },
         {
-          "type": "accordion_list",
+          "type": "accordion",
           "settings": {
-            "title": "What's inside"
+            "title": "What's inside",
+            "content_type": "ingredients"
           }
         },
         {
-          "type": "accordion_card",
+          "type": "accordion",
           "settings": {
-            "title": "Product Information"
+            "title": "Product Information",
+            "content_type": "supplement_facts"
           }
         },
         {
-          "type": "accordion_capsule",
+          "type": "accordion",
           "settings": {
             "title": "Capsule size",
-            "show_capsule_scale": true
+            "content_type": "capsule_size"
           }
         }
       ]
