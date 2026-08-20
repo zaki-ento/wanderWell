@@ -149,6 +149,22 @@
     "ww_product": {
       "type": "ww-product",
       "blocks": {
+        "product_tab_E8ncHC": {
+          "type": "product_tab",
+          "settings": {
+            "product": "",
+            "title": "Digestive Support",
+            "subtitle": "Capsules · Ginger",
+            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere.",
+            "accordion_1_title": "Ingredients",
+            "accordion_1_content": "",
+            "accordion_2_title": "Product Information",
+            "accordion_2_content": "",
+            "accordion_3_title": "Capsule size",
+            "accordion_3_content": "",
+            "show_capsule_scale": false
+          }
+        },
         "digestive_tab": {
           "type": "product_tab",
           "settings": {
@@ -161,7 +177,7 @@
             "accordion_2_title": "Product Information",
             "accordion_2_content": "<p class=\"ww-detail-lede\" style=\"margin:0 0 14px\"><strong>Directions:</strong> As a dietary supplement, take 2 capsules between meals.</p><p class=\"ww-detail-lede\" style=\"margin:0 0 14px\"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p><p class=\"ww-detail-lede\" style=\"margin:0 0 20px\"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p><div class=\"ww-sf-panel\">\n<h4 class=\"ww-sf-h\">Supplement Facts Panel</h4>\n<div class=\"ww-sf\">\n<div class=\"ww-sf-meta\">Serving size: 2 capsules  ·  Servings per container: 15</div>\n<div class=\"ww-sf-row ww-sf-row--h\">\n<span> </span><span>Amount per serving</span><span>% DV</span>\n</div>\n<div class=\"ww-sf-row\">\n<span>Organic Ginger Root Extract (Zingiber officinale) (standardized to contain 5% gingerols)</span><span>550 mg</span><span>†</span>\n</div>\n<p class=\"ww-sf-note\">† Daily Value (DV) not established.<br>Other ingredients: Hypromellose (cellulose) capsule, Rice Hulls, Rice Extract Blend.</p>\n</div>\n</div>",
             "accordion_3_title": "Capsule size",
-            "accordion_3_content": "",
+            "accordion_3_content": "fdgfhgjhg",
             "show_capsule_scale": true
           }
         },
@@ -199,6 +215,7 @@
         }
       },
       "block_order": [
+        "product_tab_E8ncHC",
         "digestive_tab",
         "immune_tab",
         "bundle_tab"
