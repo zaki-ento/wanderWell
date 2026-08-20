@@ -149,6 +149,14 @@
     "ww_product": {
       "type": "ww-product",
       "blocks": {
+        "ingredient_item_gqCbeD": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Organic Ginger Root Extract",
+            "amount": "550 mg",
+            "description": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
+          }
+        },
         "digestive_tab": {
           "type": "product_tab",
           "settings": {
@@ -162,21 +170,32 @@
           "type": "accordion",
           "settings": {
             "title": "Ingredients",
-            "content_type": "ingredients"
+            "content_type": "ingredients",
+            "content": ""
+          }
+        },
+        "ingredient_item_JkNVge": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Organic Ginger Root Extract",
+            "amount": "550 mg",
+            "description": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
           }
         },
         "digestive_accordion_2": {
           "type": "accordion",
           "settings": {
             "title": "Product Information",
-            "content_type": "supplement_facts"
+            "content_type": "supplement_facts",
+            "content": ""
           }
         },
         "digestive_accordion_3": {
           "type": "accordion",
           "settings": {
             "title": "Capsule size",
-            "content_type": "capsule_size"
+            "content_type": "capsule_size",
+            "content": ""
           }
         },
         "immune_tab": {
@@ -192,59 +211,29 @@
           "type": "accordion",
           "settings": {
             "title": "Ingredients",
-            "content_type": "ingredients"
+            "content_type": "ingredients",
+            "content": ""
           }
         },
         "immune_accordion_2": {
           "type": "accordion",
           "settings": {
             "title": "Product Information",
-            "content_type": "supplement_facts"
-          }
-        },
-        "bundle_tab": {
-          "type": "product_tab",
-          "settings": {
-            "product": "the-travel-duo",
-            "title": "The Travel Duo",
-            "subtitle": "Both · save up to 10%",
-            "description": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together."
-          }
-        },
-        "bundle_accordion_1": {
-          "type": "accordion",
-          "settings": {
-            "title": "What's inside",
-            "content_type": "ingredients"
-          }
-        },
-        "bundle_accordion_2": {
-          "type": "accordion",
-          "settings": {
-            "title": "Product Information",
-            "content_type": "supplement_facts"
-          }
-        },
-        "bundle_accordion_3": {
-          "type": "accordion",
-          "settings": {
-            "title": "Capsule size",
-            "content_type": "capsule_size"
+            "content_type": "supplement_facts",
+            "content": ""
           }
         }
       },
       "block_order": [
+        "ingredient_item_gqCbeD",
         "digestive_tab",
         "digestive_accordion_1",
+        "ingredient_item_JkNVge",
         "digestive_accordion_2",
         "digestive_accordion_3",
         "immune_tab",
         "immune_accordion_1",
-        "immune_accordion_2",
-        "bundle_tab",
-        "bundle_accordion_1",
-        "bundle_accordion_2",
-        "bundle_accordion_3"
+        "immune_accordion_2"
       ],
       "settings": {
         "label": "Our Products",
