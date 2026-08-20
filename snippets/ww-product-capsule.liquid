@@ -1,0 +1,50 @@
+{% comment %}
+  Snippet: WW Product Capsule Size-Scale Visual
+  Renders capsule dimensions comparison visualization chart.
+{% endcomment %}
+
+<div class="ww-capsize">
+  <div class="ww-capsize-h">Capsule size, to scale</div>
+  <p class="ww-capsize-sub">We wanted a capsule you don't have to psych yourself up for. So we made ours small enough to swallow without thinking about it. See for yourself.</p>
+  
+  <div class="ww-capsize-rows">
+    <div class="ww-caprow ww-caprow--ours">
+      <div class="ww-caplabel ww-caplabel--ours">
+        {%- if settings.logo_inverse != blank -%}
+          {{ settings.logo_inverse | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
+        {%- else -%}
+          <span>wanderWell</span>
+        {%- endif -%}
+        <small>Size 4</small>
+      </div>
+      <div class="ww-capbar">
+        <div class="ww-cap" style="width:114px;height:42px"></div>
+        <span class="ww-capdim">14.3 × 5.31 mm</span>
+      </div>
+    </div>
+    
+    <div class="ww-caprow">
+      <div class="ww-caplabel">Common<small>Size 1</small></div>
+      <div class="ww-capbar">
+        <div class="ww-cap" style="width:155px;height:55px"></div>
+        <span class="ww-capdim">19.4 × 6.91 mm</span>
+      </div>
+    </div>
+    
+    <div class="ww-caprow">
+      <div class="ww-caplabel">Common<small>Size 0</small></div>
+      <div class="ww-capbar">
+        <div class="ww-cap" style="width:174px;height:61px"></div>
+        <span class="ww-capdim">21.7 × 7.64 mm</span>
+      </div>
+    </div>
+    
+    <div class="ww-caprow">
+      <div class="ww-caplabel">Typical<small>Size 00</small></div>
+      <div class="ww-capbar">
+        <div class="ww-cap" style="width:186px;height:68px"></div>
+        <span class="ww-capdim">23.3 × 8.53 mm</span>
+      </div>
+    </div>
+  </div>
+</div>
