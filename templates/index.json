@@ -149,6 +149,14 @@
     "ww_product": {
       "type": "ww-product",
       "blocks": {
+        "ingredient_item_rxNqV9": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Organic Ginger Root Extract terst",
+            "amount": "550 mg",
+            "description": "Standardized to contain 5% gingerols to deliver a consistent amount in every serving."
+          }
+        },
         "digestive_tab": {
           "type": "product_tab",
           "settings": {
@@ -225,6 +233,7 @@
         }
       },
       "block_order": [
+        "ingredient_item_rxNqV9",
         "digestive_tab",
         "digestive_accordion_1",
         "ingredient_item_gqCbeD",
