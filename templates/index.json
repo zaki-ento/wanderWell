@@ -156,7 +156,7 @@
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Capsules · Ginger",
             "description": "",
-            "accordion_1_title": "",
+            "accordion_1_title": "Ingredients",
             "accordion_1_content": "",
             "accordion_2_title": "",
             "accordion_2_content": "",
