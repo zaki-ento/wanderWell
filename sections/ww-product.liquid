@@ -141,19 +141,16 @@
           {%- assign bundle_products = current_prod.metafields.shopify--bundle.component_reference.value -%}
         {%- endif -%}
 
-        {%- if current_prod and current_prod.selected_or_first_available_variant and current_prod.selected_or_first_available_variant.requiresComponents -%}
-        <p>This is a bundle product.</p>
-          {%- endif -%}
-
-        {%- assign is_bundle = current_prod.selected_or_first_available_variant.requiresComponents -%}
+        <div class="ww-panel {% if forloop.first %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
+          
+           {%- assign is_bundle = current_prod.selected_or_first_available_variant.requiresComponents -%}
 
           {%- if is_bundle -%}
             <p>This is a bundle product.</p>
           {%- else -%}
             <p>This is a regular product.</p>
           {%- endif -%}
-        
-        <div class="ww-panel {% if forloop.first %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
+
           <div class="ww-panel-inner">
             <div class="ww-media">
               <div class="ww-media-main">
