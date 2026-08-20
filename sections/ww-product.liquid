@@ -141,6 +141,10 @@
           {%- assign bundle_products = current_prod.metafields.shopify--bundle.component_reference.value -%}
         {%- endif -%}
 
+        {%- if current_prod and current_prod.selected_or_first_available_variant and current_prod.selected_or_first_available_variant.requiresComponents -%}
+        <p>This is a bundle product.</p>
+          {%- endif -%}
+
         {%- assign is_bundle = current_prod.selected_or_first_available_variant.requiresComponents -%}
 
           {%- if is_bundle -%}
