@@ -158,10 +158,11 @@
             "description": ""
           }
         },
-        "accordion_AEXyMU": {
+        "accordion_QDyHNQ": {
           "type": "accordion",
           "settings": {
             "title": "Ingredients",
+            "items_count": "4 Items",
             "content_type": "ingredients",
             "content": ""
           }
@@ -187,7 +188,7 @@
       },
       "block_order": [
         "product_tab_YibUzB",
-        "accordion_AEXyMU",
+        "accordion_QDyHNQ",
         "product_tab_i94QCt",
         "product_tab_6ncFYp"
       ],
