@@ -186,7 +186,7 @@
           "type": "accordion",
           "settings": {
             "title": "Ingredients",
-            "items_count": "",
+            "items_count": "6 items",
             "content_type": "ingredients",
             "content": ""
           }
