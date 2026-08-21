@@ -205,7 +205,7 @@
           "settings": {
             "title": "Product Information",
             "items_count": "",
-            "content_type": "ingredients",
+            "content_type": "supplement_facts",
             "content": ""
           }
         },
