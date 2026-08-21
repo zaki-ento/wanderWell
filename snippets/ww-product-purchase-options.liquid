@@ -260,8 +260,9 @@
                 />
                 <span class="ww-sub-opt__radio-bullet"></span>
               </span>
-              {% comment %} {% assign r = plan %} {% endcomment %}
-              {% comment %} <pre>{{ r | json }}</pre> {% endcomment %}
+              {% assign r = plan %}
+              <pre>{{ r | json }}</pre>
+              {{ plan }}
               <span class="ww-sub-opt__details">
                 <span class="ww-sub-opt__title">
                   Subscribe & Save
