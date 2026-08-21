@@ -179,7 +179,7 @@
         "product_tab_6ncFYp": {
           "type": "product_tab",
           "settings": {
-            "product": "travel-duo",
+            "product": "travel-duo-bundle",
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Capsules · Ginger",
             "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere."
