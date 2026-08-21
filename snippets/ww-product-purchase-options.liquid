@@ -247,8 +247,6 @@
         {%- assign sub_serving_rate = sub_price | divided_by: sub_servings_qty | money -%}
 
         {% comment %} {{ plan | json }} {% endcomment %}
-      {{ current_prod.metafields.custom.servings.value }}
-
 
         <div class="ww-sub-opt ww-sub-opt--best {% if is_first_plan %}on{% endif %}" data-option-type="subscription">
           <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments[0].value }}% + free shipping</span>
