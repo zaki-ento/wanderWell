@@ -204,24 +204,55 @@
                         <input type="hidden" name="selling_plan" value="">
                         <input type="hidden" name="quantity" value="1" class="ww-qty-input">
                         
-                       {% for group in current_prod.selling_plan_groups %}
-<fieldset>
-<legend>{{ group.name }}</legend>
-    {% for plan in group.selling_plans %}
-<label>
-<input
+                     <fieldset class="purchase-options">
+  <legend>Purchase Options</legend>
+
+  {%- comment -%}
+    1. Render One-Time Purchase option if the product does not require a subscription
+  {%- endcomment -%}
+  {% unless current_prod.requires_selling_plan %}
+    <div class="purchase-option">
+      <label>
+        <input
           type="radio"
           name="selling_plan"
-          value="{{ plan.id }}"
+          value=""
+          checked
         />
-        {{ plan.name }}
-        {% if plan.price_adjustments.size > 0 %}
-          — Save {{ plan.price_adjustments[0].value }}%
-        {% endif %}
-</label>
-    {% endfor %}
+        <span>One-time purchase</span>
+        <span class="price">{{ current_prod.selected_or_first_available_variant.price | money }}</span>
+      </label>
+    </div>
+  {% endunless %}
+
+  {%- comment -%}
+    2. Render Subscription Plans from Appstle / Shopify selling plan groups
+  {%- endcomment -%}
+  {% for group in current_prod.selling_plan_groups %}
+    <div class="selling-plan-group">
+      <h4>{{ group.name }}</h4>
+
+      {% for plan in group.selling_plans %}
+        <div class="purchase-option">
+          <label>
+            <input
+              type="radio"
+              name="selling_plan"
+              value="{{ plan.id }}"
+              {% if product.requires_selling_plan and forloop.first and forloop.parentloop.first %}checked{% endif %}
+            />
+            <span>{{ plan.name }}</span>
+            {% if plan.price_adjustments.size > 0 %}
+              <span class="discount-badge">
+                Save {{ plan.price_adjustments[0].value }}%
+              </span>
+            {% endif %}
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
 </fieldset>
-{% endfor %}
                         
                         <div class="ww-buy-row">
                           <div class="ww-qty">
