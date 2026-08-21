@@ -183,13 +183,6 @@
                 
                 {%- if current_prod != blank -%}
                   <div class="ww-buy">
-                    <div class="ww-price-container">
-                      <span class="ww-price-label">Price</span>
-                      <span class="ww-price-amount">
-                        {{ current_prod.price | money }}
-                      </span>
-                    </div>
-                    
                     {%- assign product_form_id = 'ww-product-form-' | append: block.id -%}
                     <product-form-component
                       data-section-id="{{ section.id }}"
@@ -201,58 +194,144 @@
                       <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
                       {%- form 'product', current_prod, id: product_form_id, class: 'ww-product-form', data-type: 'add-to-cart-form' -%}
                         <input type="hidden" name="id" ref="variantId" value="{{ current_prod.selected_or_first_available_variant.id }}">
-                        <input type="hidden" name="selling_plan" value="">
                         <input type="hidden" name="quantity" value="1" class="ww-qty-input">
                         
-                     <fieldset class="purchase-options">
-  <legend>Purchase Options</legend>
+                        <fieldset class="ww-purchase-options">
+                          <legend class="visually-hidden">Purchase Options</legend>
 
-  {%- comment -%}
-    1. Render One-Time Purchase option if the product does not require a subscription
-  {%- endcomment -%}
-  {% unless current_prod.requires_selling_plan %}
-    <div class="purchase-option">
-      <label>
-        <input
-          type="radio"
-          name="selling_plan"
-          value=""
-          checked
-        />
-        <span>One-time purchase</span>
-        <span class="price">{{ current_prod.selected_or_first_available_variant.price | money }}</span>
-      </label>
-    </div>
-  {% endunless %}
+                          {%- comment -%}
+                            1. Render Subscription Plans (Appstle / Shopify selling plan groups)
+                          {%- endcomment -%}
+                          {%- assign has_subscription = false -%}
+                          {%- for group in current_prod.selling_plan_groups -%}
+                            {%- for plan in group.selling_plans -%}
+                              {%- assign has_subscription = true -%}
+                              
+                              {%- if current_prod.handle contains 'travel' or current_prod.handle contains 'duo' or current_prod.handle contains 'bundle' -%}
+                                {%- assign sub_multiplier = 1 -%}
+                                {%- assign sub_packs = "2 packs" -%}
+                                {%- assign sub_servings = "30 servings · ships every 4 weeks" -%}
+                                {%- assign sub_servings_qty = 30 -%}
+                              {%- else -%}
+                                {%- assign sub_multiplier = 2 -%}
+                                {%- assign sub_packs = "2 packs" -%}
+                                {%- assign sub_servings = "30 servings · ships every 4 weeks" -%}
+                                {%- assign sub_servings_qty = 30 -%}
+                              {%- endif -%}
 
-  {%- comment -%}
-    2. Render Subscription Plans from Appstle / Shopify selling plan groups
-  {%- endcomment -%}
-  {% for group in current_prod.selling_plan_groups %}
-    <div class="selling-plan-group">
-      <h4>{{ group.name }}</h4>
+                              {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
+                              {%- assign compare_price = base_unit_price | times: sub_multiplier -%}
+                              
+                              {%- if plan.price_adjustments.size > 0 -%}
+                                {%- assign adjustment = plan.price_adjustments[0] -%}
+                                {%- if adjustment.value_type == 'percentage' -%}
+                                  {%- assign discount_percentage = adjustment.value -%}
+                                  {%- assign discount_amount = compare_price | times: discount_percentage | divided_by: 100 -%}
+                                  {%- assign sub_price = compare_price | minus: discount_amount -%}
+                                {%- else -%}
+                                  {%- assign sub_price = adjustment.value -%}
+                                {%- endif -%}
+                              {%- else -%}
+                                {%- assign sub_price = compare_price -%}
+                              {%- endif -%}
+                              
+                              {%- assign sub_serving_rate = sub_price | divided_by: sub_servings_qty | money -%}
 
-      {% for plan in group.selling_plans %}
-        <div class="purchase-option">
-          <label>
-            <input
-              type="radio"
-              name="selling_plan"
-              value="{{ plan.id }}"
-              {% if product.requires_selling_plan and forloop.first and forloop.parentloop.first %}checked{% endif %}
-            />
-            <span>{{ plan.name }}</span>
-            {% if plan.price_adjustments.size > 0 %}
-              <span class="discount-badge">
-                Save {{ plan.price_adjustments[0].value }}%
-              </span>
-            {% endif %}
-          </label>
-        </div>
-      {% endfor %}
-    </div>
-  {% endfor %}
-</fieldset>
+                              <div class="ww-sub-opt ww-sub-opt--best on" data-option-type="subscription">
+                                <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
+                                
+                                <span class="ww-sub-opt__content">
+                                  <span class="ww-sub-opt__row">
+                                    <span class="ww-sub-opt__radio-bullet-wrapper">
+                                      <input
+                                        type="radio"
+                                        name="selling_plan"
+                                        value="{{ plan.id }}"
+                                        class="ww-sub-opt__radio-input"
+                                        checked
+                                      />
+                                      <span class="ww-sub-opt__radio-bullet"></span>
+                                    </span>
+                                    
+                                    <span class="ww-sub-opt__details">
+                                      <span class="ww-sub-opt__title">
+                                        Subscribe & Save
+                                        <span class="ww-sub-opt__pack-badge">{{ sub_packs }}</span>
+                                      </span>
+                                      <span class="ww-sub-opt__servings">
+                                        <strong>{{ sub_servings }}</strong>
+                                      </span>
+                                    </span>
+                                    
+                                    <span class="ww-sub-opt__price-container">
+                                      <span class="ww-sub-opt__price">
+                                        {{ sub_price | money }}
+                                        {%- if plan.price_adjustments.size > 0 -%}
+                                          <s class="ww-sub-opt__compare-price">{{ compare_price | money }}</s>
+                                        {%- endif -%}
+                                      </span>
+                                      <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
+                                    </span>
+                                  </span>
+                                  
+                                  <span class="ww-sub-opt__perks">
+                                    <span class="ww-sub-opt__perk">Free shipping every order</span>
+                                    <span class="ww-sub-opt__perk">Pause or cancel any time</span>
+                                    <span class="ww-sub-opt__perk">30-day money-back guarantee</span>
+                                  </span>
+                                </span>
+                              </div>
+                            {%- endfor -%}
+                          {%- endfor -%}
+
+                          {%- comment -%}
+                            2. Render One-Time Purchase Option
+                          {%- endcomment -%}
+                          {%- unless current_prod.requires_selling_plan -%}
+                            {%- if current_prod.handle contains 'travel' or current_prod.handle contains 'duo' or current_prod.handle contains 'bundle' -%}
+                              {%- assign one_time_packs = "2 packs" -%}
+                              {%- assign one_time_servings = "30 servings · delivered once" -%}
+                              {%- assign one_time_servings_qty = 30 -%}
+                            {%- else -%}
+                              {%- assign one_time_packs = "1 pack" -%}
+                              {%- assign one_time_servings = "15 servings · delivered once" -%}
+                              {%- assign one_time_servings_qty = 15 -%}
+                            {%- endif -%}
+
+                            {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
+                            {%- assign one_time_serving_rate = base_unit_price | divided_by: one_time_servings_qty | money -%}
+
+                            <div class="ww-sub-opt {% unless has_subscription %}on{% endunless %}" data-option-type="one-time">
+                              <span class="ww-sub-opt__content">
+                                <span class="ww-sub-opt__row">
+                                  <span class="ww-sub-opt__radio-bullet-wrapper">
+                                    <input
+                                      type="radio"
+                                      name="selling_plan"
+                                      value=""
+                                      class="ww-sub-opt__radio-input"
+                                      {% unless has_subscription %}checked{% endunless %}
+                                    />
+                                    <span class="ww-sub-opt__radio-bullet"></span>
+                                  </span>
+                                  
+                                  <span class="ww-sub-opt__details">
+                                    <span class="ww-sub-opt__title">
+                                      One-Time Purchase
+                                      <span class="ww-sub-opt__pack-badge">{{ one_time_packs }}</span>
+                                    </span>
+                                    <span class="ww-sub-opt__servings">{{ one_time_servings }}</span>
+                                  </span>
+                                  
+                                  <span class="ww-sub-opt__price-container">
+                                    <span class="ww-sub-opt__price">{{ base_unit_price | money }}</span>
+                                    <span class="ww-sub-opt__per-serving">{{ one_time_serving_rate }}/serving</span>
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                          {%- endunless -%}
+                        </fieldset>
                         
                         <div class="ww-buy-row">
                           <div class="ww-qty">
@@ -431,8 +510,219 @@
 </section>
 
 <script src="{{ 'ww-product.js' | asset_url }}" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('click', function(e) {
+      const opt = e.target.closest('.ww-sub-opt');
+      if (!opt) return;
+      
+      const radio = opt.querySelector('.ww-sub-opt__radio-input');
+      if (radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      
+      const container = opt.closest('.ww-purchase-options');
+      if (container) {
+        container.querySelectorAll('.ww-sub-opt').forEach(item => item.classList.remove('on'));
+      }
+      opt.classList.add('on');
+    });
+  });
+</script>
 
 {% stylesheet %}
+  /* Purchase Options Grid */
+  .ww-purchase-options {
+    border: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ww-sub-opt {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid #E5E5E5;
+    border-radius: 12px;
+    background: #FFFFFF;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .ww-sub-opt.on {
+    border-color: #E8632B;
+    background-color: #FAF7F2;
+  }
+
+  .ww-sub-badge {
+    background-color: #E8632B;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 6px 12px;
+    letter-spacing: 0.05em;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .ww-sub-opt__content {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ww-sub-opt__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .ww-sub-opt__radio-bullet-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .ww-sub-opt__radio-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    z-index: 1;
+  }
+
+  .ww-sub-opt__radio-bullet {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #E5E5E5;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    transition: border-color 0.2s ease;
+  }
+
+  .ww-sub-opt.on .ww-sub-opt__radio-bullet {
+    border-color: #E8632B;
+  }
+
+  .ww-sub-opt.on .ww-sub-opt__radio-bullet::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #E8632B;
+  }
+
+  .ww-sub-opt__details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    margin-left: 4px;
+  }
+
+  .ww-sub-opt__title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1A1A1A;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ww-sub-opt__pack-badge {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    line-height: 1.2;
+    background-color: #E5E5E5;
+    color: #1A1A1A;
+  }
+
+  .ww-sub-opt.on .ww-sub-opt__pack-badge {
+    background-color: #E8632B;
+    color: #FFFFFF;
+  }
+
+  .ww-sub-opt__servings {
+    font-size: 12px;
+    color: #5C5C5C;
+  }
+
+  .ww-sub-opt__price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .ww-sub-opt__price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1A1A1A;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .ww-sub-opt__compare-price {
+    font-size: 14px;
+    text-decoration: line-through;
+    color: #8C8C8C;
+    font-weight: normal;
+  }
+
+  .ww-sub-opt__per-serving {
+    font-size: 11px;
+    color: #8C8C8C;
+  }
+
+  .ww-sub-opt__perks {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 28px;
+    margin-top: 4px;
+  }
+
+  .ww-sub-opt__perk {
+    font-size: 13px;
+    color: #1A1A1A;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ww-sub-opt__perk::before {
+    content: "✓";
+    color: #E8632B;
+    font-weight: bold;
+  }
+
   .products {
     background-color: var(--offwhite);
   }
