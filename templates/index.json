@@ -198,8 +198,8 @@
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Both · Save upto 10%",
             "description": "",
-            "one_time_badge": "1 Pack",
-            "sub_badge": "1 Pack",
+            "one_time_badge": "2 Pack",
+            "sub_badge": "2 Pack",
             "sub_multiplier": 1
           }
         }
