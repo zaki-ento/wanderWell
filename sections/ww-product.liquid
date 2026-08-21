@@ -203,20 +203,22 @@
                             1. Render Subscription Plans (Appstle / Shopify selling plan groups)
                           {%- endcomment -%}
                           {%- assign has_subscription = false -%}
+                          {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15 -%}
+                          
                           {%- for group in current_prod.selling_plan_groups -%}
                             {%- for plan in group.selling_plans -%}
                               {%- assign has_subscription = true -%}
+                              {%- assign is_first_plan = false -%}
+                              {%- if forloop.first and forloop.parentloop.first -%}
+                                {%- assign is_first_plan = true -%}
+                              {%- endif -%}
                               
                               {%- if current_prod.handle contains 'travel' or current_prod.handle contains 'duo' or current_prod.handle contains 'bundle' -%}
                                 {%- assign sub_multiplier = 1 -%}
                                 {%- assign sub_packs = "2 packs" -%}
-                                {%- assign sub_servings = "30 servings · ships every 4 weeks" -%}
-                                {%- assign sub_servings_qty = 30 -%}
                               {%- else -%}
                                 {%- assign sub_multiplier = 2 -%}
                                 {%- assign sub_packs = "2 packs" -%}
-                                {%- assign sub_servings = "30 servings · ships every 4 weeks" -%}
-                                {%- assign sub_servings_qty = 30 -%}
                               {%- endif -%}
 
                               {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
@@ -235,9 +237,10 @@
                                 {%- assign sub_price = compare_price -%}
                               {%- endif -%}
                               
+                              {%- assign sub_servings_qty = base_servings | times: sub_multiplier -%}
                               {%- assign sub_serving_rate = sub_price | divided_by: sub_servings_qty | money -%}
 
-                              <div class="ww-sub-opt ww-sub-opt--best on" data-option-type="subscription">
+                              <div class="ww-sub-opt ww-sub-opt--best {% if is_first_plan %}on{% endif %}" data-option-type="subscription">
                                 <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
                                 
                                 <span class="ww-sub-opt__content">
@@ -248,7 +251,7 @@
                                         name="selling_plan"
                                         value="{{ plan.id }}"
                                         class="ww-sub-opt__radio-input"
-                                        checked
+                                        {% if is_first_plan %}checked{% endif %}
                                       />
                                       <span class="ww-sub-opt__radio-bullet"></span>
                                     </span>
@@ -259,8 +262,13 @@
                                         <span class="ww-sub-opt__pack-badge">{{ sub_packs }}</span>
                                       </span>
                                       <span class="ww-sub-opt__servings">
-                                        <strong>{{ sub_servings }}</strong>
+                                        <strong>{{ sub_servings_qty }} servings · {{ plan.name }}</strong>
                                       </span>
+                                      {%- if plan.description != blank -%}
+                                        <span class="ww-sub-opt__plan-desc">{{ plan.description | escape }}</span>
+                                      {%- elsif group.description != blank -%}
+                                        <span class="ww-sub-opt__plan-desc">{{ group.description | escape }}</span>
+                                      {%- endif -%}
                                     </span>
                                     
                                     <span class="ww-sub-opt__price-container">
@@ -290,14 +298,11 @@
                           {%- unless current_prod.requires_selling_plan -%}
                             {%- if current_prod.handle contains 'travel' or current_prod.handle contains 'duo' or current_prod.handle contains 'bundle' -%}
                               {%- assign one_time_packs = "2 packs" -%}
-                              {%- assign one_time_servings = "30 servings · delivered once" -%}
-                              {%- assign one_time_servings_qty = 30 -%}
                             {%- else -%}
                               {%- assign one_time_packs = "1 pack" -%}
-                              {%- assign one_time_servings = "15 servings · delivered once" -%}
-                              {%- assign one_time_servings_qty = 15 -%}
                             {%- endif -%}
 
+                            {%- assign one_time_servings_qty = base_servings -%}
                             {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
                             {%- assign one_time_serving_rate = base_unit_price | divided_by: one_time_servings_qty | money -%}
 
@@ -320,7 +325,7 @@
                                       One-Time Purchase
                                       <span class="ww-sub-opt__pack-badge">{{ one_time_packs }}</span>
                                     </span>
-                                    <span class="ww-sub-opt__servings">{{ one_time_servings }}</span>
+                                    <span class="ww-sub-opt__servings">{{ one_time_servings_qty }} servings · delivered once</span>
                                   </span>
                                   
                                   <span class="ww-sub-opt__price-container">
@@ -670,6 +675,13 @@
   .ww-sub-opt__servings {
     font-size: 12px;
     color: #5C5C5C;
+  }
+
+  .ww-sub-opt__plan-desc {
+    font-size: 12px;
+    color: #8C8C8C;
+    margin-top: 2px;
+    line-height: 1.35;
   }
 
   .ww-sub-opt__price-container {
