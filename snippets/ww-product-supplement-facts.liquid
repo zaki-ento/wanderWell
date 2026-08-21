@@ -45,11 +45,11 @@
   ========================================================================================
 {% endcomment %}
 
-{%- assign directions = product.metafields.custom.directions.value | default: product.metafields.custom.directions -%}
+{%- assign directions_mf = product.metafields.custom.directions -%}
 
-{%- if directions != blank -%}
+{%- if directions_mf != blank -%}
   <div class="ww-detail-lede ww-rich-text" style="margin:0 0 20px">
-    {{ directions }}
+    {{ directions_mf | metafield_tag }}
   </div>
 {%- endif -%}
 
@@ -57,7 +57,7 @@
 {%- assign serving_size = product.metafields.custom.serving_size.value | default: product.metafields.custom.serving_size -%}
 {%- assign servings_per = product.metafields.custom.servings_per_container.value | default: product.metafields.custom.servings_per_container -%}
 {%- assign facts_list = product.metafields.custom.supplement_facts_list.value -%}
-{%- assign other_ingredients = product.metafields.custom.other_ingredients.value | default: product.metafields.custom.other_ingredients -%}
+{%- assign other_ingredients_mf = product.metafields.custom.other_ingredients -%}
 
 {%- if facts_html != blank -%}
   {{ facts_html }}
@@ -86,9 +86,9 @@
         </div>
       {%- endfor -%}
       
-      {%- if other_ingredients != blank -%}
+      {%- if other_ingredients_mf != blank -%}
         <div class="ww-sf-note ww-rich-text" style="margin-top: 8px;">
-          {{ other_ingredients }}
+          {{ other_ingredients_mf | metafield_tag }}
         </div>
       {%- endif -%}
     </div>
