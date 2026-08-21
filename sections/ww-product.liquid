@@ -22,10 +22,6 @@
   4. Capsule Details (Rich Text / HTML):
      Namespace & Key: custom.capsule_details
      Used for custom capsule notes or text descriptions inside Accordion 3.
-     
-  5. Bundle Products (List of product references):
-     Namespace & Key: custom.bundle_products
-     Used to automatically list items dynamically in the "What's inside" panel if the product is a bundle.
   -----------------------------------------------------------------------------
 {% endcomment %}
 
@@ -104,14 +100,6 @@
         {%- if block.type == 'product_tab' -%}
           {%- assign current_prod = block.settings.product -%}
           {%- assign key = 'block-' | append: block.id -%}
-          
-          {%- assign bundle_products = current_prod.metafields.custom.bundle_products.value -%}
-          {%- if bundle_products == blank -%}
-            {%- assign bundle_products = current_prod.selected_or_first_available_variant.metafields.shopify--bundle.component_reference.value -%}
-          {%- endif -%}
-          {%- if bundle_products == blank -%}
-            {%- assign bundle_products = current_prod.metafields.shopify--bundle.component_reference.value -%}
-          {%- endif -%}
           
           {%- assign title = block.settings.title | default: current_prod.title -%}
           {%- assign subtitle = block.settings.subtitle | default: current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
@@ -277,10 +265,7 @@
                     {%- assign acc_content = rendered_snippet | strip -%}
                   {%- endif -%}
 
-                  {%- assign show_acc = false -%}
-                  {%- if acc_content != blank or bundle_products != blank -%}
-                    {%- assign show_acc = true -%}
-                  {%- endif -%}
+                  
 
                   {%- if show_acc -%}
                     <details class="ww-acc" {{ sub_block.shopify_attributes }}>
@@ -336,6 +321,7 @@
                       </div>
                     </details>
                   {%- endif -%}
+                  
                 {%- endif -%}
               {%- endfor -%}
 
