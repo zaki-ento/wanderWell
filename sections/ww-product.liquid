@@ -204,15 +204,24 @@
                         <input type="hidden" name="selling_plan" value="">
                         <input type="hidden" name="quantity" value="1" class="ww-qty-input">
                         
-                        {%- for sub_block in section.blocks -%}
-                          {%- if sub_block.type == '@app' -%}
-                            <div class="ww-app-block-wrapper" {{ sub_block.shopify_attributes }}>
-                              {%- render sub_block -%}
-                            </div>
-                          {%- endif -%}
-                        {%- endfor -%}
-                        
-                        <div class="appstle-subscription-widget" data-product-id="{{ current_prod.id }}"></div>
+                       {% for group in current_prod.selling_plan_groups %}
+<fieldset>
+<legend>{{ group.name }}</legend>
+    {% for plan in group.selling_plans %}
+<label>
+<input
+          type="radio"
+          name="selling_plan"
+          value="{{ plan.id }}"
+        />
+        {{ plan.name }}
+        {% if plan.price_adjustments.size > 0 %}
+          — Save {{ plan.price_adjustments[0].value }}%
+        {% endif %}
+</label>
+    {% endfor %}
+</fieldset>
+{% endfor %}
                         
                         <div class="ww-buy-row">
                           <div class="ww-qty">
