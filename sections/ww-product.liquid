@@ -4,21 +4,21 @@
 
   -----------------------------------------------------------------------------
   DYNAMIC METAFIELDS (Shopify Custom Fields) DEFINITIONS:
-  To load tab values automatically from a selected product instead of manual block 
+  To load tab values automatically from a selected product instead of manual block
   overrides, create the following metafields on your Shopify Product admin:
-  
+
   1. Subtitle (Single line text):
      Namespace & Key: custom.subtitle
      Example: "Capsules · Ginger" or "Powder · Vitamin C"
-     
+
   2. Ingredients Panel (Rich Text / HTML):
      Namespace & Key: custom.ingredients
      Used for the dynamic list of ingredients inside Accordion 1.
-     
+
   3. Product Information (Rich Text / HTML):
      Namespace & Key: custom.product_information
      Used for Directions, cautions, and Supplement Facts tables inside Accordion 2.
-     
+
   4. Capsule Details (Rich Text / HTML):
      Namespace & Key: custom.capsule_details
      Used for custom capsule notes or text descriptions inside Accordion 3.
@@ -52,11 +52,18 @@
       {%- if section.settings.subheading != blank -%}
         <p class="section-subtitle">{{ section.settings.subheading | newline_to_br }}</p>
       {%- endif -%}
-      
+
       <div class="products-badges">
         {%- if section.settings.badge_1_text != blank -%}
           <span class="product-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M12 21v-9"></path>
               <path d="M12 12c0-4 -3-6-7-6 0 4 3 6 7 6z"></path>
               <path d="M12 12c0-5 3-8 8-8 0 5-3 8-8 8z"></path>
@@ -66,7 +73,14 @@
         {%- endif -%}
         {%- if section.settings.badge_2_text != blank -%}
           <span class="product-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
               <polyline points="9 12 11 14 15 10"></polyline>
             </svg>
@@ -85,8 +99,16 @@
             {%- if block.type == 'product_tab' -%}
               {%- assign current_prod = block.settings.product -%}
               {%- assign title = block.settings.title | default: current_prod.title -%}
-              {%- assign subtitle = block.settings.subtitle | default: current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
-              <button class="ww-seg-btn {% if is_first_tab %}on{% endif %}" data-prod="block-{{ block.id }}" role="tab" {{ block.shopify_attributes }}>
+              {%- assign subtitle = block.settings.subtitle
+                | default: current_prod.metafields.custom.subtitle.value
+                | default: current_prod.metafields.custom.subtitle
+              -%}
+              <button
+                class="ww-seg-btn {% if is_first_tab %}on{% endif %}"
+                data-prod="block-{{ block.id }}"
+                role="tab"
+                {{ block.shopify_attributes }}
+              >
                 {{ title | escape }}
                 <span class="ww-seg-sub">{{ subtitle | escape }}</span>
               </button>
@@ -100,18 +122,26 @@
         {%- if block.type == 'product_tab' -%}
           {%- assign current_prod = block.settings.product -%}
           {%- assign key = 'block-' | append: block.id -%}
-          
+
           {%- assign title = block.settings.title | default: current_prod.title -%}
-          {%- assign subtitle = block.settings.subtitle | default: current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
+          {%- assign subtitle = block.settings.subtitle
+            | default: current_prod.metafields.custom.subtitle.value
+            | default: current_prod.metafields.custom.subtitle
+          -%}
           {%- assign desc = block.settings.description | default: current_prod.description -%}
 
-          <div class="ww-panel {% if forloop.first %}on{% endif %}" data-prod="{{ key }}" role="tabpanel" {{ block.shopify_attributes }}>
+          <div
+            class="ww-panel {% if forloop.first %}on{% endif %}"
+            data-prod="{{ key }}"
+            role="tabpanel"
+            {{ block.shopify_attributes }}
+          >
             <div class="ww-panel-inner">
               <div class="ww-media">
                 <div class="ww-media-main">
                   <div class="ww-media-stage">
                     {%- assign product_images = current_prod.images -%}
-                    
+
                     {%- if product_images.size > 0 -%}
                       {%- for image in product_images limit: 4 -%}
                         <div class="ww-media-slide {% if forloop.first %}is-on{% endif %}">
@@ -121,7 +151,11 @@
                     {%- else -%}
                       <div class="ww-media-slide is-on">
                         {%- if settings.logo_inverse != blank -%}
-                          {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'ww-media-logo', loading: 'lazy' }}
+                          {{
+                            settings.logo_inverse
+                            | image_url: width: 400
+                            | image_tag: class: 'ww-media-logo', loading: 'lazy'
+                          }}
                         {%- endif -%}
                       </div>
                       <div class="ww-media-slide"></div>
@@ -129,22 +163,26 @@
                       <div class="ww-media-slide"></div>
                     {%- endif -%}
                   </div>
-                  
+
                   {%- assign has_multiple_images = false -%}
                   {%- if product_images.size > 1 -%}
                     {%- assign has_multiple_images = true -%}
                   {%- endif -%}
-                  
+
                   {%- if has_multiple_images -%}
                     <button class="ww-media-nav ww-media-nav--prev" type="button" aria-label="Previous image">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M15 5l-7 7 7 7"></path>
+                      </svg>
                     </button>
                     <button class="ww-media-nav ww-media-nav--next" type="button" aria-label="Next image">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 5l7 7-7 7"></path>
+                      </svg>
                     </button>
                   {%- endif -%}
                 </div>
-                
+
                 <div class="ww-media-thumbs">
                   {%- if product_images.size > 0 -%}
                     {%- for image in product_images limit: 4 -%}
@@ -160,15 +198,15 @@
                   {%- endif -%}
                 </div>
               </div>
-              
+
               <div class="ww-detail">
                 <div class="ww-detail-eyebrow">{{ title | escape }} · {{ subtitle | escape }}</div>
                 <h3 class="ww-detail-title">{{ title | escape }}</h3>
-                
+
                 {%- if desc != blank -%}
                   <p class="ww-detail-lede">{{ desc }}</p>
                 {%- endif -%}
-                
+
                 {%- if current_prod != blank -%}
                   <div class="ww-buy">
                     {%- assign product_form_id = 'ww-product-form-' | append: block.id -%}
@@ -179,25 +217,41 @@
                       on:submit="/handleSubmit"
                       data-quantity-default="1"
                     >
-                      <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
-                      {%- form 'product', current_prod, id: product_form_id, class: 'ww-product-form', data-type: 'add-to-cart-form' -%}
-                        <input type="hidden" name="id" ref="variantId" value="{{ current_prod.selected_or_first_available_variant.id }}">
+                      <div
+                        class="visually-hidden"
+                        aria-live="assertive"
+                        role="status"
+                        aria-atomic="true"
+                        ref="liveRegion"
+                      ></div>
+                      {%- form 'product',
+                        current_prod,
+                        id: product_form_id,
+                        class: 'ww-product-form',
+                        data-type: 'add-to-cart-form'
+                      -%}
+                        <input
+                          type="hidden"
+                          name="id"
+                          ref="variantId"
+                          value="{{ current_prod.selected_or_first_available_variant.id }}"
+                        >
                         <input type="hidden" name="quantity" value="1" class="ww-qty-input">
-                        
+
                         {% render 'ww-product-purchase-options', current_prod: current_prod, block: block %}
-                        
+
                         <div class="ww-buy-row">
                           <div class="ww-qty">
                             <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
                             <span class="v">1</span>
                             <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
                           </div>
-                          
+
                           {%- assign add_to_cart_text = 'products.product.add_to_cart' | t -%}
                           {%- if current_prod.available == false -%}
                             {%- assign add_to_cart_text = 'products.product.sold_out' | t -%}
                           {%- endif -%}
-                          
+
                           {% render 'add-to-cart-button',
                             product: current_prod,
                             can_add_to_cart: current_prod.available,
@@ -208,17 +262,31 @@
                         </div>
                       {%- endform -%}
                     </product-form-component>
-                    
+
                     <div class="ww-buy-trust">
                       <span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
                           <path d="M9 12l2 2 4-4"></path>
                           <circle cx="12" cy="12" r="9"></circle>
                         </svg>
                         Free shipping $50+
                       </span>
                       <span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
                           <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
                           <polyline points="9 12 11 14 15 10"></polyline>
                         </svg>
@@ -229,7 +297,7 @@
                 {%- endif -%}
               </div>
             </div>
-            
+
             <div class="ww-info">
               {%- assign found_our_tab = false -%}
               {%- for sub_block in section.blocks -%}
@@ -240,11 +308,11 @@
                     {%- break -%}
                   {%- endif -%}
                 {%- endif -%}
-                
+
                 {%- if found_our_tab and sub_block.type == 'accordion' -%}
-                  {%- assign acc_title = sub_block.settings.title | default: "Ingredients" -%}
+                  {%- assign acc_title = sub_block.settings.title | default: 'Ingredients' -%}
                   {%- assign acc_type = sub_block.settings.content_type -%}
-                  {%- assign acc_content = "" -%}
+                  {%- assign acc_content = '' -%}
 
                   {%- if acc_type == 'custom' -%}
                     {%- assign acc_content = sub_block.settings.content -%}
@@ -265,8 +333,6 @@
                     {%- assign acc_content = rendered_snippet | strip -%}
                   {%- endif -%}
 
-                  
-
                   {%- if show_acc -%}
                     <details class="ww-acc" {{ sub_block.shopify_attributes }}>
                       <summary>
@@ -286,42 +352,10 @@
                         {%- endif -%}
                       </summary>
                       <div class="ww-acc-body">
-                        {%- if acc_type == 'ingredients' and bundle_products != blank -%}
-                          <div class="ww-bundle-items">
-                            {%- for prod_item in bundle_products -%}
-                              {%- assign prod_title = prod_item.title -%}
-                              {%- assign prod_image = prod_item.featured_media -%}
-                              {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
-                              
-                              {%- if prod_item.product != blank -%}
-                                {%- assign parent_product = prod_item.product -%}
-                                {%- assign prod_title = parent_product.title -%}
-                                {%- assign prod_image = prod_item.featured_media | default: parent_product.featured_media -%}
-                                {%- assign prod_subtitle = parent_product.metafields.custom.subtitle.value | default: parent_product.metafields.custom.subtitle -%}
-                              {%- endif -%}
-                              
-                              <div class="ww-bundle-item">
-                                <div class="ww-bundle-thumb">
-                                  {%- if prod_image != blank -%}
-                                    {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
-                                  {%- endif -%}
-                                </div>
-                                <div>
-                                  <h4>{{ prod_title | escape }}</h4>
-                                  {%- if prod_subtitle != blank -%}
-                                    <p>{{ prod_subtitle | escape }}</p>
-                                  {%- endif -%}
-                                </div>
-                              </div>
-                            {%- endfor -%}
-                          </div>
-                        {%- else -%}
-                          {{ acc_content }}
-                        {%- endif -%}
+                        {{ acc_content }}
                       </div>
                     </details>
                   {%- endif -%}
-                  
                 {%- endif -%}
               {%- endfor -%}
 
@@ -329,7 +363,9 @@
                 <div class="ww-info-trust">
                   <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
                   <div class="ww-info-trust-grid">
-                    {%- if section.settings.trust_item_1_title != blank or section.settings.trust_item_1_text != blank -%}
+                    {%- if section.settings.trust_item_1_title != blank
+                      or section.settings.trust_item_1_text != blank
+                    -%}
                       <div>
                         {%- if section.settings.trust_item_1_title != blank -%}
                           <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
@@ -339,7 +375,9 @@
                         {%- endif -%}
                       </div>
                     {%- endif -%}
-                    {%- if section.settings.trust_item_2_title != blank or section.settings.trust_item_2_text != blank -%}
+                    {%- if section.settings.trust_item_2_title != blank
+                      or section.settings.trust_item_2_text != blank
+                    -%}
                       <div>
                         {%- if section.settings.trust_item_2_title != blank -%}
                           <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
@@ -352,8 +390,10 @@
                   </div>
                 </div>
               {%- endif -%}
-            </div> <!-- Close .ww-info -->
-          </div> <!-- Close .ww-panel -->
+            </div>
+            <!-- Close .ww-info -->
+          </div>
+          <!-- Close .ww-panel -->
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -362,20 +402,20 @@
 
 <script src="{{ 'ww-product.js' | asset_url }}" defer></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('click', function(e) {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('click', function (e) {
       const opt = e.target.closest('.ww-sub-opt');
       if (!opt) return;
-      
+
       const radio = opt.querySelector('.ww-sub-opt__radio-input');
       if (radio) {
         radio.checked = true;
         radio.dispatchEvent(new Event('change', { bubbles: true }));
       }
-      
+
       const container = opt.closest('.ww-purchase-options');
       if (container) {
-        container.querySelectorAll('.ww-sub-opt').forEach(item => item.classList.remove('on'));
+        container.querySelectorAll('.ww-sub-opt').forEach((item) => item.classList.remove('on'));
       }
       opt.classList.add('on');
     });
@@ -583,7 +623,7 @@
     width: 56%;
     opacity: .9;
   }
-  
+
   .ww-media-nav {
     position: absolute;
     top: 50%;
@@ -618,7 +658,7 @@
   .ww-media-nav--next {
     right: 12px;
   }
-  
+
   .ww-media-thumbs {
     display: flex;
     gap: 8px;
