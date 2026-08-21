@@ -267,32 +267,20 @@
                   {%- if acc_type == 'custom' -%}
                     {%- assign acc_content = sub_block.settings.content -%}
                   {%- elsif acc_type == 'ingredients' -%}
-                  {%- elsif acc_type == 'ingredients' -%}
-                    {%- assign acc_content = current_prod.metafields.custom.ingredients.value | default: current_prod.metafields.custom.ingredients -%}
-                    {%- if acc_content == blank -%}
-                      {%- capture default_ingredients -%}
-                        {%- render 'ww-product-ingredients', product: current_prod -%}
-                      {%- endcapture -%}
-                      {%- assign acc_content = default_ingredients -%}
-                    {%- endif -%}
-                  {%- elsif acc_type == 'supplement_facts' -%}
-                    {%- assign acc_content = current_prod.metafields.custom.product_information.value | default: current_prod.metafields.custom.product_information -%}
-                    {%- if acc_content == blank -%}
-                      {%- capture default_supplement_facts -%}
-                        {%- render 'ww-product-supplement-facts', product: current_prod -%}
-                      {%- endcapture -%}
-                      {%- assign acc_content = default_supplement_facts -%}
-                    {%- endif -%}
-                  {%- elsif acc_type == 'capsule_size' -%}
-                    {%- assign acc_content = current_prod.metafields.custom.capsule_details.value | default: current_prod.metafields.custom.capsule_details -%}
-                    {%- capture default_capsule -%}
-                      {%- render 'ww-product-capsule' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-ingredients', product: current_prod -%}
                     {%- endcapture -%}
-                    {%- if acc_content == blank -%}
-                      {%- assign acc_content = default_capsule -%}
-                    {%- else -%}
-                      {%- assign acc_content = acc_content | append: default_capsule -%}
-                    {%- endif -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'supplement_facts' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-supplement-facts', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'capsule_size' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-capsule', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
                   {%- endif -%}
 
                   {%- assign show_acc = false -%}
