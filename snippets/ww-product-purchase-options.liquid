@@ -1,0 +1,337 @@
+{% comment %}
+  Snippet: WW Product Purchase Options
+  Description: Renders styled radio pricing selector cards for subscription plan selections.
+  Accepts:
+    - current_prod: Product object (required)
+    - block: Section block containing customizer settings (required)
+{% endcomment %}
+
+{%- if current_prod != blank -%}
+  {% style %}
+    /* Purchase Options Grid */
+    .ww-purchase-options {
+      border: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ww-sub-opt {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: 1px solid #E5E5E5;
+      border-radius: 12px;
+      background: #FFFFFF;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .ww-sub-opt.on {
+      border-color: #E8632B;
+      background-color: #FAF7F2;
+    }
+
+    .ww-sub-badge {
+      background-color: #E8632B;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 6px 12px;
+      letter-spacing: 0.05em;
+      width: 100%;
+      box-sizing: border-box;
+      display: block;
+    }
+
+    .ww-sub-opt__content {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ww-sub-opt__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .ww-sub-opt__radio-bullet-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ww-sub-opt__radio-input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      z-index: 1;
+    }
+
+    .ww-sub-opt__radio-bullet {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #E5E5E5;
+      border-radius: 50%;
+      display: inline-block;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .ww-sub-opt.on .ww-sub-opt__radio-bullet {
+      border-color: #E8632B;
+    }
+
+    .ww-sub-opt.on .ww-sub-opt__radio-bullet::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #E8632B;
+    }
+
+    .ww-sub-opt__details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-grow: 1;
+      margin-left: 4px;
+    }
+
+    .ww-sub-opt__title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #1A1A1A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ww-sub-opt__pack-badge {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      line-height: 1.2;
+      background-color: #E5E5E5;
+      color: #1A1A1A;
+    }
+
+    .ww-sub-opt.on .ww-sub-opt__pack-badge {
+      background-color: #E8632B;
+      color: #FFFFFF;
+    }
+
+    .ww-sub-opt__servings {
+      font-size: 12px;
+      color: #5C5C5C;
+    }
+
+    .ww-sub-opt__plan-desc {
+      font-size: 12px;
+      color: #8C8C8C;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    .ww-sub-opt__price-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .ww-sub-opt__price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1A1A1A;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .ww-sub-opt__compare-price {
+      font-size: 14px;
+      text-decoration: line-through;
+      color: #8C8C8C;
+      font-weight: normal;
+    }
+
+    .ww-sub-opt__per-serving {
+      font-size: 11px;
+      color: #8C8C8C;
+    }
+
+    .ww-sub-opt__perks {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-left: 28px;
+      margin-top: 4px;
+    }
+
+    .ww-sub-opt__perk {
+      font-size: 13px;
+      color: #1A1A1A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ww-sub-opt__perk::before {
+      content: "✓";
+      color: #E8632B;
+      font-weight: bold;
+    }
+  {% endstyle %}
+
+  <fieldset class="ww-purchase-options">
+    <legend class="visually-hidden">Purchase Options</legend>
+
+    {%- comment -%}
+      1. Render Subscription Plans (Appstle / Shopify selling plan groups)
+    {%- endcomment -%}
+    {%- assign has_subscription = false -%}
+    {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15 -%}
+    
+    {%- for group in current_prod.selling_plan_groups -%}
+      {%- for plan in group.selling_plans -%}
+        {%- assign has_subscription = true -%}
+        {%- assign is_first_plan = false -%}
+        {%- if forloop.first and forloop.parentloop.first -%}
+          {%- assign is_first_plan = true -%}
+        {%- endif -%}
+        
+        {%- assign sub_multiplier = block.settings.sub_multiplier | default: 1 -%}
+        {%- assign sub_packs = block.settings.sub_badge | default: "1 Pack" -%}
+
+        {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
+        {%- assign compare_price = base_unit_price | times: sub_multiplier -%}
+        
+        {%- if plan.price_adjustments.size > 0 -%}
+          {%- assign adjustment = plan.price_adjustments[0] -%}
+          {%- if adjustment.value_type == 'percentage' -%}
+            {%- assign discount_percentage = adjustment.value -%}
+            {%- assign discount_amount = compare_price | times: discount_percentage | divided_by: 100 -%}
+            {%- assign sub_price = compare_price | minus: discount_amount -%}
+          {%- else -%}
+            {%- assign sub_price = adjustment.value -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign sub_price = compare_price -%}
+        {%- endif -%}
+        
+        {%- assign sub_servings_qty = base_servings | times: sub_multiplier -%}
+        {%- assign sub_serving_rate = sub_price | divided_by: sub_servings_qty | money -%}
+
+        <div class="ww-sub-opt ww-sub-opt--best {% if is_first_plan %}on{% endif %}" data-option-type="subscription">
+          <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
+          <span class="ww-sub-opt__content">
+            <span class="ww-sub-opt__row">
+              <span class="ww-sub-opt__radio-bullet-wrapper">
+                <input
+                  type="radio"
+                  name="selling_plan"
+                  value="{{ plan.id }}"
+                  class="ww-sub-opt__radio-input"
+                  {% if is_first_plan %}checked{% endif %}
+                />
+                <span class="ww-sub-opt__radio-bullet"></span>
+              </span>
+              
+              <span class="ww-sub-opt__details">
+                <span class="ww-sub-opt__title">
+                  Subscribe & Save
+                  <span class="ww-sub-opt__pack-badge">{{ sub_packs }}</span>
+                </span>
+                <span class="ww-sub-opt__servings">
+                  <strong>{{ sub_servings_qty }} servings · {{ plan.name }}</strong>
+                </span>
+                {%- if plan.description != blank -%}
+                  <span class="ww-sub-opt__plan-desc">{{ plan.description }}</span>
+                {%- elsif group.description != blank -%}
+                  <span class="ww-sub-opt__perks">
+                    <span class="ww-sub-opt__perk">{{ group.description }}</span>
+                  </span>
+                {%- endif -%}
+              </span>
+              
+              <span class="ww-sub-opt__price-container">
+                <span class="ww-sub-opt__price">
+                  {{ sub_price | money }}
+                  {%- if plan.price_adjustments.size > 0 -%}
+                    <s class="ww-sub-opt__compare-price">{{ compare_price | money }}</s>
+                  {%- endif -%}
+                </span>
+                <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
+              </span>
+            </span>
+          </span>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+
+    {%- comment -%}
+      2. Render One-Time Purchase Option
+    {%- endcomment -%}
+    {%- unless current_prod.requires_selling_plan -%}
+      {%- assign one_time_packs = block.settings.one_time_badge | default: "1 Pack" -%}
+
+      {%- assign one_time_servings_qty = base_servings -%}
+      {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
+      {%- assign one_time_serving_rate = base_unit_price | divided_by: one_time_servings_qty | money -%}
+
+      <div class="ww-sub-opt {% unless has_subscription %}on{% endunless %}" data-option-type="one-time">
+        <span class="ww-sub-opt__content">
+          <span class="ww-sub-opt__row">
+            <span class="ww-sub-opt__radio-bullet-wrapper">
+              <input
+                type="radio"
+                name="selling_plan"
+                value=""
+                class="ww-sub-opt__radio-input"
+                {% unless has_subscription %}checked{% endunless %}
+              />
+              <span class="ww-sub-opt__radio-bullet"></span>
+            </span>
+            
+            <span class="ww-sub-opt__details">
+              <span class="ww-sub-opt__title">
+                One-Time Purchase
+                <span class="ww-sub-opt__pack-badge">{{ one_time_packs }}</span>
+              </span>
+              <span class="ww-sub-opt__servings">{{ one_time_servings_qty }} servings · delivered once</span>
+            </span>
+            
+            <span class="ww-sub-opt__price-container">
+              <span class="ww-sub-opt__price">{{ base_unit_price | money }}</span>
+              <span class="ww-sub-opt__per-serving">{{ one_time_serving_rate }}/serving</span>
+            </span>
+          </span>
+        </span>
+      </div>
+    {%- endunless -%}
+  </fieldset>
+{%- endif -%}
