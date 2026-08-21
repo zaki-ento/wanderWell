@@ -216,8 +216,8 @@
               },
               "blocks": {}
             },
-            "appstle_bundles_appstle_combo_bundle_6rDjL7": {
-              "type": "shopify://apps/appstle-bundles/blocks/appstle-combo-bundle/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
+            "appstle_bundles_appstle_classic_bundle_iEPtha": {
+              "type": "shopify://apps/appstle-bundles/blocks/appstle-classic-bundle/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
               "settings": {}
             },
             "appstle_subscription_appstle_subscription_product_page_widget_QiqR74": {
@@ -315,7 +315,7 @@
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
-            "appstle_bundles_appstle_combo_bundle_6rDjL7",
+            "appstle_bundles_appstle_classic_bundle_iEPtha",
             "appstle_subscription_appstle_subscription_product_page_widget_QiqR74",
             "buy_buttons_eYQEYi",
             "text_aEtTtq"
