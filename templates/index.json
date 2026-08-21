@@ -179,6 +179,15 @@
             "content": ""
           }
         },
+        "accordion_QG3q6V": {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule size",
+            "items_count": "",
+            "content_type": "capsule_size",
+            "content": ""
+          }
+        },
         "product_tab_i94QCt": {
           "type": "product_tab",
           "settings": {
@@ -235,6 +244,7 @@
         "product_tab_YibUzB",
         "accordion_QDyHNQ",
         "accordion_6QwgTW",
+        "accordion_QG3q6V",
         "product_tab_i94QCt",
         "accordion_Y6PeRJ",
         "accordion_KGRFRR",
