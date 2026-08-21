@@ -44,7 +44,7 @@
           {%- endif -%}
         </h4>
         {%- if description != blank -%}
-          <p>{{ description }}</p>
+          <p>{{ description | newline_to_br }}</p>
         {%- endif -%}
       </div>
     </div>
