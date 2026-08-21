@@ -333,6 +333,11 @@
                     {%- assign acc_content = rendered_snippet | strip -%}
                   {%- endif -%}
 
+                  {%- assign show_acc = false -%}
+                  {%- if acc_content != blank -%}
+                    {%- assign show_acc = true -%}
+                  {%- endif -%}
+
                   {%- if show_acc -%}
                     <details class="ww-acc" {{ sub_block.shopify_attributes }}>
                       <summary>
