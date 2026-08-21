@@ -265,9 +265,9 @@
                                         <strong>{{ sub_servings_qty }} servings · {{ plan.name }}</strong>
                                       </span>
                                       {%- if plan.description != blank -%}
-                                        <span class="ww-sub-opt__plan-desc">{{ plan.description | escape }}</span>
+                                        <span class="ww-sub-opt__plan-desc">{{ plan.description }}</span>
                                       {%- elsif group.description != blank -%}
-                                        <span class="ww-sub-opt__plan-desc">{{ group.description | escape }}</span>
+                                        <span class="ww-sub-opt__plan-desc">{{ group.description }}</span>
                                       {%- endif -%}
                                     </span>
                                     
