@@ -245,12 +245,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "appstle_bundles_appstle_fixed_pricing_bundle_product_page_custom_page_LF9U7j": {
-              "type": "shopify://apps/appstle-bundles/blocks/appstle-fixed-pricing-bundle-product-page-custom-page/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
-              "settings": {
-                "product": ""
-              }
-            },
             "product_list_text_g4t9zi": {
               "type": "_product-list-text",
               "name": "t:names.collection_title",
@@ -297,7 +291,6 @@
             }
           },
           "block_order": [
-            "appstle_bundles_appstle_fixed_pricing_bundle_product_page_custom_page_LF9U7j",
             "product_list_text_g4t9zi",
             "product_list_button_f4EaDQ"
           ]
@@ -362,6 +355,12 @@
               },
               "blocks": {}
             },
+            "appstle_bundles_appstle_fixed_pricing_bundle_product_page_custom_page_rNphrt": {
+              "type": "shopify://apps/appstle-bundles/blocks/appstle-fixed-pricing-bundle-product-page-custom-page/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
+              "settings": {
+                "product": ""
+              }
+            },
             "price_wT4QUb": {
               "type": "price",
               "name": "t:names.product_price",
@@ -389,6 +388,7 @@
           "block_order": [
             "product_card_gallery_YYgj9t",
             "product_title_xjCNBH",
+            "appstle_bundles_appstle_fixed_pricing_bundle_product_page_custom_page_rNphrt",
             "price_wT4QUb"
           ]
         }
