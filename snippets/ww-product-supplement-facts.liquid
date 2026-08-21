@@ -17,13 +17,9 @@
   2. CREATE THE PRODUCT METAFIELDS:
      - Go to: Settings > Custom data > Products > Add definition.
      
-     a. Directions (Single or multi-line text):
-        - Name: "Directions"
+     a. Directions & Caution (Rich Text):
+        - Name: "Directions & Caution"
         - Namespace and key: "custom.directions"
-        
-     b. Caution (Single or multi-line text):
-        - Name: "Caution"
-        - Namespace and key: "custom.caution"
         
      c. Serving Size (Single line text):
         - Name: "Serving Size"
@@ -33,7 +29,7 @@
         - Name: "Servings Per Container"
         - Namespace and key: "custom.servings_per_container"
         
-     e. Other Ingredients (Single or multi-line text):
+     e. Other Ingredients (Rich Text):
         - Name: "Other Ingredients"
         - Namespace and key: "custom.other_ingredients"
         
@@ -50,17 +46,10 @@
 {% endcomment %}
 
 {%- assign directions = product.metafields.custom.directions.value | default: product.metafields.custom.directions -%}
-{%- assign caution = product.metafields.custom.caution.value | default: product.metafields.custom.caution -%}
 
 {%- if directions != blank -%}
-  <div class="ww-detail-lede" style="margin:0 0 14px">
-    <strong>Directions:</strong> {{ directions }}
-  </div>
-{%- endif -%}
-
-{%- if caution != blank -%}
-  <div class="ww-detail-lede" style="margin:0 0 20px; font-size:0.9em; opacity:0.85;">
-    <strong>Caution:</strong> {{ caution }}
+  <div class="ww-detail-lede ww-rich-text" style="margin:0 0 20px">
+    {{ directions }}
   </div>
 {%- endif -%}
 
@@ -98,7 +87,9 @@
       {%- endfor -%}
       
       {%- if other_ingredients != blank -%}
-        <p class="ww-sf-note">Other ingredients: {{ other_ingredients | escape }}</p>
+        <div class="ww-sf-note ww-rich-text" style="margin-top: 8px;">
+          {{ other_ingredients }}
+        </div>
       {%- endif -%}
     </div>
   </div>
