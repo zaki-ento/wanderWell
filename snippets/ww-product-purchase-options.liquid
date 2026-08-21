@@ -62,7 +62,6 @@
                 />
                 <span class="ww-sub-opt__radio-bullet"></span>
               </span>
-              {{  }}
               <span class="ww-sub-opt__details">
                 <span class="ww-sub-opt__title">
                   Subscribe & Save
@@ -152,9 +151,9 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      border: 1px solid #E5E5E5;
+      border: 1px solid var(--ww-color-border, #E5E5E5);
       border-radius: 12px;
-      background: #FFFFFF;
+      background: var(--ww-color-white, #FFFFFF);
       cursor: pointer;
       text-align: left;
       transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -164,13 +163,13 @@
     }
 
     .ww-sub-opt.on {
-      border-color: #E8632B;
-      background-color: #FAF7F2;
+      border-color: var(--ww-color-primary, #E8632B);
+      background-color: var(--ww-color-background, #FAF7F2);
     }
 
     .ww-sub-badge {
-      background-color: #E8632B;
-      color: #FFFFFF;
+      background-color: var(--ww-color-primary, #E8632B);
+      color: var(--ww-color-white, #FFFFFF);
       font-size: 11px;
       font-weight: bold;
       text-transform: uppercase;
@@ -218,7 +217,7 @@
     .ww-sub-opt__radio-bullet {
       width: 18px;
       height: 18px;
-      border: 2px solid #E5E5E5;
+      border: 2px solid var(--ww-color-border, #E5E5E5);
       border-radius: 50%;
       display: inline-block;
       position: relative;
@@ -226,7 +225,7 @@
     }
 
     .ww-sub-opt.on .ww-sub-opt__radio-bullet {
-      border-color: #E8632B;
+      border-color: var(--ww-color-primary, #E8632B);
     }
 
     .ww-sub-opt.on .ww-sub-opt__radio-bullet::after {
@@ -237,7 +236,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: #E8632B;
+      background-color: var(--ww-color-primary, #E8632B);
     }
 
     .ww-sub-opt__details {
@@ -251,7 +250,7 @@
     .ww-sub-opt__title {
       font-size: 16px;
       font-weight: bold;
-      color: #1A1A1A;
+      color: var(--ww-color-text, #1A1A1A);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -264,23 +263,23 @@
       padding: 2px 8px;
       border-radius: 20px;
       line-height: 1.2;
-      background-color: #E5E5E5;
-      color: #1A1A1A;
+      background-color: var(--ww-color-border, #E5E5E5);
+      color: var(--ww-color-text, #1A1A1A);
     }
 
     .ww-sub-opt.on .ww-sub-opt__pack-badge {
-      background-color: #E8632B;
-      color: #FFFFFF;
+      background-color: var(--ww-color-primary, #E8632B);
+      color: var(--ww-color-white, #FFFFFF);
     }
 
     .ww-sub-opt__servings {
       font-size: 12px;
-      color: #5C5C5C;
+      color: var(--ww-color-text-light, #5C5C5C);
     }
 
     .ww-sub-opt__plan-desc {
       font-size: 12px;
-      color: #8C8C8C;
+      color: var(--ww-color-text-light, #8C8C8C);
       margin-top: 2px;
       line-height: 1.35;
     }
@@ -296,7 +295,7 @@
     .ww-sub-opt__price {
       font-size: 18px;
       font-weight: bold;
-      color: #1A1A1A;
+      color: var(--ww-color-text, #1A1A1A);
       display: flex;
       align-items: baseline;
       gap: 6px;
@@ -305,13 +304,13 @@
     .ww-sub-opt__compare-price {
       font-size: 14px;
       text-decoration: line-through;
-      color: #8C8C8C;
+      color: var(--ww-color-text-light, #8C8C8C);
       font-weight: normal;
     }
 
     .ww-sub-opt__per-serving {
       font-size: 11px;
-      color: #8C8C8C;
+      color: var(--ww-color-text-light, #8C8C8C);
     }
 
     .ww-sub-opt__perks {
@@ -323,7 +322,7 @@
 
     .ww-sub-opt__perk {
       font-size: 13px;
-      color: #1A1A1A;
+      color: var(--ww-color-text, #1A1A1A);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -331,7 +330,7 @@
 
     .ww-sub-opt__perk::before {
       content: "✓";
-      color: #E8632B;
+      color: var(--ww-color-primary, #E8632B);
       font-weight: bold;
     }
   {% endstyle %}
