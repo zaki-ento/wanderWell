@@ -1,7 +1,44 @@
 {% comment %}
   Snippet: WW Product Capsule Size-Scale Visual
-  Renders capsule dimensions comparison visualization chart.
+  Renders capsule dimensions comparison visualization chart dynamically from product metafields.
+  Accepts: product
 {% endcomment %}
+
+{%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size | default: 'Size 4' -%}
+{%- assign capsule_size_clean = capsule_size | downcase | remove: ' ' -%}
+
+{%- assign capsule_dimensions = product.metafields.custom.capsule_dimensions.value | default: product.metafields.custom.capsule_dimensions -%}
+
+{%- if capsule_dimensions == blank -%}
+  {%- if capsule_size_clean == 'size4' -%}
+    {%- assign capsule_dimensions = '14.3 × 5.31 mm' -%}
+  {%- elsif capsule_size_clean == 'size3' -%}
+    {%- assign capsule_dimensions = '15.9 × 5.82 mm' -%}
+  {%- elsif capsule_size_clean == 'size2' -%}
+    {%- assign capsule_dimensions = '18.0 × 6.35 mm' -%}
+  {%- elsif capsule_size_clean == 'size1' -%}
+    {%- assign capsule_dimensions = '19.4 × 6.91 mm' -%}
+  {%- elsif capsule_size_clean == 'size0' -%}
+    {%- assign capsule_dimensions = '21.7 × 7.64 mm' -%}
+  {%- elsif capsule_size_clean == 'size00' -%}
+    {%- assign capsule_dimensions = '23.3 × 8.53 mm' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign style_w_h = 'width:114px;height:42px' -%}
+{%- if capsule_size_clean == 'size4' -%}
+  {%- assign style_w_h = 'width:114px;height:42px' -%}
+{%- elsif capsule_size_clean == 'size3' -%}
+  {%- assign style_w_h = 'width:127px;height:46px' -%}
+{%- elsif capsule_size_clean == 'size2' -%}
+  {%- assign style_w_h = 'width:144px;height:51px' -%}
+{%- elsif capsule_size_clean == 'size1' -%}
+  {%- assign style_w_h = 'width:155px;height:55px' -%}
+{%- elsif capsule_size_clean == 'size0' -%}
+  {%- assign style_w_h = 'width:174px;height:61px' -%}
+{%- elsif capsule_size_clean == 'size00' -%}
+  {%- assign style_w_h = 'width:186px;height:68px' -%}
+{%- endif -%}
 
 <div class="ww-capsize">
   <div class="ww-capsize-h">Capsule size, to scale</div>
@@ -15,11 +52,11 @@
         {%- else -%}
           <span>wanderWell</span>
         {%- endif -%}
-        <small>Size 4</small>
+        <small>{{ capsule_size | escape }}</small>
       </div>
       <div class="ww-capbar">
-        <div class="ww-cap" style="width:114px;height:42px"></div>
-        <span class="ww-capdim">14.3 × 5.31 mm</span>
+        <div class="ww-cap" style="{{ style_w_h }}"></div>
+        <span class="ww-capdim">{{ capsule_dimensions | escape }}</span>
       </div>
     </div>
     

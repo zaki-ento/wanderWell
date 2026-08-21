@@ -1,83 +1,52 @@
 {% comment %}
   Snippet: WW Product Ingredients List
-  Renders default ingredients lists based on product handle if setting overrides are blank.
-  Accepts: product
+  Renders the ingredients list dynamically from a Product Metafield referencing a list of Ingredient Metaobjects.
+
+  ========================================================================================
+  SHOPIFY ADMIN CUSTOM DATA CONFIGURATION GUIDE:
+  ========================================================================================
+  1. CREATE THE METAOBJECT (The repeater item structure):
+     - Go to: Settings > Custom data > Metaobjects > Add definition.
+     - Name: "Ingredient" (Shopify will automatically assign key: "ingredient").
+     - Add these 3 Fields:
+       * Field 1: Single line text -> Name: "Heading" (Key: "heading")
+       * Field 2: Single line text -> Name: "Subheading" (Key: "subheading")
+       * Field 3: Multi-line text -> Name: "Description" (Key: "description")
+
+  2. CREATE THE PRODUCT METAFIELD (The list of ingredients):
+     - Go to: Settings > Custom data > Products > Add definition.
+     - Name: "Ingredients"
+     - Namespace and key: "custom.ingredients"
+     - Type: Select "Metaobject", and select "List of entries" (repeater).
+     - Reference: Select your "Ingredient" metaobject definition.
+
+  3. ADD DATA TO PRODUCTS:
+     - Go to any Product page in your Admin, scroll to the bottom Metafields section, 
+       and add/link entries in your "Ingredients" list!
+  ========================================================================================
 {% endcomment %}
 
-{%- assign handle = product.handle | downcase -%}
+{%- assign ingredients_list = product.metafields.custom.ingredients.value -%}
 
-{%- if handle contains 'digestive' -%}
-  {{ product.title }}
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Organic Ginger Root Extract <span class="amt">550 mg</span></h4>
-      <p>Standardized to contain 5% gingerols to deliver a consistent amount in every serving. Ginger has traditionally been used to support digestive comfort and maintain healthy gut motility*</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Rice Hulls</h4>
-      <p>Ground rice hulls from whole rice grain are used as a natural flow agent in the manufacturing process to support consistent dosing in every capsule.</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Rice Extract Blend</h4>
-      <p>A blend of rice extract, rice hulls, gum arabic, and sunflower oil that helps the capsules fill smoothly, so your serving is consistent every time.</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Hypromellose Capsule</h4>
-      <p>Vegetarian capsule made from plant-derived cellulose, with no gelatin or animal products.</p>
-    </div>
-  </div>
+{%- if ingredients_list != blank -%}
+  {%- for item in ingredients_list -%}
+    {%- assign heading = item.heading.value | default: item.heading -%}
+    {%- assign subheading = item.subheading.value | default: item.subheading -%}
+    {%- assign description = item.description.value | default: item.description -%}
 
-{%- elsif handle contains 'immune' -%}
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Vitamin C <span class="amt">300 mg</span></h4>
-      <p>300 mg per serving to support immune function.*</p>
+    <div class="ww-ing">
+      <div class="ww-ing-dot"></div>
+      <div>
+        <h4>
+          {{ heading | escape }}
+          {%- if subheading != blank -%}
+            <span class="amt">{{ subheading | escape }}</span>
+          {%- endif -%}
+        </h4>
+        {%- if description != blank -%}
+          <p>{{ description }}</p>
+        {%- endif -%}
+      </div>
     </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Zinc <span class="amt">16 mg</span></h4>
-      <p>An essential mineral your immune cells need to develop and function properly.*</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Lysine <span class="amt">96 mg</span></h4>
-      <p>An essential amino acid that works alongside other nutrients to support immune function.*</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Niacinamide (Vitamin B3) <span class="amt">25 mg</span></h4>
-      <p>The no-flush form, to avoid the redness and tingling other forms can trigger. Supports the cellular energy your immune cells need to function.*</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Vitamin B1 <span class="amt">1 mg</span></h4>
-      <p>A B vitamin that helps your immune cells form and function.*</p>
-    </div>
-  </div>
-  <div class="ww-ing">
-    <div class="ww-ing-dot"></div>
-    <div>
-      <h4>Rice Extract</h4>
-      <p>A rice extract that aids in the manufacturing process and improves powder flow to support consistent dosing in every sachet.</p>
-    </div>
-  </div>
+  {%- endfor -%}
 {%- endif -%}

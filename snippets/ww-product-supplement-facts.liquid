@@ -1,107 +1,60 @@
 {% comment %}
   Snippet: WW Product Supplement Facts Panel
-  Renders default directions and Supplement Facts panels based on product handle if setting overrides are blank.
+  Renders directions and Supplement Facts panels dynamically from product metafields/metaobjects.
   Accepts: product
 {% endcomment %}
 
-{%- assign handle = product.handle | downcase -%}
+{%- assign directions = product.metafields.custom.directions.value | default: product.metafields.custom.directions -%}
+{%- assign caution = product.metafields.custom.caution.value | default: product.metafields.custom.caution -%}
 
-{%- if handle contains 'digestive' -%}
-  <p class="ww-detail-lede" style="margin:0 0 14px"><strong>Directions:</strong> As a dietary supplement, take 2 capsules between meals.</p>
-  <p class="ww-detail-lede" style="margin:0 0 14px"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p>
-  <p class="ww-detail-lede" style="margin:0 0 20px"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p>
-  
+{%- if directions != blank -%}
+  <div class="ww-detail-lede" style="margin:0 0 14px">
+    <strong>Directions:</strong> {{ directions }}
+  </div>
+{%- endif -%}
+
+{%- if caution != blank -%}
+  <div class="ww-detail-lede" style="margin:0 0 20px; font-size:0.9em; opacity:0.85;">
+    <strong>Caution:</strong> {{ caution }}
+  </div>
+{%- endif -%}
+
+{%- assign facts_html = product.metafields.custom.supplement_facts_html.value | default: product.metafields.custom.supplement_facts.value | default: product.metafields.custom.product_information.value | default: product.metafields.custom.product_information -%}
+{%- assign serving_size = product.metafields.custom.serving_size.value | default: product.metafields.custom.serving_size -%}
+{%- assign servings_per = product.metafields.custom.servings_per_container.value | default: product.metafields.custom.servings_per_container -%}
+{%- assign facts_list = product.metafields.custom.supplement_facts_list.value -%}
+{%- assign other_ingredients = product.metafields.custom.other_ingredients.value | default: product.metafields.custom.other_ingredients -%}
+
+{%- if facts_html != blank -%}
+  {{ facts_html }}
+{%- elsif serving_size != blank or facts_list != blank -%}
   <div class="ww-sf-panel">
     <h4 class="ww-sf-h">Supplement Facts Panel</h4>
     <div class="ww-sf">
-      <div class="ww-sf-meta">Serving size: 2 capsules &nbsp;·&nbsp; Servings per container: 15</div>
-      <div class="ww-sf-row ww-sf-row--h">
-        <span>&nbsp;</span>
-        <span>Amount per serving</span>
-        <span>% DV</span>
-      </div>
-      <div class="ww-sf-row">
-        <span>Organic Ginger Root Extract (Zingiber officinale) (standardized to contain 5% gingerols)</span>
-        <span>550 mg</span>
-        <span>†</span>
-      </div>
-      <p class="ww-sf-note">† Daily Value (DV) not established.<br>Other ingredients: Hypromellose (cellulose) capsule, Rice Hulls, Rice Extract Blend.</p>
-    </div>
-  </div>
-
-{%- elsif handle contains 'immune' -%}
-  <p class="ww-detail-lede" style="margin:0 0 14px"><strong>Directions:</strong> Tear and pour into 8–10 oz of room temperature or cold water. Shake or mix well before use!</p>
-  <p class="ww-detail-lede" style="margin:0 0 14px">We proudly use rice extract (natural silica) as a natural flow agent instead of the synthetic alternative. Because of this, some settling is normal.</p>
-  <p class="ww-detail-lede" style="margin:0 0 14px"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p>
-  <p class="ww-detail-lede" style="margin:0 0 20px"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p>
-  
-  <div class="ww-sf-panel">
-    <h4 class="ww-sf-h">Supplement Facts Panel</h4>
-    <div class="ww-sf">
-      <div class="ww-sf-meta">Serving size: 1 sachet (7 g) &nbsp;·&nbsp; Servings per carton: 15</div>
-      <div class="ww-sf-row ww-sf-row--h">
-        <span>&nbsp;</span>
-        <span>Amount per serving</span>
-        <span>% DV</span>
-      </div>
-      <div class="ww-sf-row"><span>Vitamin C (ascorbic acid)</span><span>300 mg</span><span>333%</span></div>
-      <div class="ww-sf-row"><span>Zinc (as zinc citrate)</span><span>16 mg</span><span>145%</span></div>
-      <div class="ww-sf-row"><span>Niacinamide (vitamin B3)</span><span>25 mg</span><span>156%</span></div>
-      <div class="ww-sf-row"><span>Thiamine (vitamin B1)</span><span>1 mg</span><span>83%</span></div>
-      <div class="ww-sf-row"><span>L-Lysine HCl</span><span>96 mg</span><span>**</span></div>
-      <p class="ww-sf-note">** Daily Value not established.<br>Other ingredients: natural tropical-citrus flavor, citric acid, monk fruit extract, cane sugar.</p>
-    </div>
-  </div>
-
-{%- elsif handle contains 'duo' or handle contains 'bundle' -%}
-  <div class="ww-steps">
-    <div class="ww-step">
-      <div class="ww-step-n">1</div>
-      <div>
-        <h4>Morning: Immune</h4>
-        <p>Mix one Immune sachet into water and sip with breakfast.</p>
-      </div>
-    </div>
-    <div class="ww-step">
-      <div class="ww-step-n">2</div>
-      <div>
-        <h4>Between meals: Digestive</h4>
-        <p>Take one Digestive sachet (2 capsules) with water.</p>
-      </div>
-    </div>
-    <p class="ww-steps-note">Or take your Digestive Support capsules with your Immune Support drink.</p>
-  </div>
-  <p class="ww-detail-lede" style="margin:20px 0 14px"><strong>Caution:</strong> If you are pregnant or lactating, have any health condition, or are taking any medication, consult your health professional before use.</p>
-  <p class="ww-detail-lede" style="margin:0 0 20px"><strong>Keep out of the reach of children.</strong> Store in a cool, dry place.</p>
-  
-  <div class="ww-sf-panel">
-    <h4 class="ww-sf-h">Supplement Facts Panel</h4>
-    <div class="ww-sf">
-      <div class="ww-sf-meta"><strong>Digestive Support</strong><br>Serving size: 2 capsules · servings per container: 15</div>
-      <div class="ww-sf-row ww-sf-row--h">
-        <span>&nbsp;</span>
-        <span>Amount per serving</span>
-        <span>% DV</span>
-      </div>
-      <div class="ww-sf-row">
-        <span>Organic Ginger Root Extract (Zingiber officinale) (standardized to contain 5% gingerols)</span>
-        <span>550 mg</span>
-        <span>†</span>
-      </div>
-      <p class="ww-sf-note" style="margin-top:8px">† Daily Value (DV) not established.<br>Other ingredients: Hypromellose (cellulose) capsule, Rice Hulls, Rice Extract Blend.</p>
+      {%- if serving_size != blank or servings_per != blank -%}
+        <div class="ww-sf-meta">
+          {%- if serving_size != blank -%}Serving size: {{ serving_size }}{%- endif -%}
+          {%- if servings_per != blank -%}&nbsp;·&nbsp; Servings per container: {{ servings_per }}{%- endif -%}
+        </div>
+      {%- endif -%}
       
-      <div class="ww-sf-meta" style="margin-top:22px"><strong>Immune Support</strong><br>Serving size: 1 sachet (7 g) · 15 servings</div>
       <div class="ww-sf-row ww-sf-row--h">
         <span>&nbsp;</span>
         <span>Amount per serving</span>
         <span>% DV</span>
       </div>
-      <div class="ww-sf-row"><span>Vitamin C (ascorbic acid)</span><span>300 mg</span><span>333%</span></div>
-      <div class="ww-sf-row"><span>Zinc (as zinc citrate)</span><span>16 mg</span><span>145%</span></div>
-      <div class="ww-sf-row"><span>Niacinamide (vitamin B3)</span><span>25 mg</span><span>156%</span></div>
-      <div class="ww-sf-row"><span>Thiamine (vitamin B1)</span><span>1 mg</span><span>83%</span></div>
-      <div class="ww-sf-row"><span>L-Lysine HCl</span><span>96 mg</span><span>†</span></div>
-      <p class="ww-sf-note">† Daily Value (DV) not established.</p>
+      
+      {%- for item in facts_list -%}
+        <div class="ww-sf-row">
+          <span>{{ item.name | default: item.title | escape }}</span>
+          <span>{{ item.amount | default: item.dosage | escape }}</span>
+          <span>{{ item.daily_value | default: item.dv | default: '†' | escape }}</span>
+        </div>
+      {%- endfor -%}
+      
+      {%- if other_ingredients != blank -%}
+        <p class="ww-sf-note">Other ingredients: {{ other_ingredients | escape }}</p>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
