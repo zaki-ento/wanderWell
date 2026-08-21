@@ -204,6 +204,16 @@
                         <input type="hidden" name="selling_plan" value="">
                         <input type="hidden" name="quantity" value="1" class="ww-qty-input">
                         
+                        {%- for sub_block in section.blocks -%}
+                          {%- if sub_block.type == '@app' -%}
+                            <div class="ww-app-block-wrapper" {{ sub_block.shopify_attributes }}>
+                              {%- render sub_block -%}
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                        
+                        <div class="appstle-subscription-widget" data-product-id="{{ current_prod.id }}"></div>
+                        
                         <div class="ww-buy-row">
                           <div class="ww-qty">
                             <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
@@ -1310,6 +1320,9 @@
     }
   ],
   "blocks": [
+    {
+      "type": "@app"
+    },
     {
       "type": "product_tab",
       "name": "Product Tab",
