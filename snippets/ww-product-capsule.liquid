@@ -2,6 +2,27 @@
   Snippet: WW Product Capsule Size-Scale Visual
   Renders capsule dimensions comparison visualization chart dynamically from product metafields.
   Accepts: product
+
+  ========================================================================================
+  SHOPIFY ADMIN CUSTOM DATA CONFIGURATION GUIDE FOR CAPSULE SIZE:
+  ========================================================================================
+  1. CREATE THE PRODUCT METAFIELDS:
+     - Go to: Settings > Custom data > Products > Add definition.
+     
+     a. Capsule Size (Single line text):
+        - Name: "Capsule Size"
+        - Namespace and key: "custom.capsule_size"
+        - Description: Set value to e.g., "Size 4", "Size 3", "Size 2", "Size 1", "Size 0", or "Size 00".
+        
+     b. Capsule Dimensions (Single line text):
+        - Name: "Capsule Dimensions"
+        - Namespace and key: "custom.capsule_dimensions"
+        - Description: Set value to e.g., "14.3 × 5.31 mm".
+        
+  2. ADD DATA TO PRODUCTS:
+     - Go to any Product page in your Admin, scroll to the bottom Metafields section,
+       and fill in your product's Capsule Size and Capsule Dimensions values!
+  ========================================================================================
 {% endcomment %}
 
 {%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size | default: 'Size 4' -%}

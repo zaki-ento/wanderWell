@@ -2,6 +2,51 @@
   Snippet: WW Product Supplement Facts Panel
   Renders directions and Supplement Facts panels dynamically from product metafields/metaobjects.
   Accepts: product
+
+  ========================================================================================
+  SHOPIFY ADMIN CUSTOM DATA CONFIGURATION GUIDE FOR SUPPLEMENT FACTS:
+  ========================================================================================
+  1. CREATE THE METAOBJECT (The row structure for each supplement fact entry):
+     - Go to: Settings > Custom data > Metaobjects > Add definition.
+     - Name: "Supplement Fact Row" (Shopify will automatically assign key: "supplement_fact_row").
+     - Add these 3 Fields:
+       * Field 1: Single line text -> Name: "Name" (Key: "name")
+       * Field 2: Single line text -> Name: "Amount" (Key: "amount")
+       * Field 3: Single line text -> Name: "Daily Value" (Key: "daily_value")
+
+  2. CREATE THE PRODUCT METAFIELDS:
+     - Go to: Settings > Custom data > Products > Add definition.
+     
+     a. Directions (Single or multi-line text):
+        - Name: "Directions"
+        - Namespace and key: "custom.directions"
+        
+     b. Caution (Single or multi-line text):
+        - Name: "Caution"
+        - Namespace and key: "custom.caution"
+        
+     c. Serving Size (Single line text):
+        - Name: "Serving Size"
+        - Namespace and key: "custom.serving_size"
+        
+     d. Servings Per Container (Single line text):
+        - Name: "Servings Per Container"
+        - Namespace and key: "custom.servings_per_container"
+        
+     e. Other Ingredients (Single or multi-line text):
+        - Name: "Other Ingredients"
+        - Namespace and key: "custom.other_ingredients"
+        
+     f. Supplement Facts List (The list of rows):
+        - Name: "Supplement Facts List"
+        - Namespace and key: "custom.supplement_facts_list"
+        - Type: Select "Metaobject", and select "List of entries" (repeater).
+        - Reference: Select your "Supplement Fact Row" metaobject definition.
+        
+  3. ADD DATA TO PRODUCTS:
+     - Go to any Product page in your Admin, scroll to the bottom Metafields section,
+       fill in directions/caution/metadata, and link entries in your "Supplement Facts List" repeater!
+  ========================================================================================
 {% endcomment %}
 
 {%- assign directions = product.metafields.custom.directions.value | default: product.metafields.custom.directions -%}
