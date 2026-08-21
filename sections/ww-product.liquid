@@ -267,7 +267,9 @@
                                       {%- if plan.description != blank -%}
                                         <span class="ww-sub-opt__plan-desc">{{ plan.description }}</span>
                                       {%- elsif group.description != blank -%}
-                                        <span class="ww-sub-opt__plan-desc">{{ group.description }}</span>
+                                        <span class="ww-sub-opt__perks">
+                                          <span class="ww-sub-opt__perk">{{ group.description }}</span>
+                                        </span>
                                       {%- endif -%}
                                     </span>
                                     
@@ -280,12 +282,6 @@
                                       </span>
                                       <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
                                     </span>
-                                  </span>
-                                  
-                                  <span class="ww-sub-opt__perks">
-                                    <span class="ww-sub-opt__perk">Free shipping every order</span>
-                                    <span class="ww-sub-opt__perk">Pause or cancel any time</span>
-                                    <span class="ww-sub-opt__perk">30-day money-back guarantee</span>
                                   </span>
                                 </span>
                               </div>
