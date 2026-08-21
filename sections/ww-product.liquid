@@ -345,14 +345,10 @@
                         <span class="ww-acc-t">{{ acc_title | escape }}</span>
                         {%- if sub_block.settings.items_count != blank -%}
                           <span class="ww-acc-c">{{ sub_block.settings.items_count | escape }}</span>
-                        {%- elsif acc_type == 'ingredients' and bundle_products != blank -%}
-                          <span class="ww-acc-c">{{ bundle_products.size }} products</span>
-                        {%- else -%}
-                          {%- assign title_dc = acc_title | downcase -%}
-                          {%- if title_dc contains 'ingredients' -%}
-                            <span class="ww-acc-c">
-                              {%- if current_prod.handle contains 'digestive' -%}4 items{%- else -%}6 items{%- endif -%}
-                            </span>
+                        {%- elsif acc_type == 'ingredients' -%}
+                          {%- assign ingredients_list = current_prod.metafields.custom.ingredients.value -%}
+                          {%- if ingredients_list != blank -%}
+                            <span class="ww-acc-c">{{ ingredients_list.size }} items</span>
                           {%- endif -%}
                         {%- endif -%}
                       </summary>
