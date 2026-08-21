@@ -155,7 +155,15 @@
             "product": "digestive-support",
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Capsules · Ginger",
-            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere."
+            "description": ""
+          }
+        },
+        "accordion_AEXyMU": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "content_type": "ingredients",
+            "content": ""
           }
         },
         "product_tab_i94QCt": {
@@ -179,6 +187,7 @@
       },
       "block_order": [
         "product_tab_YibUzB",
+        "accordion_AEXyMU",
         "product_tab_i94QCt",
         "product_tab_6ncFYp"
       ],
