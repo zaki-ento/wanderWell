@@ -27,7 +27,7 @@
 {% endcomment %}
 
 {%- assign ingredients_list = product.metafields.custom.ingredients.value -%}
-
+{{ product.metafields.custom.ingredients.value }}
 {%- if ingredients_list != blank -%}
   {%- for item in ingredients_list -%}
     {%- assign heading = item.heading.value | default: item.heading -%}
