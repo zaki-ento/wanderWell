@@ -167,7 +167,7 @@
             "title": "Ingredients",
             "items_count": "4 Items",
             "content_type": "ingredients",
-            "content": ""
+            "content": "hh"
           }
         },
         "product_tab_i94QCt": {
@@ -202,6 +202,15 @@
             "sub_badge": "2 Pack",
             "sub_multiplier": 1
           }
+        },
+        "accordion_RaV7PR": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
         }
       },
       "block_order": [
@@ -209,7 +218,8 @@
         "accordion_QDyHNQ",
         "product_tab_i94QCt",
         "accordion_Y6PeRJ",
-        "product_tab_6ncFYp"
+        "product_tab_6ncFYp",
+        "accordion_RaV7PR"
       ],
       "settings": {
         "label": "Our Products",
