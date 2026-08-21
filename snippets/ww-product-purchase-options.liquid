@@ -247,7 +247,7 @@
         {%- assign sub_serving_rate = sub_price | divided_by: sub_servings_qty | money -%}
 
         <div class="ww-sub-opt ww-sub-opt--best {% if is_first_plan %}on{% endif %}" data-option-type="subscription">
-          <span class="ww-sub-badge">Most popular · save {{ plan.percentage }} + free shipping</span>
+          <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments.value }} + free shipping</span>
           <span class="ww-sub-opt__content">
             <span class="ww-sub-opt__row">
               <span class="ww-sub-opt__radio-bullet-wrapper">
@@ -260,9 +260,7 @@
                 />
                 <span class="ww-sub-opt__radio-bullet"></span>
               </span>
-              {% assign r = plan %}
-              <pre>{{ r | json }}</pre>
-              {{ plan }}
+              
               <span class="ww-sub-opt__details">
                 <span class="ww-sub-opt__title">
                   Subscribe & Save
