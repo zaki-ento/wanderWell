@@ -301,36 +301,50 @@
       "blocks": {
         "ticker_item_1": {
           "type": "ticker_item",
-          "settings": { "text": "No Artificial Colors" }
+          "settings": {
+            "text": "No Artificial Colors"
+          }
         },
         "ticker_item_2": {
           "type": "ticker_item",
-          "settings": { "text": "No Artificial Flavors" }
+          "settings": {
+            "text": "No Artificial Flavors"
+          }
         },
         "ticker_item_3": {
           "type": "ticker_item",
-          "settings": { "text": "No Artificial Sweeteners" }
+          "settings": {
+            "text": "No Artificial Sweeteners"
+          }
         },
         "ticker_item_4": {
           "type": "ticker_item",
-          "settings": { "text": "No Hidden Ingredients" }
+          "settings": {
+            "text": "No Hidden Ingredients"
+          }
         },
         "ticker_item_5": {
           "type": "ticker_item",
-          "settings": { "text": "No Unnecessary Binders, Fillers, or Preservatives" }
+          "settings": {
+            "text": "No Unnecessary Binders, Fillers, or Preservatives"
+          }
         },
         "ticker_item_6": {
           "type": "ticker_item",
-          "settings": { "text": "No Mega-Doses" }
+          "settings": {
+            "text": "No Mega-Doses"
+          }
         },
         "ticker_item_7": {
           "type": "ticker_item",
-          "settings": { "text": "No Magnesium Stearate" }
+          "settings": {
+            "text": "No Magnesium Stearate"
+          }
         },
         "card_item_1": {
           "type": "card_item",
           "settings": {
-            "icon_svg": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6\"></circle><path d=\"M15.5 15.5 L22 22\"></path></svg>",
+            "icon_svg": "<svg width=\"26\" height=\"26\" viewbox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6\"></circle><path d=\"M15.5 15.5 L22 22\"></path></svg>",
             "title": "Full ingredient transparency",
             "description": "Every ingredient and its amount is listed clearly on our label. No surprises."
           }
@@ -338,7 +352,7 @@
         "card_item_2": {
           "type": "card_item",
           "settings": {
-            "icon_svg": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"10\" width=\"20\" height=\"13\" rx=\"2\"></rect><path d=\"M8 10 L8 7 Q8 3 13 3 Q18 3 18 7 L18 10\"></path><path d=\"M3 16 L23 16\"></path></svg>",
+            "icon_svg": "<svg width=\"26\" height=\"26\" viewbox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"10\" width=\"20\" height=\"13\" rx=\"2\"></rect><path d=\"M8 10 L8 7 Q8 3 13 3 Q18 3 18 7 L18 10\"></path><path d=\"M3 16 L23 16\"></path></svg>",
             "title": "Manufactured with care",
             "description": "Our products are manufactured in the U.S. in NSF-certified facilities that follow Good Manufacturing Practices (GMP), helping ensure quality and consistency in every sachet."
           }
@@ -346,7 +360,7 @@
         "card_item_3": {
           "type": "card_item",
           "settings": {
-            "icon_svg": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 22 L13 10\"></path><path d=\"M13 14 Q16 11 20 12\"></path><path d=\"M13 18 Q10 15 6 16\"></path><path d=\"M13 10 Q14 7 13 4\"></path></svg>",
+            "icon_svg": "<svg width=\"26\" height=\"26\" viewbox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 22 L13 10\"></path><path d=\"M13 14 Q16 11 20 12\"></path><path d=\"M13 18 Q10 15 6 16\"></path><path d=\"M13 10 Q14 7 13 4\"></path></svg>",
             "title": "Naturally sourced",
             "description": "We prioritize naturally-derived ingredients wherever possible, choosing sources that align with our commitment to thoughtful formulations."
           }
@@ -367,10 +381,7 @@
       "settings": {
         "label": "Our Approach",
         "heading": "You deserve to know what's inside",
-        "subheading": "We believe in giving your body what it needs, in amounts that make sense. No excess, no guesswork. Just formulas thoughtfully designed for every journey you take.",
-        "bg_color": "#FAF7F2",
-        "padding_top": 80,
-        "padding_bottom": 80
+        "subheading": "We believe in giving your body what it needs, in amounts that make sense. No excess, no guesswork. Just formulas thoughtfully designed for every journey you take."
       }
     },
     "ww_faq": {
@@ -508,7 +519,7 @@
         "heading": "Got questions? We've got answers.",
         "use_metaobjects": false,
         "metaobject_type": "faq",
-        "bg_color": "#FAF7F2",
+        "bg_color": "#faf7f2",
         "padding_top": 80,
         "padding_bottom": 80
       }
