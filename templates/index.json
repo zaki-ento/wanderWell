@@ -233,9 +233,9 @@
         "accordion_RaV7PR": {
           "type": "accordion",
           "settings": {
-            "title": "Product information",
+            "title": "what's inside",
             "items_count": "",
-            "content_type": "supplement_facts",
+            "content_type": "bundle",
             "content": ""
           }
         },
