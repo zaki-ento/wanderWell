@@ -82,7 +82,7 @@
           <div class="ww-detail">
             {%- assign subtitle = product.metafields.custom.subtitle.value | default: product.metafields.custom.subtitle -%}
             {%- if subtitle != blank -%}
-              <div class="ww-detail-eyebrow">{{ product.title | escape }} · {{ subtitle | escape }}</div>
+              <div class="ww-detail-eyebrow">{{ subtitle | escape }}</div>
             {%- else -%}
               <div class="ww-detail-eyebrow">{{ product.title | escape }}</div>
             {%- endif -%}
