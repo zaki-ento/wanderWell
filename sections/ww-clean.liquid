@@ -1,0 +1,383 @@
+{% comment %}
+  Section: WW Clean / Our Approach
+  Description: Custom dynamic section outlining brand transparency, ticker statements, and highlights.
+{% endcomment %}
+
+<div class="ww-clean section-{{ section.id }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background-color: {{ section.settings.bg_color }};" {{ section.shopify_attributes }}>
+  <div class="container max-w-breakpoint-xl">
+    
+    {%- if section.settings.label != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="ww-clean__header">
+        {%- if section.settings.label != blank -%}
+          <span class="ww-clean__label">{{ section.settings.label | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ww-clean__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="ww-clean__blurb">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- assign has_ticker = false -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'ticker_item' -%}
+        {%- assign has_ticker = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if has_ticker -%}
+      <div class="ww-clean__ticker">
+        <div class="ww-clean__ticker-track">
+          {%- assign ticker_counter = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
+              {%- assign ticker_counter = ticker_counter | plus: 1 -%}
+              
+              {%- if ticker_counter == 5 -%}
+                <span class="ww-clean__ticker-break"></span>
+              {%- endif -%}
+              
+              <span class="ww-clean__ticker-item" {{ block.shopify_attributes }}>
+                <span class="check">✓</span> {{ block.settings.text | escape }}
+              </span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- assign has_cards = false -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'card_item' -%}
+        {%- assign has_cards = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if has_cards -%}
+      <div class="ww-clean__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'card_item' -%}
+            <div class="ww-clean__card" {{ block.shopify_attributes }}>
+              {%- if block.settings.icon_svg != blank -%}
+                <div class="ww-clean__card-icon">
+                  {{ block.settings.icon_svg }}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h3>{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p>{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .ww-clean {
+    padding: 80px 0;
+    background: var(--ww-color-background, #FAF7F2);
+    overflow: hidden;
+  }
+  .ww-clean__header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding: 0 20px;
+  }
+  .ww-clean__label {
+    display: inline-block;
+    font-family: var(--ww-font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ww-color-primary, #E8632B);
+    margin-bottom: 16px;
+  }
+  .ww-clean__title {
+    font-family: var(--ww-font-heading);
+    font-weight: 500;
+    font-size: 2.2rem;
+    color: var(--ww-color-text, #1A1A1A);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .ww-clean__blurb {
+    max-width: 760px;
+    margin: 20px auto 0;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ww-color-text-light, #5C5C5C);
+    text-wrap: pretty;
+  }
+  .ww-clean__ticker {
+    background: var(--ww-color-white, #FFFFFF);
+    padding: 28px 32px;
+    margin-bottom: 64px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--ww-color-border, rgba(44, 44, 44, 0.15));
+    border-bottom: 1px solid var(--ww-color-border, rgba(44, 44, 44, 0.15));
+    
+    /* Full bleed calculations */
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+  }
+  .ww-clean__ticker-track {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 48px;
+    max-width: 1000px;
+    padding: 0 20px;
+  }
+  .ww-clean__ticker-item {
+    font-family: var(--ww-font-body);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--ww-color-text, #1A1A1A);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+  }
+  .ww-clean__ticker-break {
+    flex-basis: 100%;
+    height: 0;
+  }
+  .ww-clean__ticker-item .check {
+    color: var(--ww-color-primary, #E8632B);
+    font-weight: bold;
+  }
+  .ww-clean__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .ww-clean__card {
+    text-align: center;
+    padding: 40px 28px;
+    background: var(--ww-color-white, #FFFFFF);
+    border-radius: 20px;
+    border: 1px solid var(--ww-color-border, rgba(44, 44, 44, 0.1));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .ww-clean__card-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(232, 99, 43, 0.08); /* Pale brand orange */
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.5rem;
+  }
+  .ww-clean__card-icon svg {
+    color: var(--ww-color-primary, #E8632B);
+    stroke: var(--ww-color-primary, #E8632B);
+    width: 26px;
+    height: 26px;
+  }
+  .ww-clean__card h3 {
+    font-family: var(--ww-font-body);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--ww-color-text, #1A1A1A);
+    margin: 0 0 10px 0;
+    letter-spacing: -0.02em;
+  }
+  .ww-clean__card p {
+    font-size: 0.9rem;
+    color: var(--ww-color-text-light, #5C5C5C);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .ww-clean {
+      padding: 60px 0;
+    }
+    .ww-clean__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .ww-clean__title {
+      font-size: 1.8rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Clean / Our Approach",
+  "tag": "section",
+  "class": "ww-section-clean",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Our Approach"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You deserve to know what's inside"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Blurb",
+      "default": "We believe in giving your body what it needs, in amounts that make sense. No excess, no guesswork. Just formulas thoughtfully designed for every journey you take."
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ticker_item",
+      "name": "Ticker Statement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Statement Text",
+          "default": "Statement"
+        }
+      ]
+    },
+    {
+      "type": "card_item",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon (SVG markup)",
+          "info": "Paste custom SVG HTML code here."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Card Description",
+          "default": "Feature description detail text goes here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Clean / Our Approach",
+      "blocks": [
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Artificial Colors" }
+        },
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Artificial Flavors" }
+        },
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Artificial Sweeteners" }
+        },
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Hidden Ingredients" }
+        },
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Unnecessary Binders, Fillers, or Preservatives" }
+        },
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Mega-Doses" }
+        },
+        {
+          "type": "ticker_item",
+          "settings": { "text": "No Magnesium Stearate" }
+        },
+        {
+          "type": "card_item",
+          "settings": {
+            "icon_svg": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6\"></circle><path d=\"M15.5 15.5 L22 22\"></path></svg>",
+            "title": "Full ingredient transparency",
+            "description": "Every ingredient and its amount is listed clearly on our label. No surprises."
+          }
+        },
+        {
+          "type": "card_item",
+          "settings": {
+            "icon_svg": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"10\" width=\"20\" height=\"13\" rx=\"2\"></rect><path d=\"M8 10 L8 7 Q8 3 13 3 Q18 3 18 7 L18 10\"></path><path d=\"M3 16 L23 16\"></path></svg>",
+            "title": "Manufactured with care",
+            "description": "Our products are manufactured in the U.S. in NSF-certified facilities that follow Good Manufacturing Practices (GMP), helping ensure quality and consistency in every sachet."
+          }
+        },
+        {
+          "type": "card_item",
+          "settings": {
+            "icon_svg": "<svg width=\"26\" height=\"26\" viewBox=\"0 0 26 26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 22 L13 10\"></path><path d=\"M13 14 Q16 11 20 12\"></path><path d=\"M13 18 Q10 15 6 16\"></path><path d=\"M13 10 Q14 7 13 4\"></path></svg>",
+            "title": "Naturally sourced",
+            "description": "We prioritize naturally-derived ingredients wherever possible, choosing sources that align with our commitment to thoughtful formulations."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
