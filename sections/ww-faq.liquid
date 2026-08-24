@@ -1,0 +1,463 @@
+{% comment %}
+  Section: WW FAQ
+  Description: Custom dynamic FAQ section supporting static customizer blocks (with dynamic category groupings) or automatic dynamic sync from Metaobjects.
+{% endcomment %}
+
+<div class="ww-faq section-{{ section.id }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background-color: {{ section.settings.bg_color }};" {{ section.shopify_attributes }}>
+  <div class="container max-w-breakpoint-xl">
+    
+    {%- if section.settings.label != blank or section.settings.heading != blank -%}
+      <div class="ww-faq__header">
+        {%- if section.settings.label != blank -%}
+          <span class="ww-faq__label">{{ section.settings.label | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ww-faq__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ww-faq-categories">
+      {%- if section.settings.use_metaobjects -%}
+        
+        {%- comment -%} 1. Fetch values from global Metaobjects dynamically {%- endcomment -%}
+        {%- assign meta_faqs = shop.metaobjects[section.settings.metaobject_type].values -%}
+        
+        {%- if meta_faqs != blank -%}
+          {%- comment -%} Extract unique category names {%- endcomment -%}
+          {%- assign categories_str = "" -%}
+          {%- for faq in meta_faqs -%}
+            {%- assign cat = faq.category.value | default: faq.category | default: "General" -%}
+            {%- unless categories_str contains cat -%}
+              {%- assign categories_str = categories_str | append: cat | append: "|||" -%}
+            {%- endunless -%}
+          {%- endfor -%}
+          {%- assign categories = categories_str | split: "|||" -%}
+
+          {%- for category in categories -%}
+            {%- if category != blank -%}
+              <div class="ww-faq-category collapsed">
+                <button class="ww-faq-category-title" aria-expanded="false">
+                  <span class="ww-faq-category-icon">+</span>{{ category | escape }}
+                </button>
+                <div class="ww-faq-list">
+                  {%- for faq in meta_faqs -%}
+                    {%- assign faq_cat = faq.category.value | default: faq.category | default: "General" -%}
+                    {%- if faq_cat == category -%}
+                      <div class="ww-faq-item">
+                        <button class="ww-faq-question" aria-expanded="false">
+                          {{ faq.question.value | default: faq.question | escape }}
+                          <span class="ww-faq-icon">+</span>
+                        </button>
+                        <div class="ww-faq-answer">
+                          {%- assign answer_val = faq.answer.value | default: faq.answer -%}
+                          {%- if answer_val.type == 'root' -%}
+                            {{ answer_val | metafield_tag }}
+                          {%- else -%}
+                            <p>{{ answer_val | newline_to_br }}</p>
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+      {%- else -%}
+
+        {%- comment -%} 2. Fetch static customizer blocks {%- endcomment -%}
+        {%- assign is_first_category = true -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'category' -%}
+            {%- if is_first_category == false -%}
+                </div>
+              </div>
+            {%- endif -%}
+            {%- assign is_first_category = false -%}
+            
+            <div class="ww-faq-category collapsed" {{ block.shopify_attributes }}>
+              <button class="ww-faq-category-title" aria-expanded="false">
+                <span class="ww-faq-category-icon">+</span>{{ block.settings.title | escape }}
+              </button>
+              <div class="ww-faq-list">
+          {%- elsif block.type == 'faq' -%}
+            <div class="ww-faq-item" {{ block.shopify_attributes }}>
+              <button class="ww-faq-question" aria-expanded="false">
+                {{ block.settings.question | escape }}
+                <span class="ww-faq-icon">+</span>
+              </button>
+              <div class="ww-faq-answer">
+                {%- if block.settings.answer != blank -%}
+                  {{ block.settings.answer }}
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if is_first_category == false -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .ww-faq {
+    padding: 80px 0;
+    background: var(--ww-color-background, #FAF7F2);
+  }
+  .ww-faq__header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding: 0 20px;
+  }
+  .ww-faq__label {
+    display: inline-block;
+    font-family: var(--ww-font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ww-color-primary, #E8632B);
+    margin-bottom: 16px;
+  }
+  .ww-faq__title {
+    font-family: var(--ww-font-heading);
+    font-weight: 500;
+    font-size: 2.2rem;
+    color: var(--ww-color-text, #1A1A1A);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .ww-faq-categories {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+  }
+  .ww-faq-category {
+    border: 1.5px solid var(--ww-color-border, rgba(44, 44, 44, 0.14));
+    border-radius: 16px;
+    background: var(--ww-color-white, #FFFFFF);
+    overflow: hidden;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .ww-faq-category.open {
+    border-color: var(--ww-color-primary, #E8632B);
+    background: rgba(232, 99, 43, 0.04); /* Light brand orange tint */
+  }
+  .ww-faq-category-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--ww-font-body);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    color: var(--ww-color-text, #1A1A1A);
+    margin: 0;
+    padding: 20px 22px;
+    outline: none;
+  }
+  .ww-faq-category-icon {
+    color: var(--ww-color-primary, #E8632B);
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  .ww-faq-category.open .ww-faq-category-icon {
+    transform: rotate(45deg);
+  }
+  .ww-faq-category.collapsed .ww-faq-list {
+    display: none;
+  }
+  .ww-faq-list {
+    padding: 0 22px 8px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .ww-faq-item {
+    border-bottom: 1px solid rgba(232, 99, 43, 0.15);
+  }
+  .ww-faq-item:last-child {
+    border-bottom: none;
+  }
+  .ww-faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 24px 0;
+    font-family: var(--ww-font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ww-color-text, #1A1A1A);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s;
+    letter-spacing: -0.02em;
+    outline: none;
+  }
+  .ww-faq-question:hover {
+    color: var(--ww-color-primary, #E8632B);
+  }
+  .ww-faq-icon {
+    font-size: 1.5rem;
+    color: var(--ww-color-primary, #E8632B);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+  .ww-faq-item.active .ww-faq-icon {
+    transform: rotate(45deg);
+  }
+  .ww-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+  .ww-faq-item.active .ww-faq-answer {
+    max-height: 600px;
+    padding-bottom: 24px;
+  }
+  .ww-faq-answer p + p {
+    margin-top: 12px;
+  }
+  .ww-faq-answer p {
+    font-size: 0.92rem;
+    color: var(--ww-color-text-light, #5C5C5C);
+    line-height: 1.75;
+    margin: 0;
+  }
+  .ww-faq-answer a {
+    color: var(--ww-color-primary, #E8632B);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .ww-faq {
+      padding: 60px 0;
+    }
+    .ww-faq__title {
+      font-size: 1.8rem;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', () => {
+    // Bind dynamically to ensure multi-instance support and scoping
+    const initFaqSection = (faqSection) => {
+      if (!faqSection) return;
+
+      // 1. Category header toggle
+      faqSection.querySelectorAll('.ww-faq-category-title').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const category = btn.closest('.ww-faq-category');
+          if (!category) return;
+          const collapsed = category.classList.toggle('collapsed');
+          category.classList.toggle('open', !collapsed);
+          btn.setAttribute('aria-expanded', String(!collapsed));
+          
+          const icon = btn.querySelector('.ww-faq-category-icon');
+          if (icon) {
+            icon.textContent = collapsed ? '+' : '−';
+          }
+        });
+      });
+
+      // 2. Individual Question toggle (accordion)
+      faqSection.querySelectorAll('.ww-faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.ww-faq-item');
+          if (!item) return;
+          const isActive = item.classList.contains('active');
+          
+          // Close all items in the current section
+          faqSection.querySelectorAll('.ww-faq-item').forEach(i => {
+            i.classList.remove('active');
+            const qBtn = i.querySelector('.ww-faq-question');
+            if (qBtn) qBtn.setAttribute('aria-expanded', 'false');
+          });
+          
+          // Open the clicked one if it was closed
+          if (!isActive) {
+            item.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    };
+
+    // Initialize all FAQ sections on the page
+    document.querySelectorAll('.ww-section-faq').forEach(section => {
+      initFaqSection(section);
+    });
+
+    // Re-bind when Shopify Customizer updates blocks
+    document.addEventListener('shopify:section:load', (e) => {
+      if (e.target.classList.contains('ww-section-faq')) {
+        initFaqSection(e.target);
+      }
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "WW FAQ",
+  "tag": "section",
+  "class": "ww-section-faq",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header settings"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "FAQs"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Got questions? We've got answers."
+    },
+    {
+      "type": "header",
+      "content": "Dynamic Metaobject Sourcing",
+      "info": "Pull FAQs from a custom Metaobject array. Useful for sharing FAQs across multiple template pages."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_metaobjects",
+      "label": "Load FAQs from Metaobjects",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "metaobject_type",
+      "label": "Metaobject definition handle",
+      "default": "faq",
+      "info": "Should hold question (text), answer (rich_text/text), and category (text) fields."
+    },
+    {
+      "type": "header",
+      "content": "Colors & Padding"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Divider",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Category"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question text",
+          "default": "FAQ Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer text",
+          "default": "<p>FAQ Answer detail goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW FAQ",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": { "title": "Products" }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I take wanderWell products while pregnant or breastfeeding?",
+            "answer": "<p>Before taking any of our products (or other dietary supplements!), we recommend consulting a healthcare professional if pregnant or breastfeeding, or if you have other specific health concerns.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Does wanderWell use artificial sweeteners or colors?",
+            "answer": "<p>We do not use artificial sweeteners or colors. We are committed to providing quality formulations and seeking natural alternatives to standard industry fillers when possible.</p>"
+          }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "Orders & Shipping" }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Most orders go out the same day if placed before 3pm ET. From there, our average order is delivered within 3–4 business days. We do not ship on weekends.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
