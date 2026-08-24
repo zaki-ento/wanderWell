@@ -23,8 +23,9 @@
     
     {%- for child in bundle_products -%}
       {%- assign prod_item = blank -%}
-      {%- if child.handle != blank -%}
-        {%- assign prod_item = all_products[child.handle] -%}
+      {%- assign handle = child.productHandle | default: child.handle -%}
+      {%- if handle != blank -%}
+        {%- assign prod_item = all_products[handle] -%}
       {%- else -%}
         {%- assign prod_item = child -%}
       {%- endif -%}
