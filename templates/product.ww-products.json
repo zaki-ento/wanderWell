@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -7,21 +16,24 @@
           "type": "accordion",
           "settings": {
             "title": "Ingredients",
-            "content_type": "ingredients"
+            "content_type": "ingredients",
+            "content": ""
           }
         },
         "accordion_2": {
           "type": "accordion",
           "settings": {
             "title": "Product Information",
-            "content_type": "supplement_facts"
+            "content_type": "supplement_facts",
+            "content": ""
           }
         },
         "accordion_3": {
           "type": "accordion",
           "settings": {
             "title": "Capsule size",
-            "content_type": "capsule_size"
+            "content_type": "capsule_size",
+            "content": ""
           }
         }
       },
@@ -40,151 +52,72 @@
         "trust_item_2_text": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally."
       }
     },
-    "product_recommendations_qggXJq": {
-      "type": "product-recommendations",
+    "ww_faq_KmakCd": {
+      "type": "ww-faq",
       "blocks": {
-        "text_cbcgyb": {
-          "type": "text",
-          "name": "t:names.header",
+        "faq_H7QdEr": {
+          "type": "faq",
           "settings": {
-            "text": "<h3>You may also like </h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h4",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "question": "FAQ Question",
+            "answer": "<p>FAQ Answer detail goes here.</p>"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "category_dEcd3Q": {
+          "type": "category",
           "settings": {
-            "product_card_gap": 8,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 8,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_DNizbJ": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_M7MJkb": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_gLWgA6": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "text_color": "",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_DNizbJ",
-            "product_title_M7MJkb",
-            "price_gLWgA6"
-          ]
+            "title": "Products"
+          }
+        },
+        "faq_y8dYhy": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I take wanderWell products while pregnant or breastfeeding?",
+            "answer": "<p>Before taking any of our products (or other dietary supplements!), we recommend consulting a healthcare professional if pregnant or breastfeeding, or if you have other specific health concerns.</p>"
+          }
+        },
+        "faq_fBYdwU": {
+          "type": "faq",
+          "settings": {
+            "question": "Does wanderWell use artificial sweeteners or colors?",
+            "answer": "<p>We do not use artificial sweeteners or colors. We are committed to providing quality formulations and seeking natural alternatives to standard industry fillers when possible.</p>"
+          }
+        },
+        "category_nfmWkn": {
+          "type": "category",
+          "settings": {
+            "title": "Orders & Shipping"
+          }
+        },
+        "faq_6kK8Xa": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Most orders go out the same day if placed before 3pm ET. From there, our average order is delivered within 3–4 business days. We do not ship on weekends.</p>"
+          }
         }
       },
       "block_order": [
-        "text_cbcgyb"
+        "faq_H7QdEr",
+        "category_dEcd3Q",
+        "faq_y8dYhy",
+        "faq_fBYdwU",
+        "category_nfmWkn",
+        "faq_6kK8Xa"
       ],
-      "name": "t:names.product_recommendations",
+      "name": "WW FAQ",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 12,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "label": "FAQs",
+        "heading": "Got questions? We've got answers.",
+        "use_metaobjects": false,
+        "metaobject_type": "faq",
+        "bg_color": "#FAF7F2",
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     }
   },
   "order": [
     "main",
-    "product_recommendations_qggXJq"
+    "ww_faq_KmakCd"
   ]
 }
