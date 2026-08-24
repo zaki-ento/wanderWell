@@ -31,6 +31,7 @@
 {% endcomment %}
 
 {%- if product.metafields.custom.capsule_size != blank -%}
+  {{ 'ww-product-capsule.css' | asset_url | stylesheet_tag }}
   {%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size -%}
   {%- assign capsule_size_clean = capsule_size | downcase | remove: ' ' -%}
   {%- assign capsule_dimensions = product.metafields.custom.capsule_dimensions.value | default: product.metafields.custom.capsule_dimensions -%}
