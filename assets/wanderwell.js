@@ -26,17 +26,5 @@ document.addEventListener('DOMContentLoaded', () => {
       observer.observe(el);
     });
   };
-
-  // Programmatically open the cart drawer sidebar when cart is successfully updated
-  document.addEventListener('shopify:cart:lines-update', (event) => {
-    event.promise?.then(({ detail }) => {
-      if (!detail?.didError && detail?.items && detail.items.length > 0) {
-        const cartDrawer = document.querySelector('theme-drawer#cart-drawer');
-        if (cartDrawer && !cartDrawer.hasAttribute('open') && cartDrawer.open) {
-          cartDrawer.open();
-        }
-      }
-    }).catch(() => { });
-  });
   initScrollReveal();
 });
