@@ -91,6 +91,7 @@ Renders directions, caution guidelines, serving parameters, and raw supplement f
 Displays an interactive visualizer comparing the product's capsule size against standard capsules.
 - **Key Features**:
   - Automatically hides itself dynamically from the storefront accordions if `custom.capsule_size` is blank for the active product (e.g. powder or non-capsule products).
+  - Scoped styling is declared inlined inside the snippet using a nested `{% style %}` block to maintain 100% component portability.
 - **Shopify Admin Configuration Required**:
   - `custom.capsule_size` (Single-line text, e.g., "Size 4").
   - `custom.capsule_dimensions` (Single-line text, e.g., "14.3 × 5.31 mm").

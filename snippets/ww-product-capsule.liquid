@@ -31,7 +31,88 @@
 {% endcomment %}
 
 {%- if product.metafields.custom.capsule_size != blank -%}
-  {{ 'ww-product-capsule.css' | asset_url | stylesheet_tag }}
+  {%- style -%}
+    .ww-capsize {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .ww-capsize-h {
+      font-family: var(--font-tertiary);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+    .ww-capsize-sub {
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--charcoal-light);
+      margin: 0 0 16px;
+    }
+    .ww-capsize-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ww-caprow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ww-caplabel {
+      width: 90px;
+      font-family: var(--font-primary);
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--charcoal-light);
+      line-height: 1.1;
+    }
+    .ww-caplabel small {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .ww-caplabel--ours {
+      color: var(--orange);
+    }
+    .ww-capbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    .ww-cap {
+      background: #c3d9c7;
+      border-radius: 99px;
+      position: relative;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .ww-cap::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 42%;
+    border-radius: 999px 40% 40% 999px/999px 50% 50% 999px;
+    background: #C2BEB5;
+    }
+    .ww-caprow--ours .ww-cap {
+      background: var(--orange);
+    }
+    .ww-caprow--ours .ww-cap::before {
+     background: var(--orange);
+    }
+    .ww-capdim {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--charcoal-light);
+    }
+  {%- endstyle -%}
   {%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size -%}
   {%- assign capsule_size_clean = capsule_size | downcase | remove: ' ' -%}
   {%- assign capsule_dimensions = product.metafields.custom.capsule_dimensions.value | default: product.metafields.custom.capsule_dimensions -%}
