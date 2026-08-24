@@ -33,7 +33,7 @@
         {%- if prod_item != blank -%}
           {%- assign prod_title = prod_item.title -%}
           {%- assign prod_image = prod_item.featured_media -%}
-          {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
+          {%- assign prod_subtitle = prod_item.metafields.custom.short_description.value | default: prod_item.metafields.custom.subtitle -%}
           {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
           
           <div class="ww-bundle-item">
