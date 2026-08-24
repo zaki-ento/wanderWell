@@ -119,8 +119,8 @@
     {%- if section.settings.fda_disclaimer != blank -%}
       <p class="ww-footer__fda">{{ section.settings.fda_disclaimer | escape }}</p>
     {%- endif -%}
-    
-    <!-- Wordmark Logo Option (Image or Inline SVG fallback) -->
+  </div>
+   <!-- Wordmark Logo Option (Image or Inline SVG fallback) -->
     {%- if section.settings.wordmark_image != blank -%}
       <div class="ww-footer__wordmark-wrap">
         <img
@@ -137,8 +137,6 @@
         {{ section.settings.wordmark_svg }}
       </div>
     {%- endif -%}
-
-  </div>
 </footer>
 
 {% stylesheet %}
