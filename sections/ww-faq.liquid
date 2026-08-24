@@ -68,39 +68,42 @@
 
       {%- else -%}
 
-        {%- comment -%} 2. Fetch static customizer blocks {%- endcomment -%}
-        {%- assign is_first_category = true -%}
+        {%- comment -%} 2. Fetch static customizer blocks with balanced HTML tags {%- endcomment -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'category' -%}
-            {%- if is_first_category == false -%}
-                </div>
-              </div>
-            {%- endif -%}
-            {%- assign is_first_category = false -%}
+            {%- assign category_index = forloop.index0 -%}
             
             <div class="ww-faq-category collapsed" {{ block.shopify_attributes }}>
               <button class="ww-faq-category-title" aria-expanded="false">
                 <span class="ww-faq-category-icon">+</span>{{ block.settings.title | escape }}
               </button>
               <div class="ww-faq-list">
-          {%- elsif block.type == 'faq' -%}
-            <div class="ww-faq-item" {{ block.shopify_attributes }}>
-              <button class="ww-faq-question" aria-expanded="false">
-                {{ block.settings.question | escape }}
-                <span class="ww-faq-icon">+</span>
-              </button>
-              <div class="ww-faq-answer">
-                {%- if block.settings.answer != blank -%}
-                  {{ block.settings.answer }}
-                {%- endif -%}
+                
+                {%- assign current_category_idx = -1 -%}
+                {%- for sub_block in section.blocks -%}
+                  {%- if sub_block.type == 'category' -%}
+                    {%- assign current_category_idx = forloop.index0 -%}
+                  {%- elsif sub_block.type == 'faq' -%}
+                    {%- if current_category_idx == category_index -%}
+                      <div class="ww-faq-item" {{ sub_block.shopify_attributes }}>
+                        <button class="ww-faq-question" aria-expanded="false">
+                          {{ sub_block.settings.question | escape }}
+                          <span class="ww-faq-icon">+</span>
+                        </button>
+                        <div class="ww-faq-answer">
+                          {%- if sub_block.settings.answer != blank -%}
+                            {{ sub_block.settings.answer }}
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                
               </div>
             </div>
           {%- endif -%}
         {%- endfor -%}
-        {%- if is_first_category == false -%}
-            </div>
-          </div>
-        {%- endif -%}
 
       {%- endif -%}
     </div>
