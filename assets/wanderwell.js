@@ -28,38 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Programmatically open the cart drawer sidebar when cart is successfully updated
-  document.addEventListener('shopify:cart:lines-update', async (event) => {
-    if (!event.promise) return;
-    try {
-      const { detail } = await event.promise;
+  document.addEventListener('shopify:cart:lines-update', (event) => {
+    event.promise?.then(({ detail }) => {
       if (!detail?.didError) {
-        // @ts-ignore
-        const { CartUpdateEvent } = await import('@theme/events');
-        const cartDrawer = document.querySelector('cart-drawer-component');    
-        const res = await fetch('/cart.js');
-        const cart = await res.json();
-        
-        const manualEvent = new CartUpdateEvent(cart, 'manual-trigger', {
-          itemCount: cart.item_count,
-          source: 'fad-refresh',
-          sections: {}
-        });
-        document.dispatchEvent(manualEvent);
-        
-        // 1 second delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Open the drawer panel
-        const themeDrawer = document.querySelector('theme-drawer#cart-drawer');
-        if (themeDrawer?.open) {
-          themeDrawer.open();
-        } else if (cartDrawer?.open) {
+        const cartDrawer = document.querySelector('theme-drawer#cart-drawer');
+        if (cartDrawer?.open) {
           cartDrawer.open();
         }
       }
-    } catch (e) {
-      // Ignored
-    }
+    }).catch(() => { });
   });
   initScrollReveal();
 });
