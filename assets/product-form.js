@@ -45,7 +45,7 @@ export class AddToCartComponent extends Component {
     super.disconnectedCallback();
 
     if (this.#resetTimeouts) {
-      this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+      this.#resetTimeouts.forEach(/** @param {number} timeoutId */(timeoutId) => clearTimeout(timeoutId));
     }
     this.removeEventListener('pointerenter', this.#preloadImage);
   }
@@ -310,7 +310,7 @@ class ProductFormComponent extends Component {
         if (detail?.sourceId === this.id || detail?.source === 'product-form-component') return;
 
         if (detail?.items) {
-          this.#updateCartQuantity(/** @type {Cart} */ ({ items: detail.items }));
+          this.#updateCartQuantity(/** @type {Cart} */({ items: detail.items }));
         } else {
           this.#refreshCart().then((cart) => this.#updateCartQuantity(cart));
         }
@@ -764,7 +764,7 @@ class ProductFormComponent extends Component {
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */(newElement.cloneNode(true)));
     }
   }
 

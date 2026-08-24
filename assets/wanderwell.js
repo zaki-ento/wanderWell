@@ -27,5 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Programmatically open the cart drawer sidebar on success
+  document.addEventListener('shopify:cart:lines-update', (event) => {
+    if (event.action === 'add' || (event.detail && !event.detail.didError)) {
+      const cartDrawer = document.querySelector('theme-drawer#cart-drawer');
+      if (cartDrawer?.open) {
+        cartDrawer.open();
+      }
+    }
+  });
   initScrollReveal();
 });
