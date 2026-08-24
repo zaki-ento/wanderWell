@@ -66,11 +66,18 @@ The main product detail conversion container, split into product image slides on
 ### 1. WW Brand CSS Variables (`snippets/ww-css-variables.liquid`)
 Declares all theme colors, breakpoints, spacing, and typography properties under the `:root` pseudo-selector.
 - **Key Variables**:
-  - `--ww-color-primary`: Brand orange (`#E8632B`).
-  - `--ww-color-background`: Cream background (`#FAF7F2`).
-  - `--ww-color-text`: Dark charcoal (`#1A1A1A`).
-  - `--ww-color-border`: Translucent boundary outline (`rgba(44, 44, 44, 0.15)`).
-  - `--ww-color-white`: Solid white (`#FFFFFF`).
+  - `--orange`: Primary Brand color (`#E8632B`).
+  - `--orange-dark`: Dark Orange (`#D15523`).
+  - `--orange-light`: Light Orange (`#F0845A`).
+  - `--orange-pale`: Pale Orange (`#FCEEE7`).
+  - `--offwhite`: Brand Background color (`#FAF7F2`).
+  - `--cream`: Brand Cream color (`#F2EDE4`).
+  - `--charcoal`: Brand Text color (`#1A1A1A`).
+  - `--charcoal-light`: Brand Text light (`#5C5C5C`).
+  - `--white`: Solid White (`#FFFFFF`).
+  - `--black`: Solid Black (`#000000`).
+  - `--font-primary`: Body Font (Montserrat / Sofia Pro).
+  - `--font-tertiary`: Heading Font (Montserrat / Sofia Pro).
 
 ### 2. WW Product Purchase Options (`snippets/ww-product-purchase-options.liquid`)
 Renders the grid selector cards for Subscribe & Save vs. One-Time Purchase options.

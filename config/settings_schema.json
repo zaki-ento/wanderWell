@@ -2142,7 +2142,7 @@
         "type": "color",
         "id": "color_primary_pale",
         "label": "Primary Brand Color (Pale)",
-        "default": "#FAF0EB"
+        "default": "#FCEEE7"
       },
       {
         "type": "color",

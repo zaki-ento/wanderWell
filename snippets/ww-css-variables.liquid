@@ -4,6 +4,116 @@
 {% endcomment %}
 
 {% style %}
+  /* ============================================
+     LOCAL FONT FACE DECLARATIONS
+     ============================================ */
+
+  /* Sofia Pro Regular (400) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-400.woff2' | asset_url }}") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Sofia Pro Regular Italic (400 Italic) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-400-italic.woff2' | asset_url }}") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  /* Sofia Pro Medium Italic (500 Italic) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-500-italic.woff2' | asset_url }}") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+  }
+  /* Sofia Pro Semibold (600) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-600.woff2' | asset_url }}") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Sofia Pro Semibold Italic (600 Italic) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-600-italic.woff2' | asset_url }}") format("woff2");
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+  }
+  /* Sofia Pro Bold (700) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-700.woff2' | asset_url }}") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Sofia Pro Bold Italic (700 Italic) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-700-italic.woff2' | asset_url }}") format("woff2");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+  }
+  /* Sofia Pro Ultra/Black (900) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-900.woff2' | asset_url }}") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Sofia Pro Ultra/Black Italic (900 Italic) */
+  @font-face {
+    font-family: "sofia-pro";
+    src: url("{{ 'sofia-pro-900-italic.woff2' | asset_url }}") format("woff2");
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  /* Montserrat Regular (400) */
+  @font-face {
+    font-family: "Montserrat";
+    src: url("{{ 'montserrat-400.woff2' | asset_url }}") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Montserrat Medium (500) */
+  @font-face {
+    font-family: "Montserrat";
+    src: url("{{ 'montserrat-500.woff2' | asset_url }}") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Montserrat Semibold (600) */
+  @font-face {
+    font-family: "Montserrat";
+    src: url("{{ 'montserrat-600.woff2' | asset_url }}") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Montserrat Bold (700) */
+  @font-face {
+    font-family: "Montserrat";
+    src: url("{{ 'montserrat-700.woff2' | asset_url }}") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   {{ settings.font_heading | font_face: font_display: 'swap' }}
   {{ settings.font_body | font_face: font_display: 'swap' }}
   
@@ -41,7 +151,7 @@
     --orange:          var(--ww-color-primary);
     --orange-dark:     {{ settings.color_primary_dark | default: '#D15523' }};
     --orange-light:    {{ settings.color_primary_light | default: '#F0845A' }};
-    --orange-pale:     {{ settings.color_primary_pale | default: '#FAF0EB' }};
+    --orange-pale:     {{ settings.color_primary_pale | default: '#FCEEE7' }};
     --offwhite:        var(--ww-color-background);
     --cream:           {{ settings.color_cream | default: '#F2EDE4' }};
     --charcoal:        var(--ww-color-text);
@@ -49,8 +159,8 @@
     --white:           #FFFFFF;
     --black:           #000000;
     
-    --font-primary:    var(--ww-font-body);
-    --font-tertiary:   var(--ww-font-heading);
+    --font-primary:    'sofia-pro', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-tertiary:   'sofia-pro', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
 
     /* Screen Breakpoints */
     --breakpoint-sm: 640px;

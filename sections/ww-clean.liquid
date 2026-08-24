@@ -84,8 +84,8 @@
 
 {% stylesheet %}
   .ww-clean {
-    padding: 80px 0;
-    background: var(--ww-color-background, #FAF7F2);
+    padding: var(--section-padding, 100px 0);
+    background: var(--cream);
     overflow: hidden;
   }
   .ww-clean__header {
@@ -95,39 +95,39 @@
   }
   .ww-clean__label {
     display: inline-block;
-    font-family: var(--ww-font-body);
+    font-family: var(--font-primary);
     font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--ww-color-primary, #E8632B);
+    color: var(--orange);
     margin-bottom: 16px;
   }
   .ww-clean__title {
-    font-family: var(--ww-font-heading);
+    font-family: var(--font-primary);
     font-weight: 500;
-    font-size: 2.2rem;
-    color: var(--ww-color-text, #1A1A1A);
+    font-size: 2.6rem;
+    color: var(--charcoal);
     margin: 0;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
   }
   .ww-clean__blurb {
     max-width: 760px;
     margin: 20px auto 0;
     font-size: 1.125rem;
     line-height: 1.6;
-    color: var(--ww-color-text-light, #5C5C5C);
+    color: var(--charcoal);
+    opacity: 0.85;
     text-wrap: pretty;
   }
   .ww-clean__ticker {
-    background: var(--ww-color-white, #FFFFFF);
+    background: var(--offwhite);
     padding: 28px 32px;
     margin-bottom: 64px;
     position: relative;
     display: flex;
     justify-content: center;
-    border-top: 1px solid var(--ww-color-border, rgba(44, 44, 44, 0.15));
-    border-bottom: 1px solid var(--ww-color-border, rgba(44, 44, 44, 0.15));
     
     /* Full bleed calculations */
     margin-left: calc(-50vw + 50%);
@@ -143,10 +143,10 @@
     padding: 0 20px;
   }
   .ww-clean__ticker-item {
-    font-family: var(--ww-font-body);
+    font-family: var(--font-primary);
     font-weight: 500;
     font-size: 1.15rem;
-    color: var(--ww-color-text, #1A1A1A);
+    color: var(--charcoal);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -158,7 +158,7 @@
     height: 0;
   }
   .ww-clean__ticker-item .check {
-    color: var(--ww-color-primary, #E8632B);
+    color: var(--orange);
     font-weight: bold;
   }
   .ww-clean__grid {
@@ -172,15 +172,14 @@
   .ww-clean__card {
     text-align: center;
     padding: 40px 28px;
-    background: var(--ww-color-white, #FFFFFF);
+    background: var(--white);
     border-radius: 20px;
-    border: 1px solid var(--ww-color-border, rgba(44, 44, 44, 0.1));
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    border: 1px solid rgba(44,44,44,0.1);
   }
   .ww-clean__card-icon {
     width: 56px;
     height: 56px;
-    background: rgba(232, 99, 43, 0.08); /* Pale brand orange */
+    background: var(--orange-pale);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -189,22 +188,22 @@
     font-size: 1.5rem;
   }
   .ww-clean__card-icon svg {
-    color: var(--ww-color-primary, #E8632B);
-    stroke: var(--ww-color-primary, #E8632B);
+    color: var(--orange);
+    stroke: var(--orange);
     width: 26px;
     height: 26px;
   }
   .ww-clean__card h3 {
-    font-family: var(--ww-font-body);
+    font-family: var(--font-primary);
     font-weight: 600;
-    font-size: 1.15rem;
-    color: var(--ww-color-text, #1A1A1A);
+    font-size: 1.05rem;
+    color: var(--charcoal);
     margin: 0 0 10px 0;
     letter-spacing: -0.02em;
   }
   .ww-clean__card p {
-    font-size: 0.9rem;
-    color: var(--ww-color-text-light, #5C5C5C);
+    font-size: 0.88rem;
+    color: var(--charcoal-light);
     line-height: 1.65;
     margin: 0;
   }
@@ -218,7 +217,7 @@
       gap: 24px;
     }
     .ww-clean__title {
-      font-size: 1.8rem;
+      font-size: 2rem;
     }
   }
 {% endstylesheet %}
