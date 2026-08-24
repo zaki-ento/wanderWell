@@ -3,7 +3,7 @@
   Description: Custom WanderWell Footer with brand aesthetics, dynamic menus, and full-bleed wordmark logo support.
 {% endcomment %}
 
-<footer class="ww-footer" {{ section.shopify_attributes }}>
+<div class="ww-footer" {{ section.shopify_attributes }}>
   <div class="ww-footer__inner container">
     <div class="ww-footer__grid">
       
@@ -137,11 +137,11 @@
         {{ section.settings.wordmark_svg }}
       </div>
     {%- endif -%}
-</footer>
+  </div>
 
 {% stylesheet %}
   .ww-footer {
-    padding: 56px 0 32px;
+    padding: 56px 0 0;
     background: var(--ww-footer-bg);
     color: rgba(255, 255, 255, 0.92);
     overflow: hidden;
