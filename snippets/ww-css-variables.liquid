@@ -162,16 +162,24 @@
     --font-primary:    'sofia-pro', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-tertiary:   'sofia-pro', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
 
+    /* Layout Overrides */
+    --normal-page-width: {{ settings.container_width | default: 1200 }}px;
+    --wide-page-width: {{ settings.container_width | default: 1200 }}px;
+    --narrow-page-width: {{ settings.container_width | default: 1200 }}px;
+    --page-width: {{ settings.container_width | default: 1200 }}px;
+    --page-content-width: {{ settings.container_width | default: 1200 }}px;
+    --container-width: {{ settings.container_width | default: 1200 }}px;
+
     /* Screen Breakpoints */
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
     --breakpoint-lg: 1024px;
-    --breakpoint-xl: 1280px;
+    --breakpoint-xl: {{ settings.container_width | default: 1200 }}px;
     --breakpoint-2xl: 1536px;
   }
 
   .container {
-    max-width: 1200px;
+    max-width: {{ settings.container_width | default: 1200 }}px;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -183,6 +191,17 @@
       padding-left: 32px;
       padding-right: 32px;
     }
+  }
+
+  /* Force global maximum width on all page-width container wrapper classes */
+  .page-width,
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    max-width: {{ settings.container_width | default: 1200 }}px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Unified Breakpoint Max-Width Utility Classes */
