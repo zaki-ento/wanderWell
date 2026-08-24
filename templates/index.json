@@ -238,6 +238,15 @@
             "content_type": "supplement_facts",
             "content": ""
           }
+        },
+        "accordion_y9kEnR": {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule Size",
+            "items_count": "",
+            "content_type": "capsule_size",
+            "content": ""
+          }
         }
       },
       "block_order": [
@@ -249,7 +258,8 @@
         "accordion_Y6PeRJ",
         "accordion_KGRFRR",
         "product_tab_6ncFYp",
-        "accordion_RaV7PR"
+        "accordion_RaV7PR",
+        "accordion_y9kEnR"
       ],
       "settings": {
         "label": "Our Products",
