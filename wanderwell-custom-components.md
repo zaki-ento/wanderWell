@@ -32,7 +32,16 @@ An interactive, scroll-driven storytelling path representing the "reality of tra
   - Integrated world outline SVG map overlay.
 - **Scripts**: Controlled by `assets/ww-problem.js`.
 
-### 3. WW Product Hub (`sections/ww-product.liquid`)
+### 3. WW Clean / Our Approach (`sections/ww-clean.liquid`)
+Custom dynamic section outlining brand transparency, ticker statements, and highlights.
+- **Key Features**:
+  - Full-width loop-style ticker marquee that handles layout wrapping offsets dynamically.
+  - Fully customizable feature cards grid matching the website's clean-minimal style.
+- **Configurable Blocks**:
+  - `ticker_item`: Simple text block rendering standard brand checklist items.
+  - `card_item`: Feature block supporting custom SVG markup input, title, and descriptive text.
+
+### 4. WW Product Hub (`sections/ww-product.liquid`)
 The main product detail conversion container, split into product image slides on the left and pricing/subscription selectors on the right.
 - **Key Features**:
   - Swaps out static price labels for the modular `ww-product-purchase-options` snippet.
