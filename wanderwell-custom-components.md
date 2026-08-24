@@ -41,7 +41,17 @@ Custom dynamic section outlining brand transparency, ticker statements, and high
   - `ticker_item`: Simple text block rendering standard brand checklist items.
   - `card_item`: Feature block supporting custom SVG markup input, title, and descriptive text.
 
-### 4. WW Product Hub (`sections/ww-product.liquid`)
+### 4. WW FAQ (`sections/ww-faq.liquid`)
+A dynamic accordion FAQ layout grouped under expandable categories.
+- **Key Features**:
+  - Event listeners are scoped locally per instance so multiple FAQ sections on the same page operate independently without cross-closing.
+  - Multi-source options: can load static drag-and-drop customizer blocks or load dynamically from a global Metaobject structure (auto-grouping by category).
+- **Configurable Settings/Blocks**:
+  - `use_metaobjects` (Checkbox) and `metaobject_type` (Text definition handle).
+  - `category` (Divider block): Declares a group title.
+  - `faq` (FAQ item block): Question text and rich text answer body.
+
+### 5. WW Product Hub (`sections/ww-product.liquid`)
 The main product detail conversion container, split into product image slides on the left and pricing/subscription selectors on the right.
 - **Key Features**:
   - Swaps out static price labels for the modular `ww-product-purchase-options` snippet.

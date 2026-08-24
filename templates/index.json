@@ -372,12 +372,153 @@
         "padding_top": 80,
         "padding_bottom": 80
       }
+    },
+    "ww_faq": {
+      "type": "ww-faq",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "title": "Products"
+          }
+        },
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I take wanderWell products while pregnant or breastfeeding?",
+            "answer": "<p>Before taking any of our products (or other dietary supplements!), we recommend consulting a healthcare professional if pregnant or breastfeeding, or if you have other specific health concerns.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Does wanderWell use artificial sweeteners or colors?",
+            "answer": "<p>We do not use artificial sweeteners or colors. We are committed to providing quality formulations and seeking natural alternatives to standard industry fillers when possible. In our Digestive Support product, we use rice hulls and rice extract blend as natural alternatives to commonly used additives in the manufacturing process such as silicon dioxide and magnesium stearate.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I bring wanderWell products through TSA/on an airplane?",
+            "answer": "<p>Yes, wanderWell capsules and powder sachets can generally be packed in carry-on or checked baggage. wanderWell products are dry and shelf-stable, so they do not need refrigeration and are not subject to TSA’s 3-1-1 liquids rule. Please check current TSA guidance before travel!</p>"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "title": "Orders, Shipping & Tracking"
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "question": "Where do you ship in the U.S.?",
+            "answer": "<p>We ship within the contiguous United States. We do not ship to Hawaii or Alaska (sorry, not yet!).</p>"
+          }
+        },
+        "faq_5": {
+          "type": "faq",
+          "settings": {
+            "question": "Where do you ship internationally?",
+            "answer": "<p>wanderWell does not ship internationally (again, sorry not yet!).</p>"
+          }
+        },
+        "faq_6": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Most orders go out the same day if placed before 3pm ET. If you place your order after 3pm ET, we will likely ship it out the next day. From there, our average order is delivered within 3–4 business days. We do not ship on weekends.</p>"
+          }
+        },
+        "faq_7": {
+          "type": "faq",
+          "settings": {
+            "question": "Where can I find tracking for my order?",
+            "answer": "<p>When your order ships, you will receive an email from us with the tracking number. If you are unable to locate your shipment confirmation email, double-check your spam folder or send us an email at <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> and we’ll be happy to help out.</p>"
+          }
+        },
+        "faq_8": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I change or cancel an order?",
+            "answer": "<p>Once your order is placed, our team works fast to prepare it for shipment. Because of this, we’re unable to make changes or cancel an order once you’ve received your confirmation email.</p>"
+          }
+        },
+        "faq_9": {
+          "type": "faq",
+          "settings": {
+            "question": "My order is missing or delayed. Help!",
+            "answer": "<p>Please contact our team at <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a>. Our team will help track down your order or send a replacement if necessary.</p>"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "title": "Return & Refund Policy"
+          }
+        },
+        "faq_10": {
+          "type": "faq",
+          "settings": {
+            "question": "What is your return & refund policy/satisfaction guarantee?",
+            "answer": "<p>We want to make sure you have the best experience with us and love our products. If our products aren’t for you, we'll refund the purchase price of your first order in full, with proof of purchase, within 30 days from the date of purchase from us via shopwanderwell.co.</p><p>To request a refund, contact us at <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> with your order number or proof of purchase, the product name(s), and a brief description of why you are requesting a refund.</p><p>All refunds issued are to the original form of payment. We reserve the right to limit and/or deny refunds in cases of suspected abuse, fraud, or as otherwise permitted by law. This policy only applies to purchases made on shopwanderwell.co. No claim is being made about our products, but rather a warranty that you can get your money back if you are dissatisfied with one or more of the products you ordered, as long as you let us know via email prior to the end of the 30 day refund window. Refunds will not be given to repeat or recurring customers.</p><p>Due to the ingestible nature of our product, we do not accept returns.</p>"
+          }
+        },
+        "faq_11": {
+          "type": "faq",
+          "settings": {
+            "question": "How to contact Support?",
+            "answer": "<p>Please contact us at <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> and we will do our best to respond to messages within 24 hours during business hours Monday to Friday, 9am–5pm ET. Please note that our team is offline on weekends and holidays.</p>"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "title": "Subscriptions"
+          }
+        },
+        "faq_12": {
+          "type": "faq",
+          "settings": {
+            "question": "How often do subscriptions ship? Can I pause or cancel?",
+            "answer": "<p>Frequency of your subscription shipping depends on your selected subscription. Subscriptions ship at 10% off with free shipping. You can pause, skip a shipment, change the cadence, swap formulas, or cancel any time from your account. Please note if your order has already been processed, any changes will apply to the following month.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "category_2",
+        "faq_4",
+        "faq_5",
+        "faq_6",
+        "faq_7",
+        "faq_8",
+        "faq_9",
+        "category_3",
+        "faq_10",
+        "faq_11",
+        "category_4",
+        "faq_12"
+      ],
+      "settings": {
+        "label": "FAQs",
+        "heading": "Got questions? We've got answers.",
+        "use_metaobjects": false,
+        "metaobject_type": "faq",
+        "bg_color": "#FAF7F2",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
     "ww_hero",
     "ww_problem",
     "ww_product",
-    "ww_clean"
+    "ww_clean",
+    "ww_faq"
   ]
 }
