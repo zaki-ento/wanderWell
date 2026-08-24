@@ -163,6 +163,7 @@
         },
         "accordion_QDyHNQ": {
           "type": "accordion",
+          "name": "Digestive Product",
           "settings": {
             "title": "Ingredients",
             "items_count": "4 Items",
@@ -172,6 +173,7 @@
         },
         "accordion_6QwgTW": {
           "type": "accordion",
+          "name": "Digestive Product",
           "settings": {
             "title": "Product Information",
             "items_count": "2 items",
@@ -181,6 +183,7 @@
         },
         "accordion_QG3q6V": {
           "type": "accordion",
+          "name": "Digestive Product",
           "settings": {
             "title": "Capsule size",
             "items_count": "",
@@ -190,6 +193,7 @@
         },
         "product_tab_i94QCt": {
           "type": "product_tab",
+          "name": "Product Tab",
           "settings": {
             "product": "immune-support",
             "title": "{{ block.settings.product.title }}",
@@ -202,6 +206,7 @@
         },
         "accordion_Y6PeRJ": {
           "type": "accordion",
+          "name": "Immune Product",
           "settings": {
             "title": "Ingredients",
             "items_count": "6 items",
@@ -211,6 +216,7 @@
         },
         "accordion_KGRFRR": {
           "type": "accordion",
+          "name": "Immune Product",
           "settings": {
             "title": "Product Information",
             "items_count": "",
@@ -232,6 +238,7 @@
         },
         "accordion_RaV7PR": {
           "type": "accordion",
+          "name": "Duo Product",
           "settings": {
             "title": "what's inside",
             "items_count": "",
@@ -239,8 +246,19 @@
             "content": ""
           }
         },
+        "accordion_PHtdAa": {
+          "type": "accordion",
+          "name": "Duo Product",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
         "accordion_y9kEnR": {
           "type": "accordion",
+          "name": "Duo Product",
           "settings": {
             "title": "Capsule Size",
             "items_count": "",
@@ -259,6 +277,7 @@
         "accordion_KGRFRR",
         "product_tab_6ncFYp",
         "accordion_RaV7PR",
+        "accordion_PHtdAa",
         "accordion_y9kEnR"
       ],
       "settings": {
