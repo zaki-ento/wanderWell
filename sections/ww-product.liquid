@@ -40,7 +40,7 @@
   {%- endif -%}
 {%- endstyle -%}
 
-<section class="products section-{{ section.id }}" id="products" {{ section.shopify_attributes }}>
+<section class="ww-products section-{{ section.id }}" id="ww-products" {{ section.shopify_attributes }}>
   <div class="container">
     <div class="products-header">
       {%- if section.settings.label != blank -%}
@@ -448,7 +448,7 @@
 </script>
 
 {% stylesheet %}
-  .products {
+  .ww-products {
     background-color: var(--offwhite);
   }
   .products-header {
