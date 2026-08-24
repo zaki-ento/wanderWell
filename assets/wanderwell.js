@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     event.promise?.then(({ detail }) => {
       if (!detail?.didError && detail?.items && detail.items.length > 0) {
         const cartDrawer = document.querySelector('theme-drawer#cart-drawer');
-        if (cartDrawer?.open) {
+        if (cartDrawer && !cartDrawer.hasAttribute('open') && cartDrawer.open) {
           cartDrawer.open();
         }
       }
