@@ -89,9 +89,12 @@ Renders directions, caution guidelines, serving parameters, and raw supplement f
 
 ### 5. WW Product Capsule Scale (`snippets/ww-product-capsule.liquid`)
 Displays an interactive visualizer comparing the product's capsule size against standard capsules.
+- **Key Features**:
+  - Automatically hides itself dynamically from the storefront accordions if `custom.capsule_size` is blank for the active product (e.g. powder or non-capsule products).
 - **Shopify Admin Configuration Required**:
   - `custom.capsule_size` (Single-line text, e.g., "Size 4").
   - `custom.capsule_dimensions` (Single-line text, e.g., "14.3 × 5.31 mm").
+  - `custom.capsule_details` (Rich Text) - Overrides the default capsule description text.
 
 ---
 

@@ -19,90 +19,103 @@
         - Namespace and key: "custom.capsule_dimensions"
         - Description: Set value to e.g., "14.3 × 5.31 mm".
         
+     c. Capsule Details (Rich Text):
+        - Name: "Capsule Details"
+        - Namespace and key: "custom.capsule_details"
+        - Description: Custom description text for the capsule accordion.
+        
   2. ADD DATA TO PRODUCTS:
      - Go to any Product page in your Admin, scroll to the bottom Metafields section,
-       and fill in your product's Capsule Size and Capsule Dimensions values!
+       and fill in your product's Capsule Size, Capsule Dimensions, and Capsule Details values!
   ========================================================================================
 {% endcomment %}
 
-{%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size | default: 'Size 4' -%}
-{%- assign capsule_size_clean = capsule_size | downcase | remove: ' ' -%}
+{%- if product.metafields.custom.capsule_size != blank -%}
+  {%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size -%}
+  {%- assign capsule_size_clean = capsule_size | downcase | remove: ' ' -%}
+  {%- assign capsule_dimensions = product.metafields.custom.capsule_dimensions.value | default: product.metafields.custom.capsule_dimensions -%}
+  {%- assign capsule_details_mf = product.metafields.custom.capsule_details -%}
 
-{%- assign capsule_dimensions = product.metafields.custom.capsule_dimensions.value | default: product.metafields.custom.capsule_dimensions -%}
-
-{%- if capsule_dimensions == blank -%}
-  {%- if capsule_size_clean == 'size4' -%}
-    {%- assign capsule_dimensions = '14.3 × 5.31 mm' -%}
-  {%- elsif capsule_size_clean == 'size3' -%}
-    {%- assign capsule_dimensions = '15.9 × 5.82 mm' -%}
-  {%- elsif capsule_size_clean == 'size2' -%}
-    {%- assign capsule_dimensions = '18.0 × 6.35 mm' -%}
-  {%- elsif capsule_size_clean == 'size1' -%}
-    {%- assign capsule_dimensions = '19.4 × 6.91 mm' -%}
-  {%- elsif capsule_size_clean == 'size0' -%}
-    {%- assign capsule_dimensions = '21.7 × 7.64 mm' -%}
-  {%- elsif capsule_size_clean == 'size00' -%}
-    {%- assign capsule_dimensions = '23.3 × 8.53 mm' -%}
+  {%- if capsule_dimensions == blank -%}
+    {%- if capsule_size_clean == 'size4' -%}
+      {%- assign capsule_dimensions = '14.3 × 5.31 mm' -%}
+    {%- elsif capsule_size_clean == 'size3' -%}
+      {%- assign capsule_dimensions = '15.9 × 5.82 mm' -%}
+    {%- elsif capsule_size_clean == 'size2' -%}
+      {%- assign capsule_dimensions = '18.0 × 6.35 mm' -%}
+    {%- elsif capsule_size_clean == 'size1' -%}
+      {%- assign capsule_dimensions = '19.4 × 6.91 mm' -%}
+    {%- elsif capsule_size_clean == 'size0' -%}
+      {%- assign capsule_dimensions = '21.7 × 7.64 mm' -%}
+    {%- elsif capsule_size_clean == 'size00' -%}
+      {%- assign capsule_dimensions = '23.3 × 8.53 mm' -%}
+    {%- endif -%}
   {%- endif -%}
-{%- endif -%}
 
-{%- assign style_w_h = 'width:114px;height:42px' -%}
-{%- if capsule_size_clean == 'size4' -%}
   {%- assign style_w_h = 'width:114px;height:42px' -%}
-{%- elsif capsule_size_clean == 'size3' -%}
-  {%- assign style_w_h = 'width:127px;height:46px' -%}
-{%- elsif capsule_size_clean == 'size2' -%}
-  {%- assign style_w_h = 'width:144px;height:51px' -%}
-{%- elsif capsule_size_clean == 'size1' -%}
-  {%- assign style_w_h = 'width:155px;height:55px' -%}
-{%- elsif capsule_size_clean == 'size0' -%}
-  {%- assign style_w_h = 'width:174px;height:61px' -%}
-{%- elsif capsule_size_clean == 'size00' -%}
-  {%- assign style_w_h = 'width:186px;height:68px' -%}
-{%- endif -%}
+  {%- if capsule_size_clean == 'size4' -%}
+    {%- assign style_w_h = 'width:114px;height:42px' -%}
+  {%- elsif capsule_size_clean == 'size3' -%}
+    {%- assign style_w_h = 'width:127px;height:46px' -%}
+  {%- elsif capsule_size_clean == 'size2' -%}
+    {%- assign style_w_h = 'width:144px;height:51px' -%}
+  {%- elsif capsule_size_clean == 'size1' -%}
+    {%- assign style_w_h = 'width:155px;height:55px' -%}
+  {%- elsif capsule_size_clean == 'size0' -%}
+    {%- assign style_w_h = 'width:174px;height:61px' -%}
+  {%- elsif capsule_size_clean == 'size00' -%}
+    {%- assign style_w_h = 'width:186px;height:68px' -%}
+  {%- endif -%}
 
-<div class="ww-capsize">
-  <div class="ww-capsize-h">Capsule size, to scale</div>
-  <p class="ww-capsize-sub">We wanted a capsule you don't have to psych yourself up for. So we made ours small enough to swallow without thinking about it. See for yourself.</p>
-  
-  <div class="ww-capsize-rows">
-    <div class="ww-caprow ww-caprow--ours">
-      <div class="ww-caplabel ww-caplabel--ours">
-        {%- if settings.logo_inverse != blank -%}
-          {{ settings.logo_inverse | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
-        {%- else -%}
-          <span>wanderWell</span>
-        {%- endif -%}
-        <small>{{ capsule_size | escape }}</small>
+  <div class="ww-capsize">
+    <div class="ww-capsize-h">Capsule size, to scale</div>
+    {%- if capsule_details_mf != blank -%}
+      <div class="ww-capsize-sub ww-rich-text">
+        {{ capsule_details_mf | metafield_tag }}
       </div>
-      <div class="ww-capbar">
-        <div class="ww-cap" style="{{ style_w_h }}"></div>
-        <span class="ww-capdim">{{ capsule_dimensions | escape }}</span>
-      </div>
-    </div>
+    {%- else -%}
+      <p class="ww-capsize-sub">We wanted a capsule you don't have to psych yourself up for. So we made ours small enough to swallow without thinking about it. See for yourself.</p>
+    {%- endif -%}
     
-    <div class="ww-caprow">
-      <div class="ww-caplabel">Common<small>Size 1</small></div>
-      <div class="ww-capbar">
-        <div class="ww-cap" style="width:155px;height:55px"></div>
-        <span class="ww-capdim">19.4 × 6.91 mm</span>
+    <div class="ww-capsize-rows">
+      <div class="ww-caprow ww-caprow--ours">
+        <div class="ww-caplabel ww-caplabel--ours">
+          {%- if settings.logo_inverse != blank -%}
+            {{ settings.logo_inverse | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
+          {%- else -%}
+            <span>wanderWell</span>
+          {%- endif -%}
+          <small>{{ capsule_size | escape }}</small>
+        </div>
+        <div class="ww-capbar">
+          <div class="ww-cap" style="{{ style_w_h }}"></div>
+          <span class="ww-capdim">{{ capsule_dimensions | escape }}</span>
+        </div>
       </div>
-    </div>
-    
-    <div class="ww-caprow">
-      <div class="ww-caplabel">Common<small>Size 0</small></div>
-      <div class="ww-capbar">
-        <div class="ww-cap" style="width:174px;height:61px"></div>
-        <span class="ww-capdim">21.7 × 7.64 mm</span>
+      
+      <div class="ww-caprow">
+        <div class="ww-caplabel">Common<small>Size 1</small></div>
+        <div class="ww-capbar">
+          <div class="ww-cap" style="width:155px;height:55px"></div>
+          <span class="ww-capdim">19.4 × 6.91 mm</span>
+        </div>
       </div>
-    </div>
-    
-    <div class="ww-caprow">
-      <div class="ww-caplabel">Typical<small>Size 00</small></div>
-      <div class="ww-capbar">
-        <div class="ww-cap" style="width:186px;height:68px"></div>
-        <span class="ww-capdim">23.3 × 8.53 mm</span>
+      
+      <div class="ww-caprow">
+        <div class="ww-caplabel">Common<small>Size 0</small></div>
+        <div class="ww-capbar">
+          <div class="ww-cap" style="width:174px;height:61px"></div>
+          <span class="ww-capdim">21.7 × 7.64 mm</span>
+        </div>
+      </div>
+      
+      <div class="ww-caprow">
+        <div class="ww-caplabel">Typical<small>Size 00</small></div>
+        <div class="ww-capbar">
+          <div class="ww-cap" style="width:186px;height:68px"></div>
+          <span class="ww-capdim">23.3 × 8.53 mm</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
+{%- endif -%}
