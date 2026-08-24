@@ -102,7 +102,8 @@
     <!-- Footer Bottom Bar -->
     <div class="ww-footer__bottom">
       {%- if section.settings.copyright_text != blank -%}
-        <p class="ww-footer__copyright">{{ section.settings.copyright_text | escape }}</p>
+        {%- assign current_year = 'now' | date: '%Y' -%}
+        <p class="ww-footer__copyright">{{ section.settings.copyright_text | replace: '2026', current_year | escape }}</p>
       {%- endif -%}
       
       {%- if section.settings.legal_menu != blank -%}
@@ -129,11 +130,10 @@
           loading="lazy"
           width="{{ section.settings.wordmark_image.width }}"
           height="{{ section.settings.wordmark_image.height }}"
-          style="max-width: {{ section.settings.wordmark_max_width }}px;"
         >
       </div>
     {%- elsif section.settings.wordmark_svg != blank -%}
-      <div class="ww-footer__wordmark-wrap" style="max-width: {{ section.settings.wordmark_max_width }}px; margin: 0 auto;">
+      <div class="ww-footer__wordmark-wrap">
         {{ section.settings.wordmark_svg }}
       </div>
     {%- endif -%}
@@ -144,7 +144,7 @@
 {% stylesheet %}
   .ww-footer {
     padding: 56px 0 32px;
-    background: linear-gradient(180deg, #FBCBA8 0%, #E8632B 100%);
+    background: var(--footer-bg);
     color: rgba(255, 255, 255, 0.92);
     overflow: hidden;
   }
@@ -383,16 +383,6 @@
   "settings": [
     {
       "type": "header",
-      "content": "Background"
-    },
-    {
-      "type": "text",
-      "id": "bg_gradient",
-      "label": "Background Color / Gradient",
-      "default": "linear-gradient(180deg, #FBCBA8 0%, #E8632B 100%)"
-    },
-    {
-      "type": "header",
       "content": "Newsletter Signup"
     },
     {
@@ -479,16 +469,6 @@
       "type": "html",
       "id": "wordmark_svg",
       "label": "Wordmark SVG Code (Fallback)"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_max_width",
-      "label": "Wordmark Max Width",
-      "min": 200,
-      "max": 1400,
-      "step": 50,
-      "unit": "px",
-      "default": 1200
     }
   ],
   "blocks": [

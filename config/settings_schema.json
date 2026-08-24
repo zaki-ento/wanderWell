@@ -2179,6 +2179,12 @@
         "id": "font_body",
         "label": "Body Font",
         "default": "work_sans_n4"
+      },
+      {
+        "type": "text",
+        "id": "footer_bg_gradient",
+        "label": "Footer Background Gradient",
+        "default": "linear-gradient(180deg, #FBCBA8 0%, #E8632B 100%)"
       }
     ]
   }
