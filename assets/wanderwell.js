@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Programmatically open the cart drawer sidebar when cart is successfully updated
   document.addEventListener('shopify:cart:lines-update', (event) => {
     event.promise?.then(({ detail }) => {
-      if (!detail?.didError) {
+      if (!detail?.didError && detail?.items && detail.items.length > 0) {
         const cartDrawer = document.querySelector('theme-drawer#cart-drawer');
         if (cartDrawer?.open) {
           cartDrawer.open();
