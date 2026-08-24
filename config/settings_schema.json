@@ -2148,7 +2148,7 @@
         "type": "color",
         "id": "color_background",
         "label": "Brand Background Color",
-        "default": "#FAF7F2"
+        "default": "#F2EDE4"
       },
       {
         "type": "color",
