@@ -128,8 +128,8 @@
           src="{{ section.settings.wordmark_image | image_url: width: 1400 }}"
           alt="{{ section.settings.wordmark_image.alt | default: 'wanderWell' }}"
           loading="lazy"
-          width="{{ section.settings.wordmark_image.width }}"
-          height="{{ section.settings.wordmark_image.height }}"
+          width="100%"
+          height="auto"
         >
       </div>
     {%- elsif section.settings.wordmark_svg != blank -%}
