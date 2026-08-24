@@ -1,0 +1,357 @@
+{% comment %}
+  Section: WW Product Template
+  Description: Custom styled, upgrade-safe product details template for WanderWell.
+{% endcomment %}
+
+{{ 'ww-product.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section class="ww-products section-{{ section.id }}" id="ww-product-template" {{ section.shopify_attributes }}>
+  <div class="container">
+    
+    <div class="ww-shop">
+      <div class="ww-panel on">
+        <div class="ww-panel-inner">
+          
+          <!-- Media Gallery -->
+          <div class="ww-media">
+            <div class="ww-media-main">
+              <div class="ww-media-stage">
+                {%- assign product_images = product.images -%}
+
+                {%- if product_images.size > 0 -%}
+                  {%- for image in product_images limit: 4 -%}
+                    <div class="ww-media-slide {% if forloop.first %}is-on{% endif %}">
+                      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', alt: image.alt }}
+                    </div>
+                  {%- endfor -%}
+                {%- else -%}
+                  <div class="ww-media-slide is-on">
+                    {%- if settings.logo_inverse != blank -%}
+                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'ww-media-logo', loading: 'lazy' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="ww-media-slide"></div>
+                  <div class="ww-media-slide"></div>
+                  <div class="ww-media-slide"></div>
+                {%- endif -%}
+              </div>
+
+              {%- assign has_multiple_images = false -%}
+              {%- if product_images.size > 1 -%}
+                {%- assign has_multiple_images = true -%}
+              {%- endif -%}
+
+              {%- if has_multiple_images -%}
+                <button class="ww-media-nav ww-media-nav--prev" type="button" aria-label="Previous image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15 5l-7 7 7 7"></path>
+                  </svg>
+                </button>
+                <button class="ww-media-nav ww-media-nav--next" type="button" aria-label="Next image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              {%- endif -%}
+            </div>
+
+            <div class="ww-media-thumbs">
+              {%- if product_images.size > 0 -%}
+                {%- for image in product_images limit: 4 -%}
+                  <div class="ww-media-thumb {% if forloop.first %}is-active{% endif %}">
+                    {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: image.alt }}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="ww-media-thumb is-active"></div>
+                <div class="ww-media-thumb"></div>
+                <div class="ww-media-thumb"></div>
+                <div class="ww-media-thumb"></div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <!-- Product Details & Buy Box -->
+          <div class="ww-detail">
+            {%- assign subtitle = product.metafields.custom.subtitle.value | default: product.metafields.custom.subtitle -%}
+            {%- if subtitle != blank -%}
+              <div class="ww-detail-eyebrow">{{ product.title | escape }} · {{ subtitle | escape }}</div>
+            {%- else -%}
+              <div class="ww-detail-eyebrow">{{ product.title | escape }}</div>
+            {%- endif -%}
+            <h3 class="ww-detail-title">{{ product.title | escape }}</h3>
+
+            {%- if product.description != blank -%}
+              <div class="ww-detail-lede">{{ product.description }}</div>
+            {%- endif -%}
+
+            <div class="ww-buy">
+              {%- assign product_form_id = 'ww-product-form-' | append: section.id -%}
+              <product-form-component
+                data-section-id="{{ section.id }}"
+                data-product-id="{{ product.id }}"
+                data-product-url="{{ product.url }}"
+                on:submit="/handleSubmit"
+                data-quantity-default="1"
+              >
+                <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                {%- form 'product', product, id: product_form_id, class: 'ww-product-form', data-type: 'add-to-cart-form' -%}
+                  <input type="hidden" name="id" ref="variantId" value="{{ product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" value="1" class="ww-qty-input">
+
+                  {% render 'ww-product-purchase-options', current_prod: product, block: section %}
+
+                  <div class="ww-buy-row">
+                    <div class="ww-qty">
+                      <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
+                      <span class="v">1</span>
+                      <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
+                    </div>
+
+                    {%- assign add_to_cart_text = 'products.product.add_to_cart' | t -%}
+                    {%- if product.available == false -%}
+                      {%- assign add_to_cart_text = 'products.product.sold_out' | t -%}
+                    {%- endif -%}
+
+                    {% render 'add-to-cart-button',
+                      product: product,
+                      can_add_to_cart: product.available,
+                      show_icon: true,
+                      add_to_cart_text: add_to_cart_text,
+                      class: 'ww-add'
+                    %}
+                  </div>
+                {%- endform -%}
+              </product-form-component>
+
+              <div class="ww-buy-trust">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                  </svg>
+                  Free shipping $50+
+                </span>
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                  3rd-party tested
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Accordions -->
+        <div class="ww-info">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion' -%}
+              {%- assign acc_title = block.settings.title -%}
+              {%- assign acc_type = block.settings.content_type -%}
+              {%- assign acc_content = '' -%}
+
+              {%- if acc_type == 'custom' -%}
+                {%- assign acc_content = block.settings.content -%}
+              {%- elsif acc_type == 'ingredients' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-ingredients', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- elsif acc_type == 'bundle' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-bundle', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- elsif acc_type == 'supplement_facts' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-supplement-facts', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- elsif acc_type == 'capsule_size' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-capsule', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- endif -%}
+
+              {%- assign show_acc = false -%}
+              {%- if acc_content != blank -%}
+                {%- assign show_acc = true -%}
+              {%- endif -%}
+
+              {%- if show_acc -%}
+                <details class="ww-acc" {{ block.shopify_attributes }}>
+                  <summary>
+                    <span class="ww-acc-plus">+</span>
+                    <span class="ww-acc-t">{{ acc_title | escape }}</span>
+                  </summary>
+                  <div class="ww-acc-body">
+                    {{ acc_content }}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Trust Quality Section -->
+    {%- if section.settings.trust_heading != blank -%}
+      <div class="ww-trust">
+        <h2 class="ww-trust__heading">{{ section.settings.trust_heading | escape }}</h2>
+        <div class="ww-trust__grid">
+          {%- if section.settings.trust_item_1_title != blank -%}
+            <div class="ww-trust__col">
+              <h4 class="ww-trust__col-title">{{ section.settings.trust_item_1_title | escape }}</h4>
+              <p class="ww-trust__col-text">{{ section.settings.trust_item_1_text | escape }}</p>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.trust_item_2_title != blank -%}
+            <div class="ww-trust__col">
+              <h4 class="ww-trust__col-title">{{ section.settings.trust_item_2_title | escape }}</h4>
+              <p class="ww-trust__col-text">{{ section.settings.trust_item_2_text | escape }}</p>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script src="{{ 'ww-product.js' | asset_url }}" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('click', function (e) {
+      const opt = e.target.closest('.ww-sub-opt');
+      if (!opt) return;
+
+      const radio = opt.querySelector('.ww-sub-opt__radio-input');
+      if (radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      const container = opt.closest('.ww-purchase-options');
+      if (container) {
+        container.querySelectorAll('.ww-sub-opt').forEach((item) => item.classList.remove('on'));
+      }
+      opt.classList.add('on');
+    });
+  });
+</script>
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Product Template",
+  "tag": "section",
+  "class": "ww-section-product-template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Trust Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "trust_heading",
+      "label": "Trust Heading",
+      "default": "Commitment to Quality"
+    },
+    {
+      "type": "text",
+      "id": "trust_item_1_title",
+      "label": "Trust Item 1 Title",
+      "default": "Third-party testing"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_item_1_text",
+      "label": "Trust Item 1 Body",
+      "default": "Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications."
+    },
+    {
+      "type": "text",
+      "id": "trust_item_2_title",
+      "label": "Trust Item 2 Title",
+      "default": "Manufacturing excellence"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_item_2_text",
+      "label": "Trust Item 2 Body",
+      "default": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Accordion Title",
+          "default": "Ingredients"
+        },
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Accordion Content Type",
+          "options": [
+            { "value": "custom", "label": "Custom Text" },
+            { "value": "ingredients", "label": "Ingredients (Dynamic)" },
+            { "value": "bundle", "label": "What's Inside Bundle (Dynamic)" },
+            { "value": "supplement_facts", "label": "Product Info / Supplement Facts (Dynamic)" },
+            { "value": "capsule_size", "label": "Capsule Size (Dynamic)" }
+          ],
+          "default": "custom"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Custom Accordion Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
