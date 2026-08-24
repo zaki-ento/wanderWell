@@ -71,6 +71,16 @@ Displays ingredient list details dynamically using Metaobject references.
      - **Type**: `Metaobject` reference -> Select **List of entries** (repeater).
      - **Reference**: Select the `Ingredient` definition.
 
+### 3. WW Product Bundle Items (`snippets/ww-product-bundle.liquid`)
+Displays individual product items inside a bundle product, including their images, titles, and dynamic subtitle descriptors.
+- **Key Features**:
+  - Automatically compares the sum of the individual product prices against the bundle product price to dynamically calculate and display money savings:
+    `You save {{ save_amount | money }} vs. buying separately`.
+  - Integrates as its own distinct block content type option in the product customizer settings (`ww-product.liquid`). Renders the visualizer card list whenever selected.
+  - Leverages the existing `.ww-bundle-item` and `.ww-bundle-thumb` layout styling rules defined inside the parent template stylesheet.
+- **Shopify Admin Configuration Required**:
+  - **Appstle Automatic Sync**: This snippet runs fully automatically from the Appstle Bundles app dashboard data structure (`shop.metafields.appstle_bundles.bundle_rules.value`). No manual product metafield configuration is required.
+
 ### 4. WW Product Supplement Facts (`snippets/ww-product-supplement-facts.liquid`)
 Renders directions, caution guidelines, serving parameters, and raw supplement facts grids.
 - **Key Features**:

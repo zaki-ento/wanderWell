@@ -321,6 +321,11 @@
                       {%- render 'ww-product-ingredients', product: current_prod -%}
                     {%- endcapture -%}
                     {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'bundle' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-bundle', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
                   {%- elsif acc_type == 'supplement_facts' -%}
                     {%- capture rendered_snippet -%}
                       {%- render 'ww-product-supplement-facts', product: current_prod -%}
@@ -349,6 +354,20 @@
                           {%- assign ingredients_list = current_prod.metafields.custom.ingredients.value -%}
                           {%- if ingredients_list != blank -%}
                             <span class="ww-acc-c">{{ ingredients_list.size }} items</span>
+                          {%- endif -%}
+                        {%- elsif acc_type == 'bundle' -%}
+                          {%- assign bundle_products = blank -%}
+                          {%- assign bundle_rules = shop.metafields.appstle_bundles.bundle_rules.value -%}
+                          {%- if bundle_rules != blank -%}
+                            {%- for rule in bundle_rules -%}
+                              {%- if rule.bundleProductId == current_prod.id or rule.productId == current_prod.id -%}
+                                {%- assign bundle_products = rule.products -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                          {%- if bundle_products != blank -%}
+                            <span class="ww-acc-c">{{ bundle_products.size }} products</span>
                           {%- endif -%}
                         {%- endif -%}
                       </summary>
@@ -1358,6 +1377,7 @@
           "label": "Content Source",
           "options": [
             { "value": "ingredients", "label": "Ingredients list (Default Template)" },
+            { "value": "bundle", "label": "What's Inside (Bundle Products)" },
             { "value": "supplement_facts", "label": "Product Information / Facts (Default Template)" },
             { "value": "capsule_size", "label": "Capsule Size Scale Graphic" },
             { "value": "custom", "label": "Custom HTML Override" }

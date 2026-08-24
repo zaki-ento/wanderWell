@@ -1,0 +1,64 @@
+{% comment %}
+  Snippet: WW Product Bundle Items
+  Renders product components inside a bundle dynamically from Appstle Bundles app rules.
+  Accepts: product
+{% endcomment %}
+
+{%- assign bundle_products = blank -%}
+
+{%- comment -%} Check for Appstle Bundles rule definitions {%- endcomment -%}
+{%- assign bundle_rules = shop.metafields.appstle_bundles.bundle_rules.value -%}
+{%- if bundle_rules != blank -%}
+  {%- for rule in bundle_rules -%}
+    {%- if rule.bundleProductId == product.id or rule.productId == product.id -%}
+      {%- assign bundle_products = rule.products -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if bundle_products != blank -%}
+  <div class="ww-bundle-items">
+    {%- assign total_individual_price = 0 -%}
+    
+    {%- for child in bundle_products -%}
+      {%- assign prod_item = blank -%}
+      {%- if child.handle != blank -%}
+        {%- assign prod_item = all_products[child.handle] -%}
+      {%- else -%}
+        {%- assign prod_item = child -%}
+      {%- endif -%}
+      
+      {%- if prod_item != blank -%}
+        {%- assign prod_title = prod_item.title -%}
+        {%- assign prod_image = prod_item.featured_media -%}
+        {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
+        {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
+        
+        <div class="ww-bundle-item">
+          <div class="ww-bundle-thumb">
+            {%- if prod_image != blank -%}
+              {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+            {%- else -%}
+              <div class="ww-bundle-ph"></div>
+            {%- endif -%}
+          </div>
+          <div>
+            <h4>{{ prod_title | escape }}</h4>
+            {%- if prod_subtitle != blank -%}
+              <p>{{ prod_subtitle | escape }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+    
+    {%- assign bundle_price = product.price -%}
+    {%- if total_individual_price > bundle_price -%}
+      {%- assign save_amount = total_individual_price | minus: bundle_price -%}
+      <div class="ww-bundle-save">
+        You save {{ save_amount | money }} vs. buying separately
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
