@@ -18,7 +18,7 @@
           "type": "link_column",
           "settings": {
             "title": "Shop",
-            "menu": "main-menu"
+            "menu": "shop-menu"
           }
         },
         "help_col": {
@@ -42,7 +42,6 @@
         "learn_col"
       ],
       "settings": {
-        "bg_gradient": "linear-gradient(180deg, #FBCBA8 0%, #E8632B 100%)",
         "news_eyebrow": "Stay in the loop",
         "news_title": "Travel tips, drops & 10% off your first order",
         "news_placeholder": "Enter your email",
@@ -55,8 +54,7 @@
         "legal_menu": "footer",
         "fda_disclaimer": "*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
         "wordmark_image": "shopify://shop_images/c894a140-8e15-41f2-b173-9fd0777e446d.png",
-        "wordmark_svg": "",
-        "wordmark_max_width": 1200
+        "wordmark_svg": ""
       }
     }
   },
