@@ -367,7 +367,12 @@
                             {%- endfor -%}
                           {%- endif -%}
                           {%- if bundle_products != blank -%}
-                            <span class="ww-acc-c">{{ bundle_products.size }} products</span>
+                            {%- capture products_str -%}{{ bundle_products }}{%- endcapture -%}
+                            {%- assign parts = products_str | split: '"productHandle":"' -%}
+                            {%- assign parts_size = parts.size | minus: 1 -%}
+                            {%- if parts_size > 0 -%}
+                              <span class="ww-acc-c">{{ parts_size }} products</span>
+                            {%- endif -%}
                           {%- endif -%}
                         {%- endif -%}
                       </summary>

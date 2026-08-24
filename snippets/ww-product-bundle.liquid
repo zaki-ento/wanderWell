@@ -21,36 +21,37 @@
   <div class="ww-bundle-items">
     {%- assign total_individual_price = 0 -%}
     
-    {%- for child in bundle_products -%}
-      {%- assign prod_item = blank -%}
-      {%- assign handle = child.productHandle | default: child.handle -%}
+    {%- comment -%} Parse JSON products array using string splitting {%- endcomment -%}
+    {%- capture products_str -%}{{ bundle_products }}{%- endcapture -%}
+    {%- assign parts = products_str | split: '"productHandle":"' -%}
+    
+    {%- for part in parts offset: 1 -%}
+      {%- assign handle = part | split: '"' | first -%}
       {%- if handle != blank -%}
         {%- assign prod_item = all_products[handle] -%}
-      {%- else -%}
-        {%- assign prod_item = child -%}
-      {%- endif -%}
-      
-      {%- if prod_item != blank -%}
-        {%- assign prod_title = prod_item.title -%}
-        {%- assign prod_image = prod_item.featured_media -%}
-        {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
-        {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
         
-        <div class="ww-bundle-item">
-          <div class="ww-bundle-thumb">
-            {%- if prod_image != blank -%}
-              {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
-            {%- else -%}
-              <div class="ww-bundle-ph"></div>
-            {%- endif -%}
+        {%- if prod_item != blank -%}
+          {%- assign prod_title = prod_item.title -%}
+          {%- assign prod_image = prod_item.featured_media -%}
+          {%- assign prod_subtitle = prod_item.metafields.custom.subtitle.value | default: prod_item.metafields.custom.subtitle -%}
+          {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
+          
+          <div class="ww-bundle-item">
+            <div class="ww-bundle-thumb">
+              {%- if prod_image != blank -%}
+                {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+              {%- else -%}
+                <div class="ww-bundle-ph"></div>
+              {%- endif -%}
+            </div>
+            <div>
+              <h4>{{ prod_title | escape }}</h4>
+              {%- if prod_subtitle != blank -%}
+                <p>{{ prod_subtitle | escape }}</p>
+              {%- endif -%}
+            </div>
           </div>
-          <div>
-            <h4>{{ prod_title | escape }}</h4>
-            {%- if prod_subtitle != blank -%}
-              <p>{{ prod_subtitle | escape }}</p>
-            {%- endif -%}
-          </div>
-        </div>
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
     
