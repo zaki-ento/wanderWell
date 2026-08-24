@@ -28,33 +28,38 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Programmatically open the cart drawer sidebar when cart is successfully updated
-  document.addEventListener('shopify:cart:lines-update', (event) => {
-    event.promise?.then(({ detail }) => {
+  document.addEventListener('shopify:cart:lines-update', async (event) => {
+    if (!event.promise) return;
+    try {
+      const { detail } = await event.promise;
       if (!detail?.didError) {
         // @ts-ignore
-        import('@theme/events').then(({ CartUpdateEvent }) => {
-          const cartDrawer = document.querySelector('cart-drawer-component');    
-          fetch('/cart.js')
-            .then(res => res.json())
-            .then(cart => {
-              const manualEvent = new CartUpdateEvent(cart, 'manual-trigger', {
-                itemCount: cart.item_count,
-                source: 'fad-refresh',
-                sections: {}
-              });
-              document.dispatchEvent(manualEvent);
-              
-              // Open the drawer panel
-              const themeDrawer = document.querySelector('theme-drawer#cart-drawer');
-              if (themeDrawer?.open) {
-                themeDrawer.open();
-              } else if (cartDrawer?.open) {
-                cartDrawer.open();
-              }
-            });
+        const { CartUpdateEvent } = await import('@theme/events');
+        const cartDrawer = document.querySelector('cart-drawer-component');    
+        const res = await fetch('/cart.js');
+        const cart = await res.json();
+        
+        const manualEvent = new CartUpdateEvent(cart, 'manual-trigger', {
+          itemCount: cart.item_count,
+          source: 'fad-refresh',
+          sections: {}
         });
+        document.dispatchEvent(manualEvent);
+        
+        // 1 second delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Open the drawer panel
+        const themeDrawer = document.querySelector('theme-drawer#cart-drawer');
+        if (themeDrawer?.open) {
+          themeDrawer.open();
+        } else if (cartDrawer?.open) {
+          cartDrawer.open();
+        }
       }
-    }).catch(() => {});
+    } catch (e) {
+      // Ignored
+    }
   });
   initScrollReveal();
 });
