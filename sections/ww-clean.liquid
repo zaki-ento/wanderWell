@@ -3,7 +3,7 @@
   Description: Custom dynamic section outlining brand transparency, ticker statements, and highlights.
 {% endcomment %}
 
-<div class="ww-clean section-{{ section.id }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background-color: {{ section.settings.bg_color }};" {{ section.shopify_attributes }}>
+<div class="ww-clean section-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-xl">
     
     {%- if section.settings.label != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
@@ -84,8 +84,8 @@
 
 {% stylesheet %}
   .ww-clean {
-    padding: var(--section-padding, 100px 0);
-    background: var(--cream);
+    padding: 0px 40px;
+    background-color: #E8E0D0;
     overflow: hidden;
   }
   .ww-clean__header {
@@ -249,37 +249,7 @@
       "id": "subheading",
       "label": "Subheading Blurb",
       "default": "We believe in giving your body what it needs, in amounts that make sense. No excess, no guesswork. Just formulas thoughtfully designed for every journey you take."
-    },
-    {
-      "type": "header",
-      "content": "Colors & Layout"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#FAF7F2"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top Padding",
-      "min": 0,
-      "max": 120,
-      "step": 5,
-      "unit": "px",
-      "default": 80
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom Padding",
-      "min": 0,
-      "max": 120,
-      "step": 5,
-      "unit": "px",
-      "default": 80
-    }
+    } 
   ],
   "blocks": [
     {
