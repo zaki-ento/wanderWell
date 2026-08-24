@@ -1,0 +1,539 @@
+{% comment %}
+  Section: WW Footer
+  Description: Custom WanderWell Footer with brand aesthetics, dynamic menus, and full-bleed wordmark logo support.
+{% endcomment %}
+
+<footer class="ww-footer" {{ section.shopify_attributes }}>
+  <div class="ww-footer__inner container">
+    <div class="ww-footer__grid">
+      
+      <!-- Brand & Newsletter Column -->
+      <div class="ww-footer__brand">
+        {%- if section.settings.news_eyebrow != blank -%}
+          <div class="ww-footer__news-eyebrow">{{ section.settings.news_eyebrow | escape }}</div>
+        {%- endif -%}
+        
+        {%- if section.settings.news_title != blank -%}
+          <div class="ww-footer__news-title">{{ section.settings.news_title | escape }}</div>
+        {%- endif -%}
+        
+        {%- form 'customer', class: 'ww-footer__news-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          
+          {%- if form.posted_successfully? -%}
+            <p class="ww-footer__news-success">Thank you for subscribing!</p>
+          {%- else -%}
+            <input
+              type="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.news_placeholder | escape }}"
+              aria-label="Email address"
+              required
+              value="{{ customer.email }}"
+            >
+            <button type="submit">Subscribe</button>
+          {%- endif -%}
+          
+          {%- if form.errors -%}
+            <p class="ww-footer__news-error">
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            </p>
+          {%- endif -%}
+        {%- endform -%}
+        
+        {%- if section.settings.brand_description != blank -%}
+          <p class="ww-footer__brand-text">{{ section.settings.brand_description | escape }}</p>
+        {%- endif -%}
+        
+        {%- if section.settings.show_socials -%}
+          <div class="ww-footer__socials">
+            {%- if section.settings.instagram_link != blank -%}
+              <a href="{{ section.settings.instagram_link }}" class="ww-footer__social" aria-label="Instagram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"></circle>
+                </svg>
+              </a>
+            {%- endif -%}
+            
+            {%- if section.settings.tiktok_link != blank -%}
+              <a href="{{ section.settings.tiktok_link }}" class="ww-footer__social" aria-label="TikTok">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.6 6.7a5.4 5.4 0 0 1-3.3-1.1 5.4 5.4 0 0 1-2-3.6h-3.2v13.1a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.4a5.8 5.8 0 0 0-.78-.05 5.8 5.8 0 1 0 5.8 5.8V8.9a8.5 8.5 0 0 0 5.3 1.8z"></path>
+                </svg>
+              </a>
+            {%- endif -%}
+            
+            {%- if section.settings.linkedin_link != blank -%}
+              <a href="{{ section.settings.linkedin_link }}" class="ww-footer__social" aria-label="LinkedIn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path>
+                </svg>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+      
+      <!-- Link Column Blocks -->
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_column' -%}
+          <div class="ww-footer__col" {{ block.shopify_attributes }}>
+            {%- if block.settings.title != blank -%}
+              <h4 class="ww-footer__col-heading">{{ block.settings.title | escape }}</h4>
+            {%- endif -%}
+            
+            {%- if block.settings.menu != blank -%}
+              <ul class="ww-footer__col-list">
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li class="ww-footer__col-item">
+                    <a href="{{ link.url }}" class="ww-footer__col-link">{{ link.title | escape }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      
+    </div>
+    
+    <!-- Footer Bottom Bar -->
+    <div class="ww-footer__bottom">
+      {%- if section.settings.copyright_text != blank -%}
+        <p class="ww-footer__copyright">{{ section.settings.copyright_text | escape }}</p>
+      {%- endif -%}
+      
+      {%- if section.settings.legal_menu != blank -%}
+        <div class="ww-footer__legal">
+          {%- for link in linklists[section.settings.legal_menu].links -%}
+            <a href="{{ link.url }}" class="ww-footer__legal-link">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    
+    <!-- FDA Disclaimer -->
+    {%- if section.settings.fda_disclaimer != blank -%}
+      <p class="ww-footer__fda">{{ section.settings.fda_disclaimer | escape }}</p>
+    {%- endif -%}
+    
+    <!-- Wordmark Logo Option (Image or Inline SVG fallback) -->
+    {%- if section.settings.wordmark_image != blank -%}
+      <div class="ww-footer__wordmark-wrap">
+        <img
+          class="ww-footer__wordmark"
+          src="{{ section.settings.wordmark_image | image_url: width: 1400 }}"
+          alt="{{ section.settings.wordmark_image.alt | default: 'wanderWell' }}"
+          loading="lazy"
+          width="{{ section.settings.wordmark_image.width }}"
+          height="{{ section.settings.wordmark_image.height }}"
+          style="max-width: {{ section.settings.wordmark_max_width }}px;"
+        >
+      </div>
+    {%- elsif section.settings.wordmark_svg != blank -%}
+      <div class="ww-footer__wordmark-wrap" style="max-width: {{ section.settings.wordmark_max_width }}px; margin: 0 auto;">
+        {{ section.settings.wordmark_svg }}
+      </div>
+    {%- endif -%}
+
+  </div>
+</footer>
+
+{% stylesheet %}
+  .ww-footer {
+    padding: 56px 0 32px;
+    background: linear-gradient(180deg, #FBCBA8 0%, #E8632B 100%);
+    color: rgba(255, 255, 255, 0.92);
+    overflow: hidden;
+  }
+  .ww-footer__grid {
+    display: grid;
+    grid-template-columns: 1.9fr 1fr 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 44px;
+  }
+  .ww-footer__brand {
+    display: flex;
+    flex-direction: column;
+  }
+  .ww-footer__news-eyebrow {
+    font-family: var(--font-tertiary);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+  }
+  .ww-footer__news-title {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 1.28rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--charcoal);
+    max-width: 22ch;
+    margin-bottom: 18px;
+  }
+  .ww-footer__news-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    max-width: 330px;
+  }
+  .ww-footer__news-form input {
+    width: 100%;
+    padding: 15px 22px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(44, 44, 44, 0.55);
+    border-radius: 999px;
+    font-family: var(--font-primary);
+    font-size: 0.92rem;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .ww-footer__news-form input::placeholder {
+    color: rgba(44, 44, 44, 0.72);
+  }
+  .ww-footer__news-form input:focus-visible {
+    border-color: var(--charcoal);
+    background: rgba(255, 255, 255, 0.28);
+    outline: 2px solid var(--charcoal);
+    outline-offset: 2px;
+  }
+  .ww-footer__news-form button {
+    padding: 15px 26px;
+    background: var(--charcoal);
+    color: var(--white);
+    border: none;
+    border-radius: 999px;
+    font-family: var(--font-tertiary);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+  .ww-footer__news-form button:hover {
+    background: #000;
+    transform: none;
+  }
+  .ww-footer__news-success {
+    color: var(--charcoal);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 10px 0 0;
+  }
+  .ww-footer__news-error {
+    color: #b00020;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 10px 0 0;
+  }
+  .ww-footer__brand-text {
+    font-family: var(--font-tertiary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    color: var(--white);
+    max-width: 330px;
+    margin: 20px 0 0;
+  }
+  .ww-footer__socials {
+    display: flex;
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .ww-footer__social {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+  .ww-footer__social:hover {
+    background: var(--white);
+    color: var(--orange);
+  }
+  .ww-footer__col {
+    padding-left: 48px;
+  }
+  .ww-footer__col-heading {
+    font-family: var(--font-tertiary);
+    color: var(--charcoal);
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 18px;
+  }
+  .ww-footer__col-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ww-footer__col-item {
+    margin-bottom: 13px;
+  }
+  .ww-footer__col-link {
+    font-size: 1.04rem;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .ww-footer__col-link:hover {
+    color: var(--charcoal);
+  }
+  .ww-footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.32);
+    padding-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .ww-footer__copyright {
+    font-size: 0.94rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  .ww-footer__legal {
+    display: flex;
+    gap: 40px;
+  }
+  .ww-footer__legal-link {
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .ww-footer__legal-link:hover {
+    color: var(--charcoal);
+  }
+  .ww-footer__fda {
+    margin-top: 26px;
+    font-family: var(--font-tertiary);
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .ww-footer__wordmark-wrap {
+    width: 100%;
+    padding: 26px 0 0;
+    display: flex;
+    justify-content: center;
+  }
+  .ww-footer__wordmark {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ww-footer__wordmark svg {
+    width: 100%;
+    height: auto;
+    fill: currentColor;
+    display: block;
+  }
+
+  @media (max-width: 1024px) {
+    .ww-footer__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+    }
+    .ww-footer__brand {
+      grid-column: 1 / -1;
+    }
+    .ww-footer__col {
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 768px) {
+    .ww-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ww-footer__legal {
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Footer",
+  "tag": "footer",
+  "class": "ww-section-footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Color / Gradient",
+      "default": "linear-gradient(180deg, #FBCBA8 0%, #E8632B 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Signup"
+    },
+    {
+      "type": "text",
+      "id": "news_eyebrow",
+      "label": "Newsletter Eyebrow",
+      "default": "Stay in the loop"
+    },
+    {
+      "type": "text",
+      "id": "news_title",
+      "label": "Newsletter Title",
+      "default": "Travel tips, drops & 10% off your first order"
+    },
+    {
+      "type": "text",
+      "id": "news_placeholder",
+      "label": "Newsletter Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "On-the-go wellness for wherever your next trip takes you."
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_socials",
+      "label": "Show Socials",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "instagram_link",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_link",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_link",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar & Legal"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2026 wanderWell. All rights reserved."
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal Menu",
+      "default": "footer"
+    },
+    {
+      "type": "textarea",
+      "id": "fda_disclaimer",
+      "label": "FDA Disclaimer",
+      "default": "*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."
+    },
+    {
+      "type": "header",
+      "content": "Footer Big Wordmark"
+    },
+    {
+      "type": "image_picker",
+      "id": "wordmark_image",
+      "label": "Wordmark Logo Image"
+    },
+    {
+      "type": "html",
+      "id": "wordmark_svg",
+      "label": "Wordmark SVG Code (Fallback)"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_max_width",
+      "label": "Wordmark Max Width",
+      "min": 200,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_column",
+      "name": "Link Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Footer",
+      "blocks": [
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Shop"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Help"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Learn"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
