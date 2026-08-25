@@ -22,13 +22,9 @@
         {%- assign is_first_plan = false -%}
         {%- if forloop.first and forloop.parentloop.first -%}
           {%- assign is_first_plan = true -%}
-        {%- endif -%}
-        <pre style="white-space: pre-wrap;">
-{{ current_prod | json }}
-</pre>
-        
+        {%- endif -%} 
         {%- assign sub_multiplier = block.settings.sub_multiplier | default: 1 -%}
-       {%- if current_prod.product_type == "Bundle" -%}
+       {%- if current_prod.type == "Bundle" -%}
             {%- assign sub_packs = "2 Packs" -%}
        {%- else -%}
             {%- assign sub_packs = "1 Pack" -%}
