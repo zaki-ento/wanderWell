@@ -45,7 +45,7 @@ export class AddToCartComponent extends Component {
     super.disconnectedCallback();
 
     if (this.#resetTimeouts) {
-      this.#resetTimeouts.forEach(/** @param {number} timeoutId */(timeoutId) => clearTimeout(timeoutId));
+      this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
     }
     this.removeEventListener('pointerenter', this.#preloadImage);
   }
@@ -128,7 +128,7 @@ export class AddToCartComponent extends Component {
   /**
    * Animates the add to cart button.
    */
-  animateAddToCart = async function (forceKeep = false) {
+  animateAddToCart = async function () {
     const { addToCartButton } = this.refs;
 
     // Initialize the array if it doesn't exist
@@ -143,8 +143,6 @@ export class AddToCartComponent extends Component {
     if (addToCartButton.dataset.added !== 'true') {
       addToCartButton.dataset.added = 'true';
     }
-
-    if (forceKeep) return;
 
     // The onAnimationEnd can trigger a style recalculation so we yield to the main thread first.
     await yieldToMainThread();
@@ -312,7 +310,7 @@ class ProductFormComponent extends Component {
         if (detail?.sourceId === this.id || detail?.source === 'product-form-component') return;
 
         if (detail?.items) {
-          this.#updateCartQuantity(/** @type {Cart} */({ items: detail.items }));
+          this.#updateCartQuantity(/** @type {Cart} */ ({ items: detail.items }));
         } else {
           this.#refreshCart().then((cart) => this.#updateCartQuantity(cart));
         }
@@ -417,11 +415,6 @@ class ProductFormComponent extends Component {
 
         return;
       }
-    }
-
-    for (const container of allAddToCartContainers) {
-      container.disable();
-      container.animateAddToCart(true);
     }
 
     const formData = new FormData(form);
@@ -586,10 +579,6 @@ class ProductFormComponent extends Component {
       .finally(() => {
         if (event) {
           cartPerformance.measureFromEvent('add:user-action', event);
-        }
-        for (const container of allAddToCartContainers) {
-          container.enable();
-          container.refs.addToCartButton?.removeAttribute('data-added');
         }
       });
   }
@@ -775,7 +764,7 @@ class ProductFormComponent extends Component {
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */(newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
     }
   }
 
