@@ -140,7 +140,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       quantity,
       action: 'change',
     });
-    const lineItemRow = this.refs.cartItemRows?.[line - 1];
+    const lineItemRow = this.refs.cartItemRows[line - 1];
 
     if (!lineItemRow) return;
 
@@ -159,18 +159,18 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       action: 'clear',
     });
 
-    const cartItemRowToRemove = this.refs.cartItemRows?.[line - 1];
+    const cartItemRowToRemove = this.refs.cartItemRows[line - 1];
 
     if (!cartItemRowToRemove) return;
 
     const rowsToRemove = [
       cartItemRowToRemove,
       // Get all nested lines of the row to remove
-      ...(this.refs.cartItemRows || []).filter((row) => row.dataset.parentKey === cartItemRowToRemove.dataset.key),
+      ...this.refs.cartItemRows.filter((row) => row.dataset.parentKey === cartItemRowToRemove.dataset.key),
     ];
 
     // If the cart item row is the last row, optimistically trigger the cart empty state
-    const isEmptyCart = rowsToRemove.length == (this.refs.cartItemRows?.length || 0);
+    const isEmptyCart = rowsToRemove.length == this.refs.cartItemRows.length;
 
     const template = document.getElementById('empty-cart-template');
     if (isEmptyCart && template instanceof HTMLTemplateElement) {
@@ -231,7 +231,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     cartTotal?.shimmer();
 
     const deferredUpdatePromise = CartLinesUpdateEvent.createPromise();
-    const lineId = this.refs.cartItemRows?.[line - 1]?.dataset.key ?? '';
+    const lineId = this.refs.cartItemRows[line - 1]?.dataset.key ?? '';
     this.dispatchEvent(
       new CartLinesUpdateEvent({
         action: config.action === 'change' && quantity > 0 ? 'update' : 'remove',
@@ -309,30 +309,26 @@ export class CartItemsComponent extends createViewEventElement(Component) {
    * @param {string} parsedResponseText.errors - The errors.
    */
   #handleCartError = (line, parsedResponseText) => {
-    const quantitySelector = this.refs.quantitySelectors?.[line - 1];
+    const quantitySelector = this.refs.quantitySelectors[line - 1];
     const quantityInput = quantitySelector?.querySelector('input');
 
-    if (quantityInput) {
-      quantityInput.value = quantityInput.defaultValue;
-    }
+    if (!quantityInput) throw new Error('Quantity input not found');
+
+    quantityInput.value = quantityInput.defaultValue;
 
     const cartItemError = this.refs[`cartItemError-${line}`];
     const cartItemErrorContainer = this.refs[`cartItemErrorContainer-${line}`];
 
-    if (cartItemError instanceof HTMLElement) {
-      cartItemError.textContent = parsedResponseText.errors;
-    }
-    if (cartItemErrorContainer instanceof HTMLElement) {
-      cartItemErrorContainer.classList.remove('hidden');
-    }
+    if (!(cartItemError instanceof HTMLElement)) throw new Error('Cart item error not found');
+    if (!(cartItemErrorContainer instanceof HTMLElement)) throw new Error('Cart item error container not found');
+
+    cartItemError.textContent = parsedResponseText.errors;
+    cartItemErrorContainer.classList.remove('hidden');
 
     this.dispatchEvent(
       new CartErrorEvent({
         error: parsedResponseText.errors || 'Cart update failed',
         code: 'INVALID',
-        detail: {
-          line,
-        },
       })
     );
   };
