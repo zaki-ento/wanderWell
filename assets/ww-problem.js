@@ -75,11 +75,11 @@
   var pts = NORM.map(function(p) {
     var x;
 
-    console.log('w: ', w);
-    console.log('desktop: ', desktop);
-    console.log('tablet: ', tablet);
-    console.log('mobile: ', !desktop && !tablet);
-    console.log('==================');
+    // console.log('w: ', w);
+    // console.log('desktop: ', desktop);
+    // console.log('tablet: ', tablet);
+    // console.log('mobile: ', !desktop && !tablet);
+    // console.log('==================');
 
     if (desktop) {
       x = 0.04 * w + p[0] * 0.56 * w;
