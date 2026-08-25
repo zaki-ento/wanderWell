@@ -87,6 +87,10 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "appstle_bundles_appstle_sectioned_bundle_custom_page_bd7VNU": {
+              "type": "shopify://apps/appstle-bundles/blocks/appstle-sectioned-bundle-custom-page/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
+              "settings": {}
+            },
             "group_icgrde": {
               "type": "group",
               "name": "t:names.header",
@@ -276,10 +280,6 @@
               },
               "block_order": []
             },
-            "appstle_bundles_appstle_sectioned_bundle_custom_page_bd7VNU": {
-              "type": "shopify://apps/appstle-bundles/blocks/appstle-sectioned-bundle-custom-page/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
-              "settings": {}
-            },
             "text_aEtTtq": {
               "type": "text",
               "name": "t:names.product_description",
@@ -308,11 +308,11 @@
             }
           },
           "block_order": [
+            "appstle_bundles_appstle_sectioned_bundle_custom_page_bd7VNU",
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "appstle_bundles_appstle_sectioned_bundle_custom_page_bd7VNU",
             "text_aEtTtq"
           ]
         }
