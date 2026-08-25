@@ -790,3 +790,23 @@
     order: 1;
   }
 }
+
+.product-form-text__error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-family: var(--font-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #d03a3a;
+}
+.product-form-text__error.hidden {
+  display: none !important;
+}
+.product-form-text__error svg {
+  width: 14px;
+  height: 14px;
+  color: #d03a3a;
+  flex-shrink: 0;
+}

@@ -242,6 +242,12 @@
 
                         {% render 'ww-product-purchase-options', current_prod: current_prod, block: block %}
 
+                        <span class="product-form-text__error hidden" ref="addToCartTextError">
+                          <span class="svg-wrapper">
+                            {{- 'icon-error.svg' | inline_asset_content -}}
+                          </span>
+                        </span>
+
                         <div class="ww-buy-row">
                           <div class="ww-qty">
                             <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
