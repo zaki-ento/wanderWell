@@ -25,8 +25,11 @@
         {%- endif -%}
         
         {%- assign sub_multiplier = block.settings.sub_multiplier | default: 1 -%}
-        {%- assign sub_packs = block.settings.sub_badge | default: "1 Pack" -%}
-
+       {%- if current_prod.product_type == "Bundle" -%}
+            {%- assign sub_packs = "2 Packs" -%}
+       {%- else -%}
+            {%- assign sub_packs = "1 Pack" -%}
+       {%- endif -%}
         {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
         {%- assign compare_price = base_unit_price | times: sub_multiplier -%}
         
