@@ -267,7 +267,7 @@
           lead = vh * LEAD,
           total = track.offsetHeight - vh + lead;
       var p = total > 0 ? Math.min(1, Math.max(0, (-top + lead) / total)) : 0;
-      console.log('update() -> top:', top, 'lead:', lead, 'total:', total, 'p:', p);
+    //  console.log('update() -> top:', top, 'lead:', lead, 'total:', total, 'p:', p);
       lastP = p;
       if(bgGrid) bgGrid.style.transform = 'translate3d(0,' + (p * -26).toFixed(1) + 'px,0)';
       if(world) world.style.transform = 'translate3d(' + (p * -38).toFixed(1) + 'px,' + (p * -16).toFixed(1) + 'px,0)';
