@@ -24,7 +24,7 @@
           {%- assign is_first_plan = true -%}
         {%- endif -%}
         <pre style="white-space: pre-wrap;">
-{{ group.selling_plans | json }}
+{{ current_prod.product_type }}
 </pre>
         
         {%- assign sub_multiplier = block.settings.sub_multiplier | default: 1 -%}
