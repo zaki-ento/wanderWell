@@ -12,6 +12,10 @@
     "main": {
       "type": "product-information",
       "blocks": {
+        "appstle_bundles_appstle_sectioned_bundle_custom_page_Gj6Q4G": {
+          "type": "shopify://apps/appstle-bundles/blocks/appstle-sectioned-bundle-custom-page/8909921b-2d24-4d68-9b12-9d045d3dcb0a",
+          "settings": {}
+        },
         "disclosures_g9mWze": {
           "type": "disclosures",
           "name": "t:names.disclosures",
@@ -313,6 +317,7 @@
         }
       },
       "block_order": [
+        "appstle_bundles_appstle_sectioned_bundle_custom_page_Gj6Q4G",
         "disclosures_g9mWze"
       ],
       "settings": {
