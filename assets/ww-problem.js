@@ -128,7 +128,7 @@
         layout();
         if(!L) return;
       }
-      console.log('paint idx:', idx, 'p:', p, 'L:', L);
+      //console.log('paint idx:', idx, 'p:', p, 'L:', L);
       maskPath.setAttribute('stroke-dashoffset', L * (1 - p));
       var pt = route.getPointAtLength(Math.max(0.001, p) * L);
       pin.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ') scale(1.15)');
