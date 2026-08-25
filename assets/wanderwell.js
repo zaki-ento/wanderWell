@@ -26,5 +26,37 @@ document.addEventListener('DOMContentLoaded', () => {
       observer.observe(el);
     });
   };
+  // Disable add-to-cart button and show tick during cart request on custom forms
+  document.addEventListener('submit', (e) => {
+    const form = e.target.closest('.ww-product-form');
+    if (!form) return;
+
+    const btn = form.querySelector('button[name="add"]');
+    if (btn) {
+      setTimeout(() => {
+        btn.disabled = true;
+        btn.setAttribute('data-added', 'true');
+      }, 0);
+    }
+  });
+
+  // Re-enable button and clear tick when request completes or fails
+  const resetCustomFormButtons = () => {
+    document.querySelectorAll('.ww-product-form button[name="add"]').forEach((btn) => {
+      btn.disabled = false;
+      btn.removeAttribute('data-added');
+    });
+  };
+
+  document.addEventListener('shopify:cart:lines-update', (event) => {
+    if (event.promise) {
+      event.promise.then(resetCustomFormButtons).catch(resetCustomFormButtons);
+    } else {
+      resetCustomFormButtons();
+    }
+  });
+
+  document.addEventListener('shopify:cart:error', resetCustomFormButtons);
+
   initScrollReveal();
 });
