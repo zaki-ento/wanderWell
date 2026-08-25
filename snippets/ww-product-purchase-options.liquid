@@ -100,7 +100,11 @@
       2. Render One-Time Purchase Option
     {%- endcomment -%}
     {%- unless current_prod.requires_selling_plan -%}
-      {%- assign one_time_packs = block.settings.one_time_badge | default: "1 Pack" -%}
+      {%- if current_prod.type == "Bundle" -%}
+            {%- assign one_time_packs = "2 Packs" -%}
+       {%- else -%}
+            {%- assign one_time_packs = "1 Pack" -%}
+       {%- endif -%}
 
       {%- assign one_time_servings_qty = base_servings -%}
       {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
