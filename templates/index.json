@@ -156,8 +156,6 @@
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Capsules · Ginger",
             "description": "",
-            "one_time_badge": "1 Pack",
-            "sub_badge": "1 Pack",
             "sub_multiplier": 1
           }
         },
@@ -199,8 +197,6 @@
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Powder · Vitamin C",
             "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere.",
-            "one_time_badge": "1 Pack",
-            "sub_badge": "1 Pack",
             "sub_multiplier": 1
           }
         },
@@ -227,12 +223,10 @@
         "product_tab_6ncFYp": {
           "type": "product_tab",
           "settings": {
-            "product": "travel-duo-bundle",
+            "product": "travel-duo",
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Both · Save upto 10%",
             "description": "",
-            "one_time_badge": "2 Pack",
-            "sub_badge": "2 Pack",
             "sub_multiplier": 1
           }
         },
