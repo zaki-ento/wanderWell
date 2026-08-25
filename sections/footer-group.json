@@ -11,54 +11,152 @@
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
-    "ww_footer": {
-      "type": "ww-footer",
+    "footer_apwfDz": {
+      "type": "footer",
       "blocks": {
-        "shop_col": {
-          "type": "link_column",
+        "group_Mitbmt": {
+          "type": "group",
           "settings": {
-            "title": "Shop",
-            "menu": "shop-menu"
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 6,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_9GmF8c": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Join our email list</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_jfFH9d": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Get exclusive deals and early access to new products.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_9GmF8c",
+            "text_jfFH9d"
+          ]
         },
-        "help_col": {
-          "type": "link_column",
+        "email_signup_EFT8i8": {
+          "type": "email-signup",
           "settings": {
-            "title": "Help",
-            "menu": "footer"
-          }
-        },
-        "learn_col": {
-          "type": "link_column",
-          "settings": {
-            "title": "Learn",
-            "menu": "footer"
-          }
+            "width": "fill",
+            "custom_width": 100,
+            "heading": "",
+            "heading_text_color": "",
+            "heading_preset": "h3",
+            "border_style": "all",
+            "input_style": "default",
+            "border_width": 1,
+            "border_radius": 100,
+            "input_background_color": "",
+            "input_text_color": "",
+            "input_border_color": "",
+            "input_type_preset": "paragraph",
+            "style_class": "button",
+            "custom_button_background": "{{ settings.color_palette.foreground }}",
+            "custom_button_text": "{{ settings.color_palette.background }}",
+            "custom_button_border": "{{ settings.color_palette.background }}",
+            "link_text_color": "",
+            "display_type": "text",
+            "label": "Sign up",
+            "integrated_button": false,
+            "button_type_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "shop_col",
-        "help_col",
-        "learn_col"
+        "group_Mitbmt",
+        "email_signup_EFT8i8"
       ],
+      "name": "t:names.footer",
       "settings": {
-        "news_eyebrow": "Stay in the loop",
-        "news_title": "Travel tips, drops & 10% off your first order",
-        "news_placeholder": "Enter your email",
-        "brand_description": "On-the-go wellness for wherever your next trip takes you.",
-        "show_socials": true,
-        "instagram_link": "https://www.instagram.com/",
-        "tiktok_link": "https://www.tiktok.com/",
-        "linkedin_link": "https://www.linkedin.com/",
-        "copyright_text": "© 2026 wanderWell. All rights reserved.",
-        "legal_menu": "footer",
-        "fda_disclaimer": "*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
-        "wordmark_image": "shopify://shop_images/c894a140-8e15-41f2-b173-9fd0777e446d.png",
-        "wordmark_svg": ""
+        "section_width": "page-width",
+        "gap": 20,
+        "background_color": "{{ settings.color_palette.foreground }}",
+        "padding-block-start": 36,
+        "padding-block-end": 36
       }
     }
   },
   "order": [
-    "ww_footer"
+    "footer_apwfDz"
   ]
 }
