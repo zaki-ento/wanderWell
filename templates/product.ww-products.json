@@ -110,7 +110,7 @@
         "heading": "Got questions? We've got answers.",
         "use_metaobjects": false,
         "metaobject_type": "faq",
-        "bg_color": "#FAF7F2",
+        "bg_color": "#faf7f2",
         "padding_top": 80,
         "padding_bottom": 80
       }
