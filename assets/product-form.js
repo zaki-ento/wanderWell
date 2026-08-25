@@ -128,7 +128,7 @@ export class AddToCartComponent extends Component {
   /**
    * Animates the add to cart button.
    */
-  animateAddToCart = async function () {
+  animateAddToCart = async function (forceKeep = false) {
     const { addToCartButton } = this.refs;
 
     // Initialize the array if it doesn't exist
@@ -143,6 +143,8 @@ export class AddToCartComponent extends Component {
     if (addToCartButton.dataset.added !== 'true') {
       addToCartButton.dataset.added = 'true';
     }
+
+    if (forceKeep) return;
 
     // The onAnimationEnd can trigger a style recalculation so we yield to the main thread first.
     await yieldToMainThread();
@@ -417,6 +419,11 @@ class ProductFormComponent extends Component {
       }
     }
 
+    for (const container of allAddToCartContainers) {
+      container.disable();
+      container.animateAddToCart(true);
+    }
+
     const formData = new FormData(form);
 
     if (overrideVariantId) {
@@ -579,6 +586,10 @@ class ProductFormComponent extends Component {
       .finally(() => {
         if (event) {
           cartPerformance.measureFromEvent('add:user-action', event);
+        }
+        for (const container of allAddToCartContainers) {
+          container.enable();
+          container.refs.addToCartButton?.removeAttribute('data-added');
         }
       });
   }
