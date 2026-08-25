@@ -15,7 +15,9 @@
     {%- endcomment -%}
     {%- assign has_subscription = false -%}
     {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15 -%}
-    {{ current_prod.selling_plan_groups }}
+   <pre style="white-space: pre-wrap;">
+{{ current_prod.selling_plan_groups | json }}
+</pre>
     {%- for group in current_prod.selling_plan_groups -%}
       {%- for plan in group.selling_plans -%}
         {%- assign has_subscription = true -%}
