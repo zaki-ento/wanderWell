@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "ww-info-page",
+      "settings": {
+        "show_eyebrow": true,
+        "show_title": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

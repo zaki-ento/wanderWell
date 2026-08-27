@@ -1,0 +1,651 @@
+{% comment %}
+  Section: WW Info Page
+  Description: Common template section styling for terms, privacy, accessibility, and documentation pages.
+{% endcomment %}
+
+<div class="ww-info-page section-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="ww-info-page__inner">
+      
+      {%- if section.settings.show_eyebrow -%}
+        <span class="ww-info-page__eyebrow">
+          {{- section.settings.eyebrow_text | default: page.title -}}
+        </span>
+      {%- endif -%}
+
+      {%- if section.settings.show_title -%}
+        <h1 class="ww-info-page__title">
+          {{- section.settings.title_text | default: page.title -}}
+        </h1>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'rich_text' -%}
+              <div class="ww-info-page__block ww-info-page__block--text rte" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  {%- if block.settings.heading_size == 'h2' -%}
+                    <h2 id="{{ block.settings.heading | handleize }}">{{ block.settings.heading | escape }}</h2>
+                  {%- elsif block.settings.heading_size == 'h3' -%}
+                    <h3>{{ block.settings.heading | escape }}</h3>
+                  {%- endif -%}
+                {%- endif -%}
+                {{ block.settings.content }}
+              </div>
+
+            {%- when 'table_of_contents' -%}
+              <div class="ww-info-page__block ww-info-page__block--toc" {{ block.shopify_attributes }} aria-label="Table of contents">
+                {%- if block.settings.label != blank -%}
+                  <div class="ww-info-page__toc-label">{{ block.settings.label | escape }}</div>
+                {%- endif -%}
+                <ol class="ww-info-page__toc-list">
+                  {%- if block.settings.link_1_text != blank -%}<li><a href="{{ block.settings.link_1_url }}">{{ block.settings.link_1_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_2_text != blank -%}<li><a href="{{ block.settings.link_2_url }}">{{ block.settings.link_2_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_3_text != blank -%}<li><a href="{{ block.settings.link_3_url }}">{{ block.settings.link_3_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_4_text != blank -%}<li><a href="{{ block.settings.link_4_url }}">{{ block.settings.link_4_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_5_text != blank -%}<li><a href="{{ block.settings.link_5_url }}">{{ block.settings.link_5_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_6_text != blank -%}<li><a href="{{ block.settings.link_6_url }}">{{ block.settings.link_6_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_7_text != blank -%}<li><a href="{{ block.settings.link_7_url }}">{{ block.settings.link_7_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_8_text != blank -%}<li><a href="{{ block.settings.link_8_url }}">{{ block.settings.link_8_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_9_text != blank -%}<li><a href="{{ block.settings.link_9_url }}">{{ block.settings.link_9_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_10_text != blank -%}<li><a href="{{ block.settings.link_10_url }}">{{ block.settings.link_10_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_11_text != blank -%}<li><a href="{{ block.settings.link_11_url }}">{{ block.settings.link_11_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_12_text != blank -%}<li><a href="{{ block.settings.link_12_url }}">{{ block.settings.link_12_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_13_text != blank -%}<li><a href="{{ block.settings.link_13_url }}">{{ block.settings.link_13_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_14_text != blank -%}<li><a href="{{ block.settings.link_14_url }}">{{ block.settings.link_14_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_15_text != blank -%}<li><a href="{{ block.settings.link_15_url }}">{{ block.settings.link_15_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_16_text != blank -%}<li><a href="{{ block.settings.link_16_url }}">{{ block.settings.link_16_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_17_text != blank -%}<li><a href="{{ block.settings.link_17_url }}">{{ block.settings.link_17_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_18_text != blank -%}<li><a href="{{ block.settings.link_18_url }}">{{ block.settings.link_18_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_19_text != blank -%}<li><a href="{{ block.settings.link_19_url }}">{{ block.settings.link_19_text | escape }}</a></li>{%- endif -%}
+                  {%- if block.settings.link_20_text != blank -%}<li><a href="{{ block.settings.link_20_url }}">{{ block.settings.link_20_text | escape }}</a></li>{%- endif -%}
+                </ol>
+              </div>
+
+            {%- when 'callout' -%}
+              <div class="ww-info-page__block ww-info-page__callout{% if block.settings.is_warning %} ww-info-page__callout--warn{% endif %}" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <h3>{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="rte">{{ block.settings.text }}</div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'contact_grid' -%}
+              <div class="ww-info-page__block ww-info-page__contact" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h2>{{ block.settings.heading | escape }}</h2>
+                {%- endif -%}
+                <div class="ww-info-page__contact-grid">
+                  {%- if block.settings.item_1_label != blank -%}
+                    <div class="ww-info-page__contact-item">
+                      <div class="label">{{ block.settings.item_1_label | escape }}</div>
+                      <div class="value">{{ block.settings.item_1_value }}</div>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.item_2_label != blank -%}
+                    <div class="ww-info-page__contact-item">
+                      <div class="label">{{ block.settings.item_2_label | escape }}</div>
+                      <div class="value">{{ block.settings.item_2_value }}</div>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+
+            {%- when 'meta' -%}
+              <div class="ww-info-page__block ww-info-page__meta" {{ block.shopify_attributes }}>
+                {{ block.settings.meta_text | escape }}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Fallback to default page content if no custom blocks are loaded {%- endcomment -%}
+        <div class="ww-info-page__content rte">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .ww-info-page {
+    padding: 72px 0 96px;
+    background: var(--offwhite);
+  }
+  .ww-info-page__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .ww-info-page__eyebrow {
+    display: inline-block;
+    font-family: var(--font-tertiary);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-dark);
+    margin-bottom: 20px;
+  }
+  .ww-info-page__title {
+    font-family: var(--font-primary);
+    font-weight: 500;
+    font-size: 3rem;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: var(--charcoal);
+    margin: 0 0 28px 0;
+    text-wrap: balance;
+  }
+  
+  /* Lede Paragraph */
+  .ww-info-page__block--text .lede,
+  .ww-info-page__block--text p:first-of-type,
+  .ww-info-page .lede,
+  .ww-info-page__content p:first-of-type {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--charcoal);
+    margin-bottom: 32px;
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .ww-info-page__block--text p:first-of-type strong,
+  .ww-info-page__content p:first-of-type strong {
+    font-weight: 700;
+  }
+
+  /* Headings & typography inside rte */
+  .ww-info-page rte h2,
+  .ww-info-page .rte h2,
+  .ww-info-page h2 {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    color: var(--charcoal);
+    margin: 48px 0 16px;
+    text-wrap: balance;
+  }
+  .ww-info-page rte h3,
+  .ww-info-page .rte h3,
+  .ww-info-page h3 {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--charcoal);
+    margin: 28px 0 10px;
+  }
+  .ww-info-page rte p,
+  .ww-info-page .rte p,
+  .ww-info-page p,
+  .ww-info-page rte ul,
+  .ww-info-page .rte ul,
+  .ww-info-page ul,
+  .ww-info-page rte ol,
+  .ww-info-page .rte ol,
+  .ww-info-page ol {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--charcoal);
+    margin-bottom: 16px;
+    max-width: 64ch;
+  }
+  .ww-info-page rte a,
+  .ww-info-page .rte a,
+  .ww-info-page a {
+    color: var(--orange-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+    transition: color 0.2s ease;
+  }
+  .ww-info-page rte a:hover,
+  .ww-info-page .rte a:hover,
+  .ww-info-page a:hover {
+    color: var(--orange);
+  }
+  .ww-info-page rte strong,
+  .ww-info-page .rte strong,
+  .ww-info-page strong {
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+
+  /* List markers */
+  .ww-info-page rte ul,
+  .ww-info-page .rte ul,
+  .ww-info-page rte ol,
+  .ww-info-page .rte ol,
+  .ww-info-page ul,
+  .ww-info-page ol {
+    padding-left: 22px;
+  }
+  .ww-info-page rte li,
+  .ww-info-page .rte li,
+  .ww-info-page li {
+    margin-bottom: 8px;
+  }
+  .ww-info-page rte li::marker,
+  .ww-info-page .rte li::marker,
+  .ww-info-page li::marker {
+    color: var(--orange);
+  }
+
+  /* Table of Contents */
+  .ww-info-page__block--toc,
+  .ww-info-page .toc {
+    margin: 0 0 48px;
+    padding: 24px 28px;
+    background: var(--cream);
+    border-radius: 16px;
+  }
+  .ww-info-page__toc-label,
+  .ww-info-page .toc-label {
+    font-family: var(--font-tertiary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    margin-bottom: 12px;
+  }
+  .ww-info-page__toc-list,
+  .ww-info-page .toc ol {
+    counter-reset: toc;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .ww-info-page__toc-list li,
+  .ww-info-page .toc li {
+    counter-increment: toc;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 6px;
+    padding-left: 28px;
+    position: relative;
+    break-inside: avoid;
+  }
+  .ww-info-page__toc-list li::before,
+  .ww-info-page .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--font-tertiary);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--orange);
+  }
+  .ww-info-page__toc-list a,
+  .ww-info-page .toc a {
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+  .ww-info-page__toc-list a:hover,
+  .ww-info-page .toc a:hover {
+    color: var(--orange-dark);
+    text-decoration: underline;
+  }
+
+  /* Callout Card */
+  .ww-info-page__callout,
+  .ww-info-page .callout {
+    margin: 32px 0;
+    padding: 24px 28px;
+    background: var(--orange-pale);
+    border: 1px solid rgba(232,99,43,0.25);
+    border-radius: 16px;
+  }
+  .ww-info-page__callout h3,
+  .ww-info-page .callout h3 {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--charcoal);
+    margin: 0 0 6px;
+  }
+  .ww-info-page__callout p,
+  .ww-info-page .callout p {
+    margin: 0;
+    font-size: 0.96rem;
+    color: var(--charcoal);
+  }
+  .ww-info-page__callout a,
+  .ww-info-page .callout a {
+    font-weight: 600;
+    color: var(--orange-dark);
+  }
+  .ww-info-page__callout--warn,
+  .ww-info-page .callout.warn {
+    background: var(--cream);
+    border-color: rgba(44,44,44,0.18);
+  }
+
+  /* Contact Grid */
+  .ww-info-page__contact,
+  .ww-info-page .contact {
+    margin: 32px 0 16px;
+  }
+  .ww-info-page__contact h2,
+  .ww-info-page .contact h2 {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    color: var(--charcoal);
+    margin: 0 0 16px 0;
+  }
+  .ww-info-page__contact-grid,
+  .ww-info-page .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0 12px;
+  }
+  .ww-info-page__contact-item,
+  .ww-info-page .contact-item {
+    padding: 20px 22px;
+    background: var(--white);
+    border: 1px solid rgba(44,44,44,0.08);
+    border-radius: 14px;
+  }
+  .ww-info-page__contact-item .label,
+  .ww-info-page .contact-item .label {
+    font-family: var(--font-tertiary);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    margin-bottom: 6px;
+  }
+  .ww-info-page__contact-item .value,
+  .ww-info-page .contact-item .value {
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+  .ww-info-page__contact-item a,
+  .ww-info-page .contact-item a {
+    color: var(--orange-dark);
+    text-decoration: underline;
+  }
+
+  /* Table styles */
+  .ww-info-page rte table,
+  .ww-info-page .rte table,
+  .ww-info-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: var(--white);
+    border: 1px solid rgba(44,44,44,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 16px 0 28px;
+  }
+  .ww-info-page rte th,
+  .ww-info-page .rte th,
+  .ww-info-page th,
+  .ww-info-page rte td,
+  .ww-info-page .rte td,
+  .ww-info-page td {
+    text-align: left;
+    padding: 14px 18px;
+    vertical-align: top;
+  }
+  .ww-info-page rte th,
+  .ww-info-page .rte th,
+  .ww-info-page th {
+    font-family: var(--font-tertiary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+    background: var(--cream);
+  }
+  .ww-info-page rte tbody tr + tr td,
+  .ww-info-page .rte tbody tr + tr td,
+  .ww-info-page tbody tr + tr td {
+    border-top: 1px solid rgba(44,44,44,0.08);
+  }
+
+  /* Meta timestamps */
+  .ww-info-page__meta,
+  .ww-info-page .meta {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(44, 44, 44, 0.12);
+    font-family: var(--font-tertiary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+  }
+
+  @media (max-width: 768px) {
+    .ww-info-page {
+      padding: 56px 0 72px;
+    }
+    .ww-info-page__inner {
+      padding: 0 20px;
+    }
+    .ww-info-page__title {
+      font-size: 2.2rem;
+    }
+    .ww-info-page__toc-list {
+      columns: 1;
+    }
+    .ww-info-page__contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Info Page",
+  "tag": "section",
+  "class": "ww-section-info-page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow Text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Custom Eyebrow Text",
+      "info": "Leave blank to use the Page Title."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Main Title (H1)",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Custom Title Text",
+      "info": "Leave blank to use the Page Title."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rich_text",
+      "name": "Rich Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Block Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading Tag",
+          "options": [
+            { "value": "h2", "label": "H2 (Section title)" },
+            { "value": "h3", "label": "H3 (Subsection title)" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content Text",
+          "default": "<p>Block content paragraphs or lists go here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "table_of_contents",
+      "name": "Table of Contents",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "TOC Label",
+          "default": "In this document"
+        },
+        {
+          "type": "header",
+          "content": "Links"
+        },
+        { "type": "text", "id": "link_1_text", "label": "Link 1 Text" },
+        { "type": "text", "id": "link_1_url", "label": "Link 1 Anchor (e.g. #section-1)" },
+        { "type": "text", "id": "link_2_text", "label": "Link 2 Text" },
+        { "type": "text", "id": "link_2_url", "label": "Link 2 Anchor" },
+        { "type": "text", "id": "link_3_text", "label": "Link 3 Text" },
+        { "type": "text", "id": "link_3_url", "label": "Link 3 Anchor" },
+        { "type": "text", "id": "link_4_text", "label": "Link 4 Text" },
+        { "type": "text", "id": "link_4_url", "label": "Link 4 Anchor" },
+        { "type": "text", "id": "link_5_text", "label": "Link 5 Text" },
+        { "type": "text", "id": "link_5_url", "label": "Link 5 Anchor" },
+        { "type": "text", "id": "link_6_text", "label": "Link 6 Text" },
+        { "type": "text", "id": "link_6_url", "label": "Link 6 Anchor" },
+        { "type": "text", "id": "link_7_text", "label": "Link 7 Text" },
+        { "type": "text", "id": "link_7_url", "label": "Link 7 Anchor" },
+        { "type": "text", "id": "link_8_text", "label": "Link 8 Text" },
+        { "type": "text", "id": "link_8_url", "label": "Link 8 Anchor" },
+        { "type": "text", "id": "link_9_text", "label": "Link 9 Text" },
+        { "type": "text", "id": "link_9_url", "label": "Link 9 Anchor" },
+        { "type": "text", "id": "link_10_text", "label": "Link 10 Text" },
+        { "type": "text", "id": "link_10_url", "label": "Link 10 Anchor" },
+        { "type": "text", "id": "link_11_text", "label": "Link 11 Text" },
+        { "type": "text", "id": "link_11_url", "label": "Link 11 Anchor" },
+        { "type": "text", "id": "link_12_text", "label": "Link 12 Text" },
+        { "type": "text", "id": "link_12_url", "label": "Link 12 Anchor" },
+        { "type": "text", "id": "link_13_text", "label": "Link 13 Text" },
+        { "type": "text", "id": "link_13_url", "label": "Link 13 Anchor" },
+        { "type": "text", "id": "link_14_text", "label": "Link 14 Text" },
+        { "type": "text", "id": "link_14_url", "label": "Link 14 Anchor" },
+        { "type": "text", "id": "link_15_text", "label": "Link 15 Text" },
+        { "type": "text", "id": "link_15_url", "label": "Link 15 Anchor" },
+        { "type": "text", "id": "link_16_text", "label": "Link 16 Text" },
+        { "type": "text", "id": "link_16_url", "label": "Link 16 Anchor" },
+        { "type": "text", "id": "link_17_text", "label": "Link 17 Text" },
+        { "type": "text", "id": "link_17_url", "label": "Link 17 Anchor" },
+        { "type": "text", "id": "link_18_text", "label": "Link 18 Text" },
+        { "type": "text", "id": "link_18_url", "label": "Link 18 Anchor" },
+        { "type": "text", "id": "link_19_text", "label": "Link 19 Text" },
+        { "type": "text", "id": "link_19_url", "label": "Link 19 Anchor" },
+        { "type": "text", "id": "link_20_text", "label": "Link 20 Text" },
+        { "type": "text", "id": "link_20_url", "label": "Link 20 Anchor" }
+      ]
+    },
+    {
+      "type": "callout",
+      "name": "Callout Box",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Callout Title",
+          "default": "Notice"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Callout Content",
+          "default": "<p>Information notice goes here.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_warning",
+          "label": "Use warning/cream background",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "contact_grid",
+      "name": "Contact Info Grid",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Block Heading",
+          "default": "Contact us"
+        },
+        {
+          "type": "text",
+          "id": "item_1_label",
+          "label": "Card 1 Label",
+          "default": "Email"
+        },
+        {
+          "type": "richtext",
+          "id": "item_1_value",
+          "label": "Card 1 Value",
+          "default": "<p><a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a></p>"
+        },
+        {
+          "type": "text",
+          "id": "item_2_label",
+          "label": "Card 2 Label"
+        },
+        {
+          "type": "richtext",
+          "id": "item_2_value",
+          "label": "Card 2 Value"
+        }
+      ]
+    },
+    {
+      "type": "meta",
+      "name": "Meta timestamp",
+      "settings": [
+        {
+          "type": "text",
+          "id": "meta_text",
+          "label": "Last Updated / Effective Text",
+          "default": "Last reviewed: August 2026"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Info Page"
+    }
+  ]
+}
+{% endschema %}
