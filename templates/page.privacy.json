@@ -1,0 +1,209 @@
+{
+  "sections": {
+    "main": {
+      "type": "ww-info-page",
+      "blocks": {
+        "rich_text_lede": {
+          "type": "rich_text",
+          "settings": {
+            "content": "<p class=\"lede\">wanderWell, Inc. (\"wanderWell,\" \"we,\" \"us,\" or \"our\") respects your privacy and is committed to protecting it. This Privacy Policy describes the personal information we collect when you visit shopwanderwell.co, purchase our products, or otherwise interact with us, why we collect it, how we use and share it, and the choices and rights available to you.</p><p>By visiting our site, creating an account, or purchasing our products, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with it, please do not use our site or services.</p>"
+          }
+        },
+        "toc_1": {
+          "type": "table_of_contents",
+          "settings": {
+            "label": "In this policy",
+            "link_1_text": "Scope & definitions", "link_1_url": "#scope-definitions",
+            "link_2_text": "What we collect", "link_2_url": "#what-we-collect",
+            "link_3_text": "How we use it", "link_3_url": "#how-we-use-it",
+            "link_4_text": "Cookies & tracking", "link_4_url": "#cookies-tracking-technologies",
+            "link_5_text": "How we share it", "link_5_url": "#how-we-share-it",
+            "link_6_text": "Text & email marketing", "link_6_url": "#text-email-marketing",
+            "link_7_text": "Sale & sharing of information", "link_7_url": "#sale-sharing-of-personal-information",
+            "link_8_text": "Your privacy rights", "link_8_url": "#your-privacy-rights",
+            "link_9_text": "Do Not Track", "link_9_url": "#do-not-track",
+            "link_10_text": "How long we keep it", "link_10_url": "#how-long-we-keep-it",
+            "link_11_text": "How we protect it", "link_11_url": "#how-we-protect-it",
+            "link_12_text": "International users", "link_12_url": "#international-users",
+            "link_13_text": "Third-party websites", "link_13_url": "#third-party-websites",
+            "link_14_text": "Children's privacy", "link_14_url": "#childrens-privacy",
+            "link_15_text": "Changes to this policy", "link_15_url": "#changes-to-this-policy",
+            "link_16_text": "Contact us", "link_16_url": "#contact-us"
+          }
+        },
+        "section_1": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "1. Scope & definitions",
+            "heading_size": "h2",
+            "content": "<p>This policy applies to shopwanderwell.co, our Amazon storefront listings, the emails and SMS we send, our social channels, and any in-person events where we collect information directly from you. <strong>\"Personal Information\"</strong> means any information that identifies, relates to, or could reasonably be linked with you. <strong>\"You\"</strong> means anyone visiting our site, creating an account, or purchasing our products. This policy does not apply to information collected by any third party, including through any application or content that may link to or be accessible from our site.</p>"
+          }
+        },
+        "section_2": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "2. What we collect",
+            "heading_size": "h2",
+            "content": "<p>We try to collect only what we need. Here's the full picture:</p><h3>Information you give us</h3><ul><li><strong>Order details</strong> — name, shipping address, billing address, email, phone number, and the items in your cart.</li><li><strong>Account info</strong> — if you create an account, your password (encrypted) and any preferences you set.</li><li><strong>Payment info</strong> — credit card numbers are handled directly by our payment processor. We never see or store the full card number on our servers.</li><li><strong>Communications</strong> — messages you send to care@shopwanderwell.co or through our contact form, plus any reviews or feedback you share.</li></ul><h3>Information collected automatically</h3><ul><li><strong>Device &amp; browser</strong> — browser type, operating system, screen size, language, and approximate location (city level, derived from IP).</li><li><strong>Usage</strong> — pages you visit, products you view, time spent, referring URL, and clicks. We use this to understand what's working and what isn't.</li><li><strong>Cookies &amp; pixels</strong> — see Section 5.</li></ul><h3>Information from third parties</h3><ul><li><strong>Shipping carriers</strong> share delivery status with us.</li><li><strong>Analytics providers</strong> aggregate visit data on our behalf.</li><li><strong>Social platforms</strong> tell us when you've clicked through from a paid ad (no identifying details).</li></ul>"
+          }
+        },
+        "section_3": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "3. How we use it",
+            "heading_size": "h2",
+            "content": "<table><thead><tr><th>Purpose</th><th>What we use</th></tr></thead><tbody><tr><td>Fulfill your order</td><td>Name, address, email, payment, cart contents</td></tr><tr><td>Customer support</td><td>Email, order history, messages</td></tr><tr><td>Send transactional updates (shipping, refunds)</td><td>Email, phone</td></tr><tr><td>Send marketing emails &amp; SMS (only if you opt in)</td><td>Email, phone, browsing history</td></tr><tr><td>Improve the site &amp; products</td><td>Aggregated usage &amp; device data</td></tr><tr><td>Prevent fraud &amp; abuse</td><td>IP, device, payment metadata</td></tr><tr><td>Comply with law (tax, accounting, FDA labeling)</td><td>Order records</td></tr></tbody></table><p>We do <strong>not</strong> sell your personal information for money. We do not use it to build profiles for advertising outside of the platforms we run our own ads on (Meta, TikTok, Google). See Section 7 for how state law treats interest-based advertising and how to opt out.</p>"
+          }
+        },
+        "section_4": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "4. Cookies & tracking technologies",
+            "heading_size": "h2",
+            "content": "<p>Cookies are small files stored in your browser. We, and the service providers we work with, use three categories:</p><ul><li><strong>Essential</strong> — keep you logged in, remember your cart. The site doesn't work without them.</li><li><strong>Analytics</strong> — measure traffic and how the site is used, in aggregate.</li><li><strong>Marketing</strong> — pixels and similar technologies that help us understand whether our ads led to a purchase and to show you relevant ads on other sites.</li></ul><p>On your first visit you'll see a cookie banner where you can accept, reject non-essential cookies, or fine-tune your preferences. You can change your mind any time by clicking <strong>\"Cookie preferences\"</strong> in the site footer. We also honor the <strong>Global Privacy Control (GPC)</strong> signal as a valid opt-out of sale/sharing under California law. Most browsers let you block or delete cookies through their settings; if you do, some parts of the site may not work as intended.</p>"
+          }
+        },
+        "section_5": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "5. How we share it",
+            "heading_size": "h2",
+            "content": "<p>We share data only with vendors and partners that help us run the business, and only the minimum each one needs:</p><ul><li><strong>Shopify</strong> — our storefront and order system</li><li><strong>Payment processor</strong> — payment processing</li><li><strong>Klaviyo</strong> — transactional and marketing email/SMS</li><li><strong>USPS, UPS, FedEx</strong> — shipping and delivery</li><li><strong>Google Analytics</strong> — aggregated, IP-anonymized site analytics</li><li><strong>Meta &amp; TikTok pixels</strong> — measure how our ads perform</li><li><strong>Gorgias &amp; Quo</strong> — customer support inbox</li><li><strong>Judge.me</strong> — product reviews</li></ul><p>We may also disclose information: to comply with a subpoena, court order, or other legal process; to respond to requests from public or government authorities; to enforce our Terms of Service; to protect the rights, safety, and property of wanderWell, our customers, or others; or in connection with a merger, acquisition, financing, or sale of some or all of our assets. If any of these events occur, we will take reasonable steps to ensure your Personal Information continues to be protected.</p>"
+          }
+        },
+        "section_6": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "6. Text & email marketing",
+            "heading_size": "h2",
+            "content": "<p>If you sign up for our SMS program, you consent to receive recurring automated marketing text messages (e.g. cart reminders, promotions, restock alerts) from wanderWell at the phone number provided at opt-in. Consent is not a condition of any purchase. Message and data rates may apply, and message frequency varies. Reply <strong>STOP</strong> to any text to opt out, or <strong>HELP</strong> for help. Similarly, you can unsubscribe from marketing emails at any time using the link at the bottom of any email. Opting out of marketing does not affect transactional messages about your orders.</p>"
+          }
+        },
+        "section_7": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "7. Sale & sharing of personal information",
+            "heading_size": "h2",
+            "content": "<p>We do <strong>not</strong> sell your personal information for money, and we do not share it with data brokers. Under certain state laws (like California's), using cookies and pixels to serve interest-based advertising can be considered a \"sale\" or \"sharing\" of information even without a transfer of money. Where that applies, you can opt out at any time by:</p><ul><li>clicking <strong>\"Do Not Sell or Share My Personal Information\"</strong> in the site footer;</li><li>turning off non-essential cookies in the cookie banner or your <strong>Cookie preferences</strong>; or</li><li>enabling a <strong>Global Privacy Control</strong> signal in your browser, which we honor automatically.</li></ul>"
+          }
+        },
+        "section_8": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "8. Your privacy rights",
+            "heading_size": "h2",
+            "content": "<p>Wherever you live, you can ask us to:</p><ul><li><strong>Access</strong> — a copy of the personal data we hold about you</li><li><strong>Correct</strong> — anything that's wrong</li><li><strong>Delete</strong> — your account and order history (subject to legal retention)</li><li><strong>Port</strong> — receive your data in a portable format</li><li><strong>Opt out</strong> — of marketing email (one click in every email), SMS (text STOP), or sale/sharing (Section 7)</li><li><strong>Non-discrimination</strong> — we will not deny goods or services, charge different prices, or provide a different level of service because you exercised any of these rights</li></ul><p>To exercise any of these rights, email <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a>. We may need to verify your identity before completing your request, and you may designate an authorized agent to submit a request on your behalf.</p><h3>California (CCPA / CPRA)</h3><p>California residents have the rights above, plus the right to opt out of \"sharing\" for cross-context behavioral advertising and to limit use of sensitive personal information. We do not knowingly sell or share the personal information of consumers under 16 years of age. We will respond to a verifiable consumer request within 45 days.</p><h3>Virginia, Colorado, Connecticut &amp; Utah</h3><p>If you're a resident of Virginia, Colorado, Connecticut, or Utah, you have similar rights to access, correct, delete, and port your data, and to opt out of targeted advertising and certain profiling. You may appeal a denied request by replying to our response with \"Appeal.\"</p>"
+          }
+        },
+        "section_9": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "9. Do Not Track",
+            "heading_size": "h2",
+            "content": "<p>Some browsers offer a \"Do Not Track\" (DNT) signal. Because there is no accepted industry standard for responding to DNT, our site does not currently respond to DNT signals — but we do honor the Global Privacy Control described in Section 7.</p>"
+          }
+        },
+        "section_10": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "10. How long we keep it",
+            "heading_size": "h2",
+            "content": "<p>We keep order records for <strong>7 years</strong> for tax and accounting reasons. Account profiles stay as long as your account is active, plus 12 months. Marketing data is deleted within 30 days of unsubscribing. Analytics is retained for 14 months in aggregate. Support tickets are kept for 3 years. When we no longer need your Personal Information, we securely delete or anonymize it.</p>"
+          }
+        },
+        "section_11": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "11. How we protect it",
+            "heading_size": "h2",
+            "content": "<p>We use TLS encryption in transit, encrypted databases at rest, role-based access for our team, and quarterly access reviews. Payment data never touches our servers — our payment processor handles it under PCI-DSS Level 1. No system is perfect, so if a breach affects you we'll notify you within 72 hours of discovery, as required by law.</p>"
+          }
+        },
+        "section_12": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "12. International users",
+            "heading_size": "h2",
+            "content": "<p>We currently sell only within the United States, and any information you provide is processed and stored here.</p>"
+          }
+        },
+        "section_13": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "13. Third-party websites",
+            "heading_size": "h2",
+            "content": "<p>Our site may contain links to third-party websites, plug-ins, and applications (including social media buttons) that are not operated by us. Clicking those links may allow third parties to collect or share data about you. We do not control and are not responsible for the privacy practices of those third parties, and this policy does not apply to them. We encourage you to review their privacy policies before providing any information.</p>"
+          }
+        },
+        "section_14": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "14. Children's privacy",
+            "heading_size": "h2",
+            "content": "<p>wanderWell products and this site are intended for adults. We do not knowingly collect personal information from children under 13 (or 16, where required by law). If you believe a child has provided us with information, please email us and we'll delete it promptly.</p>"
+          }
+        },
+        "section_15": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "15. Changes to this policy",
+            "heading_size": "h2",
+            "content": "<p>If we make material changes — adding a new category of data, a new use, or a new sharing partner — we'll post the updated version here and email anyone with an active account at least <strong>30 days</strong> before it takes effect. Minor edits (typos, vendor name updates) get a refreshed date below. Your continued use of our site after any change constitutes your acceptance of the revised policy.</p>"
+          }
+        },
+        "questions_callout": {
+          "type": "callout",
+          "settings": {
+            "title": "One human reads every email.",
+            "text": "<p>Privacy questions don't get filtered to a bot. Write to <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> with the subject \"Privacy request\" and we'll reply within 5 business days.</p>",
+            "is_warning": false
+          }
+        },
+        "contact_section": {
+          "type": "contact_grid",
+          "settings": {
+            "heading": "16. Contact us",
+            "item_1_label": "Email",
+            "item_1_value": "<p><a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a></p>"
+          }
+        },
+        "meta_1": {
+          "type": "meta",
+          "settings": {
+            "meta_text": "Effective: May 1, 2026 · Last updated: August 14, 2026"
+          }
+        }
+      },
+      "block_order": [
+        "rich_text_lede",
+        "toc_1",
+        "section_1",
+        "section_2",
+        "section_3",
+        "section_4",
+        "section_5",
+        "section_6",
+        "section_7",
+        "section_8",
+        "section_9",
+        "section_10",
+        "section_11",
+        "section_12",
+        "section_13",
+        "section_14",
+        "section_15",
+        "questions_callout",
+        "contact_section",
+        "meta_1"
+      ],
+      "settings": {
+        "show_eyebrow": true,
+        "eyebrow_text": "Privacy Policy",
+        "show_title": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

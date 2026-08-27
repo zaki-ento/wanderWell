@@ -1,0 +1,80 @@
+{
+  "sections": {
+    "main": {
+      "type": "ww-info-page",
+      "blocks": {
+        "rich_text_1": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "Our commitment",
+            "heading_size": "h2",
+            "content": "<p>We design and build shopwanderwell.co to meet the <strong>Web Content Accessibility Guidelines (WCAG) 2.1, Level AA</strong>. That's the same standard recommended by the U.S. Department of Justice for compliance with Title III of the Americans with Disabilities Act (ADA).</p>"
+          }
+        },
+        "rich_text_2": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "What we've done",
+            "heading_size": "h2",
+            "content": "<ul><li><strong>Keyboard navigation.</strong> Every link, button, form field, and product card can be reached and activated with the keyboard alone. A visible focus ring shows where you are.</li><li><strong>Screen reader support.</strong> Headings, landmarks, image alt text, and form labels are written for assistive technology. Interactive controls announce their state.</li><li><strong>Color contrast.</strong> Text meets a 4.5:1 contrast ratio (3:1 for large headings) against its background.</li><li><strong>Reduced motion.</strong> If you've turned on \"reduce motion\" in your operating system, our animations, tickers, and card flips quiet down automatically.</li><li><strong>Resizable text.</strong> The site is responsive and remains usable when you zoom up to 200% or increase your default text size.</li><li><strong>Skip-to-content link.</strong> Tab once and you can jump past the navigation straight to the page.</li></ul>"
+          }
+        },
+        "callout_1": {
+          "type": "callout",
+          "settings": {
+            "title": "Found a barrier? Tell us.",
+            "text": "<p>If something on shopwanderwell.co is hard to use, we want to hear about it — and we'll respond within <strong>5 business days</strong>. No automated brush-offs. A real person reads every message.</p>",
+            "is_warning": false
+          }
+        },
+        "contact_grid_1": {
+          "type": "contact_grid",
+          "settings": {
+            "heading": "Contact us",
+            "item_1_label": "Email",
+            "item_1_value": "<p><a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a></p>",
+            "item_2_label": "Subject line",
+            "item_2_value": "<p>Accessibility feedback</p>"
+          }
+        },
+        "rich_text_3": {
+          "type": "rich_text",
+          "settings": {
+            "content": "<p>Please include the page you were on, what you were trying to do, and the assistive technology you're using (if any). We'll do our best to provide the information you need in an alternative format while we fix the underlying issue.</p>"
+          }
+        },
+        "rich_text_4": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "Standards & testing",
+            "heading_size": "h2",
+            "content": "<p>Our accessibility work is informed by:</p><ul><li><a href=\"https://www.w3.org/TR/WCAG21/\" rel=\"noopener\">WCAG 2.1 (W3C)</a></li><li><a href=\"https://www.ada.gov/\" rel=\"noopener\">Americans with Disabilities Act</a></li><li><a href=\"https://www.access-board.gov/ict/\" rel=\"noopener\">Section 508 of the Rehabilitation Act</a></li></ul>"
+          }
+        },
+        "meta_1": {
+          "type": "meta",
+          "settings": {
+            "meta_text": "Last reviewed: August 2026"
+          }
+        }
+      },
+      "block_order": [
+        "rich_text_1",
+        "rich_text_2",
+        "callout_1",
+        "contact_grid_1",
+        "rich_text_3",
+        "rich_text_4",
+        "meta_1"
+      ],
+      "settings": {
+        "show_eyebrow": true,
+        "eyebrow_text": "Accessibility",
+        "show_title": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

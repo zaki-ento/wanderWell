@@ -1,0 +1,239 @@
+{
+  "sections": {
+    "main": {
+      "type": "ww-info-page",
+      "blocks": {
+        "rich_text_lede": {
+          "type": "rich_text",
+          "settings": {
+            "content": "<p class=\"lede\">This website is operated by wanderWell. Throughout the site, the terms \"we,\" \"us,\" and \"our\" refer to wanderWell. wanderWell offers this website, including all information, tools, and services available from this site, to you, the user, conditioned upon your acceptance of all terms, conditions, policies, and notices stated here.</p><p class=\"lede\">By visiting our site and/or purchasing something from us, you engage in our \"Service\" and agree to be bound by the following terms and conditions (\"Terms of Service,\" \"Terms\"), including those additional terms and conditions and policies referenced herein and/or available by hyperlink. These Terms of Service apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and/or contributors of content.</p><p class=\"lede\">Please read these Terms of Service carefully before accessing or using our website. By accessing or using any part of the site, you agree to be bound by these Terms of Service. If you do not agree to all the terms and conditions of this agreement, then you may not access the website or use any services. If these Terms of Service are considered an offer, acceptance is expressly limited to these Terms of Service.</p><p class=\"lede\">Any new features or tools which are added to the current site shall also be subject to these Terms of Service. You can review the most current version of the Terms of Service at any time on this page. We reserve the right to update, change, or replace any part of these Terms of Service by posting updates and/or changes to our website. It is your responsibility to check this page periodically for changes. Your continued use of or access to the website following the posting of any changes constitutes acceptance of those changes.</p><p class=\"lede\">Our store is hosted on Shopify Inc. They provide us with the online e-commerce platform that allows us to sell our products and services to you.</p>"
+          }
+        },
+        "toc_1": {
+          "type": "table_of_contents",
+          "settings": {
+            "label": "In these terms",
+            "link_1_text": "Your agreement with us", "link_1_url": "#your-agreement-with-us",
+            "link_2_text": "Your account", "link_2_url": "#your-account",
+            "link_3_text": "Orders & payment", "link_3_url": "#orders-payment",
+            "link_4_text": "Shipping & delivery", "link_4_url": "#shipping-delivery",
+            "link_5_text": "Returns & refunds", "link_5_url": "#returns-refunds",
+            "link_6_text": "Subscriptions", "link_6_url": "#subscriptions",
+            "link_7_text": "Health disclaimer", "link_7_url": "#health-disclaimer",
+            "link_8_text": "Acceptable use", "link_8_url": "#acceptable-use",
+            "link_9_text": "Third-party links & services", "link_9_url": "#third-party-links-services",
+            "link_10_text": "Intellectual property", "link_10_url": "#intellectual-property",
+            "link_11_text": "Your content", "link_11_url": "#your-content",
+            "link_12_text": "Warranties & disclaimers", "link_12_url": "#warranties-disclaimers",
+            "link_13_text": "Limitation of liability", "link_13_url": "#limitation-of-liability",
+            "link_14_text": "Indemnification", "link_14_url": "#indemnification",
+            "link_15_text": "Disputes & arbitration", "link_15_url": "#disputes-arbitration",
+            "link_16_text": "Governing law", "link_16_url": "#governing-law",
+            "link_17_text": "Changes", "link_17_url": "#changes",
+            "link_18_text": "General provisions", "link_18_url": "#general-provisions",
+            "link_19_text": "Contact", "link_19_url": "#contact"
+          }
+        },
+        "section_1": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "1. Your agreement with us",
+            "heading_size": "h2",
+            "content": "<p>These Terms of Service (\"Terms\") are a binding agreement between you and Westboro Aspen LLC, a Massachussetts limited liability company (\"wanderWell,\" \"we,\" \"us\"). They cover your use of shopwanderwell.co, our mobile site, our emails and SMS, and any orders you place. If you don't agree with any part of these Terms, please don't use the site or buy from us.</p><p>You must be at least <strong>18 years old</strong> (or the age of majority where you live) to place an order. By checking out, you confirm you meet that bar.</p>"
+          }
+        },
+        "section_2": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "2. Your account",
+            "heading_size": "h2",
+            "content": "<p>You can shop as a guest, or create an account to save addresses, track orders, and manage subscriptions. If you create one:</p><ul><li>Keep your password to yourself. You're responsible for activity under your login.</li><li>Tell us right away if you think someone else got in: <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a>.</li><li>We can suspend or close accounts that violate these Terms, with notice when practical.</li></ul>"
+          }
+        },
+        "section_3": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "3. Orders & payment",
+            "heading_size": "h2",
+            "content": "<h3>Order acceptance</h3><p>When you check out, you're making us an offer to buy. We accept it when we send a shipping confirmation — not when you receive an order confirmation email. Until that point, we may decline or cancel an order, including for:</p><ul><li>Items priced incorrectly because of a typo or system error</li><li>Stock we no longer have on hand</li><li>Suspected fraud or reseller activity</li><li>Shipping addresses we don't serve</li></ul><p>If we cancel after charging you, we refund in full within 5 business days.</p><h3>Pricing &amp; taxes</h3><p>Prices are in U.S. dollars and don't include shipping or tax. Sales tax is calculated at checkout based on your shipping address. We don't price-match.</p><h3>Payment</h3><p>We accept the major card networks plus Shop Pay, Apple Pay, and Google Pay. Stripe processes payment; we never see your full card number. If a payment fails (declined card, insufficient funds), your order won't ship until it clears.</p><h3>Promo codes &amp; gift cards</h3><p>Discount codes are single-use, can't be combined unless we say otherwise, and have no cash value. We can cancel or adjust an order that used a code issued in error. Gift cards don't expire, aren't redeemable for cash, and won't be replaced if lost — treat them like cash.</p>"
+          }
+        },
+        "section_4": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "4. Shipping & delivery",
+            "heading_size": "h2",
+            "content": "<p>We ship within the contiguous United States only — we don't yet ship to Hawaii, Alaska, or internationally. Order before 3pm ET and it ships the same day; otherwise it goes out the next business day. We don't ship on weekends. Shipping is free on orders $50+; below that, cost is calculated at checkout by weight and destination. Our average order is delivered within 3–4 business days of shipping. Title and risk of loss pass to you when the carrier scans the package as <strong>delivered</strong>. Full details are on our <a href=\"shipping-returns.html\">Shipping Policy</a> page.</p><p>If your order is missing or delayed, email us at <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> and we'll help track it down or send a replacement if necessary.</p>"
+          }
+        },
+        "section_5": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "5. Returns & refunds",
+            "heading_size": "h2",
+            "content": "<p>Due to the ingestible nature of our products, we do not accept returns. Full details live on our <a href=\"returns-exchanges.html\">Returns &amp; Exchanges</a> page; the summary:</p><ul><li><strong>First order guarantee:</strong> not working for you? We'll refund the purchase price of your first order in full, with proof of purchase, within 30 days from the date of purchase. This applies to your first wanderWell order only.</li><li><strong>How to request:</strong> email <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> with your order number or proof of purchase, the product name(s), and a brief description of why you're requesting a refund.</li><li><strong>Limits:</strong> we reserve the right to limit and/or deny refunds in cases of suspected abuse or fraud, and refunds will not be given to repeat or recurring customers.</li></ul><p>All refunds issued are to the original form of payment.</p>"
+          }
+        },
+        "section_6": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "6. Subscriptions",
+            "heading_size": "h2",
+            "content": "<p>Subscribe &amp; Save sends a fresh box on the cadence you pick (every 30, 45, or 60 days). When you subscribe:</p><ul><li>We email you <strong>3 days</strong> before each renewal so nothing surprises you.</li><li>Subscriptions ship at 10% off with free shipping. You can pause, skip, change cadence, swap products, or cancel any time in your account or by emailing us. If your order has already been processed, changes apply to the following renewal.</li><li>Your saved card is charged on the renewal date. If it fails twice, we pause the subscription and let you know.</li><li>Subscription discounts apply only while the subscription is active. Cancelling forfeits the discount on future one-time orders.</li></ul>"
+          }
+        },
+        "health_callout": {
+          "type": "callout",
+          "settings": {
+            "title": "We make supplements, not medicine.",
+            "text": "<p>Statements about wanderWell products have not been evaluated by the Food and Drug Administration. Our products are not intended to diagnose, treat, cure, or prevent any disease. The site is not medical advice — please talk to your doctor before starting any supplement, especially if you're pregnant, nursing, taking medication, or managing a health condition.</p>",
+            "is_warning": true
+          }
+        },
+        "section_8": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "8. Acceptable use",
+            "heading_size": "h2",
+            "content": "<p>Please don't:</p><ul><li>Reverse-engineer, scrape, or copy substantial parts of the site</li><li>Use our brand, photography, or copy to imply endorsement we haven't given</li><li>Resell our products without a written wholesale agreement</li><li>Submit fake reviews, fraudulent orders, or chargeback abuse</li><li>Interfere with the site's security or other people's use of it</li></ul><p>We may suspend access or refuse future orders if we see this kind of behavior.</p>"
+          }
+        },
+        "section_9": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "9. Third-party links & services",
+            "heading_size": "h2",
+            "content": "<p>The site may link to third-party sites (like our social channels or press mentions) and relies on third-party services that have their own terms and privacy policies. We don't control those sites or services and aren't responsible for their content, accuracy, or practices. Using them is at your own risk.</p>"
+          }
+        },
+        "section_10": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "10. Intellectual property",
+            "heading_size": "h2",
+            "content": "<p>Everything on shopwanderwell.co — the wanderWell name and logo, photography, copy, product designs, packaging artwork, and code — belongs to wanderWell or our licensors. Our trademarks include <strong>\"wanderWell\"</strong> and the wordmark. You get a limited, non-exclusive license to browse the site and order products for personal use. No other rights are granted.</p>"
+          }
+        },
+        "section_11": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "11. Your content",
+            "heading_size": "h2",
+            "content": "<p>When you post a review, send us a photo, or tag us on social, you keep ownership but grant us a worldwide, royalty-free, perpetual license to use, display, edit lightly, and promote that content across our marketing channels. You agree your content is original (or you have rights to share it), accurate, and won't get us in legal trouble. We may remove content for any reason, including spam or harassment.</p>"
+          }
+        },
+        "section_12": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "12. Warranties & disclaimers",
+            "heading_size": "h2",
+            "content": "<p class=\"legal\">EXCEPT WHERE PROHIBITED BY LAW, THE SITE AND PRODUCTS ARE PROVIDED \"AS IS\" AND \"AS AVAILABLE.\" WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DON'T WARRANT THAT THE SITE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECT WILL BE CORRECTED. SOME JURISDICTIONS DON'T ALLOW THESE DISCLAIMERS, SO THEY MAY NOT APPLY TO YOU.</p>"
+          }
+        },
+        "section_13": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "13. Limitation of liability",
+            "heading_size": "h2",
+            "content": "<p class=\"legal\">TO THE FULLEST EXTENT PERMITTED BY LAW, WANDERWELL AND ITS OFFICERS, EMPLOYEES, AND SUPPLIERS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR LOST PROFITS, REVENUES, OR DATA, ARISING OUT OF OR RELATING TO THESE TERMS OR THE PRODUCTS. OUR TOTAL LIABILITY FOR ANY CLAIM IS LIMITED TO THE GREATER OF (A) THE AMOUNT YOU PAID US IN THE TWELVE MONTHS BEFORE THE CLAIM, OR (B) ONE HUNDRED U.S. DOLLARS ($100). NOTHING IN THESE TERMS LIMITS LIABILITY THAT CAN'T BE LIMITED UNDER APPLICABLE LAW.</p>"
+          }
+        },
+        "section_14": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "14. Indemnification",
+            "heading_size": "h2",
+            "content": "<p>You agree to defend and indemnify wanderWell against any claim, loss, or expense (including reasonable legal fees) arising from your misuse of the site, your violation of these Terms, or content you submit that infringes someone else's rights.</p>"
+          }
+        },
+        "section_15": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "15. Disputes & arbitration",
+            "heading_size": "h2",
+            "content": "<p>If something goes wrong, our first ask is that you write to us so we can fix it. Most things get resolved that way.</p><p class=\"legal\">For anything that doesn't, you and wanderWell agree to resolve disputes through <strong>binding individual arbitration</strong> administered by the American Arbitration Association under its Consumer Arbitration Rules, in Massachusetts (or by phone/video). You and we both waive the right to a jury trial and to participate in a class action. You may opt out of this arbitration agreement within <strong>30 days</strong> of first agreeing to these Terms by emailing <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> with \"Arbitration opt-out\" in the subject line. Small-claims court is always available for qualifying claims.</p>"
+          }
+        },
+        "section_16": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "16. Governing law",
+            "heading_size": "h2",
+            "content": "<p>These Terms are governed by the laws of the <strong>Commonwealth of Massachusetts</strong>, without regard to its conflict-of-laws rules. Except for arbitrable claims under Section 15, the state and federal courts in Massachusetts have exclusive jurisdiction.</p>"
+          }
+        },
+        "section_17": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "17. Changes",
+            "heading_size": "h2",
+            "content": "<p>We may update these Terms from time to time. If we make a material change, we'll post the updated version here and notify account holders by email at least <strong>14 days</strong> before it takes effect. Continued use of the site after the effective date means you accept the new Terms.</p>"
+          }
+        },
+        "section_18": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "18. General provisions",
+            "heading_size": "h2",
+            "content": "<p>These Terms, along with our <a href=\"privacy.html\">Privacy Policy</a>, are the entire agreement between you and wanderWell about your use of the site. If any part of these Terms is found unenforceable, the rest stays in effect. Our failure to enforce a provision isn't a waiver of it. You can't assign these Terms to someone else; we can, as part of a merger, sale, or transfer of our business. By using the site or placing an order, you agree we can communicate with you electronically — email satisfies any legal requirement for written notice.</p>"
+          }
+        },
+        "questions_callout": {
+          "type": "callout",
+          "settings": {
+            "title": "Questions? Ask before you scroll past.",
+            "text": "<p>If anything in here is unclear, write to <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> with the subject \"Terms question\" and we'll get back to you within 5 business days.</p>",
+            "is_warning": false
+          }
+        },
+        "contact_section": {
+          "type": "contact_grid",
+          "settings": {
+            "heading": "19. Contact",
+            "item_1_label": "Email",
+            "item_1_value": "<p><a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a></p>"
+          }
+        },
+        "meta_1": {
+          "type": "meta",
+          "settings": {
+            "meta_text": "Effective: May 1, 2026 · Last updated: August 14, 2026"
+          }
+        }
+      },
+      "block_order": [
+        "rich_text_lede",
+        "toc_1",
+        "section_1",
+        "section_2",
+        "section_3",
+        "section_4",
+        "section_5",
+        "section_6",
+        "health_callout",
+        "section_8",
+        "section_9",
+        "section_10",
+        "section_11",
+        "section_12",
+        "section_13",
+        "section_14",
+        "section_15",
+        "section_16",
+        "section_17",
+        "section_18",
+        "questions_callout",
+        "contact_section",
+        "meta_1"
+      ],
+      "settings": {
+        "show_eyebrow": true,
+        "eyebrow_text": "Terms of Service",
+        "show_title": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
