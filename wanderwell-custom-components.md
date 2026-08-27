@@ -51,7 +51,15 @@ A dynamic accordion FAQ layout grouped under expandable categories.
   - `category` (Divider block): Declares a group title.
   - `faq` (FAQ item block): Question text and rich text answer body.
 
-### 5. WW Product Hub (`sections/ww-product.liquid`)
+### 5. WW Accessibility (`sections/ww-accessibility.liquid` / `templates/page.accessibility.json`)
+A clean, centralized accessibility statement template containing standard compliance texts, highlight points, and a feedback block.
+- **Key Features**:
+  - Highlights list using standard orange bullet icons.
+  - Highlight block for feedback with custom colors (`var(--orange-pale)` background and custom outline border) and customizable response timelines.
+- **Configurable Blocks**:
+  - `bullet_point`: Features repeating list entries with bold title headers and text descriptions.
+
+### 6. WW Product Hub (`sections/ww-product.liquid`)
 The main product detail conversion container, split into product image slides on the left and pricing/subscription selectors on the right.
 - **Key Features**:
   - Swaps out static price labels for the modular `ww-product-purchase-options` snippet.
