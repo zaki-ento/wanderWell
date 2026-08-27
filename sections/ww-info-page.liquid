@@ -95,6 +95,16 @@
                 </div>
               </div>
 
+            {%- when 'table' -%}
+              <div class="ww-info-page__block ww-info-page__table" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h2>{{ block.settings.heading | escape }}</h2>
+                {%- endif -%}
+                <div class="table-wrap">
+                  {{ block.settings.table_html }}
+                </div>
+              </div>
+
             {%- when 'meta' -%}
               <div class="ww-info-page__block ww-info-page__meta" {{ block.shopify_attributes }}>
                 {{ block.settings.meta_text | escape }}
@@ -627,6 +637,23 @@
           "type": "richtext",
           "id": "item_2_value",
           "label": "Card 2 Value"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "name": "Data Table",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Table Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "table_html",
+          "label": "Table Raw HTML Code",
+          "info": "Paste custom table HTML here. Attributes are permitted."
         }
       ]
     },
