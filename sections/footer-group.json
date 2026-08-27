@@ -18,21 +18,21 @@
           "type": "link_column",
           "settings": {
             "title": "Shop",
-            "menu": ""
+            "menu": "shop-menu"
           }
         },
         "link_column_CTYN6Q": {
           "type": "link_column",
           "settings": {
             "title": "Help",
-            "menu": ""
+            "menu": "footer"
           }
         },
         "link_column_giHR3d": {
           "type": "link_column",
           "settings": {
             "title": "Learn",
-            "menu": ""
+            "menu": "footer"
           }
         }
       },
