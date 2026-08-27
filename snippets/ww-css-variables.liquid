@@ -128,6 +128,9 @@
   {%- endif -%}
 
   :root {
+    /* Page Layout  set 75rem for 1200px container */
+    --narrow-page-width: 75rem !important;
+    
     --ww-color-primary: {{ settings.color_primary | default: '#E8632B' }};
     --ww-color-background: {{ settings.color_background | default: '#E8E0D0' }};
     --ww-color-text: {{ settings.color_text | default: '#1A1A1A' }};
