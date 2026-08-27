@@ -223,7 +223,7 @@
         "product_tab_6ncFYp": {
           "type": "product_tab",
           "settings": {
-            "product": "travel-duo-1",
+            "product": "the-travel-duo",
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Both · Save upto 10%",
             "description": "",
