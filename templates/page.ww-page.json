@@ -58,7 +58,7 @@
               "settings": {
                 "text": "<h3>{{ closest.page.metafields.custom.label.value }}</h3>",
                 "width": "fit-content",
-                "max_width": "normal",
+                "max_width": "narrow",
                 "alignment": "left",
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
@@ -84,7 +84,7 @@
               "settings": {
                 "text": "<h1>{{ closest.page.title }}</h1>",
                 "width": "fit-content",
-                "max_width": "normal",
+                "max_width": "narrow",
                 "alignment": "left",
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
