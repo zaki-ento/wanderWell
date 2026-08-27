@@ -12,7 +12,7 @@
     "main": {
       "type": "main-page",
       "blocks": {
-        "text_NKUDhH": {
+        "text_dV3wkL": {
           "type": "text",
           "name": "t:names.heading",
           "settings": {
@@ -92,7 +92,7 @@
         }
       },
       "block_order": [
-        "text_NKUDhH",
+        "text_dV3wkL",
         "title",
         "content"
       ],
