@@ -189,19 +189,19 @@
         var rightStart = Math.max(w * 0.6, (ext ? ext.max : w * 0.5) + gap);
         var best = { top: top, side: (w - rightStart - pad) >= minW ? 'right' : 'left', ext: ext };
         line.style.top = Math.round(best.top) + 'px';
-        if(best.side === 'right') {
+       // if(best.side === 'right') {
           var lx = rightStart;
           line.style.right = 'auto';
           line.style.left = Math.round(lx) + 'px';
           line.style.width = Math.round(Math.min(560, Math.max(minW, w - lx - pad))) + 'px';
           line.style.textAlign = 'left';
-        } else {
-          var rx = Math.max(w * 0.32, w - (best.ext ? best.ext.min : w * 0.5) + gap);
-          line.style.left = 'auto';
-          line.style.right = Math.round(rx) + 'px';
-          line.style.width = Math.round(Math.min(560, Math.max(minW, w - rx - pad))) + 'px';
-          line.style.textAlign = 'right';
-        }
+        // } else {
+        //   var rx = Math.max(w * 0.32, w - (best.ext ? best.ext.min : w * 0.5) + gap);
+        //   line.style.left = 'auto';
+        //   line.style.right = Math.round(rx) + 'px';
+        //   line.style.width = Math.round(Math.min(560, Math.max(minW, w - rx - pad))) + 'px';
+        //   line.style.textAlign = 'right';
+        // }
       });
       active = -2;
       paint(currentIdx(lastP), lastP);
