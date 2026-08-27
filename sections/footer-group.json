@@ -11,24 +11,24 @@
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
-    "ww_footer_XETidU": {
+    "ww_footer_zEJ8eT": {
       "type": "ww-footer",
       "blocks": {
-        "link_column_tbxEfp": {
+        "link_column_N8x3m6": {
           "type": "link_column",
           "settings": {
             "title": "Shop",
             "menu": ""
           }
         },
-        "link_column_K4hFW9": {
+        "link_column_CTYN6Q": {
           "type": "link_column",
           "settings": {
             "title": "Help",
             "menu": ""
           }
         },
-        "link_column_3TLiCW": {
+        "link_column_giHR3d": {
           "type": "link_column",
           "settings": {
             "title": "Learn",
@@ -37,9 +37,9 @@
         }
       },
       "block_order": [
-        "link_column_tbxEfp",
-        "link_column_K4hFW9",
-        "link_column_3TLiCW"
+        "link_column_N8x3m6",
+        "link_column_CTYN6Q",
+        "link_column_giHR3d"
       ],
       "name": "WW Footer",
       "settings": {
@@ -60,6 +60,6 @@
     }
   },
   "order": [
-    "ww_footer_XETidU"
+    "ww_footer_zEJ8eT"
   ]
 }
