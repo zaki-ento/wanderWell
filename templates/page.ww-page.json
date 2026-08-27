@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h3>Help</h3>",
+            "text": "<h3>{{ closest.page.metafields.custom.label.value }}</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -68,7 +68,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>We want you to feel good about every wanderWell order, not just the product inside it. If something's not right, here's how we make it right.</p>",
+            "text": "<p>{{ closest.page.metafields.custom.description | metafield_tag }}</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -110,7 +110,7 @@
         "section_height": "small",
         "section_height_custom": 50,
         "background_media": "none",
-        "background_color": "#FAF7F2",
+        "background_color": "#faf7f2",
         "video_position": "cover",
         "background_image_position": "cover",
         "toggle_overlay": false,
@@ -132,7 +132,7 @@
         "page-content": {
           "type": "page-content",
           "settings": {
-            "text_color": "#2C2C2C"
+            "text_color": "#2c2c2c"
           },
           "blocks": {}
         }
