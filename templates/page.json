@@ -132,7 +132,7 @@
         "page-content": {
           "type": "page-content",
           "settings": {
-            "text_color": ""
+            "text_color": "#2C2C2C"
           },
           "blocks": {}
         }
