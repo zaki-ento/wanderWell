@@ -1,21 +1,21 @@
 {% comment %}
-  Section: WW Clean / Our Approach
+  Section: WW Approach
   Description: Custom dynamic section outlining brand transparency, ticker statements, and highlights.
 {% endcomment %}
 
-<div class="ww-clean section-{{ section.id }}" {{ section.shopify_attributes }}>
+<div id="ww-approach" class="ww-approach section-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-xl">
     
     {%- if section.settings.label != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
-      <div class="ww-clean__header">
+      <div class="ww-approach__header">
         {%- if section.settings.label != blank -%}
-          <span class="ww-clean__label">{{ section.settings.label | escape }}</span>
+          <span class="ww-approach__label">{{ section.settings.label | escape }}</span>
         {%- endif -%}
         {%- if section.settings.heading != blank -%}
-          <h2 class="ww-clean__title">{{ section.settings.heading | escape }}</h2>
+          <h2 class="ww-approach__title">{{ section.settings.heading | escape }}</h2>
         {%- endif -%}
         {%- if section.settings.subheading != blank -%}
-          <p class="ww-clean__blurb">{{ section.settings.subheading | escape }}</p>
+          <p class="ww-approach__blurb">{{ section.settings.subheading | escape }}</p>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -29,18 +29,18 @@
     {%- endfor -%}
 
     {%- if has_ticker -%}
-      <div class="ww-clean__ticker">
-        <div class="ww-clean__ticker-track">
+      <div class="ww-approach__ticker">
+        <div class="ww-approach__ticker-track">
           {%- assign ticker_counter = 0 -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
               {%- assign ticker_counter = ticker_counter | plus: 1 -%}
               
               {%- if ticker_counter == 5 -%}
-                <span class="ww-clean__ticker-break"></span>
+                <span class="ww-approach__ticker-break"></span>
               {%- endif -%}
               
-              <span class="ww-clean__ticker-item" {{ block.shopify_attributes }}>
+              <span class="ww-approach__ticker-item" {{ block.shopify_attributes }}>
                 <span class="check">✓</span> {{ block.settings.text | escape }}
               </span>
             {%- endif -%}
@@ -58,12 +58,12 @@
     {%- endfor -%}
 
     {%- if has_cards -%}
-      <div class="ww-clean__grid">
+      <div class="ww-approach__grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'card_item' -%}
-            <div class="ww-clean__card" {{ block.shopify_attributes }}>
+            <div class="ww-approach__card" {{ block.shopify_attributes }}>
               {%- if block.settings.icon_svg != blank -%}
-                <div class="ww-clean__card-icon">
+                <div class="ww-approach__card-icon">
                   {{ block.settings.icon_svg }}
                 </div>
               {%- endif -%}
@@ -83,17 +83,17 @@
 </div>
 
 {% stylesheet %}
-  .ww-clean {
+  .ww-approach {
     padding: 100px 0;
     background-color: var(--cream);
     overflow: hidden;
   }
-  .ww-clean__header {
+  .ww-approach__header {
     text-align: center;
     margin-bottom: 48px;
     padding: 0 20px;
   }
-  .ww-clean__label {
+  .ww-approach__label {
     display: inline-block;
     font-family: var(--font-primary);
     font-size: 2rem;
@@ -103,7 +103,7 @@
     color: var(--orange);
     margin-bottom: 16px;
   }
-  .ww-clean__title {
+  .ww-approach__title {
     font-family: var(--font-primary);
     font-weight: 500;
     font-size: 2.6rem;
@@ -112,7 +112,7 @@
     letter-spacing: -0.04em;
     line-height: 1.1;
   }
-  .ww-clean__blurb {
+  .ww-approach__blurb {
     max-width: 760px;
     margin: 20px auto 0;
     font-size: 1.125rem;
@@ -121,7 +121,7 @@
     opacity: 0.85;
     text-wrap: pretty;
   }
-  .ww-clean__ticker {
+  .ww-approach__ticker {
     background: var(--offwhite);
     padding: 28px 32px;
     margin-bottom: 64px;
@@ -134,7 +134,7 @@
     margin-right: calc(-50vw + 50%);
     width: 100vw;
   }
-  .ww-clean__ticker-track {
+  .ww-approach__ticker-track {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -142,7 +142,7 @@
     max-width: 1000px;
     padding: 0 20px;
   }
-  .ww-clean__ticker-item {
+  .ww-approach__ticker-item {
     font-family: var(--font-primary);
     font-weight: 500;
     font-size: 1.15rem;
@@ -153,15 +153,15 @@
     flex-shrink: 0;
     letter-spacing: -0.02em;
   }
-  .ww-clean__ticker-break {
+  .ww-approach__ticker-break {
     flex-basis: 100%;
     height: 0;
   }
-  .ww-clean__ticker-item .check {
+  .ww-approach__ticker-item .check {
     color: var(--orange);
     font-weight: bold;
   }
-  .ww-clean__grid {
+  .ww-approach__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
@@ -169,14 +169,14 @@
     margin: 0 auto;
     padding: 0 20px;
   }
-  .ww-clean__card {
+  .ww-approach__card {
     text-align: center;
     padding: 40px 28px;
     background: var(--white);
     border-radius: 20px;
     border: 1px solid rgba(44,44,44,0.1);
   }
-  .ww-clean__card-icon {
+  .ww-approach__card-icon {
     width: 56px;
     height: 56px;
     background: var(--orange-pale);
@@ -187,13 +187,13 @@
     margin: 0 auto 20px;
     font-size: 1.5rem;
   }
-  .ww-clean__card-icon svg {
+  .ww-approach__card-icon svg {
     color: var(--orange);
     stroke: var(--orange);
     width: 26px;
     height: 26px;
   }
-  .ww-clean__card h3 {
+  .ww-approach__card h3 {
     font-family: var(--font-primary);
     font-weight: 600;
     font-size: 1.05rem;
@@ -201,7 +201,7 @@
     margin: 0 0 10px 0;
     letter-spacing: -0.02em;
   }
-  .ww-clean__card p {
+  .ww-approach__card p {
     font-size: 0.88rem;
     color: var(--charcoal-light);
     line-height: 1.65;
@@ -209,14 +209,14 @@
   }
 
   @media (max-width: 768px) {
-    .ww-clean {
+    .ww-approach {
       padding: 60px 0;
     }
-    .ww-clean__grid {
+    .ww-approach__grid {
       grid-template-columns: 1fr;
       gap: 24px;
     }
-    .ww-clean__title {
+    .ww-approach__title {
       font-size: 2rem;
     }
   }
@@ -224,9 +224,9 @@
 
 {% schema %}
 {
-  "name": "WW Clean / Our Approach",
+  "name": "WW Approach",
   "tag": "section",
-  "class": "ww-section-clean",
+  "class": "ww-section-approach",
   "settings": [
     {
       "type": "header",
@@ -291,7 +291,7 @@
   ],
   "presets": [
     {
-      "name": "WW Clean / Our Approach",
+      "name": "WW Approach",
       "blocks": [
         {
           "type": "ticker_item",

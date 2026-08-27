@@ -290,8 +290,8 @@
         "trust_item_2_text": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally."
       }
     },
-    "ww_clean": {
-      "type": "ww-clean",
+    "ww_approach": {
+      "type": "ww-approach",
       "blocks": {
         "ticker_item_1": {
           "type": "ticker_item",
@@ -594,7 +594,7 @@
     "ww_hero",
     "ww_problem",
     "ww_product",
-    "ww_clean",
+    "ww_approach",
     "178756889627372b37",
     "ww_faq"
   ]

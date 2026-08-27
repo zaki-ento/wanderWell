@@ -32,7 +32,7 @@ An interactive, scroll-driven storytelling path representing the "reality of tra
   - Integrated world outline SVG map overlay.
 - **Scripts**: Controlled by `assets/ww-problem.js`.
 
-### 3. WW Clean / Our Approach (`sections/ww-clean.liquid`)
+### 3. WW Approach (`sections/ww-approach.liquid`)
 Custom dynamic section outlining brand transparency, ticker statements, and highlights.
 - **Key Features**:
   - Full-width loop-style ticker marquee that handles layout wrapping offsets dynamically.
