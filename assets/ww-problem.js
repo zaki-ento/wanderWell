@@ -86,7 +86,9 @@
     } else if (tablet) {
       x = 0.04 * w + p[0] * 0.62 * w;
     } else {
-      x = 0.5 * w + (p[0] - 0.5) * 0.64 * w;
+     // x = 0.5 * w + (p[0] - 0.5) * 0.64 * w;
+
+       x = 0.5 * w + (p[0] - 0.5) * 0.64 * w;
     }
 
     return {
@@ -194,7 +196,20 @@
           line.style.width = Math.round(Math.min(560, Math.max(minW, w - lx - pad))) + 'px';
           line.style.textAlign = 'left';
         } else {
-          var rx = Math.max(w * 0.38, w - (best.ext ? best.ext.min : w * 0.5) + gap);
+        //  var rx = Math.max(w * 0.38, w - (best.ext ? best.ext.min : w * 0.5) + gap);
+
+             var rx;
+
+            if (!desktop && !tablet) {
+              // Mobile
+              rx = 150;
+            } else {
+              // Desktop / Tablet
+              rx = Math.max(
+                w * 0.38,
+                w - (best.ext ? best.ext.min : w * 0.5) + gap
+              );
+            }
           line.style.left = 'auto';
           line.style.right = Math.round(rx) + 'px';
           line.style.width = Math.round(Math.min(560, Math.max(minW, w - rx - pad))) + 'px';
