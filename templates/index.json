@@ -395,6 +395,84 @@
     "178756889627372b37": {
       "type": "_blocks",
       "blocks": {
+        "text_6yAHWd": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Early Feedback</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-accent--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "{{ settings.color_palette.color2 }}",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 16,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_zFEnhT": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>What people are saying</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 16,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_fNFUWc": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>From early testers and our community of travelers<br/>who've been following the journey.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "judge_me_reviews_cards_carousel_XfU8b6": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
@@ -425,13 +503,16 @@
             "stars_color": "#ed7a00",
             "arrows_color": "#000000",
             "transition_speed": 5,
-            "header_text": "What people are saying",
+            "header_text": "",
             "show_average_rating": false,
             "rating_display": "default"
           }
         }
       },
       "block_order": [
+        "text_6yAHWd",
+        "text_zFEnhT",
+        "text_fNFUWc",
         "judge_me_reviews_cards_carousel_XfU8b6"
       ],
       "settings": {
@@ -440,7 +521,7 @@
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
+        "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
@@ -459,8 +540,8 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-start": 100,
+        "padding-block-end": 100
       }
     },
     "ww_faq": {
