@@ -63,7 +63,7 @@
         "show_ticker": true,
         "ticker_label": "Made for",
         "layout_width": "page",
-        "layout_height": "large",
+        "layout_height": "medium",
         "padding_top": 40,
         "padding_bottom": 40
       }
