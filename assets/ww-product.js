@@ -359,8 +359,18 @@
       // Show sticky bar when the buy box scrolls out of view (scrolled above viewport)
       // Check relative to 80px (sticky header offset) for a smoother transition
       var scrolledPast = rect.bottom < 80;
-      // Hide sticky bar when scrolled past the entire ww-shop section (120px threshold before bottom)
-      var isOutBottom = shopRect.bottom < 120;
+      
+      // Hide sticky bar when scrolled past the entire ww-shop section (bottom goes off-screen at top)
+      var isOutBottom = shopRect.bottom < 0;
+      
+      // Also hide sticky bar when the footer comes into view
+      var footer = document.querySelector('footer') || document.querySelector('[class*="footer-group"]');
+      if (footer) {
+        var footerRect = footer.getBoundingClientRect();
+        if (footerRect.top < window.innerHeight) {
+          isOutBottom = true;
+        }
+      }
 
       if (scrolledPast && !isOutBottom) {
         // @ts-ignore
