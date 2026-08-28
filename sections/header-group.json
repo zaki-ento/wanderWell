@@ -101,7 +101,7 @@
         }
       },
       "custom_css": [
-        ".header-menu__inner .menu-list__link-title {font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02rem;}"
+        ".header-menu__inner .menu-list__link-title {font-weight: 700; font-size: 0.85rem;padding-inline: 32px; letter-spacing: 0.02rem;}"
       ],
       "settings": {
         "logo_position": "left",
