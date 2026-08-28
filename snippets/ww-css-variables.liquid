@@ -131,7 +131,7 @@
     /* Page Layout  set 75rem for 1200px container */
     --narrow-page-width: 75rem;
     --normal-content-width: 75rem;
-
+    --ww-letter-spacing: 0.12em;
     --ww-color-primary: {{ settings.color_primary | default: '#E8632B' }};
     --ww-color-background: {{ settings.color_background | default: '#E8E0D0' }};
     --ww-color-text: {{ settings.color_text | default: '#1A1A1A' }};
@@ -191,6 +191,12 @@
       padding-right: 32px;
     }
   }
+
+  
+.custom-typography,
+.custom-typography > * {
+  letter-spacing: var(--ww-letter-spacing);
+}
 
   /* Unified Breakpoint Max-Width Utility Classes */
   .max-w-breakpoint-sm { max-width: var(--breakpoint-sm); }
