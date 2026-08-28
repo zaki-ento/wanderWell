@@ -445,9 +445,16 @@
     initStickyBar();
   }
   
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
     boot();
+  } else {
+    document.addEventListener('DOMContentLoaded', boot);
   }
+
+  // Support Shopify customizer section live reload
+  document.addEventListener('shopify:section:load', function(e) {
+    if (e.target && (e.target.classList.contains('ww-section-products') || e.target.querySelector('.ww-shop'))) {
+      boot();
+    }
+  });
 })();
