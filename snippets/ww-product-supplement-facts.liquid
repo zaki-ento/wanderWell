@@ -25,9 +25,9 @@
         - Name: "Serving Size"
         - Namespace and key: "custom.serving_size"
         
-     d. Servings Per Container (Single line text):
-        - Name: "Servings Per Container"
-        - Namespace and key: "custom.servings_per_container"
+     d. Servings (Single line text):
+        - Name: "Servings"
+        - Namespace and key: "custom.servings"
         
      e. Other Ingredients (Rich Text):
         - Name: "Other Ingredients"
@@ -55,7 +55,7 @@
 
 {%- assign facts_html = product.metafields.custom.supplement_facts_html.value | default: product.metafields.custom.supplement_facts.value | default: product.metafields.custom.product_information.value | default: product.metafields.custom.product_information -%}
 {%- assign serving_size = product.metafields.custom.serving_size.value | default: product.metafields.custom.serving_size -%}
-{%- assign servings_per = product.metafields.custom.servings_per_container.value | default: product.metafields.custom.servings_per_container -%}
+{%- assign servings_per = product.metafields.custom.servings.value | default: product.metafields.custom.servings -%}
 {%- assign facts_list = product.metafields.custom.supplement_facts_list.value -%}
 {%- assign other_ingredients_mf = product.metafields.custom.other_ingredients -%}
 
