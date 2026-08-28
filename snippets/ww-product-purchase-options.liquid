@@ -176,15 +176,16 @@
     .ww-sub-badge {
       background-color: var(--orange);
       color: var(--white);
-      font-size: 11px;
+      font-size: .7rem;
       font-weight: bold;
       text-transform: uppercase;
       text-align: center;
-      padding: 6px 12px;
-      letter-spacing: 0.05em;
+      padding: 8px 12px;
+      letter-spacing: .09em;
       width: 100%;
       box-sizing: border-box;
       display: block;
+      line-height: 16px;
     }
 
     .ww-sub-opt__content {
@@ -197,7 +198,7 @@
     .ww-sub-opt__row {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 11px;
       justify-content: space-between;
       width: 100%;
     }
@@ -207,7 +208,7 @@
       display: inline-flex;
       align-items: center;
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .ww-sub-opt__radio-input {
@@ -221,8 +222,8 @@
     }
 
     .ww-sub-opt__radio-bullet {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border: 2px solid rgba(44, 44, 44, 0.15);
       border-radius: 50%;
       display: inline-block;
@@ -250,12 +251,14 @@
       flex-direction: column;
       gap: 4px;
       flex-grow: 1;
-      margin-left: 4px;
+      margin-left: 0;
     }
 
     .ww-sub-opt__title {
-      font-size: 16px;
+      font-size: 1.15rem;
       font-weight: bold;
+      letter-spacing: -.01em;
+      line-height: 1.15;
       color: var(--charcoal);
       display: flex;
       align-items: center;
@@ -263,12 +266,12 @@
     }
 
     .ww-sub-opt__pack-badge {
-      font-size: 10px;
-      font-weight: bold;
+      font-size: .66rem;
+      font-weight: 600;
       text-transform: uppercase;
       padding: 2px 8px;
       border-radius: 20px;
-      line-height: 1.2;
+      line-height: 14px;
       background-color: rgba(44, 44, 44, 0.1);
       color: var(--charcoal);
     }
@@ -279,15 +282,18 @@
     }
 
     .ww-sub-opt__servings {
-      font-size: 12px;
+      font-size: .76rem;
       color: var(--charcoal-light);
     }
 
     .ww-sub-opt__plan-desc {
       font-size: 12px;
       color: var(--charcoal-light);
-      margin-top: 2px;
       line-height: 1.35;
+    }
+
+    .ww-sub-opt__plan-desc p{
+      margin-bottom: 0;
     }
 
     .ww-sub-opt__price-container {
@@ -322,16 +328,17 @@
     .ww-sub-opt__perks {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 7px;
+      margin-top: 12px;
     }
 
     .ww-sub-opt__perk {
-      font-size: 13px;
+      font-size: 0.85rem;
       color: var(--charcoal);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
+      line-height: 15px;
     }
 
     .ww-sub-opt__perk::before {

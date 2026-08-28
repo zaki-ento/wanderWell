@@ -1067,7 +1067,8 @@
 .ww-shop .ww-detail .v2-detail-lede {
   font-size: .98rem;
     line-height: 1.6;
-    margin-bottom: 18px
+    margin-bottom: 18px;
+    color: var(--ww-color-text-light);
 }
 
 @media (min-width: 1024px) and (min-height: 640px) {
