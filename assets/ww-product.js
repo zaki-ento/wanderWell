@@ -331,65 +331,54 @@
       }
     }
 
-    // Scroll visibility detector
-    function checkVisibility() {
+    // Intersection Observer variables for visibility sync
+    var buyBox = shop.querySelector('.ww-panel.on .ww-buy') || shop.querySelector('.ww-buy');
+    var footer = document.querySelector('footer') || document.querySelector('[class*="footer-group"]');
+    var pastBuyBox = false, atFooter = false;
+
+    // Synchronize sticky bar status (toggle on/off states)
+    function syncVisibility() {
+      var isSticky = pastBuyBox && !atFooter;
       // @ts-ignore
-      var activePanel = shop.querySelector('.ww-panel.on');
-      if (!activePanel) {
-        // @ts-ignore
-        stickyBar.classList.remove('on');
-        // @ts-ignore
-        stickyBar.setAttribute('data-active', 'false');
-        return;
-      }
-
-      var buyBox = activePanel.querySelector('.ww-buy');
-      if (!buyBox) {
-        // @ts-ignore
-        stickyBar.classList.remove('on');
-        // @ts-ignore
-        stickyBar.setAttribute('data-active', 'false');
-        return;
-      }
-
-      var rect = buyBox.getBoundingClientRect();
+      stickyBar.classList.toggle('on', isSticky);
       // @ts-ignore
-      var shopRect = shop.getBoundingClientRect();
-
-      // Show sticky bar when the buy box scrolls out of view (scrolled above viewport)
-      // Check relative to 80px (sticky header offset) for a smoother transition
-      var scrolledPast = rect.bottom < 80;
-      
-      // Hide sticky bar when scrolled past the entire ww-shop section (bottom goes off-screen at top)
-      var isOutBottom = shopRect.bottom < 0;
-      
-      // Also hide sticky bar when the footer comes into view
-      var footer = document.querySelector('footer') || document.querySelector('[class*="footer-group"]');
-      if (footer) {
-        var footerRect = footer.getBoundingClientRect();
-        if (footerRect.top < window.innerHeight) {
-          isOutBottom = true;
-        }
+      stickyBar.setAttribute('data-active', isSticky ? 'true' : 'false');
+      if (isSticky) {
+        updateStickyContent();
+      } else {
+        togglePopover(false);
       }
+    }
 
-      if (scrolledPast && !isOutBottom) {
-        // @ts-ignore
-        if (!stickyBar.classList.contains('on')) {
-          // @ts-ignore
-          stickyBar.classList.add('on');
-          // @ts-ignore
-          stickyBar.setAttribute('data-active', 'true');
-          updateStickyContent();
+    if (buyBox) {
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            /* only "past" — not before the shop has been reached */
+            pastBuyBox = !e.isIntersecting && e.boundingClientRect.top < 0;
+            syncVisibility();
+          });
+        }, { threshold: 0 }).observe(buyBox);
+
+        if (footer) {
+          new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              atFooter = e.isIntersecting;
+              syncVisibility();
+            });
+          }, { threshold: 0 }).observe(footer);
         }
       } else {
-        // @ts-ignore
-        if (stickyBar.classList.contains('on')) {
-          // @ts-ignore
-          stickyBar.classList.remove('on');
-          // @ts-ignore
-          stickyBar.setAttribute('data-active', 'false');
-          togglePopover(false);
-        }
+        // Fallback for browsers without IntersectionObserver support
+        window.addEventListener('scroll', function() {
+          var rect = buyBox.getBoundingClientRect();
+          pastBuyBox = rect.bottom < 80;
+          if (footer) {
+            var footerRect = footer.getBoundingClientRect();
+            atFooter = footerRect.top < window.innerHeight;
+          }
+          syncVisibility();
+        });
       }
     }
 
@@ -407,9 +396,6 @@
       });
     }
 
-    // Event listeners
-    window.addEventListener('scroll', checkVisibility);
-    
     // Listen to tab switches by observing the buttons or active panels
     var tabButtons = shop.querySelectorAll('.ww-seg-btn');
     tabButtons.forEach(function(btn) {
@@ -417,7 +403,6 @@
         // Wait for tab animation/class toggling
         setTimeout(function() {
           updateStickyContent();
-          checkVisibility();
         }, 120);
       });
     });
@@ -433,7 +418,6 @@
     // Initial check
     setTimeout(function() {
       updateStickyContent();
-      checkVisibility();
     }, 500);
   }
 
