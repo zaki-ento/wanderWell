@@ -175,7 +175,18 @@
     --breakpoint-lg: 1024px;
     --breakpoint-xl: {{ settings.container_width | default: 1200 }}px;
     --breakpoint-2xl: 1536px;
+
+
+    /* Logo size */
+    --ww-header-logo-image-height: 32px;
   }
+
+
+  @media screen and (min-width: 750px) {
+    .header-logo__image {
+        height: var(--ww-header-logo-image-height);
+    }
+}
 
   .container {
     max-width: 1200px;
