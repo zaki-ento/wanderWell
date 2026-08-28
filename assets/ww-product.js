@@ -147,16 +147,10 @@
   }
   
   // Sticky Add to Cart Bar controller
-  function initStickyBar(target) {
-    if (!target) return;
-    var stickyBar = typeof target === 'string' ? document.getElementById(target) : target;
-    if (!stickyBar) return;
-
-    var sectionContainer = stickyBar.closest('.shopify-section') || stickyBar.parentElement;
-    if (!sectionContainer) return;
-
-    var shop = sectionContainer.querySelector('.ww-shop');
-    if (!shop) return;
+  function initStickyBar() {
+    var stickyBar = document.getElementById('ww-sticky-bar');
+    var shop = document.querySelector('.ww-shop');
+    if (!stickyBar || !shop) return;
 
     var titleEl = stickyBar.querySelector('.ww-sticky-bar__title');
     var optionTextEl = stickyBar.querySelector('.ww-sticky-bar__option-text');
@@ -389,14 +383,12 @@
     }, 500);
   }
 
-  // Expose function globally
-  window.initStickyBar = initStickyBar;
-
   function boot() {
     initTabs();
     initGallery();
     initAccordions();
     initQuantity();
+    initStickyBar();
   }
   
   if (document.readyState === 'loading') {

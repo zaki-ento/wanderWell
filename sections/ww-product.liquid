@@ -482,24 +482,6 @@
       }
       opt.classList.add('on');
     });
-
-    {%- if section.settings.enable_sticky_add_to_cart != false -%}
-      if (typeof window.initStickyBar === 'function') {
-        var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
-        if (!sectionEl) {
-          var innerSec = document.querySelector('.section-{{ section.id }}');
-          if (innerSec) {
-            sectionEl = innerSec.closest('.shopify-section') || innerSec.parentElement;
-          }
-        }
-        if (sectionEl) {
-          var stickyBarEl = sectionEl.querySelector('.ww-sticky-bar');
-          if (stickyBarEl) {
-            window.initStickyBar(stickyBarEl);
-          }
-        }
-      }
-    {%- endif -%}
   });
 </script>
 {% stylesheet %}
