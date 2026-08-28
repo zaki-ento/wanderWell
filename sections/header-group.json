@@ -100,13 +100,7 @@
           "blocks": {}
         }
       },
-      "custom_css": [
-        ".header {border-bottom: 1px solid rgba(232, 99, 43, 0.1);}",
-        ".header .header__columns.spacing-style {padding-top: 14.5px; padding-bottom: 14.5px;}",
-        ".header .header__columns {padding-left: 20px; padding-right: 20px;}",
-        "@media screen and (min-width: 640px) {.header .header__columns {padding-left: 32px; padding-right: 32px; }}",
-        ".header-menu__inner .menu-list__link-title {font-weight: 700; font-size: 0.85rem; padding-inline: 16px; letter-spacing: 0.02rem;}"
-      ],
+      "custom_css": [],
       "settings": {
         "logo_position": "left",
         "menu_position": "right",
