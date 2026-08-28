@@ -1063,8 +1063,8 @@
     padding: 12px 14px;
   }
 }
-
-.ww-detail .v2-detail-lede {
+.ww-shop .ww-detail p,
+.ww-shop .ww-detail .v2-detail-lede {
   font-size: .98rem;
     line-height: 1.6;
     margin-bottom: 18px
