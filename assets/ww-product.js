@@ -148,234 +148,240 @@
   
   // Sticky Add to Cart Bar controller
   function initStickyBar() {
-    var stickyBar = document.querySelector('.ww-sticky-bar');
-    var shop = document.querySelector('.ww-shop');
-    if (!stickyBar || !shop) return;
+    var stickyBars = document.querySelectorAll('.ww-sticky-bar');
+    stickyBars.forEach(function(stickyBar) {
+      var sectionContainer = stickyBar.closest('.shopify-section') || stickyBar.parentElement;
+      if (!sectionContainer) return;
 
-    var titleEl = stickyBar.querySelector('.ww-sticky-bar__title');
-    var optionTextEl = stickyBar.querySelector('.ww-sticky-bar__option-text');
-    var changeBtn = stickyBar.querySelector('.ww-sticky-bar__change-btn');
-    var popover = stickyBar.querySelector('.ww-sticky-bar__popover');
-    var addBtn = stickyBar.querySelector('.ww-sticky-bar__add-btn');
+      var shop = sectionContainer.querySelector('.ww-shop');
+      if (!shop) return;
 
-    // Toggle popover
-    function togglePopover(show) {
-      var shouldShow = typeof show === 'boolean' ? show : !popover.classList.contains('open');
-      popover.classList.toggle('open', shouldShow);
+      var titleEl = stickyBar.querySelector('.ww-sticky-bar__title');
+      var optionTextEl = stickyBar.querySelector('.ww-sticky-bar__option-text');
+      var changeBtn = stickyBar.querySelector('.ww-sticky-bar__change-btn');
+      var popover = stickyBar.querySelector('.ww-sticky-bar__popover');
+      var addBtn = stickyBar.querySelector('.ww-sticky-bar__add-btn');
+
+      // Toggle popover
+      function togglePopover(show) {
+        var shouldShow = typeof show === 'boolean' ? show : !popover.classList.contains('open');
+        popover.classList.toggle('open', shouldShow);
+        if (changeBtn) {
+          changeBtn.classList.toggle('open', shouldShow);
+        }
+      }
+
       if (changeBtn) {
-        changeBtn.classList.toggle('open', shouldShow);
-      }
-    }
-
-    if (changeBtn) {
-      changeBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        togglePopover();
-      });
-    }
-
-    // Close popover when clicking anywhere else
-    document.addEventListener('click', function(e) {
-      if (popover && !popover.contains(e.target) && e.target !== changeBtn) {
-        togglePopover(false);
-      }
-    });
-
-    // Extract options from active panel and populate popover
-    function updateStickyContent() {
-      var activePanel = shop.querySelector('.ww-panel.on');
-      if (!activePanel) return;
-
-      // Update Title
-      var activeTitleEl = activePanel.querySelector('.ww-detail-title');
-      if (activeTitleEl && titleEl) {
-        titleEl.textContent = activeTitleEl.textContent.trim();
-      }
-
-      // Update Options
-      var purchaseOptionsContainer = activePanel.querySelector('.ww-purchase-options');
-      var optionsList = [];
-
-      if (purchaseOptionsContainer) {
-        var optionCards = purchaseOptionsContainer.querySelectorAll('.ww-sub-opt');
-        optionCards.forEach(function(card, idx) {
-          // Get radio input
-          var radio = card.querySelector('.ww-sub-opt__radio-input');
-          if (!radio) return;
-
-          // Title / label
-          var titleText = "";
-          var mainTitle = card.querySelector('.ww-sub-opt__title');
-
-          if (mainTitle) {
-            // Clean up title text by stripping off badges/extra classes if any
-            titleText = mainTitle.textContent.replace(/Most popular|save \d+%/i, '').trim();
-          } else {
-            var contentRows = card.querySelectorAll('.ww-sub-opt__row, .ww-sub-opt__details');
-            if (contentRows.length > 0) {
-              titleText = contentRows[0].textContent.trim().split('\n')[0].trim();
-            } else {
-              titleText = card.textContent.trim().split('\n')[0].trim();
-            }
-          }
-
-          // Price
-          var priceEl = card.querySelector('.ww-sub-opt__price');
-          var priceText = priceEl ? priceEl.textContent.replace(/\s+/g, ' ').trim() : "";
-
-          // Clean price (remove compare price text)
-          var comparePriceEl = card.querySelector('.ww-sub-opt__compare-price');
-          if (comparePriceEl && priceText) {
-            priceText = priceText.replace(comparePriceEl.textContent.trim(), '').trim();
-          }
-
-          var isSelected = card.classList.contains('on');
-
-          optionsList.push({
-            index: idx,
-            label: titleText,
-            price: priceText,
-            selected: isSelected,
-            element: card
-          });
+        changeBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          togglePopover();
         });
       }
 
-      // Render options in popover
-      if (popover) {
-        popover.innerHTML = '';
-        if (optionsList.length > 0) {
-          optionsList.forEach(function(opt) {
-            var item = document.createElement('div');
-            item.className = 'ww-sticky-bar__popover-item' + (opt.selected ? ' selected' : '');
-            
-            var labelSpan = document.createElement('span');
-            labelSpan.className = 'ww-sticky-bar__popover-item-label';
-            labelSpan.textContent = opt.label;
-
-            var priceSpan = document.createElement('span');
-            priceSpan.className = 'ww-sticky-bar__popover-item-price';
-            priceSpan.textContent = opt.price;
-
-            item.appendChild(labelSpan);
-            item.appendChild(priceSpan);
-
-            item.addEventListener('click', function(e) {
-              e.stopPropagation();
-              // Simulate click on the main card's purchase option
-              opt.element.click();
-              togglePopover(false);
-              // Recalculate sticky bar contents
-              setTimeout(updateStickyContent, 50);
-            });
-
-            popover.appendChild(item);
-          });
-        }
-      }
-
-      // Update current selected option summary text
-      var selectedOpt = optionsList.find(function(o) { return o.selected; });
-      if (selectedOpt && optionTextEl) {
-        optionTextEl.textContent = selectedOpt.price + ' · ' + selectedOpt.label;
-      } else if (optionTextEl) {
-        // Fallback if no option cards found (standard price rendering)
-        var mainPriceEl = activePanel.querySelector('.price') || activePanel.querySelector('.ww-buy-row .ww-add');
-        if (mainPriceEl) {
-          optionTextEl.textContent = mainPriceEl.textContent.trim();
-        } else {
-          optionTextEl.textContent = "";
-        }
-      }
-
-      // Update button availability / text based on main button
-      var activeAddBtn = activePanel.querySelector('.ww-add button, .ww-add');
-      if (activeAddBtn && addBtn) {
-        var isAvailable = !activeAddBtn.disabled;
-        addBtn.disabled = !isAvailable;
-        
-        var btnTextEl = addBtn.querySelector('.ww-sticky-bar__add-btn-text');
-        var activeTextEl = activeAddBtn.querySelector('.add-to-cart-text__content') || activeAddBtn;
-        if (btnTextEl && activeTextEl) {
-          btnTextEl.textContent = activeTextEl.textContent.replace(/\(\d+\)/g, '').trim();
-        }
-      }
-    }
-
-    // Scroll visibility detector
-    function checkVisibility() {
-      var activePanel = shop.querySelector('.ww-panel.on');
-      if (!activePanel) {
-        stickyBar.setAttribute('data-active', 'false');
-        return;
-      }
-
-      var buyBox = activePanel.querySelector('.ww-buy');
-      if (!buyBox) {
-        stickyBar.setAttribute('data-active', 'false');
-        return;
-      }
-
-      var rect = buyBox.getBoundingClientRect();
-      var shopRect = shop.getBoundingClientRect();
-
-      // Show sticky bar when the buy box scrolls out of view (scrolled above viewport)
-      var scrolledPast = rect.bottom < 0;
-      // Hide sticky bar when scrolled past the entire ww-shop section
-      var isOutBottom = shopRect.bottom < 80;
-
-      if (scrolledPast && !isOutBottom) {
-        if (stickyBar.getAttribute('data-active') !== 'true') {
-          stickyBar.setAttribute('data-active', 'true');
-          updateStickyContent();
-        }
-      } else {
-        if (stickyBar.getAttribute('data-active') !== 'false') {
-          stickyBar.setAttribute('data-active', 'false');
+      // Close popover when clicking anywhere else
+      document.addEventListener('click', function(e) {
+        if (popover && !popover.contains(e.target) && e.target !== changeBtn) {
           togglePopover(false);
         }
-      }
-    }
+      });
 
-    // Add submit hook to addBtn
-    if (addBtn) {
-      addBtn.addEventListener('click', function() {
+      // Extract options from active panel and populate popover
+      function updateStickyContent() {
         var activePanel = shop.querySelector('.ww-panel.on');
         if (!activePanel) return;
-        var activeAddBtn = activePanel.querySelector('.ww-add button') || activePanel.querySelector('.ww-add');
-        if (activeAddBtn) {
-          activeAddBtn.click();
+
+        // Update Title
+        var activeTitleEl = activePanel.querySelector('.ww-detail-title');
+        if (activeTitleEl && titleEl) {
+          titleEl.textContent = activeTitleEl.textContent.trim();
+        }
+
+        // Update Options
+        var purchaseOptionsContainer = activePanel.querySelector('.ww-purchase-options');
+        var optionsList = [];
+
+        if (purchaseOptionsContainer) {
+          var optionCards = purchaseOptionsContainer.querySelectorAll('.ww-sub-opt');
+          optionCards.forEach(function(card, idx) {
+            // Get radio input
+            var radio = card.querySelector('.ww-sub-opt__radio-input');
+            if (!radio) return;
+
+            // Title / label
+            var titleText = "";
+            var mainTitle = card.querySelector('.ww-sub-opt__title');
+
+            if (mainTitle) {
+              // Clean up title text by stripping off badges/extra classes if any
+              titleText = mainTitle.textContent.replace(/Most popular|save \d+%/i, '').trim();
+            } else {
+              var contentRows = card.querySelectorAll('.ww-sub-opt__row, .ww-sub-opt__details');
+              if (contentRows.length > 0) {
+                titleText = contentRows[0].textContent.trim().split('\n')[0].trim();
+              } else {
+                titleText = card.textContent.trim().split('\n')[0].trim();
+              }
+            }
+
+            // Price
+            var priceEl = card.querySelector('.ww-sub-opt__price');
+            var priceText = priceEl ? priceEl.textContent.replace(/\s+/g, ' ').trim() : "";
+
+            // Clean price (remove compare price text)
+            var comparePriceEl = card.querySelector('.ww-sub-opt__compare-price');
+            if (comparePriceEl && priceText) {
+              priceText = priceText.replace(comparePriceEl.textContent.trim(), '').trim();
+            }
+
+            var isSelected = card.classList.contains('on');
+
+            optionsList.push({
+              index: idx,
+              label: titleText,
+              price: priceText,
+              selected: isSelected,
+              element: card
+            });
+          });
+        }
+
+        // Render options in popover
+        if (popover) {
+          popover.innerHTML = '';
+          if (optionsList.length > 0) {
+            optionsList.forEach(function(opt) {
+              var item = document.createElement('div');
+              item.className = 'ww-sticky-bar__popover-item' + (opt.selected ? ' selected' : '');
+              
+              var labelSpan = document.createElement('span');
+              labelSpan.className = 'ww-sticky-bar__popover-item-label';
+              labelSpan.textContent = opt.label;
+
+              var priceSpan = document.createElement('span');
+              priceSpan.className = 'ww-sticky-bar__popover-item-price';
+              priceSpan.textContent = opt.price;
+
+              item.appendChild(labelSpan);
+              item.appendChild(priceSpan);
+
+              item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Simulate click on the main card's purchase option
+                opt.element.click();
+                togglePopover(false);
+                // Recalculate sticky bar contents
+                setTimeout(updateStickyContent, 50);
+              });
+
+              popover.appendChild(item);
+            });
+          }
+        }
+
+        // Update current selected option summary text
+        var selectedOpt = optionsList.find(function(o) { return o.selected; });
+        if (selectedOpt && optionTextEl) {
+          optionTextEl.textContent = selectedOpt.price + ' · ' + selectedOpt.label;
+        } else if (optionTextEl) {
+          // Fallback if no option cards found (standard price rendering)
+          var mainPriceEl = activePanel.querySelector('.price') || activePanel.querySelector('.ww-buy-row .ww-add');
+          if (mainPriceEl) {
+            optionTextEl.textContent = mainPriceEl.textContent.trim();
+          } else {
+            optionTextEl.textContent = "";
+          }
+        }
+
+        // Update button availability / text based on main button
+        var activeAddBtn = activePanel.querySelector('.ww-add button, .ww-add');
+        if (activeAddBtn && addBtn) {
+          var isAvailable = !activeAddBtn.disabled;
+          addBtn.disabled = !isAvailable;
+          
+          var btnTextEl = addBtn.querySelector('.ww-sticky-bar__add-btn-text');
+          var activeTextEl = activeAddBtn.querySelector('.add-to-cart-text__content') || activeAddBtn;
+          if (btnTextEl && activeTextEl) {
+            btnTextEl.textContent = activeTextEl.textContent.replace(/\(\d+\)/g, '').trim();
+          }
+        }
+      }
+
+      // Scroll visibility detector
+      function checkVisibility() {
+        var activePanel = shop.querySelector('.ww-panel.on');
+        if (!activePanel) {
+          stickyBar.setAttribute('data-active', 'false');
+          return;
+        }
+
+        var buyBox = activePanel.querySelector('.ww-buy');
+        if (!buyBox) {
+          stickyBar.setAttribute('data-active', 'false');
+          return;
+        }
+
+        var rect = buyBox.getBoundingClientRect();
+        var shopRect = shop.getBoundingClientRect();
+
+        // Show sticky bar when the buy box scrolls out of view (scrolled above viewport)
+        // Check relative to 80px (sticky header offset) for a smoother transition
+        var scrolledPast = rect.bottom < 80;
+        // Hide sticky bar when scrolled past the entire ww-shop section (120px threshold before bottom)
+        var isOutBottom = shopRect.bottom < 120;
+
+        if (scrolledPast && !isOutBottom) {
+          if (stickyBar.getAttribute('data-active') !== 'true') {
+            stickyBar.setAttribute('data-active', 'true');
+            updateStickyContent();
+          }
+        } else {
+          if (stickyBar.getAttribute('data-active') !== 'false') {
+            stickyBar.setAttribute('data-active', 'false');
+            togglePopover(false);
+          }
+        }
+      }
+
+      // Add submit hook to addBtn
+      if (addBtn) {
+        addBtn.addEventListener('click', function() {
+          var activePanel = shop.querySelector('.ww-panel.on');
+          if (!activePanel) return;
+          var activeAddBtn = activePanel.querySelector('.ww-add button') || activePanel.querySelector('.ww-add');
+          if (activeAddBtn) {
+            activeAddBtn.click();
+          }
+        });
+      }
+
+      // Event listeners
+      window.addEventListener('scroll', checkVisibility);
+      
+      // Listen to tab switches by observing the buttons or active panels
+      var tabButtons = shop.querySelectorAll('.ww-seg-btn');
+      tabButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          // Wait for tab animation/class toggling
+          setTimeout(function() {
+            updateStickyContent();
+            checkVisibility();
+          }, 120);
+        });
+      });
+
+      // Also update when options are selected directly in the buy box
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.ww-sub-opt')) {
+          setTimeout(updateStickyContent, 100);
         }
       });
-    }
 
-    // Event listeners
-    window.addEventListener('scroll', checkVisibility);
-    
-    // Listen to tab switches by observing the buttons or active panels
-    var tabButtons = shop.querySelectorAll('.ww-seg-btn');
-    tabButtons.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        // Wait for tab animation/class toggling
-        setTimeout(function() {
-          updateStickyContent();
-          checkVisibility();
-        }, 120);
-      });
+      // Initial check
+      setTimeout(function() {
+        updateStickyContent();
+        checkVisibility();
+      }, 500);
     });
-
-    // Also update when options are selected directly in the buy box
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('.ww-sub-opt')) {
-        setTimeout(updateStickyContent, 100);
-      }
-    });
-
-    // Initial check
-    setTimeout(function() {
-      updateStickyContent();
-      checkVisibility();
-    }, 500);
   }
 
   function boot() {

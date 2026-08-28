@@ -433,7 +433,7 @@
   </div>
 </section>
 
-{%- if section.settings.enable_sticky_add_to_cart -%}
+{%- if section.settings.enable_sticky_add_to_cart != false -%}
   <div class="ww-sticky-bar" id="ww-sticky-bar-{{ section.id }}" data-active="false">
     <div class="ww-sticky-bar__inner container">
       <div class="ww-sticky-bar__info">
