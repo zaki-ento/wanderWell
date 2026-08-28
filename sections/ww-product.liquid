@@ -434,7 +434,7 @@
 </section>
 
 {%- if section.settings.enable_sticky_add_to_cart != false -%}
-  <div class="ww-sticky-bar" id="ww-sticky-bar-{{ section.id }}" data-active="false">
+  <div class="ww-sticky-bar" id="ww-sticky-bar" data-section-id="{{ section.id }}" data-active="false">
     <div class="ww-sticky-bar__inner container">
       <div class="ww-sticky-bar__info">
         <h4 class="ww-sticky-bar__title"></h4>
@@ -485,7 +485,19 @@
 
     {%- if section.settings.enable_sticky_add_to_cart != false -%}
       if (typeof window.initStickyBar === 'function') {
-        window.initStickyBar('ww-sticky-bar-{{ section.id }}');
+        var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
+        if (!sectionEl) {
+          var innerSec = document.querySelector('.section-{{ section.id }}');
+          if (innerSec) {
+            sectionEl = innerSec.closest('.shopify-section') || innerSec.parentElement;
+          }
+        }
+        if (sectionEl) {
+          var stickyBarEl = sectionEl.querySelector('.ww-sticky-bar');
+          if (stickyBarEl) {
+            window.initStickyBar(stickyBarEl);
+          }
+        }
       }
     {%- endif -%}
   });

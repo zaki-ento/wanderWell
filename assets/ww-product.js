@@ -147,9 +147,9 @@
   }
   
   // Sticky Add to Cart Bar controller
-  function initStickyBar(barId) {
-    if (!barId) return;
-    var stickyBar = document.getElementById(barId);
+  function initStickyBar(target) {
+    if (!target) return;
+    var stickyBar = typeof target === 'string' ? document.getElementById(target) : target;
     if (!stickyBar) return;
 
     var sectionContainer = stickyBar.closest('.shopify-section') || stickyBar.parentElement;
