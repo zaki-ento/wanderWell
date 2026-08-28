@@ -26,30 +26,31 @@
   text-wrap: balance;
 }
 .products-header .section-subtitle {
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 1.05rem;
+  line-height: 1.7;
   color: var(--charcoal-light);
   margin: 0 0 20px;
 }
 .products-badges {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 44px;
 }
 .product-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 9px;
   font-family: var(--font-primary);
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   color: var(--charcoal);
   background-color: var(--cream);
-  padding: 6px 12px;
+  padding: 13px 22px;
   border-radius: 99px;
+  box-shadow: 0 2px 12px rgba(44, 44, 44, 0.08), 0 1px 3px rgba(44, 44, 44, 0.06);
 }
 .product-badge svg {
   width: 14px;
