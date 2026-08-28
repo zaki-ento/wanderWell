@@ -467,34 +467,6 @@
     sync();
   })();
 
-  // Ticker pause toggle control for accessibility (ADA compliance)
-  // (function() {
-  //   const strip = document.querySelector('.made-for-strip');
-  //   if (!strip) return;
-  //   const track = strip.querySelector('.made-for-track');
-  //   if (!track) return;
-
-  //   if (!track.id) {
-  //     track.id = 'made-for-track';
-  //   }
-
-  //   const btn = document.createElement('button');
-  //   btn.type = 'button';
-  //   btn.className = 'ticker-pause';
-  //   btn.setAttribute('aria-label', 'Pause scrolling text');
-  //   btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="3" height="10"/><rect x="6" y="0" width="3" height="10"/></svg>';
-
-  //   btn.addEventListener('click', function() {
-  //     const isPaused = track.style.animationPlayState === 'paused';
-  //     track.style.animationPlayState = isPaused ? 'running' : 'paused';
-  //     btn.setAttribute('aria-label', isPaused ? 'Pause scrolling text' : 'Resume scrolling text');
-  //     btn.innerHTML = isPaused
-  //       ? '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="3" height="10"/><rect x="6" y="0" width="3" height="10"/></svg>'
-  //       : '<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><polygon points="1,0 9,5 1,10"/></svg>';
-  //   });
-
-  //   strip.appendChild(btn);
-  // })();
 {% endjavascript %}
 
 {% schema %}
