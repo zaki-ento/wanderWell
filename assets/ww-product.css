@@ -16,7 +16,7 @@
   margin: 0 0 16px;
 }
 .products-header .section-title {
-  font-size: 2.6rem;
+  font-size: 2rem;
   font-weight: 500;
   color: var(--charcoal);
   letter-spacing: -0.03em;
@@ -735,7 +735,7 @@
 /* Responsive styles */
 @media screen and (min-width: 760px) {
   .products-header .section-title {
-    font-size: 3rem;
+    font-size: 2.6rem;
   }
   .ww-panel-inner {
     grid-template-columns: 0.95fr 1.05fr;
