@@ -482,6 +482,12 @@
       }
       opt.classList.add('on');
     });
+
+    {%- if section.settings.enable_sticky_add_to_cart != false -%}
+      if (typeof window.initStickyBar === 'function') {
+        window.initStickyBar('ww-sticky-bar-{{ section.id }}');
+      }
+    {%- endif -%}
   });
 </script>
 {% stylesheet %}
