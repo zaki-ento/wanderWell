@@ -101,6 +101,7 @@
         }
       },
       "custom_css": [
+        ".header:has(.header-menu__inner) {border-bottom: 1px solid rgba(232, 99, 43, 0.1); padding: 3px 0;}",
         ".header-menu__inner .menu-list__link-title {font-weight: 700; font-size: 0.85rem; padding-inline: 16px; letter-spacing: 0.02rem;}"
       ],
       "settings": {
