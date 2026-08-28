@@ -48,6 +48,9 @@
         "announcement_BDDeyE",
         "announcement_BxgCk9"
       ],
+      "custom_css": [
+        "slideshow-arrows[position=center] {display: none;}"
+      ],
       "name": "t:names.announcement_bar",
       "settings": {
         "speed": 5,
