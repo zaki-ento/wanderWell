@@ -769,7 +769,7 @@
 
 @media screen and (min-width: 1024px) {
   .ww-detail-title {
-    font-size: 3rem;
+    font-size: 2rem;
   }
   .ww-panel-inner {
     padding: 36px;
@@ -1061,5 +1061,19 @@
   }
   .ww-sticky-bar__popover-item {
     padding: 12px 14px;
+  }
+}
+
+.ww-detail .v2-detail-lede {
+  font-size: .98rem;
+    line-height: 1.6;
+    margin-bottom: 18px
+}
+
+@media (min-width: 1024px) and (min-height: 640px) {
+  .ww-detail .v2-detail-lede {
+      font-size: 1.02rem;
+      line-height: 1.55;
+      margin-bottom: 16px;
   }
 }
