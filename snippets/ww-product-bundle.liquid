@@ -5,40 +5,40 @@
 {% endcomment %}
 
 {%- liquid
-  assign has_custom_bundle = false
-  assign custom_products = product.metafields.custom.bundle_products.value
+  assign is_bundle = false
+  assign bundle_items = product.metafields.custom.bundle_products.value
   
-  if custom_products != blank
-    assign has_custom_bundle = true
+  if bundle_items != blank
+    assign is_bundle = true
   elsif product.metafields.custom.bundle_product_1.value != blank or product.metafields.custom.bundle_product_2.value != blank
-    assign has_custom_bundle = true
+    assign is_bundle = true
   endif
 -%}
 
-{%- if has_custom_bundle -%}
+{%- if is_bundle -%}
   <div class="ww-bundle-items">
-    {%- assign total_individual_price = 0 -%}
+    {%- assign original_total_price = 0 -%}
     
-    {%- if custom_products != blank -%}
-      {%- for prod_item in custom_products -%}
-        {%- if prod_item != blank -%}
-          {%- assign prod_title = prod_item.title -%}
-          {%- assign prod_image = prod_item.featured_media -%}
-          {%- assign prod_subtitle = prod_item.metafields.custom.short_description.value | default: prod_item.metafields.custom.subtitle -%}
-          {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
+    {%- if bundle_items != blank -%}
+      {%- for bundle_product in bundle_items -%}
+        {%- if bundle_product != blank -%}
+          {%- assign item_title = bundle_product.title -%}
+          {%- assign item_image = bundle_product.featured_media -%}
+          {%- assign item_description = bundle_product.metafields.custom.short_description.value | default: bundle_product.metafields.custom.subtitle -%}
+          {%- assign original_total_price = original_total_price | plus: bundle_product.price -%}
           
           <div class="ww-bundle-item">
             <div class="ww-bundle-thumb">
-              {%- if prod_image != blank -%}
-                {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+              {%- if item_image != blank -%}
+                {{ item_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: item_title }}
               {%- else -%}
                 <div class="ww-bundle-ph"></div>
               {%- endif -%}
             </div>
             <div>
-              <h4>{{ prod_title | escape }}</h4>
-              {%- if prod_subtitle != blank -%}
-                <p>{{ prod_subtitle | escape }}</p>
+              <h4>{{ item_title | escape }}</h4>
+              {%- if item_description != blank -%}
+                <p>{{ item_description | escape }}</p>
               {%- endif -%}
             </div>
           </div>
@@ -46,59 +46,59 @@
       {%- endfor -%}
     {%- else -%}
       {%- if product.metafields.custom.bundle_product_1.value != blank -%}
-        {%- assign prod_item = product.metafields.custom.bundle_product_1.value -%}
-        {%- assign prod_title = prod_item.title -%}
-        {%- assign prod_image = prod_item.featured_media -%}
-        {%- assign prod_subtitle = prod_item.metafields.custom.short_description.value | default: prod_item.metafields.custom.subtitle -%}
-        {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
+        {%- assign bundle_product = product.metafields.custom.bundle_product_1.value -%}
+        {%- assign item_title = bundle_product.title -%}
+        {%- assign item_image = bundle_product.featured_media -%}
+        {%- assign item_description = bundle_product.metafields.custom.short_description.value | default: bundle_product.metafields.custom.subtitle -%}
+        {%- assign original_total_price = original_total_price | plus: bundle_product.price -%}
         
         <div class="ww-bundle-item">
           <div class="ww-bundle-thumb">
-            {%- if prod_image != blank -%}
-              {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+            {%- if item_image != blank -%}
+              {{ item_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: item_title }}
             {%- else -%}
               <div class="ww-bundle-ph"></div>
             {%- endif -%}
           </div>
           <div>
-            <h4>{{ prod_title | escape }}</h4>
-            {%- if prod_subtitle != blank -%}
-              <p>{{ prod_subtitle | escape }}</p>
+            <h4>{{ item_title | escape }}</h4>
+            {%- if item_description != blank -%}
+              <p>{{ item_description | escape }}</p>
             {%- endif -%}
           </div>
         </div>
       {%- endif -%}
       
       {%- if product.metafields.custom.bundle_product_2.value != blank -%}
-        {%- assign prod_item = product.metafields.custom.bundle_product_2.value -%}
-        {%- assign prod_title = prod_item.title -%}
-        {%- assign prod_image = prod_item.featured_media -%}
-        {%- assign prod_subtitle = prod_item.metafields.custom.short_description.value | default: prod_item.metafields.custom.subtitle -%}
-        {%- assign total_individual_price = total_individual_price | plus: prod_item.price -%}
+        {%- assign bundle_product = product.metafields.custom.bundle_product_2.value -%}
+        {%- assign item_title = bundle_product.title -%}
+        {%- assign item_image = bundle_product.featured_media -%}
+        {%- assign item_description = bundle_product.metafields.custom.short_description.value | default: bundle_product.metafields.custom.subtitle -%}
+        {%- assign original_total_price = original_total_price | plus: bundle_product.price -%}
         
         <div class="ww-bundle-item">
           <div class="ww-bundle-thumb">
-            {%- if prod_image != blank -%}
-              {{ prod_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod_title }}
+            {%- if item_image != blank -%}
+              {{ item_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: item_title }}
             {%- else -%}
               <div class="ww-bundle-ph"></div>
             {%- endif -%}
           </div>
           <div>
-            <h4>{{ prod_title | escape }}</h4>
-            {%- if prod_subtitle != blank -%}
-              <p>{{ prod_subtitle | escape }}</p>
+            <h4>{{ item_title | escape }}</h4>
+            {%- if item_description != blank -%}
+              <p>{{ item_description | escape }}</p>
             {%- endif -%}
           </div>
         </div>
       {%- endif -%}
     {%- endif -%}
     
-    {%- assign bundle_price = product.selected_or_first_available_variant.price | default: product.price -%}
-    {%- if total_individual_price > bundle_price -%}
-      {%- assign save_amount = total_individual_price | minus: bundle_price -%}
+    {%- assign bundle_total_price = product.price -%}
+    {%- if original_total_price > bundle_total_price -%}
+      {%- assign discount_amount = original_total_price | minus: bundle_total_price -%}
       <div class="ww-bundle-save">
-        You save {{ save_amount | money }} vs. buying separately
+        You save {{ discount_amount | money }} vs. buying separately
       </div>
     {%- endif -%}
   </div>
