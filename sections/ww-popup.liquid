@@ -428,6 +428,16 @@
         } catch (e) {}
         overlay.classList.add('on');
         if (pop) pop.classList.add('done');
+
+        // Clean up ?customer_posted=true#PopupNewsletterForm from browser address bar
+        try {
+          urlParams.delete('customer_posted');
+          urlParams.delete('contact_posted');
+          urlParams.delete('form_type');
+          const cleanSearch = urlParams.toString() ? '?' + urlParams.toString() : '';
+          const cleanUrl = window.location.pathname + cleanSearch;
+          window.history.replaceState(null, '', cleanUrl);
+        } catch (e) {}
       } else if (!signedUp() && !seenThisSession()) {
         if (trigger === 'timer') {
           setTimeout(open, delaySeconds * 1000);
