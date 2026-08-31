@@ -402,6 +402,10 @@
 
       function close() {
         overlay.classList.remove('on');
+        try {
+          localStorage.setItem('ww_signup_done', '1');
+          sessionStorage.setItem('ww_pop_seen', '1');
+        } catch (e) {}
       }
 
       const trigger = overlay.dataset.trigger || 'scroll';
@@ -420,6 +424,7 @@
         try {
           sessionStorage.removeItem('ww_just_subscribed');
           localStorage.setItem('ww_signup_done', '1');
+          sessionStorage.setItem('ww_pop_seen', '1');
         } catch (e) {}
         overlay.classList.add('on');
         if (pop) pop.classList.add('done');
@@ -475,6 +480,10 @@
               setTimeout(() => tooltip.classList.remove('show'), 2000);
             }
           });
+          try {
+            localStorage.setItem('ww_signup_done', '1');
+            sessionStorage.setItem('ww_pop_seen', '1');
+          } catch (e) {}
         });
       }
 
