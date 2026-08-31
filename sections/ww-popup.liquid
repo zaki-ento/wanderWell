@@ -337,7 +337,7 @@
   }
 {% endstylesheet %}
 
-{% javascript %}
+<script>
   (function () {
     function initNewsletterPopup() {
       const overlay = document.getElementById('v2-pop');
@@ -439,6 +439,8 @@
       if (form) {
         form.addEventListener('submit', function (e) {
           e.preventDefault();
+          e.stopImmediatePropagation();
+
           const submitBtn = form.querySelector('button[type="submit"]');
           if (submitBtn) {
             submitBtn.disabled = true;
@@ -479,7 +481,7 @@
 
     document.addEventListener('shopify:section:load', initNewsletterPopup);
   })();
-{% endjavascript %}
+</script>
 
 {% schema %}
 {
