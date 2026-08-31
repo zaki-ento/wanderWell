@@ -318,22 +318,10 @@
             "text": "No Hidden Ingredients"
           }
         },
-        "ticker_item_5": {
-          "type": "ticker_item",
-          "settings": {
-            "text": "No Unnecessary Binders"
-          }
-        },
-        "ticker_item_eTQMei": {
-          "type": "ticker_item",
-          "settings": {
-            "text": "No Unnecessary Preservatives"
-          }
-        },
         "ticker_item_3CHxz8": {
           "type": "ticker_item",
           "settings": {
-            "text": "No Unnecessary Fillers"
+            "text": "No Unnecessary Binders, Fillers, or Preservatives"
           }
         },
         "ticker_item_6": {
@@ -378,8 +366,6 @@
         "ticker_item_2",
         "ticker_item_3",
         "ticker_item_4",
-        "ticker_item_5",
-        "ticker_item_eTQMei",
         "ticker_item_3CHxz8",
         "ticker_item_6",
         "ticker_item_7",
