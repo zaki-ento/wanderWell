@@ -1,0 +1,66 @@
+/*
+ * WanderWell California Proposition 65 Warning Page Template
+ * Version: 1.0.0
+ */
+{
+  "sections": {
+    "main": {
+      "type": "ww-info-page",
+      "blocks": {
+        "rich_text_1": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "What is Prop 65?",
+            "heading_size": "h2",
+            "content": "<p>California's Safe Drinking Water and Toxic Enforcement Act of 1986, known as <strong>Proposition 65</strong>, requires businesses to warn California consumers about potential exposure to certain chemicals the state has identified as causing cancer or reproductive harm. Prop 65 doesn't ban a product; it just requires the warning. More detail is available from California's <a href=\"https://www.p65warnings.ca.gov\" rel=\"noopener\" target=\"_blank\">Office of Environmental Health Hazard Assessment</a>.</p>"
+          }
+        },
+        "rich_text_2": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "Why some wanderWell products carry this warning",
+            "heading_size": "h2",
+            "content": "<p>Our travel-wellness formulas include plant-derived and mineral ingredients. Botanicals are grown in soil and minerals are drawn from the earth, where trace elements like lead occur naturally. There are over 800 substances on the Prop 65 list, and many, including trace heavy metals, show up in ordinary foods, herbs, and supplements regardless of who makes them.</p><p>We test every batch and stay within FDA guidance for our category. California law sets its Prop 65 threshold far below the level that FDA or any health authority considers a safety concern, so we post the warning out of transparency, not because we think our products are unsafe to use as directed.</p>"
+          }
+        },
+        "callout_warning": {
+          "type": "callout",
+          "settings": {
+            "title": "The warning, in full",
+            "text": "<p><strong>WARNING:</strong> This product can expose you to chemicals, including lead, which is known to the State of California to cause cancer and birth defects or other reproductive harm. For more information, go to <a href=\"https://www.p65warnings.ca.gov\" rel=\"noopener\" target=\"_blank\">www.P65Warnings.ca.gov</a>.</p>",
+            "is_warning": true
+          }
+        },
+        "rich_text_3": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "Questions?",
+            "heading_size": "h2",
+            "content": "<p>If you'd like more information about a specific wanderWell product or batch, email us at <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a> and we'll get back to you.</p>"
+          }
+        },
+        "meta_1": {
+          "type": "meta",
+          "settings": {
+            "meta_text": "Last reviewed: August 2026"
+          }
+        }
+      },
+      "block_order": [
+        "rich_text_1",
+        "rich_text_2",
+        "callout_warning",
+        "rich_text_3",
+        "meta_1"
+      ],
+      "settings": {
+        "show_eyebrow": true,
+        "eyebrow_text": "California Prop 65",
+        "show_title": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
