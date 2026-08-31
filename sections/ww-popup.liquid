@@ -47,7 +47,7 @@
         {%- endif -%}
 
         {%- form 'customer', class: 'v2-pop-form', id: 'PopupNewsletterForm' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter, introductory_discount">
+          <input type="hidden" name="contact[tags]" value="newsletter">
           <input
             type="email"
             name="contact[email]"
@@ -448,11 +448,13 @@
           }
 
           const formData = new FormData(form);
+          const urlEncodedBody = new URLSearchParams(formData).toString();
 
           fetch(form.getAttribute('action') || '/contact#contact_form', {
             method: 'POST',
-            body: formData,
+            body: urlEncodedBody,
             headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
               'X-Requested-With': 'XMLHttpRequest',
               'Accept': 'text/html'
             }

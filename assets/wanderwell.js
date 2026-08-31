@@ -159,11 +159,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const formData = new FormData(form);
+    const urlEncodedBody = new URLSearchParams(formData).toString();
 
     fetch(form.getAttribute('action') || '/contact#contact_form', {
       method: 'POST',
-      body: formData,
+      body: urlEncodedBody,
       headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
         'X-Requested-With': 'XMLHttpRequest',
         'Accept': 'text/html'
       }
