@@ -432,7 +432,7 @@
 }
 
 .ww-acc[open] {
-    border-color: var(--v2-orange);
+    border-color: var(--orange);
     background: var(--orange-pale, #FCEEE7);
 }
 .ww-acc summary {
