@@ -167,6 +167,10 @@
         "padding-block-end": 50
       }
     },
+    "ww_contact_form": {
+      "type": "ww-contact-form",
+      "settings": {}
+    },
     "ww_footer_section_AYjEX6": {
       "type": "ww-footer-section",
       "name": "WW Footer Section",
@@ -180,7 +184,7 @@
   "order": [
     "main",
     "ww_header_section_GQQ6Ua",
-    "1788165595d2518fa4",
+    "ww_contact_form",
     "ww_footer_section_AYjEX6"
   ]
 }

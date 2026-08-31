@@ -1,0 +1,256 @@
+{% comment %}
+  Section: WW Contact Form
+  Description: Custom native Shopify contact form matching WanderWell v3 design kit.
+{% endcomment %}
+
+<div id="ww-contact-form" class="ww-contact-form section-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="container max-w-breakpoint-md">
+    <div class="page-block">
+      {%- if section.settings.heading != blank -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      {%- form 'contact', id: 'ContactForm', class: 'form-grid' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-feedback form-feedback--success" tabindex="-1" autofocus role="status">
+            {{ section.settings.success_message | default: "Thanks — that's with us. We'll reply within one business day." | escape }}
+          </p>
+        {%- elsif form.errors -%}
+          <div class="form-feedback form-feedback--error" tabindex="-1" autofocus role="alert">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="form-row">
+          <label for="ContactForm-name">{{ section.settings.name_label | default: 'Your name' | escape }}</label>
+          <input
+            type="text"
+            id="ContactForm-name"
+            name="contact[name]"
+            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-row">
+          <label for="ContactForm-email">{{ section.settings.email_label | default: 'Email' | escape }}</label>
+          <input
+            type="email"
+            id="ContactForm-email"
+            name="contact[email]"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            spellcheck="false"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            aria-required="true"
+            {% if form.errors contains 'email' %}
+              aria-invalid="true"
+            {% endif %}
+          >
+        </div>
+
+        {%- if section.settings.show_topic != false -%}
+          <div class="form-row">
+            <label for="ContactForm-topic">{{ section.settings.topic_label | default: "What's this about?" | escape }}</label>
+            <select id="ContactForm-topic" name="contact[topic]">
+              <option value="An order I placed">An order I placed</option>
+              <option value="My subscription">My subscription</option>
+              <option value="A return or refund">A return or refund</option>
+              <option value="Ingredients or dosing">Ingredients or dosing</option>
+              <option value="Wholesale or partnerships">Wholesale or partnerships</option>
+              <option value="Something else">Something else</option>
+            </select>
+          </div>
+        {%- endif -%}
+
+        <div class="form-row">
+          <label for="ContactForm-body">{{ section.settings.message_label | default: 'Message' | escape }}</label>
+          <textarea
+            rows="6"
+            id="ContactForm-body"
+            name="contact[body]"
+            required
+            aria-required="true"
+          >{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+        </div>
+
+        <button type="submit" class="form-submit button">
+          {{ section.settings.button_label | default: 'Send message' | escape }}
+        </button>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .ww-contact-form {
+    padding: clamp(36px, 4vw, 56px) 0;
+    background-color: var(--white, #ffffff);
+  }
+
+  .ww-contact-form .page-block {
+    margin-bottom: 0;
+  }
+
+  .ww-contact-form .page-block h2 {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--charcoal, #2C2C2C);
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .ww-contact-form .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 520px;
+  }
+
+  .ww-contact-form .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .ww-contact-form .form-row label {
+    font-family: var(--font-tertiary);
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--charcoal, #2C2C2C);
+  }
+
+  .ww-contact-form .form-row input,
+  .ww-contact-form .form-row select,
+  .ww-contact-form .form-row textarea {
+    min-height: 48px;
+    padding: 13px 15px;
+    border: 1.5px solid rgba(44, 44, 44, .16);
+    border-radius: 11px;
+    font-family: var(--font-primary);
+    font-size: .98rem;
+    color: var(--charcoal, #2C2C2C);
+    background: var(--white, #fff);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ww-contact-form .form-row textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .ww-contact-form .form-row input:focus,
+  .ww-contact-form .form-row select:focus,
+  .ww-contact-form .form-row textarea:focus {
+    outline: none;
+    border-color: var(--orange, #E8632B);
+  }
+
+  .ww-contact-form .form-submit {
+    align-self: flex-start;
+    min-height: 50px;
+    padding: 15px 32px;
+    border: none;
+    border-radius: 100px;
+    background: var(--charcoal, #2C2C2C);
+    color: #fff;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: .98rem;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+    margin-top: 4px;
+  }
+
+  .ww-contact-form .form-submit:hover {
+    background: #000;
+    transform: translateY(-1px);
+  }
+
+  .ww-contact-form .form-feedback {
+    margin: 0;
+    font-size: .95rem;
+    line-height: 1.6;
+    color: var(--green, #2D8B5F);
+  }
+
+  .ww-contact-form .form-feedback--error {
+    color: #C93B3B;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Contact Form",
+  "tag": "section",
+  "class": "ww-section-contact-form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Send a message"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name Label",
+      "default": "Your name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Label",
+      "default": "Email"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_topic",
+      "label": "Show topic dropdown",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "topic_label",
+      "label": "Topic Label",
+      "default": "What's this about?"
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message Label",
+      "default": "Message"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Send message"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thanks — that's with us. We'll reply within one business day."
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Contact Form"
+    }
+  ]
+}
+{% endschema %}
