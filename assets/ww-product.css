@@ -420,11 +420,20 @@
   background: var(--white);
   border-radius: 24px;
   padding: 36px 32px;
+  box-shadow: 0 4px 16px rgba(28,28,26,.1);
   border: 1px solid rgba(44, 44, 44, .06);
 }
 .ww-acc {
-  border-bottom: 1px solid rgba(44,44,44,.1);
-  padding: 18px 0;
+  border: 1.5px solid rgba(44, 44, 44, .14);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.ww-acc[open] {
+    border-color: var(--v2-orange);
+    background: var(--orange-pale, #FCEEE7);
 }
 .ww-acc summary {
   list-style: none;
@@ -435,6 +444,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--charcoal);
+  padding: 20px 22px;
 }
 .ww-acc summary::-webkit-details-marker {
   display: none;
@@ -452,6 +462,7 @@
 }
 .ww-acc-t {
   flex: 1;
+  font-size: 1.15rem;
 }
 .ww-acc-c {
   font-family: var(--font-primary);
