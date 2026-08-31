@@ -251,7 +251,7 @@
         "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
-        "background_color": "#FAF7F2",
+        "background_color": "#faf7f2",
         "video_position": "cover",
         "background_image_position": "cover",
         "toggle_overlay": false,
@@ -265,6 +265,15 @@
         "border_radius": 0,
         "padding-block-start": 50,
         "padding-block-end": 50
+      }
+    },
+    "ww_header_section_GQQ6Ua": {
+      "type": "ww-header-section",
+      "name": "WW Page Header",
+      "settings": {
+        "label": "{{ page.metafields.custom.label.value }}",
+        "heading": "{{ page.title }}",
+        "subheading": "A real person answers, usually within one business day. Monday to Friday, 9am–6pm ET."
       }
     },
     "form": {
@@ -374,6 +383,7 @@
   "order": [
     "main",
     "section_PWVk9G",
+    "ww_header_section_GQQ6Ua",
     "form"
   ]
 }
