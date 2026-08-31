@@ -175,12 +175,16 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "ww_footer_section": {
+      "type": "ww-footer-section",
+      "settings": {}
     }
   },
   "order": [
     "main",
     "ww_header_section_GQQ6Ua",
-    "ww_header_section_XK4YEF",
-    "1788164013e3811481"
+    "1788164013e3811481",
+    "ww_footer_section"
   ]
 }
