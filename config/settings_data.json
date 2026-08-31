@@ -115,7 +115,7 @@
         "settings": {
           "enable": true,
           "show_in_theme_editor": false,
-          "trigger": "scroll",
+          "trigger": "timer",
           "delay": 5,
           "image": "shopify://shop_images/logo.png",
           "eyebrow": "Welcome, traveler",
