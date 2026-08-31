@@ -4,15 +4,19 @@
 {% endcomment %}
 
 <div id="ww-page-hero" class="ww-page-hero section-{{ section.id }}" {{ section.shopify_attributes }}>
-  <div class="container max-w-breakpoint-md ">
+  <div class="container max-w-breakpoint-md">
     {%- if section.settings.label != blank -%}
-      <span class="section-label">{{ section.settings.label | escape }}</span>
+      <span class="section-label">{{ section.settings.label }}</span>
     {%- endif -%}
     {%- if section.settings.heading != blank -%}
-      <h1>{{ section.settings.heading | escape }}</h1>
+      <h1>{{ section.settings.heading }}</h1>
     {%- endif -%}
     {%- if section.settings.subheading != blank -%}
-      <p>{{ section.settings.subheading | escape }}</p>
+      {%- if section.settings.subheading contains '<p>' or section.settings.subheading contains '<p ' -%}
+        {{ section.settings.subheading }}
+      {%- else -%}
+        <p>{{ section.settings.subheading }}</p>
+      {%- endif -%}
     {%- endif -%}
   </div>
 </div>
@@ -22,7 +26,16 @@
     padding: 150px 0 clamp(36px,4vw,56px);
     background: var(--cream);
 }
-
+.section-label {
+    display: inline-block;
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--orange);
+    margin-bottom: 16px;
+}
 .ww-page-hero h1 {
     font-family: var(--font-primary);
     font-weight: 600;
@@ -65,16 +78,15 @@
       "default": "Talk to us"
     },
     {
-      "type": "text",
+      "type": "richtext",
       "id": "subheading",
       "label": "Subheading Blurb",
-      "default": "A real person answers, usually within one business day. Monday to Friday, 9am–6pm ET."
+      "default": "<p>A real person answers, usually within one business day. Monday to Friday, 9am–6pm ET.</p>"
     } 
   ],
   "presets": [
     {
-      "name": "WW Page Header",
-      
+      "name": "WW Page Header"
     }
   ]
 }
