@@ -163,8 +163,8 @@
     <div class="ww-capsize-rows">
       <div class="ww-caprow ww-caprow--ours">
         <div class="ww-caplabel ww-caplabel--ours">
-          {%- if settings.logo_inverse != blank -%}
-            {{ settings.logo_inverse | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
+          {%- if settings.logo != blank -%}
+            {{ settings.logo | image_url: width: 80 | image_tag: style: 'height:10px; width:auto; display:inline-block; margin-right:4px;' }}
           {%- else -%}
             <span>wanderWell</span>
           {%- endif -%}
