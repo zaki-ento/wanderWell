@@ -117,26 +117,26 @@
     "1788165595d2518fa4": {
       "type": "_blocks",
       "blocks": {
-        "forms_inline_a499Cd": {
+        "forms_inline_a36c3P": {
           "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
           "settings": {
             "form_id": "1130446",
             "text_color": "{{ settings.color_palette.color1 }}",
             "button_background_color": "{{ settings.color_palette.color2 }}",
             "button_label_color": "#FFFFFF",
-            "links_color": "{{ settings.color_palette.color5 }}",
+            "links_color": "{{ settings.color_palette.color4 }}",
             "errors_color": "#E02229",
             "text_alignment": "left",
             "form_alignment": "center",
             "padding_top": 0,
-            "padding_bottom": 0,
+            "padding_bottom": 24,
             "padding_right": 0,
             "padding_left": 0
           }
         }
       },
       "block_order": [
-        "forms_inline_a499Cd"
+        "forms_inline_a36c3P"
       ],
       "settings": {
         "content_direction": "column",
