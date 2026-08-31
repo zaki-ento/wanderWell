@@ -200,7 +200,7 @@
           line.style.left = 'auto';
           line.style.right = 'auto';    // Math.round(rx) + 'px';
           line.style.width = Math.round(Math.min(560, Math.max(minW, w - rx - pad))) + 'px';
-          line.style.textAlign = 'right';
+          line.style.textAlign = 'left';
         }
       });
       active = -2;
