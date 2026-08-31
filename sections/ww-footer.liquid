@@ -184,7 +184,8 @@
   }
   .ww-footer__news-form input {
     width: 100%;
-    padding: 15px 22px;
+    padding: 13px 22px;
+    line-height: 24px;
     background: rgba(255, 255, 255, 0.16);
     border: 1px solid rgba(44, 44, 44, 0.55);
     border-radius: 999px;
@@ -259,6 +260,9 @@
     gap: 14px;
     margin-top: 22px;
   }
+  .ww-footer__socials:empty{
+    display: none;
+  }
   .ww-footer__social {
     width: 46px;
     height: 46px;
@@ -285,6 +289,7 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin-bottom: 18px;
+    line-height: 1.6;
   }
   .ww-footer__col-list {
     list-style: none;
@@ -310,6 +315,8 @@
     font-size: 0.94rem;
     font-weight: 500;
     margin: 0;
+    line-height: 1.6;
+    letter-spacing: -0.02em;
   }
   .ww-footer__legal {
     display: flex;
@@ -318,12 +325,14 @@
   .ww-footer__legal-link {
     font-size: 0.94rem;
     font-weight: 500;
+    line-height: 1.6;
     color: rgba(255, 255, 255, 0.92);
+    letter-spacing: -0.02em;
     text-decoration: none;
     transition: color 0.2s;
   }
   .ww-footer__legal-link:hover {
-    color: var(--charcoal);
+    color: rgba(255, 255, 255, 0.92);
   }
   .ww-footer__fda {
     margin-top: 26px;
