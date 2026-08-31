@@ -35,21 +35,7 @@
       </div>
 
       <div class="v2-pop-body">
-        {%- if form.posted_successfully? -%}
-          <div class="v2-pop-success" style="display: block;">
-            <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
-            <div class="v2-pop-code-wrapper">
-              <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
-                <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
-                <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              </button>
-              <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
-            </div>
-            {%- if section.settings.fine_print != blank -%}
-              <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
-            {%- endif -%}
-          </div>
-        {%- else -%}
+        <div class="v2-pop-initial">
           {%- if section.settings.eyebrow != blank -%}
             <div class="v2-pop-eyebrow">{{ section.settings.eyebrow | escape }}</div>
           {%- endif -%}
@@ -87,21 +73,21 @@
           {%- if section.settings.decline_text != blank -%}
             <button class="v2-pop-decline" data-pop-close type="button">{{ section.settings.decline_text | escape }}</button>
           {%- endif -%}
+        </div>
 
-          <div class="v2-pop-success">
-            <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
-            <div class="v2-pop-code-wrapper">
-              <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
-                <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
-                <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              </button>
-              <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
-            </div>
-            {%- if section.settings.fine_print != blank -%}
-              <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
-            {%- endif -%}
+        <div class="v2-pop-success">
+          <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
+          <div class="v2-pop-code-wrapper">
+            <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
+              <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
+              <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+            <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
           </div>
-        {%- endif -%}
+          {%- if section.settings.fine_print != blank -%}
+            <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
+          {%- endif -%}
+        </div>
       </div>
     </div>
   </div>
@@ -288,10 +274,12 @@
     opacity: 1;
   }
 
-  .v2-pop.done .v2-pop-form,
-  .v2-pop.done .v2-pop-decline,
-  .v2-pop.done .v2-pop-sub {
-    display: none;
+  .v2-pop-initial {
+    display: block;
+  }
+
+  .v2-pop.done .v2-pop-initial {
+    display: none !important;
   }
 
   .v2-pop-success {
@@ -299,7 +287,7 @@
   }
 
   .v2-pop.done .v2-pop-success {
-    display: block;
+    display: block !important;
   }
 
   .v2-pop-code-wrapper {
@@ -332,31 +320,48 @@
 
   .v2-copy-tooltip {
     position: absolute;
-    bottom: -24px;
+    top: -28px;
     left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    background: var(--charcoal, #2C2C2C);
-    color: #fff;
-    padding: 3px 8px;
+    transform: translateX(-50%) translateY(4px);
+    background: #1c1c1a;
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
     border-radius: 6px;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
   }
 
   .v2-copy-tooltip.show {
     opacity: 1;
-    visibility: visible;
+    transform: translateX(-50%) translateY(0);
   }
 
   .v2-pop-fine {
-    font-family: var(--font-tertiary);
-    font-size: 0.7rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-family: var(--font-primary);
+    font-size: 0.76rem;
     color: var(--charcoal-light, #5A5A5A);
-    margin-top: 14px;
+    margin: 10px 0 0;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 600px) {
+    .v2-pop {
+      grid-template-columns: 1fr;
+      max-width: 380px;
+    }
+    .v2-pop-visual {
+      display: none;
+    }
+    .v2-pop-body {
+      padding: 36px 24px 28px;
+    }
   }
 {% endstylesheet %}
 
@@ -399,17 +404,26 @@
         overlay.classList.remove('on');
       }
 
-      const isPosted = overlay.dataset.posted === 'true';
-      if (isPosted) {
-        try {
-          localStorage.setItem('ww_signup_done', '1');
-        } catch (e) {}
-      }
-
       const trigger = overlay.dataset.trigger || 'scroll';
       const delaySeconds = parseInt(overlay.dataset.delay, 10) || 5;
 
-      if (!isPosted && !signedUp() && !seenThisSession()) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hash = window.location.hash || '';
+      const justSubscribed =
+        sessionStorage.getItem('ww_just_subscribed') === '1' ||
+        urlParams.get('customer_posted') === 'true' ||
+        urlParams.get('contact_posted') === 'true' ||
+        hash.indexOf('PopupNewsletterForm') !== -1 ||
+        hash.indexOf('contact_form') !== -1;
+
+      if (justSubscribed) {
+        try {
+          sessionStorage.removeItem('ww_just_subscribed');
+          localStorage.setItem('ww_signup_done', '1');
+        } catch (e) {}
+        overlay.classList.add('on');
+        if (pop) pop.classList.add('done');
+      } else if (!signedUp() && !seenThisSession()) {
         if (trigger === 'timer') {
           setTimeout(open, delaySeconds * 1000);
         } else if (trigger === 'exit_intent') {
@@ -464,10 +478,14 @@
         });
       }
 
-      // Native Form submission loading state
+      // Native Form submission loading state & session tracking
       const form = overlay.querySelector('.v2-pop-form');
       if (form) {
         form.addEventListener('submit', function () {
+          try {
+            sessionStorage.setItem('ww_just_subscribed', '1');
+            localStorage.setItem('ww_signup_done', '1');
+          } catch (e) {}
           const submitBtn = form.querySelector('button[type="submit"]');
           if (submitBtn) {
             submitBtn.disabled = true;
