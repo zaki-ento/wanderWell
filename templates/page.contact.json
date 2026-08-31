@@ -114,62 +114,19 @@
         "subheading": "{{ page.content }}"
       }
     },
-    "1788165595d2518fa4": {
-      "type": "_blocks",
-      "blocks": {
-        "forms_inline_a36c3P": {
-          "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
-          "settings": {
-            "form_id": "1130446",
-            "text_color": "{{ settings.color_palette.color1 }}",
-            "button_background_color": "{{ settings.color_palette.color2 }}",
-            "button_label_color": "#FFFFFF",
-            "links_color": "{{ settings.color_palette.color4 }}",
-            "errors_color": "#E02229",
-            "text_alignment": "left",
-            "form_alignment": "center",
-            "padding_top": 0,
-            "padding_bottom": 24,
-            "padding_right": 0,
-            "padding_left": 0
-          }
-        }
-      },
-      "block_order": [
-        "forms_inline_a36c3P"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "{{ settings.color_palette.background }}",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 50,
-        "padding-block-end": 50
-      }
-    },
-    "ww_contact_form": {
+    "ww_contact_form_kjzaDQ": {
       "type": "ww-contact-form",
-      "settings": {}
+      "name": "WW Contact Form",
+      "settings": {
+        "heading": "Send a message",
+        "name_label": "Your name",
+        "email_label": "Email",
+        "show_topic": true,
+        "topic_label": "What's this about?",
+        "message_label": "Message",
+        "button_label": "Send message",
+        "success_message": "Thanks — that's with us. We'll reply within one business day."
+      }
     },
     "ww_footer_section_AYjEX6": {
       "type": "ww-footer-section",
@@ -184,7 +141,7 @@
   "order": [
     "main",
     "ww_header_section_GQQ6Ua",
-    "ww_contact_form",
+    "ww_contact_form_kjzaDQ",
     "ww_footer_section_AYjEX6"
   ]
 }
