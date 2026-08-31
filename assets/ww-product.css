@@ -507,16 +507,20 @@
 .ww-ing h4 {
   font-family: var(--font-tertiary);
   font-weight: 700;
-  font-size: .92rem;
+  font-size: 1.05rem;
   color: var(--charcoal);
-  margin: 0 0 3px;
+  margin: 0 0 5px;
   letter-spacing: -.01em;
+  line-height: 1.6;
 }
 .ww-ing p {
-  font-size: .85rem;
-  line-height: 1.5;
   color: var(--charcoal-light);
   margin: 0;
+  font-size: .98rem;
+  line-height: 1.62;
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
 }
 .ww-ing .amt {
   font-family: var(--font-primary);
