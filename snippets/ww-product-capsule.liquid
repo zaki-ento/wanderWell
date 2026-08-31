@@ -63,20 +63,19 @@
       gap: 12px;
     }
     .ww-caplabel {
-      width: 90px;
       font-family: var(--font-primary);
       font-weight: 700;
-      font-size: 0.8rem;
-      color: var(--charcoal-light);
-      line-height: 1.1;
+      font-size: .8rem;
+      color: var(--charcoal);
+      line-height: 1.2;
     }
     .ww-caplabel small {
       display: block;
-      font-size: 0.68rem;
-      font-weight: 500;
-      opacity: 0.8;
+      font-weight: 400;
+      font-size: .7rem;
+      color: var(--charcoal-light, #5A5A5A);
     }
-    .ww-caplabel--ours {
+    .ww-caplabel--ours + .ww-capbar .ww-capdim {
       color: var(--orange);
     }
     .ww-capbar {
@@ -109,9 +108,11 @@
      background: var(--orange);
     }
     .ww-capdim {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--charcoal-light);
+      font-family: var(--font-tertiary);
+      font-size: .66rem;
+      letter-spacing: .05em;
+      color: var(--charcoal-light, #5A5A5A);
+      white-space: nowrap;
     }
   {%- endstyle -%}
   {%- assign capsule_size = product.metafields.custom.capsule_size.value | default: product.metafields.custom.capsule_size -%}
