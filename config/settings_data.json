@@ -10,8 +10,10 @@
 {
   "current": {
     "logo": "shopify://shop_images/logo.png",
+    "logo_inverse": "shopify://shop_images/c894a140-8e15-41f2-b173-9fd0777e446d.png",
     "logo_height": 36,
     "logo_height_mobile": 28,
+    "favicon": "shopify://shop_images/logo.png",
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "work_sans_n4",
     "type_subheading_font": "work_sans_n4",
