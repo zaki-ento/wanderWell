@@ -114,30 +114,21 @@
         "subheading": "{{ page.content }}"
       }
     },
-    "ww_header_section_XK4YEF": {
-      "type": "ww-header-section",
-      "name": "WW Page Header",
-      "settings": {
-        "label": "Help",
-        "heading": "Talk to us",
-        "subheading": "<p>A real person answers, usually within one business day. Monday to Friday, 9am–6pm ET.</p>"
-      }
-    },
-    "1788164013e3811481": {
+    "1788165595d2518fa4": {
       "type": "_blocks",
       "blocks": {
-        "forms_inline_4E3rUR": {
+        "forms_inline_a499Cd": {
           "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
           "settings": {
             "form_id": "1130446",
-            "text_color": "#2C2C2C",
-            "button_background_color": "{{ settings.color_palette.color2 }}",
+            "text_color": "#202020",
+            "button_background_color": "#202020",
             "button_label_color": "#FFFFFF",
             "links_color": "#1878B9",
             "errors_color": "#E02229",
-            "text_alignment": "left",
-            "form_alignment": "flex-start",
-            "padding_top": 64,
+            "text_alignment": "center",
+            "form_alignment": "center",
+            "padding_top": 50,
             "padding_bottom": 24,
             "padding_right": 0,
             "padding_left": 0
@@ -145,7 +136,7 @@
         }
       },
       "block_order": [
-        "forms_inline_4E3rUR"
+        "forms_inline_a499Cd"
       ],
       "settings": {
         "content_direction": "column",
@@ -176,15 +167,20 @@
         "padding-block-end": 0
       }
     },
-    "ww_footer_section": {
+    "ww_footer_section_AYjEX6": {
       "type": "ww-footer-section",
-      "settings": {}
+      "name": "WW Footer Section",
+      "settings": {
+        "heading": "Faster routes",
+        "content": "<p><strong>Order status:</strong> <a href=\"/pages/order-tracking\">track it here</a> — that answers most \"where is it\" questions instantly.<br/><strong>Returns:</strong> see the <a href=\"/pages/returns-exchanges\">30-day guarantee</a>.<br/><strong>Email directly:</strong> <a href=\"mailto:care@shopwanderwell.co\">care@shopwanderwell.co</a></p>",
+        "note": "<p>We can't give medical advice. If you're pregnant, nursing, or taking medication, check with your doctor before starting any supplement — including ours.</p>"
+      }
     }
   },
   "order": [
     "main",
     "ww_header_section_GQQ6Ua",
-    "1788164013e3811481",
-    "ww_footer_section"
+    "1788165595d2518fa4",
+    "ww_footer_section_AYjEX6"
   ]
 }
