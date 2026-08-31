@@ -121,15 +121,15 @@
           "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
           "settings": {
             "form_id": "1130446",
-            "text_color": "#202020",
-            "button_background_color": "#202020",
+            "text_color": "{{ settings.color_palette.color1 }}",
+            "button_background_color": "{{ settings.color_palette.color2 }}",
             "button_label_color": "#FFFFFF",
-            "links_color": "#1878B9",
+            "links_color": "{{ settings.color_palette.color5 }}",
             "errors_color": "#E02229",
-            "text_alignment": "center",
+            "text_alignment": "left",
             "form_alignment": "center",
-            "padding_top": 50,
-            "padding_bottom": 24,
+            "padding_top": 0,
+            "padding_bottom": 0,
             "padding_right": 0,
             "padding_left": 0
           }
@@ -144,7 +144,7 @@
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
+        "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
@@ -163,8 +163,8 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-start": 50,
+        "padding-block-end": 50
       }
     },
     "ww_footer_section_AYjEX6": {
