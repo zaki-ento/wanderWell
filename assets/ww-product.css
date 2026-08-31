@@ -787,6 +787,10 @@
         overflow: hidden;
         grid-template-rows: minmax(0, 1fr);
     }
+    .ww-media-thumbs .ww-media-thumb {
+        aspect-ratio: auto;
+        height: clamp(52px, 7vh, 78px);
+    }
 }
 
 
