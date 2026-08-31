@@ -398,7 +398,6 @@
   margin-top: 14px;
   font-family: var(--font-primary);
   font-size: .68rem;
-  font-weight: 700;
   letter-spacing: .05em;
   text-transform: uppercase;
   color: var(--charcoal-light);
@@ -1099,4 +1098,8 @@
       line-height: 1.55;
       margin-bottom: 16px;
   }
+  .ww-buy-trust {
+      margin-top: 8px;
+      gap: 12px;
+    }
 }
