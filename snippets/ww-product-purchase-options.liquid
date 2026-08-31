@@ -157,7 +157,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      border: 1px solid rgba(44, 44, 44, 0.15);
+      border: 2px solid rgba(44, 44, 44, 0.15);
       border-radius: 12px;
       background: var(--white);
       cursor: pointer;
@@ -171,11 +171,12 @@
     .ww-sub-opt.on {
       border-color: var(--orange);
       background-color: var(--orange-pale);
+      box-shadow: 0 6px 20px rgba(232,99,43,.18);
     }
 
     .ww-sub-badge {
-      background-color: var(--orange);
-      color: var(--white);
+      background-color: var(--orange-pale,#FCEEE7);
+      color: var(--v2-orange);
       font-size: .7rem;
       font-weight: bold;
       text-transform: uppercase;
@@ -186,6 +187,11 @@
       box-sizing: border-box;
       display: block;
       line-height: 16px;
+    }
+
+    .ww-sub-opt.on .ww-sub-badge {
+      background-color: var(--orange);
+      color: var(--white);
     }
 
     .ww-sub-opt__content {
