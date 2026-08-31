@@ -379,88 +379,10 @@
         "subheading": "We believe in giving your body what it needs, in amounts that make sense. No excess, no guesswork. Just formulas thoughtfully designed for every journey you take."
       }
     },
-    "178756889627372b37": {
-      "type": "_blocks",
+    "ww_feedback_iKzQxh": {
+      "type": "ww-feedback",
       "blocks": {
-        "text_6yAHWd": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h2>Early Feedback</h2>",
-            "width": "fit-content",
-            "max_width": "narrow",
-            "alignment": "left",
-            "type_preset": "custom",
-            "font": "var(--font-accent--family)",
-            "font_size": "2rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "uppercase",
-            "wrap": "pretty",
-            "text_color": "{{ settings.color_palette.color2 }}",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 16,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_zFEnhT": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h2>What people are saying</h2>",
-            "width": "fit-content",
-            "max_width": "narrow",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-heading--family)",
-            "font_size": "2rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 16,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_fNFUWc": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>From early testers and our community of travelers<br/>who've been following the journey.</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "judge_me_reviews_cards_carousel_XfU8b6": {
+        "judge_me_reviews_cards_carousel_EaqJHp": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
             "show_sample_reviews": true,
@@ -470,7 +392,7 @@
             "filter_featured": false,
             "filter_custom_tags": "",
             "star_rating": "all",
-            "show_review_media": false,
+            "show_review_media": true,
             "display_order": "media_first",
             "no_image_fallback": "review_text_only",
             "max_reviews": 20,
@@ -482,53 +404,28 @@
             "show_product_name": true,
             "hide_arrows_mobile": true,
             "arrows_position": "sides",
-            "max_width": 1200,
-            "corner_styling": "round",
+            "max_width": 1100,
+            "corner_styling": "soft",
             "header_text_color": "#000000",
             "text_color": "#000000",
-            "card_color": "#e8e0d0",
-            "stars_color": "#ed7a00",
+            "card_color": "#E8E0D0",
+            "stars_color": "{{ settings.color_palette.color2 }}",
             "arrows_color": "#000000",
             "transition_speed": 5,
             "header_text": "",
-            "show_average_rating": false,
-            "rating_display": "default"
+            "show_average_rating": true,
+            "rating_display": "show_nothing"
           }
         }
       },
       "block_order": [
-        "text_6yAHWd",
-        "text_zFEnhT",
-        "text_fNFUWc",
-        "judge_me_reviews_cards_carousel_XfU8b6"
+        "judge_me_reviews_cards_carousel_EaqJHp"
       ],
+      "name": "WW Feedback",
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "#ffffff",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 100,
-        "padding-block-end": 100
+        "label": "Early Feedback",
+        "heading": "What people are saying",
+        "subheading": "From early testers and our community of travelers who've been following the journey."
       }
     },
     "ww_faq": {
@@ -670,51 +567,6 @@
         "padding_top": 80,
         "padding_bottom": 80
       }
-    },
-    "ww_feedback_iKzQxh": {
-      "type": "ww-feedback",
-      "blocks": {
-        "judge_me_reviews_cards_carousel_EaqJHp": {
-          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-            "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "#ffffff",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 100,
-        "padding-block-end": 100
-      }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_cards_carousel_EaqJHp"
-      ],
-      "name": "WW Feedback",
-      "settings": {
-        "label": "Early Feedback",
-        "heading": "What people are saying",
-        "subheading": "From early testers and our community of travelers who've been following the journey."
-      }
     }
   },
   "order": [
@@ -722,8 +574,7 @@
     "ww_problem",
     "ww_product",
     "ww_approach",
-    "178756889627372b37",
-    "ww_faq",
-    "ww_feedback_iKzQxh"
+    "ww_feedback_iKzQxh",
+    "ww_faq"
   ]
 }
