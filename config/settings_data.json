@@ -109,6 +109,27 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "sections": {
+      "ww-popup": {
+        "type": "ww-popup",
+        "settings": {
+          "enable": true,
+          "show_in_theme_editor": false,
+          "trigger": "scroll",
+          "delay": 5,
+          "image": "shopify://shop_images/logo.png",
+          "eyebrow": "Welcome, traveler",
+          "title": "Take 10% off your first order",
+          "subtitle": "Join the list for travel-ready wellness tips, early drops, and 10% off to get you started.",
+          "placeholder": "Enter your email",
+          "button_text": "Unlock 10% off",
+          "decline_text": "No thanks, I'll pay full price",
+          "success_heading": "You're in! Use this code at checkout:",
+          "discount_code": "WANDER10",
+          "fine_print": "10% off your first order · check your inbox"
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "14060646107696862457": {
