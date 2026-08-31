@@ -1,0 +1,597 @@
+{% comment %}
+  Section: WW Email Consent & Discount Popup
+  Description: Custom modal popup for capturing customer email consent and offering an introductory discount.
+{% endcomment %}
+
+{%- if section.settings.enable -%}
+  <div
+    class="v2-pop-overlay{% if request.design_mode and section.settings.show_in_theme_editor %} on{% endif %}"
+    id="v2-pop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="v2-pop-title"
+    data-delay="{{ section.settings.delay | default: 5 }}"
+    data-trigger="{{ section.settings.trigger | default: 'scroll' }}"
+    data-discount-code="{{ section.settings.discount_code | default: 'WANDER10' | escape }}"
+    {{ section.shopify_attributes }}
+  >
+    <div class="v2-pop">
+      <button class="v2-pop-close" data-pop-close type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+
+      <div class="v2-pop-visual">
+        <div class="v2-ph"></div>
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: section.settings.title }}
+        {%- else -%}
+          <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="30" stroke="var(--orange, #E8632B)" stroke-width="3" stroke-dasharray="4 4" opacity="0.4"/>
+            <circle cx="32" cy="32" r="22" fill="var(--orange, #E8632B)" fill-opacity="0.15"/>
+            <path d="M32 18L35.5 28.5L46 32L35.5 35.5L32 46L28.5 35.5L18 32L28.5 28.5L32 18Z" fill="var(--orange, #E8632B)"/>
+          </svg>
+        {%- endif -%}
+      </div>
+
+      <div class="v2-pop-body">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="v2-pop-eyebrow">{{ section.settings.eyebrow | escape }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="v2-pop-title" id="v2-pop-title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="v2-pop-sub">{{ section.settings.subtitle | escape }}</p>
+        {%- endif -%}
+
+        {%- form 'customer', class: 'v2-pop-form', id: 'PopupNewsletterForm' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter, introductory_discount">
+          <input
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            placeholder="{{ section.settings.placeholder | default: 'Enter your email' | escape }}"
+            aria-label="Email address"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+          >
+          <button type="submit">{{ section.settings.button_text | default: 'Unlock 10% off' | escape }}</button>
+        {%- endform -%}
+
+        {%- if section.settings.decline_text != blank -%}
+          <button class="v2-pop-decline" data-pop-close type="button">{{ section.settings.decline_text | escape }}</button>
+        {%- endif -%}
+
+        <div class="v2-pop-success">
+          <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
+          <div class="v2-pop-code-wrapper">
+            <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
+              <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
+              <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+            <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
+          </div>
+          {%- if section.settings.fine_print != blank -%}
+            <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .v2-pop-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 28, 26, 0.6);
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+
+  .v2-pop-overlay.on {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .v2-pop {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background: var(--cream, #FAF7F2);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .v2-pop-overlay.on .v2-pop {
+    transform: none;
+  }
+
+  .v2-pop-close {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 3;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    color: var(--charcoal, #2C2C2C);
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .v2-pop-close:hover {
+    background: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .v2-pop-close svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .v2-pop-visual {
+    height: 140px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #f3ece1 0%, #e6dac6 100%);
+    overflow: hidden;
+  }
+
+  .v2-pop-visual img {
+    position: relative;
+    z-index: 2;
+    max-height: 90px;
+    max-width: 60%;
+    object-fit: contain;
+  }
+
+  .v2-pop-body {
+    padding: 26px 28px 30px;
+    text-align: center;
+  }
+
+  .v2-pop-eyebrow {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange, #E8632B);
+    margin-bottom: 8px;
+  }
+
+  .v2-pop-title {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1.85rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--charcoal, #2C2C2C);
+    margin: 0 0 10px;
+  }
+
+  .v2-pop-sub {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--charcoal-light, #5A5A5A);
+    margin: 0 0 20px;
+  }
+
+  .v2-pop-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .v2-pop-form input {
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 18px;
+    border: 1.5px solid rgba(44, 44, 44, 0.18);
+    border-radius: 999px;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    background: #ffffff;
+    text-align: center;
+    box-sizing: border-box;
+    color: var(--charcoal, #2C2C2C);
+  }
+
+  .v2-pop-form input:focus {
+    outline: none;
+    border-color: var(--orange, #E8632B);
+  }
+
+  .v2-pop-form button {
+    width: 100%;
+    min-height: 48px;
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    background: var(--orange, #E8632B);
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .v2-pop-form button:hover {
+    background: #d4521d;
+    transform: translateY(-1px);
+  }
+
+  .v2-pop-decline {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 0.82rem;
+    color: var(--charcoal-light, #5A5A5A);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+
+  .v2-pop-decline:hover {
+    opacity: 1;
+  }
+
+  .v2-pop.done .v2-pop-form,
+  .v2-pop.done .v2-pop-decline,
+  .v2-pop.done .v2-pop-sub {
+    display: none;
+  }
+
+  .v2-pop-success {
+    display: none;
+  }
+
+  .v2-pop.done .v2-pop-success {
+    display: block;
+  }
+
+  .v2-pop-code-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .v2-pop-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border: 2px dashed var(--orange, #E8632B);
+    border-radius: 14px;
+    padding: 12px 22px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.14em;
+    color: var(--orange, #E8632B);
+    margin: 6px 0 10px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .v2-pop-code:hover {
+    background: #fff8f5;
+    transform: scale(1.02);
+  }
+
+  .v2-copy-tooltip {
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    background: var(--charcoal, #2C2C2C);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+  }
+
+  .v2-copy-tooltip.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .v2-pop-fine {
+    font-family: var(--font-tertiary);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--charcoal-light, #5A5A5A);
+    margin-top: 14px;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function initNewsletterPopup() {
+      const overlay = document.getElementById('v2-pop');
+      if (!overlay) return;
+      const pop = overlay.querySelector('.v2-pop');
+
+      function signedUp() {
+        try {
+          return localStorage.getItem('ww_signup_done') === '1';
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function seenThisSession() {
+        try {
+          return sessionStorage.getItem('ww_pop_seen') === '1';
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function markSeen() {
+        try {
+          sessionStorage.setItem('ww_pop_seen', '1');
+        } catch (e) {}
+      }
+
+      function open() {
+        if (signedUp()) return;
+        overlay.classList.add('on');
+        markSeen();
+      }
+
+      function close() {
+        overlay.classList.remove('on');
+      }
+
+      const trigger = overlay.dataset.trigger || 'scroll';
+      const delaySeconds = parseInt(overlay.dataset.delay, 10) || 5;
+
+      if (!signedUp() && !seenThisSession()) {
+        if (trigger === 'timer') {
+          setTimeout(open, delaySeconds * 1000);
+        } else if (trigger === 'exit_intent') {
+          document.addEventListener('mouseleave', function onMouseLeave(e) {
+            if (e.clientY <= 0) {
+              document.removeEventListener('mouseleave', onMouseLeave);
+              open();
+            }
+          });
+        } else {
+          // Scroll trigger (when past hero or product hub)
+          const scrollTarget = document.getElementById('ww-product') || document.querySelector('.ww-hero-section') || document.querySelector('main');
+          if (scrollTarget && 'IntersectionObserver' in window) {
+            const io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (!e.isIntersecting && e.boundingClientRect.top < 0) {
+                  io.disconnect();
+                  open();
+                }
+              });
+            }, { threshold: 0 });
+            io.observe(scrollTarget);
+          } else {
+            setTimeout(open, delaySeconds * 1000);
+          }
+        }
+      }
+
+      // Close events
+      overlay.querySelectorAll('[data-pop-close]').forEach((btn) => {
+        btn.addEventListener('click', close);
+      });
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
+
+      // Copy discount code
+      const copyBtn = document.getElementById('v2-copy-code');
+      const tooltip = document.getElementById('v2-copy-tooltip');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function () {
+          const code = overlay.dataset.discountCode || 'WANDER10';
+          navigator.clipboard.writeText(code).then(() => {
+            if (tooltip) {
+              tooltip.classList.add('show');
+              setTimeout(() => tooltip.classList.remove('show'), 2000);
+            }
+          });
+        });
+      }
+
+      // AJAX Form submission
+      const form = overlay.querySelector('.v2-pop-form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = '...';
+          }
+
+          const formData = new FormData(form);
+
+          fetch(form.getAttribute('action') || '/contact#contact_form', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Accept': 'text/html'
+            }
+          })
+            .then(() => {
+              try {
+                localStorage.setItem('ww_signup_done', '1');
+              } catch (err) {}
+              if (pop) pop.classList.add('done');
+            })
+            .catch(() => {
+              try {
+                localStorage.setItem('ww_signup_done', '1');
+              } catch (err) {}
+              if (pop) pop.classList.add('done');
+            });
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNewsletterPopup);
+    } else {
+      initNewsletterPopup();
+    }
+
+    document.addEventListener('shopify:section:load', initNewsletterPopup);
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "WW Email Consent Popup",
+  "tag": "aside",
+  "class": "ww-section-popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable Popup",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_in_theme_editor",
+      "label": "Always show in Theme Editor (Preview)",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "trigger",
+      "label": "Popup Trigger",
+      "options": [
+        { "value": "scroll", "label": "On Scroll (Past product / hero)" },
+        { "value": "timer", "label": "After Delay (Seconds)" },
+        { "value": "exit_intent", "label": "Exit Intent (Mouse leaves top)" }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "min": 2,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "label": "Delay in Seconds (for Timer)",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Visual & Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Header Image / Logo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Welcome, traveler"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Take 10% off your first order"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Join the list for travel-ready wellness tips, early drops, and 10% off to get you started."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Unlock 10% off"
+    },
+    {
+      "type": "text",
+      "id": "decline_text",
+      "label": "Decline Link Text",
+      "default": "No thanks, I'll pay full price"
+    },
+    {
+      "type": "header",
+      "content": "Success State"
+    },
+    {
+      "type": "text",
+      "id": "success_heading",
+      "label": "Success Heading",
+      "default": "You're in! Use this code at checkout:"
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Discount Coupon Code",
+      "default": "WANDER10"
+    },
+    {
+      "type": "text",
+      "id": "fine_print",
+      "label": "Fine Print Text",
+      "default": "10% off your first order · check your inbox"
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Email Consent Popup"
+    }
+  ]
+}
+{% endschema %}
