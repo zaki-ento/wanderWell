@@ -323,6 +323,15 @@
   gap: 12px;
   align-items: stretch;
 }
+
+.ww-buy-row add-to-cart-component {
+  flex: auto;
+}
+
+.ww-buy-row button[type="submit"] {
+  width: 100%;
+}
+
 .ww-qty {
   display: flex;
   align-items: center;
