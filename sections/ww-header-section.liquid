@@ -1,0 +1,81 @@
+{% comment %}
+  Section: WW Page Header
+  Description: Custom dynamic section.
+{% endcomment %}
+
+<div id="ww-page-hero" class="ww-page-hero section-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="container max-w-breakpoint-xl">
+    {%- if section.settings.label != blank -%}
+      <span class="section-label">{{ section.settings.label | escape }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h1>{{ section.settings.heading | escape }}</h1>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p>{{ section.settings.subheading | escape }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.ww-page-hero {
+    padding: 150px 0 clamp(36px,4vw,56px);
+    background: var(--cream);
+}
+
+.ww-page-hero h1 {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: clamp(2.2rem,4.4vw,3.4rem);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    color: var(--charcoal,#2C2C2C);
+    margin: 12px 0 14px
+}
+
+.ww-page-hero p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--charcoal-light,#5A5A5A);
+    max-width: 56ch
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Page Header",
+  "tag": "section",
+  "class": "ww-page-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Help"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Talk to us"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Blurb",
+      "default": "A real person answers, usually within one business day. Monday to Friday, 9am–6pm ET."
+    } 
+  ],
+  "presets": [
+    {
+      "name": "WW Page Header",
+      
+    }
+  ]
+}
+{% endschema %}
