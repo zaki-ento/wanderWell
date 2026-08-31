@@ -63,19 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Global AJAX handler for WW Contact Form
   document.addEventListener('submit', function (e) {
     const form = e.target && e.target.closest ? e.target.closest('.ww-contact-form form, form#ContactForm') : null;
-    if (!form) return;
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    const submitBtn = form.querySelector('.form-submit, button[type="submit"]');
-    const feedbackContainer = form.querySelector('.form-feedback-container') || form.querySelector('.form-feedback');
-    const originalBtnText = submitBtn ? submitBtn.textContent : '';
+    if (!form || form.dataset.submitting === 'true') return;
 
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
+
+    e.preventDefault();
+
+    const submitBtn = form.querySelector('.form-submit, button[type="submit"]');
+    const feedbackContainer = form.querySelector('.form-feedback-container') || form.querySelector('.form-feedback');
+    const originalBtnText = submitBtn ? submitBtn.textContent : '';
 
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -83,17 +82,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const formData = new FormData(form);
+    const urlEncodedBody = new URLSearchParams(formData).toString();
 
     fetch(form.getAttribute('action') || '/contact', {
       method: 'POST',
-      body: formData,
+      body: urlEncodedBody,
       headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
         'X-Requested-With': 'XMLHttpRequest',
         'Accept': 'text/html'
       }
     })
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok && response.status === 400) {
+          form.dataset.submitting = 'true';
+          form.submit();
+          return null;
+        }
+        return response.text();
+      })
       .then((responseText) => {
+        if (!responseText) return;
         const parser = new DOMParser();
         const doc = parser.parseFromString(responseText, 'text/html');
         const errorElement = doc.querySelector('.form-feedback--error, .errors, .form__message--error');
@@ -124,34 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch((error) => {
         console.error('Contact form submission error:', error);
-        if (feedbackContainer) {
-          feedbackContainer.className = 'form-feedback form-feedback--error form-feedback-container';
-          feedbackContainer.textContent = 'Something went wrong. Please try again later.';
-          feedbackContainer.style.display = 'block';
-        }
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalBtnText;
-        }
+        form.dataset.submitting = 'true';
+        form.submit();
       });
-  }, true);
+  });
 
   // Global AJAX handler for WW Email Consent Popup
   document.addEventListener('submit', function (e) {
     const form = e.target && e.target.closest ? e.target.closest('.v2-pop-form, #v2-pop form, #PopupNewsletterForm') : null;
-    if (!form) return;
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    const overlay = document.getElementById('v2-pop') || form.closest('.v2-pop-overlay');
-    const pop = overlay ? overlay.querySelector('.v2-pop') : form.closest('.v2-pop');
-    const submitBtn = form.querySelector('button[type="submit"]');
+    if (!form || form.dataset.submitting === 'true') return;
 
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
+
+    e.preventDefault();
+
+    const overlay = document.getElementById('v2-pop') || form.closest('.v2-pop-overlay');
+    const pop = overlay ? overlay.querySelector('.v2-pop') : form.closest('.v2-pop');
+    const submitBtn = form.querySelector('button[type="submit"]');
 
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -170,7 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
         'Accept': 'text/html'
       }
     })
-      .then(() => {
+      .then((res) => {
+        if (!res.ok && res.status === 400) {
+          form.dataset.submitting = 'true';
+          form.submit();
+          return null;
+        }
+        return res.text();
+      })
+      .then((responseText) => {
+        if (!responseText) return;
         try {
           localStorage.setItem('ww_signup_done', '1');
         } catch (err) {}
@@ -178,10 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch((err) => {
         console.error('Popup signup error:', err);
-        try {
-          localStorage.setItem('ww_signup_done', '1');
-        } catch (e) {}
-        if (pop) pop.classList.add('done');
+        form.dataset.submitting = 'true';
+        form.submit();
       });
-  }, true);
+  });
 });

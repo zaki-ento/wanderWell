@@ -438,8 +438,14 @@
       const form = overlay.querySelector('.v2-pop-form');
       if (form) {
         form.addEventListener('submit', function (e) {
+          if (form.dataset.submitting === 'true') return;
+
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+
           e.preventDefault();
-          e.stopImmediatePropagation();
 
           const submitBtn = form.querySelector('button[type="submit"]');
           if (submitBtn) {
@@ -459,17 +465,25 @@
               'Accept': 'text/html'
             }
           })
-            .then(() => {
+            .then((res) => {
+              if (!res.ok && res.status === 400) {
+                form.dataset.submitting = 'true';
+                form.submit();
+                return null;
+              }
+              return res.text();
+            })
+            .then((responseText) => {
+              if (!responseText) return;
               try {
                 localStorage.setItem('ww_signup_done', '1');
               } catch (err) {}
               if (pop) pop.classList.add('done');
             })
-            .catch(() => {
-              try {
-                localStorage.setItem('ww_signup_done', '1');
-              } catch (err) {}
-              if (pop) pop.classList.add('done');
+            .catch((err) => {
+              console.error('Popup signup error:', err);
+              form.dataset.submitting = 'true';
+              form.submit();
             });
         });
       }
