@@ -1,0 +1,142 @@
+{% comment %}
+  Section: WW feedback
+  Description: Custom dynamic section for displaying reviews.
+{% endcomment %}
+
+<div id="ww-feedback" class="ww-feedback section-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="container max-w-breakpoint-xl">
+    {%- if section.settings.label != blank
+      or section.settings.heading != blank
+      or section.settings.subheading != blank
+    -%}
+      <div class="ww-feedback__header">
+        {%- if section.settings.label != blank -%}
+          <span class="ww-feedback__label">{{ section.settings.label | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ww-feedback__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="ww-feedback__blurb">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="ww-feedback__reviews">
+      {%- for block in section.blocks -%}
+        <div class="ww-feedback__app-block" {{ block.shopify_attributes }}>{% render block %}</div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .ww-feedback {
+    padding: 100px 0;
+    background-color: var(--white);
+    overflow: hidden;
+  }
+  .ww-feedback__header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding: 0 20px;
+  }
+  .ww-feedback__label {
+    display: inline-block;
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+  .ww-feedback__title {
+    font-family: var(--font-primary);
+    font-weight: 500;
+    font-size: 2.6rem;
+    color: var(--charcoal);
+    margin: 0;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+  .ww-feedback__blurb {
+    max-width: 760px;
+    margin: 20px auto 0;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--charcoal);
+    opacity: 0.85;
+    text-wrap: pretty;
+  }
+  .ww-feedback__ticker {
+    background: var(--offwhite);
+    padding: 28px 32px;
+    margin-bottom: 64px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    /* Full bleed calculations */
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+  }
+
+  @media (max-width: 768px) {
+    .ww-feedback {
+      padding: 60px 0;
+    }
+    .ww-feedback__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .ww-feedback__title {
+      font-size: 2rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW Feedback",
+  "tag": "section",
+  "class": "ww-section-feedback",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Early Feedback"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What people are saying"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Blurb",
+      "default": "From early testers and our community of travelers who've been following the journey."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Feedback"
+    }
+  ]
+}
+{% endschema %}
