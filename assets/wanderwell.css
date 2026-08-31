@@ -19,6 +19,13 @@ html {
   border: 2px solid var(--cream);
 }
 
+@media (min-width: 990px) {
+  .page-wrapper {
+    scrollbar-width: auto;
+    scrollbar-color: rgb(#e8632b) var(--color-background);
+  }
+}
+
 /* ── CTA Button Design ── */
 .btn-cta {
   --cta-bg: #ffffff;

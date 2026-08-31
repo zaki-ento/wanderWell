@@ -54,7 +54,8 @@ html[scroll-lock] .page-wrapper {
     height: 100dvh;
     overflow-y: auto;
     scroll-behavior: smooth;
-    scrollbar-color: rgb(#e8632b) var(--color-background);
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
   }
 
   .page-wrapper--drawer-open shopify-account::part(dialog) {
