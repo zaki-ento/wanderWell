@@ -5,7 +5,7 @@
 
 {%- if section.settings.enable -%}
   <div
-    class="v2-pop-overlay{% if request.design_mode and section.settings.show_in_theme_editor %} on{% endif %}"
+    class="v2-pop-overlay{% if form.posted_successfully? or request.design_mode and section.settings.show_in_theme_editor %} on{% endif %}"
     id="v2-pop"
     role="dialog"
     aria-modal="true"
@@ -13,9 +13,10 @@
     data-delay="{{ section.settings.delay | default: 5 }}"
     data-trigger="{{ section.settings.trigger | default: 'scroll' }}"
     data-discount-code="{{ section.settings.discount_code | default: 'WANDER10' | escape }}"
+    data-posted="{% if form.posted_successfully? %}true{% else %}false{% endif %}"
     {{ section.shopify_attributes }}
   >
-    <div class="v2-pop">
+    <div class="v2-pop{% if form.posted_successfully? %} done{% endif %}">
       <button class="v2-pop-close" data-pop-close type="button" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
       </button>
@@ -34,51 +35,73 @@
       </div>
 
       <div class="v2-pop-body">
-        {%- if section.settings.eyebrow != blank -%}
-          <div class="v2-pop-eyebrow">{{ section.settings.eyebrow | escape }}</div>
-        {%- endif -%}
-
-        {%- if section.settings.title != blank -%}
-          <h2 class="v2-pop-title" id="v2-pop-title">{{ section.settings.title | escape }}</h2>
-        {%- endif -%}
-
-        {%- if section.settings.subtitle != blank -%}
-          <p class="v2-pop-sub">{{ section.settings.subtitle | escape }}</p>
-        {%- endif -%}
-
-        {%- form 'customer', class: 'v2-pop-form', id: 'PopupNewsletterForm' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <input
-            type="email"
-            name="contact[email]"
-            value="{{ form.email }}"
-            placeholder="{{ section.settings.placeholder | default: 'Enter your email' | escape }}"
-            aria-label="Email address"
-            autocomplete="email"
-            autocorrect="off"
-            autocapitalize="off"
-            required
-          >
-          <button type="submit">{{ section.settings.button_text | default: 'Unlock 10% off' | escape }}</button>
-        {%- endform -%}
-
-        {%- if section.settings.decline_text != blank -%}
-          <button class="v2-pop-decline" data-pop-close type="button">{{ section.settings.decline_text | escape }}</button>
-        {%- endif -%}
-
-        <div class="v2-pop-success">
-          <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
-          <div class="v2-pop-code-wrapper">
-            <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
-              <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
-              <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            </button>
-            <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
+        {%- if form.posted_successfully? -%}
+          <div class="v2-pop-success" style="display: block;">
+            <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
+            <div class="v2-pop-code-wrapper">
+              <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
+                <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
+                <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+              <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
+            </div>
+            {%- if section.settings.fine_print != blank -%}
+              <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
+            {%- endif -%}
           </div>
-          {%- if section.settings.fine_print != blank -%}
-            <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
+        {%- else -%}
+          {%- if section.settings.eyebrow != blank -%}
+            <div class="v2-pop-eyebrow">{{ section.settings.eyebrow | escape }}</div>
           {%- endif -%}
-        </div>
+
+          {%- if section.settings.title != blank -%}
+            <h2 class="v2-pop-title" id="v2-pop-title">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.subtitle != blank -%}
+            <p class="v2-pop-sub">{{ section.settings.subtitle | escape }}</p>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="form-feedback form-feedback--error" style="margin-bottom: 12px; padding: 8px 12px; font-size: 0.85rem; color: #C93B3B; background: #FDF2F2; border-radius: 8px;">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          {%- form 'customer', class: 'v2-pop-form', id: 'PopupNewsletterForm' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              placeholder="{{ section.settings.placeholder | default: 'Enter your email' | escape }}"
+              aria-label="Email address"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              required
+            >
+            <button type="submit">{{ section.settings.button_text | default: 'Unlock 10% off' | escape }}</button>
+          {%- endform -%}
+
+          {%- if section.settings.decline_text != blank -%}
+            <button class="v2-pop-decline" data-pop-close type="button">{{ section.settings.decline_text | escape }}</button>
+          {%- endif -%}
+
+          <div class="v2-pop-success">
+            <p class="v2-pop-sub" style="display:block">{{ section.settings.success_heading | default: "You're in! Use this code at checkout:" | escape }}</p>
+            <div class="v2-pop-code-wrapper">
+              <button type="button" class="v2-pop-code" id="v2-copy-code" title="Click to copy code">
+                <span class="v2-code-text">{{ section.settings.discount_code | default: 'WANDER10' | escape }}</span>
+                <svg class="v2-copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+              <span class="v2-copy-tooltip" id="v2-copy-tooltip">Copied!</span>
+            </div>
+            {%- if section.settings.fine_print != blank -%}
+              <p class="v2-pop-fine">{{ section.settings.fine_print | escape }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -376,10 +399,17 @@
         overlay.classList.remove('on');
       }
 
+      const isPosted = overlay.dataset.posted === 'true';
+      if (isPosted) {
+        try {
+          localStorage.setItem('ww_signup_done', '1');
+        } catch (e) {}
+      }
+
       const trigger = overlay.dataset.trigger || 'scroll';
       const delaySeconds = parseInt(overlay.dataset.delay, 10) || 5;
 
-      if (!signedUp() && !seenThisSession()) {
+      if (!isPosted && !signedUp() && !seenThisSession()) {
         if (trigger === 'timer') {
           setTimeout(open, delaySeconds * 1000);
         } else if (trigger === 'exit_intent') {
@@ -434,57 +464,15 @@
         });
       }
 
-      // AJAX Form submission
+      // Native Form submission loading state
       const form = overlay.querySelector('.v2-pop-form');
       if (form) {
-        form.addEventListener('submit', function (e) {
-          if (form.dataset.submitting === 'true') return;
-
-          if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-          }
-
-          e.preventDefault();
-
+        form.addEventListener('submit', function () {
           const submitBtn = form.querySelector('button[type="submit"]');
           if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = '...';
           }
-
-          const formData = new FormData(form);
-          const urlEncodedBody = new URLSearchParams(formData).toString();
-
-          fetch(form.getAttribute('action') || '/contact#contact_form', {
-            method: 'POST',
-            body: urlEncodedBody,
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'X-Requested-With': 'XMLHttpRequest',
-              'Accept': 'text/html'
-            }
-          })
-            .then((res) => {
-              if (!res.ok && res.status === 400) {
-                form.dataset.submitting = 'true';
-                form.submit();
-                return null;
-              }
-              return res.text();
-            })
-            .then((responseText) => {
-              if (!responseText) return;
-              try {
-                localStorage.setItem('ww_signup_done', '1');
-              } catch (err) {}
-              if (pop) pop.classList.add('done');
-            })
-            .catch((err) => {
-              console.error('Popup signup error:', err);
-              form.dataset.submitting = 'true';
-              form.submit();
-            });
         });
       }
     }
