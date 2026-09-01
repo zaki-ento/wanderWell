@@ -365,7 +365,22 @@
       color: var(--orange);
       font-weight: bold;
     }
+
     @media screen and (max-width: 480px) {
+      .ww-sub-opt__row {
+        flex-wrap: wrap;
+      }
+      .ww-sub-opt__radio-bullet-wrapper {
+        order: -2;
+      }
+      .ww-sub-opt__details {
+        width: 100%;
+      }
+      .ww-sub-opt__price-container {
+        order: -1;
+      }
+    }
+    @media screen and (max-width: 900px) {
       .ww-sub-opt__title {
         flex-wrap: wrap;
       }
