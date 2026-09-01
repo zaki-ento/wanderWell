@@ -6,16 +6,16 @@
 <div id="ww-page-hero" class="ww-page-hero section-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-md">
     {%- if section.settings.label != blank -%}
-      <span class="section-label">{{ section.settings.label }}</span>
+      <span class="section-label ww-page-hero__label">{{ section.settings.label }}</span>
     {%- endif -%}
     {%- if section.settings.heading != blank -%}
-      <h1>{{ section.settings.heading }}</h1>
+      <h1 class="ww-page-hero__heading">{{ section.settings.heading }}</h1>
     {%- endif -%}
     {%- if section.settings.subheading != blank -%}
       {%- if section.settings.subheading contains '<p>' or section.settings.subheading contains '<p ' -%}
-        {{ section.settings.subheading }}
+        <div class="ww-page-hero__subheading">{{ section.settings.subheading }}</div>
       {%- else -%}
-        <p>{{ section.settings.subheading }}</p>
+        <p class="ww-page-hero__subheading">{{ section.settings.subheading }}</p>
       {%- endif -%}
     {%- endif -%}
   </div>

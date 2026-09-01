@@ -41,14 +41,14 @@
   }
 {%- endstyle -%}
 
-<div id="ww-problem" class="problem section-{{ section.id }} ww-problem-section" data-section-id="{{ section.id }}" {{ section.shopify_attributes }}>
+<div id="ww-problem" class="problem section-{{ section.id }} ww-problem ww-problem-section" data-section-id="{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-xl">
-    <div class="problem-header">
+    <div class="problem-header ww-problem__header">
       {%- if section.settings.heading != blank -%}
-        <h2 class="section-title">{{ section.settings.heading | escape }}</h2>
+        <h2 class="section-title ww-problem__title">{{ section.settings.heading | escape }}</h2>
       {%- endif -%}
       {%- if section.settings.subheading != blank -%}
-        <p class="section-subtitle">{{ section.settings.subheading | escape }}</p>
+        <p class="section-subtitle ww-problem__subtitle">{{ section.settings.subheading | escape }}</p>
       {%- endif -%}
     </div>
   </div>
@@ -94,28 +94,28 @@
     </div>
   </div>
 
-  <div class="problem-outro">
+  <div class="problem-outro ww-problem__outro">
     <div class="container max-w-breakpoint-xl">
-      <div class="problem-bridge">
+      <div class="problem-bridge ww-problem__bridge">
         {%- if section.settings.outro_heading != blank -%}
-          <p class="bridge-hook">{{ section.settings.outro_heading | escape }}</p>
+          <p class="bridge-hook ww-problem__bridge-hook">{{ section.settings.outro_heading | escape }}</p>
         {%- endif -%}
         {%- if section.settings.outro_subheading != blank -%}
-          <p class="bridge-body">{{ section.settings.outro_subheading | escape }}</p>
+          <p class="bridge-body ww-problem__bridge-body">{{ section.settings.outro_subheading | escape }}</p>
         {%- endif -%}
         
-        <ul class="bridge-chips">
+        <ul class="bridge-chips ww-problem__bridge-chips">
           {%- for block in section.blocks -%}
             {%- if block.type == 'outro_pill' -%}
-              <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+              <li class="ww-problem__chip" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
             {%- endif -%}
           {%- endfor -%}
         </ul>
 
         {%- if section.settings.outro_button_label != blank -%}
-          <a href="{{ section.settings.outro_button_link | default: '#products' }}" class="bridge-cta">
+          <a href="{{ section.settings.outro_button_link | default: '#products' }}" class="bridge-cta ww-problem__cta" aria-label="{{ section.settings.outro_button_label | escape }}">
             {{ section.settings.outro_button_label | escape }}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </a>

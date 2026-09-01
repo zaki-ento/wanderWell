@@ -185,18 +185,19 @@
                   {%- endif -%}
                 </div>
 
-                <div class="ww-media-thumbs">
+                <div class="ww-media-thumbs" role="tablist" aria-label="Product image thumbnails">
                   {%- if product_images.size > 0 -%}
                     {%- for image in product_images limit: 4 -%}
-                      <div class="ww-media-thumb {% if forloop.first %}is-active{% endif %}">
-                        {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: image.alt }}
+                      {%- assign thumb_alt = image.alt | default: title | default: shop.name | default: 'Product thumbnail' -%}
+                      <div class="ww-media-thumb {% if forloop.first %}is-active{% endif %}" role="tab" tabindex="0" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Thumbnail {{ forloop.index }} of {{ product_images.size }}">
+                        {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: thumb_alt }}
                       </div>
                     {%- endfor -%}
                   {%- else -%}
-                    <div class="ww-media-thumb is-active"></div>
-                    <div class="ww-media-thumb"></div>
-                    <div class="ww-media-thumb"></div>
-                    <div class="ww-media-thumb"></div>
+                    <div class="ww-media-thumb is-active" role="tab" tabindex="0" aria-selected="true" aria-label="Product thumbnail 1"></div>
+                    <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 2"></div>
+                    <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 3"></div>
+                    <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 4"></div>
                   {%- endif -%}
                 </div>
               </div>

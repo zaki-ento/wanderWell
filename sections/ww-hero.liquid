@@ -36,12 +36,14 @@
 
 <div class="ww-hero section-{{ section.id }}" {{ section.shopify_attributes }}>
   {%- if section.settings.supergraphic_image != blank -%}
+    {%- assign supergraphic_alt = section.settings.supergraphic_image.alt | default: shop.name | default: 'wanderWell' -%}
     <div class="ww-hero__supergraphic">
-      {{ section.settings.supergraphic_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.supergraphic_image.alt, class: 'ww-hero__supergraphic-img' }}
+      {{ section.settings.supergraphic_image | image_url: width: 1400 | image_tag: fetchpriority: 'high', loading: 'eager', alt: supergraphic_alt, class: 'ww-hero__supergraphic-img' }}
     </div>
   {%- elsif settings.logo_inverse != blank -%}
+    {%- assign logo_alt = settings.logo_inverse.alt | default: shop.name | default: 'wanderWell' -%}
     <div class="ww-hero__supergraphic">
-      {{ settings.logo_inverse | image_url: width: 1400 | image_tag: loading: 'lazy', alt: settings.logo_inverse.alt, class: 'ww-hero__supergraphic-img' }}
+      {{ settings.logo_inverse | image_url: width: 1400 | image_tag: fetchpriority: 'high', loading: 'eager', alt: logo_alt, class: 'ww-hero__supergraphic-img' }}
     </div>
   {%- endif -%}
 
@@ -69,9 +71,9 @@
           <div class="ww-hero__buy">
             <div class="ww-hero__cta-stack">
               <div class="ww-hero__cta-row">
-                <a href="{{ section.settings.button_link | default: '#' }}" class="btn-cta btn-cta--wide" aria-label="{{ section.settings.button_label | escape }}">
-                  <span class="cta-label cta-label--single">{{ section.settings.button_label | escape }}</span>
-                  <span class="cta-arrow" aria-hidden="true">
+                <a href="{{ section.settings.button_link | default: '#' }}" class="btn-cta btn-cta--wide ww-hero__cta" aria-label="{{ section.settings.button_label | escape }}">
+                  <span class="cta-label cta-label--single ww-hero__cta-label">{{ section.settings.button_label | escape }}</span>
+                  <span class="cta-arrow ww-hero__cta-arrow" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M5 12h14"></path>
                       <path d="M13 5l7 7-7 7"></path>
@@ -100,34 +102,35 @@
         <span class="ww-herovid-icon" aria-hidden="true"></span>
       </button>
     {%- elsif section.settings.image_backdrop != blank -%}
+      {%- assign bg_alt = section.settings.image_backdrop.alt | default: section.settings.heading | default: shop.name -%}
       <div class="ww-herovid-poster" aria-hidden="true">
-        {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: loading: 'eager', class: 'ww-herovid-poster-img' }}
+        {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: fetchpriority: 'high', loading: 'eager', class: 'ww-herovid-poster-img', alt: bg_alt }}
       </div>
     {%- endif -%}
   </div>
 </div>
 
 {%- if section.settings.show_ticker -%}
-  <div class="made-for-strip">
+  <div class="made-for-strip ww-hero__ticker">
     {%- if section.settings.ticker_label != blank -%}
-      <div class="made-for-label">{{ section.settings.ticker_label | escape }}</div>
+      <div class="made-for-label ww-hero__ticker-label">{{ section.settings.ticker_label | escape }}</div>
     {%- endif -%}
     <div style="overflow:hidden; flex:1; min-width:0;">
-      <div class="made-for-track ww-made-for-track-{{ section.id }}">
+      <div class="made-for-track ww-hero__ticker-track ww-made-for-track-{{ section.id }}">
         {%- assign has_blocks = false -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
             {%- assign has_blocks = true -%}
-            <span class="made-for-item">{{ block.settings.text | escape }}</span>
-            <span class="made-for-item made-for-dot"></span>
+            <span class="made-for-item ww-hero__ticker-item">{{ block.settings.text | escape }}</span>
+            <span class="made-for-item made-for-dot ww-hero__ticker-dot"></span>
           {%- endif -%}
         {%- endfor -%}
         {%- comment -%} Seamless loop duplicate 1 {%- endcomment -%}
         {%- if has_blocks -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
-              <span class="made-for-item">{{ block.settings.text | escape }}</span>
-              <span class="made-for-item made-for-dot"></span>
+              <span class="made-for-item ww-hero__ticker-item">{{ block.settings.text | escape }}</span>
+              <span class="made-for-item made-for-dot ww-hero__ticker-dot"></span>
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
@@ -135,8 +138,8 @@
         {%- if has_blocks -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'ticker_item' and block.settings.text != blank -%}
-              <span class="made-for-item">{{ block.settings.text | escape }}</span>
-              <span class="made-for-item made-for-dot"></span>
+              <span class="made-for-item ww-hero__ticker-item">{{ block.settings.text | escape }}</span>
+              <span class="made-for-item made-for-dot ww-hero__ticker-dot"></span>
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}

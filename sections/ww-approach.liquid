@@ -41,7 +41,7 @@
               {%- endif -%}
               
               <span class="ww-approach__ticker-item" {{ block.shopify_attributes }}>
-                <span class="check">✓</span> {{ block.settings.text | escape }}
+                <span class="check ww-approach__ticker-check" aria-hidden="true">✓</span> {{ block.settings.text | escape }}
               </span>
             {%- endif -%}
           {%- endfor -%}

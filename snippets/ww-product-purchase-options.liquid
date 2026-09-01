@@ -59,12 +59,14 @@
                   type="radio"
                   name="selling_plan"
                   value="{{ plan.id }}"
+                  id="SellingPlan-{{ current_prod.id }}-{{ plan.id }}"
                   class="ww-sub-opt__radio-input"
+                  aria-label="Subscribe and Save {{ sub_packs }}, {{ plan.name }}, {{ sub_price | money }}"
                   {% if is_first_plan %}checked{% endif %}
                 />
                 <span class="ww-sub-opt__radio-bullet"></span>
               </span>
-              <span class="ww-sub-opt__details">
+              <label for="SellingPlan-{{ current_prod.id }}-{{ plan.id }}" class="ww-sub-opt__details">
                 <span class="ww-sub-opt__title">
                   Subscribe & Save
                   <span class="ww-sub-opt__pack-badge">{{ sub_packs }}</span>
@@ -79,7 +81,7 @@
                     <span class="ww-sub-opt__perk">{{ group.description }}</span>
                   </span>
                 {%- endif -%}
-              </span>
+              </label>
               
               <span class="ww-sub-opt__price-container">
                 <span class="ww-sub-opt__price">
@@ -118,19 +120,21 @@
                 type="radio"
                 name="selling_plan"
                 value=""
+                id="SellingPlan-{{ current_prod.id }}-onetime"
                 class="ww-sub-opt__radio-input"
+                aria-label="One-Time Purchase {{ one_time_packs }}, {{ base_unit_price | money }}"
                 {% unless has_subscription %}checked{% endunless %}
               />
               <span class="ww-sub-opt__radio-bullet"></span>
             </span>
             
-            <span class="ww-sub-opt__details">
+            <label for="SellingPlan-{{ current_prod.id }}-onetime" class="ww-sub-opt__details">
               <span class="ww-sub-opt__title">
                 One-Time Purchase
                 <span class="ww-sub-opt__pack-badge">{{ one_time_packs }}</span>
               </span>
               <span class="ww-sub-opt__servings">{{ one_time_servings_qty }} servings · delivered once</span>
-            </span>
+            </label>
             
             <span class="ww-sub-opt__price-container">
               <span class="ww-sub-opt__price">{{ base_unit_price | money }}</span>

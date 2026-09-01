@@ -24,7 +24,8 @@
       <div class="v2-pop-visual">
         <div class="v2-ph"></div>
         {%- if section.settings.image != blank -%}
-          {{ section.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: section.settings.title }}
+          {%- assign popup_img_alt = section.settings.image.alt | default: section.settings.title | default: 'wanderWell' | escape -%}
+          {{ section.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: popup_img_alt }}
         {%- else -%}
           <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="32" cy="32" r="30" stroke="var(--orange, #E8632B)" stroke-width="3" stroke-dasharray="4 4" opacity="0.4"/>
