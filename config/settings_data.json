@@ -73,6 +73,7 @@
     "auto_open_cart_drawer": true,
     "show_cart_note": false,
     "show_add_discount_code": true,
+    "empty_cart_button_link": "https://wanderwell-development.myshopify.com",
     "cart_thumbnail_border": "solid",
     "cart_thumbnail_border_radius": 14,
     "drawer_background_color": "#E8E0D0",
