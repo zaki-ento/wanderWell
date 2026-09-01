@@ -256,14 +256,21 @@ export class CartItemsComponent extends createViewEventElement(Component) {
           return;
         }
 
-        const newSectionHTML = new DOMParser().parseFromString(
-          parsedResponseText.sections[this.sectionId],
-          'text/html'
-        );
+        const sectionHtml = parsedResponseText.sections?.[this.sectionId];
+        let newCartItemCount = parsedResponseText.item_count ?? 0;
 
-        // Grab the new cart item count from a hidden element
-        const newCartHiddenItemCount = newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
-        const newCartItemCount = newCartHiddenItemCount ? parseInt(newCartHiddenItemCount, 10) : 0;
+        if (sectionHtml) {
+          const newSectionHTML = new DOMParser().parseFromString(
+            sectionHtml,
+            'text/html'
+          );
+
+          // Grab the new cart item count from a hidden element
+          const newCartHiddenItemCount = newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
+          if (newCartHiddenItemCount) {
+            newCartItemCount = parseInt(newCartHiddenItemCount, 10);
+          }
+        }
 
         // Update data-cart-quantity for all matching variants
         this.#updateQuantitySelectors(parsedResponseText);
@@ -279,9 +286,16 @@ export class CartItemsComponent extends createViewEventElement(Component) {
           },
         });
 
-        morphSection(this.sectionId, parsedResponseText.sections[this.sectionId], {
-          mode: this.isDrawer ? 'hydration' : 'full',
-        });
+        if (sectionHtml) {
+          morphSection(this.sectionId, sectionHtml, {
+            mode: this.isDrawer ? 'hydration' : 'full',
+          });
+        } else {
+          sectionRenderer.renderSection(this.sectionId, {
+            cache: false,
+            mode: this.isDrawer ? 'hydration' : 'full',
+          });
+        }
 
         this.#updateCartQuantitySelectorButtonStates();
       })
