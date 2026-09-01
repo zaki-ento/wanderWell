@@ -215,7 +215,7 @@
   .ww-info-page a {
     color: var(--orange-dark);
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
     text-decoration-thickness: 1.5px;
     transition: color 0.2s ease;
   }
@@ -406,7 +406,16 @@
   .ww-info-page__contact-item a,
   .ww-info-page .contact-item a {
     color: var(--orange-dark);
+    text-decoration-thickness: 1.5px;
     text-decoration: underline;
+  }
+  .ww-info-page__contact-item .value p {
+    margin: 0 !important;
+  }
+  .ww-info-page__contact-item .value p a{
+    font-size: 0.98rem;
+    font-weight: 500;
+    display: block;
   }
 
   /* Table styles */
