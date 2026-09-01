@@ -14,26 +14,7 @@
       >
     {%- endif -%}
 
-    {% comment %}
-      Opt into cross-document (MPA) view transitions and hold first paint until #MainContent
-      parses, so the transition runs consistently.
-      Both are gated on the same settings as the view-transitions.js opt-out switch (see snippets/scripts.liquid).
-    {% endcomment %}
-    {% if settings.transition_to_main_product or settings.page_transition_enabled %}
-      {% style %}
-        @media (prefers-reduced-motion: no-preference) {
-          @view-transition {
-            navigation: auto;
-          }
-        }
-      {% endstyle %}
-      <link
-        rel="expect"
-        href="#MainContent"
-        blocking="render"
-        id="view-transition-render-blocker"
-      >
-    {% endif %}
+    {%- render 'view-transition-opt-in' -%}
 
     {%- render 'meta-tags' -%}
     <link rel="preload" href="{{ 'sofia-pro-400.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
@@ -136,7 +117,7 @@
           if (!headerTopRow) return;
 
           window.requestAnimationFrame(function () {
-            header.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
+            header.style.setProperty('--top-row-height', `${headerTopRow.getBoundingClientRect().height}px`);
           });
         })();
 
