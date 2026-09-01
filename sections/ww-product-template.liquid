@@ -27,14 +27,21 @@
 
                 {%- if product_images.size > 0 -%}
                   {%- for image in product_images limit: 4 -%}
+                    {%- assign slide_alt = image.alt | default: product.title | default: shop.name -%}
                     <div class="ww-media-slide {% if forloop.first %}is-on{% endif %}">
-                      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', alt: image.alt }}
+                      {{ image | image_url: width: 800 | image_tag: 
+                        widths: '320, 480, 640, 800',
+                        sizes: '(max-width: 768px) 90vw, 520px',
+                        loading: 'lazy',
+                        decoding: 'async',
+                        alt: slide_alt
+                      }}
                     </div>
                   {%- endfor -%}
                 {%- else -%}
                   <div class="ww-media-slide is-on">
                     {%- if settings.logo_inverse != blank -%}
-                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'ww-media-logo', loading: 'lazy' }}
+                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'ww-media-logo', loading: 'lazy', decoding: 'async', alt: shop.name }}
                     {%- endif -%}
                   </div>
                   <div class="ww-media-slide"></div>

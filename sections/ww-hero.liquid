@@ -38,12 +38,28 @@
   {%- if section.settings.supergraphic_image != blank -%}
     {%- assign supergraphic_alt = section.settings.supergraphic_image.alt | default: shop.name | default: 'wanderWell' -%}
     <div class="ww-hero__supergraphic">
-      {{ section.settings.supergraphic_image | image_url: width: 1400 | image_tag: fetchpriority: 'high', loading: 'eager', alt: supergraphic_alt, class: 'ww-hero__supergraphic-img' }}
+      {{ section.settings.supergraphic_image | image_url: width: 1400 | image_tag: 
+        widths: '280, 420, 600, 850, 1100, 1400',
+        sizes: '(max-width: 768px) 100vw, 1200px',
+        fetchpriority: 'high',
+        loading: 'eager',
+        decoding: 'async',
+        alt: supergraphic_alt,
+        class: 'ww-hero__supergraphic-img'
+      }}
     </div>
   {%- elsif settings.logo_inverse != blank -%}
     {%- assign logo_alt = settings.logo_inverse.alt | default: shop.name | default: 'wanderWell' -%}
     <div class="ww-hero__supergraphic">
-      {{ settings.logo_inverse | image_url: width: 1400 | image_tag: fetchpriority: 'high', loading: 'eager', alt: logo_alt, class: 'ww-hero__supergraphic-img' }}
+      {{ settings.logo_inverse | image_url: width: 1400 | image_tag: 
+        widths: '280, 420, 600, 850, 1100, 1400',
+        sizes: '(max-width: 768px) 100vw, 1200px',
+        fetchpriority: 'high',
+        loading: 'eager',
+        decoding: 'async',
+        alt: logo_alt,
+        class: 'ww-hero__supergraphic-img'
+      }}
     </div>
   {%- endif -%}
 
@@ -91,12 +107,17 @@
   {%- comment -%} Background Backdrop (Video / Fallback Image) {%- endcomment -%}
   <div class="ww-herovid">
     {%- if section.settings.video_backdrop != blank -%} 
+      {%- assign poster_image = section.settings.image_backdrop | default: section.settings.video_backdrop.preview_image -%}
       {{ section.settings.video_backdrop | video_tag:
         autoplay: true,
         loop: true,
         muted: true,
         controls: false,
-        playsinline: true, class: 'ww-herovid-el', preload: 'metadata', aria-label: 'wanderWell hero film' }}
+        playsinline: true,
+        class: 'ww-herovid-el',
+        preload: 'none',
+        poster: poster_image.src,
+        aria-label: 'wanderWell hero film' }}
 
       <button type="button" class="ww-herovid-toggle" aria-pressed="false" aria-label="Pause video">
         <span class="ww-herovid-icon" aria-hidden="true"></span>
@@ -104,7 +125,15 @@
     {%- elsif section.settings.image_backdrop != blank -%}
       {%- assign bg_alt = section.settings.image_backdrop.alt | default: section.settings.heading | default: shop.name -%}
       <div class="ww-herovid-poster" aria-hidden="true">
-        {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: fetchpriority: 'high', loading: 'eager', class: 'ww-herovid-poster-img', alt: bg_alt }}
+        {{ section.settings.image_backdrop | image_url: width: 1800 | image_tag: 
+          widths: '375, 550, 750, 1100, 1500, 1800',
+          sizes: '100vw',
+          fetchpriority: 'high',
+          loading: 'eager',
+          decoding: 'async',
+          class: 'ww-herovid-poster-img',
+          alt: bg_alt
+        }}
       </div>
     {%- endif -%}
   </div>

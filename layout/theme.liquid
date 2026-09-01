@@ -36,6 +36,8 @@
     {% endif %}
 
     {%- render 'meta-tags' -%}
+    <link rel="preload" href="{{ 'sofia-pro-400.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ 'sofia-pro-600.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
     {%- render 'stylesheets' -%}
     {%- render 'card-hover-effect-styles' -%}
     {%- render 'fonts' -%}
