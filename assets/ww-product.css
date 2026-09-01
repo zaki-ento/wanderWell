@@ -1077,7 +1077,7 @@
   .ww-seg-ind {
     display: none !important;
   }
-  .ww-seg .ww-seg-btn  {
+  .ww-seg .ww-seg-btn.on  {
     background: var(--orange);
   }
 }
