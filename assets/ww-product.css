@@ -1074,9 +1074,11 @@
     flex-direction: column;
     border-radius: 14px;
   }
-
+  .ww-seg-ind {
+    display: none !important;
+  }
   .ww-seg .ww-seg-btn  {
-    white-space: nowrap;
+    background: var(--orange);
   }
 }
 
