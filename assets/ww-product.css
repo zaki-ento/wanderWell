@@ -1071,7 +1071,8 @@
 
 @media screen and (max-width: 480px) {
   .ww-seg {
-    overflow-x: auto;
+    flex-direction: column;
+    border-radius: 14px;
   }
 
   .ww-seg .ww-seg-btn  {
