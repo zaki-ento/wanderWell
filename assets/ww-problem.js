@@ -243,7 +243,7 @@
           styleObj.textAlign = 'left';
         } else {
           var rx = Math.max(w * 0.32, w - (ext ? ext.min : w * 0.5) + gap);
-          styleObj.left = 'auto';
+          styleObj.left = '20px';
           styleObj.right = 'auto';
           styleObj.width = Math.round(Math.min(560, Math.max(minW, w - rx - pad))) + 'px';
         }
