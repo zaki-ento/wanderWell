@@ -901,12 +901,13 @@
 
 .ww-sticky-bar__title {
   font-family: var(--font-primary);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--charcoal);
-  margin: 0;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--charcoal, #2C2C2C);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.6;
 }
 
 .ww-sticky-bar__option-trigger {
@@ -924,21 +925,16 @@
 }
 
 .ww-sticky-bar__change-btn {
-  background: none;
-  border: none;
-  font-family: var(--font-primary);
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--orange);
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  letter-spacing: 0.05em;
-  user-select: none;
+  font-family: var(--font-tertiary);
+  font-size: .66rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--charcoal-light, #5A5A5A);
+  transition: color .18s ease;
+  cursor: pointer;
 }
 
 .ww-sticky-bar__change-btn .arrow {
