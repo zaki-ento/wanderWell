@@ -206,6 +206,9 @@
   }
 
   @media (max-width: 639px) {
+    .ww-approach__grid {
+      grid-template-columns: 1fr;
+    }
     .ww-approach__ticker-track {
       padding-left: 20px;
       padding-right: 20px;
@@ -227,8 +230,7 @@
       padding: 60px 0;
     }
     .ww-approach__grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
+      grid-template-columns: repeat(2,1fr);
     }
     .ww-approach__title {
       font-size: 2rem;
