@@ -778,6 +778,12 @@
     padding-right: 12px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .products-header .section-label {
+    font-size: 1.5rem;
+  }
+}
 @media screen and (min-width: 760px) {
   .products-header .section-title {
     font-size: 2.6rem;
