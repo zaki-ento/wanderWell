@@ -908,6 +908,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.6;
+  margin: 0;
 }
 
 .ww-sticky-bar__option-trigger {
@@ -927,6 +928,9 @@
 .ww-sticky-bar__change-btn {
   display: inline-flex;
   align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
   gap: 3px;
   font-family: var(--font-tertiary);
   font-size: .66rem;
