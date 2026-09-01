@@ -1,5 +1,5 @@
 import { Component } from '@theme/component';
-import { morphSection } from '@theme/section-renderer';
+import { morphSection, sectionRenderer } from '@theme/section-renderer';
 import { fetchConfig } from '@theme/utilities';
 import { cartPerformance } from '@theme/performance';
 import { CartDiscountUpdateEvent, CartErrorEvent } from '@shopify/events';
@@ -97,30 +97,32 @@ class CartDiscount extends Component {
         return;
       }
 
-      const newHtml = data.sections[this.dataset.sectionId];
-      const parsedHtml = new DOMParser().parseFromString(newHtml, 'text/html');
-      const section = parsedHtml.getElementById(`shopify-section-${this.dataset.sectionId}`);
-      const discountCodes = section?.querySelectorAll('.cart-discount__pill') || [];
-      if (section) {
-        const codes = Array.from(discountCodes)
-          .map((element) => (element instanceof HTMLLIElement ? element.dataset.discountCode : null))
-          .filter(Boolean);
-        // Before morphing, we need to check if the shipping discount is applicable in the UI
-        // we check the liquid logic compared to the cart payload to assess whether we leveraged
-        // a valid shipping discount code.
-        if (
-          codes.length === existingDiscounts.length &&
-          codes.every((/** @type {string} */ code) => existingDiscounts.includes(code)) &&
-          data.discount_codes.find((/** @type {{ code: string; applicable: boolean; }} */ discount) => {
-            return discount.code === discountCodeValue && discount.applicable === true;
-          })
-        ) {
-          this.#handleDiscountError('shipping');
-          discountCode.value = '';
-          deferredPromise.resolve({
-            cart: CartDiscountUpdateEvent.createCartFromAjaxResponse(data),
-          });
-          return;
+      const newHtml = data.sections?.[this.dataset.sectionId];
+      if (newHtml) {
+        const parsedHtml = new DOMParser().parseFromString(newHtml, 'text/html');
+        const section = parsedHtml.getElementById(`shopify-section-${this.dataset.sectionId}`);
+        const discountCodes = section?.querySelectorAll('.cart-discount__pill') || [];
+        if (section) {
+          const codes = Array.from(discountCodes)
+            .map((element) => (element instanceof HTMLLIElement ? element.dataset.discountCode : null))
+            .filter(Boolean);
+          // Before morphing, we need to check if the shipping discount is applicable in the UI
+          // we check the liquid logic compared to the cart payload to assess whether we leveraged
+          // a valid shipping discount code.
+          if (
+            codes.length === existingDiscounts.length &&
+            codes.every((/** @type {string} */ code) => existingDiscounts.includes(code)) &&
+            data.discount_codes.find((/** @type {{ code: string; applicable: boolean; }} */ discount) => {
+              return discount.code === discountCodeValue && discount.applicable === true;
+            })
+          ) {
+            this.#handleDiscountError('shipping');
+            discountCode.value = '';
+            deferredPromise.resolve({
+              cart: CartDiscountUpdateEvent.createCartFromAjaxResponse(data),
+            });
+            return;
+          }
         }
       }
 
@@ -131,7 +133,14 @@ class CartDiscount extends Component {
       // morphSection no longer syncs the input value from the server-rendered empty state,
       // so without this the user's typed code stays in the field after a successful apply.
       discountCode.value = '';
-      morphSection(this.dataset.sectionId, newHtml, { mode: this.closest('theme-drawer') ? 'hydration' : 'full' });
+      if (newHtml) {
+        morphSection(this.dataset.sectionId, newHtml, { mode: this.closest('theme-drawer') ? 'hydration' : 'full' });
+      } else {
+        sectionRenderer.renderSection(this.dataset.sectionId, {
+          cache: false,
+          mode: this.closest('theme-drawer') ? 'hydration' : 'full',
+        });
+      }
     } catch (error) {
       deferredPromise.reject(error);
       if (error instanceof Error && error.name !== 'AbortError') {
@@ -203,9 +212,17 @@ class CartDiscount extends Component {
         cart: CartDiscountUpdateEvent.createCartFromAjaxResponse(data),
       });
 
-      morphSection(this.dataset.sectionId, data.sections[this.dataset.sectionId], {
-        mode: this.closest('theme-drawer') ? 'hydration' : 'full',
-      });
+      const newHtml = data.sections?.[this.dataset.sectionId];
+      if (newHtml) {
+        morphSection(this.dataset.sectionId, newHtml, {
+          mode: this.closest('theme-drawer') ? 'hydration' : 'full',
+        });
+      } else {
+        sectionRenderer.renderSection(this.dataset.sectionId, {
+          cache: false,
+          mode: this.closest('theme-drawer') ? 'hydration' : 'full',
+        });
+      }
     } catch (error) {
       deferredPromise.reject(error);
       if (error instanceof Error && error.name !== 'AbortError') {
