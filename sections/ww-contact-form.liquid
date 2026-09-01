@@ -127,6 +127,7 @@
     display: flex;
     flex-direction: column;
     gap: 7px;
+    width: 480px;
   }
 
   .ww-contact-form .form-row label {
@@ -201,6 +202,11 @@
   .ww-contact-form .form-feedback--error {
     color: #c93b3b;
     background: #fdf2f2;
+  } 
+  @media screen and (max-width: 480px) {
+    .ww-contact-form .form-row {
+      width: 100%;
+    }
   }
 {% endstylesheet %}
 
