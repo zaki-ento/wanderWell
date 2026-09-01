@@ -108,6 +108,7 @@
   <div class="ww-herovid">
     {%- if section.settings.video_backdrop != blank -%} 
       {%- assign poster_image = section.settings.image_backdrop | default: section.settings.video_backdrop.preview_image -%}
+      {%- assign poster_url = poster_image | image_url: width: 1100 -%}
       {{ section.settings.video_backdrop | video_tag:
         autoplay: true,
         loop: true,
@@ -115,8 +116,9 @@
         controls: false,
         playsinline: true,
         class: 'ww-herovid-el',
-        preload: 'none',
-        poster: poster_image.src,
+        preload: 'metadata',
+        fetchpriority: 'high',
+        poster: poster_url,
         aria-label: 'wanderWell hero film' }}
 
       <button type="button" class="ww-herovid-toggle" aria-pressed="false" aria-label="Pause video">
