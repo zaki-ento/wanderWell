@@ -182,6 +182,7 @@
     color: var(--charcoal);
     margin: 48px 0 16px;
     text-wrap: balance;
+    line-height: 1.6;
   }
   .ww-info-page rte h3,
   .ww-info-page .rte h3,
@@ -207,6 +208,7 @@
     color: var(--charcoal);
     margin-bottom: 48px;
     max-width: 60ch;
+    letter-spacing: -0.01em;
   }
   .ww-info-page rte a,
   .ww-info-page .rte a,
@@ -267,6 +269,7 @@
     color: var(--charcoal-light);
     margin-bottom: 12px;
   }
+  
   .ww-info-page__toc-list,
   .ww-info-page .toc ol {
     counter-reset: toc;
@@ -285,6 +288,10 @@
     padding-left: 28px;
     position: relative;
     break-inside: avoid;
+  }
+  .ww-info-page__block--toc .ww-info-page__toc-list {
+    padding: 0;
+    margin: 0;
   }
   .ww-info-page__toc-list li::before,
   .ww-info-page .toc li::before {
