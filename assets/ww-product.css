@@ -605,7 +605,6 @@
 }
 .ww-info-trust-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
 }
 .ww-info-trust-grid h4 {
@@ -762,6 +761,23 @@
 }
 
 /* Responsive styles */
+@media screen and (max-width: 639px) {
+  .ww-acc-body {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .ww-info {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .ww-acc-t {
+    font-size: 16px;
+  }
+  .ww-acc summary {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
 @media screen and (min-width: 760px) {
   .products-header .section-title {
     font-size: 2.6rem;
@@ -780,6 +796,7 @@
   .ww-info-trust-grid {
     flex-direction: row;
     gap: 24px;
+    grid-template-columns: repeat(2,1fr);
   }
   .ww-info-trust-grid > div {
     flex: 1;
