@@ -3,7 +3,7 @@
   Description: Custom dynamic FAQ section supporting static customizer blocks (with dynamic category groupings) or automatic dynamic sync from Metaobjects.
 {% endcomment %}
 
-<div class="ww-faq section-{{ section.id }}" {{ section.shopify_attributes }}>
+<div id="ww-faq" class="ww-faq section-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-xl">
     
     {%- if section.settings.label != blank or section.settings.heading != blank -%}
