@@ -252,7 +252,7 @@
   overflow: hidden;
   cursor: pointer;
   background-color: var(--cream);
-  min-width: 72px;
+  min-height: 72px;
   border: 2px solid transparent;
   transition: border-color 0.2s;
 }
@@ -1178,11 +1178,4 @@
       margin-top: 8px;
       gap: 12px;
     }
-}
-
-
-@media screen and (max-width: 390px) {
-  .ww-media-thumbs .ww-media-thumb {
-    min-width: 0;
-  }
 }
