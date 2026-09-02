@@ -492,6 +492,7 @@
 }
 .ww-ing:last-child {
   padding-bottom: 0;
+  border-bottom: none;
 }
 .ww-ing-dot {
   flex: 0 0 10px;
