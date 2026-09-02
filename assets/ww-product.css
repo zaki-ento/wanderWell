@@ -688,6 +688,9 @@
 }
 .ww-bundle-item .ww-bundle-thumb img {
   border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .ww-bundle-item .ww-bundle-thumb:nth-child(1) {
   background-color: #c8dcd0;
