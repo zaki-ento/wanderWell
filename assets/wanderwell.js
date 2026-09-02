@@ -59,4 +59,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // document.addEventListener('shopify:cart:error', resetCustomFormButtons);
 
   initScrollReveal();
+
+  // Close mobile side menu drawer when clicking navigation links (including anchor links)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.menu-drawer a');
+    if (!link) return;
+
+    // Ignore accordion toggle summaries or non-navigating elements
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+
+    const headerDrawer = document.querySelector('header-drawer');
+    if (headerDrawer && typeof headerDrawer.close === 'function' && headerDrawer.isOpen) {
+      headerDrawer.close();
+    }
+  });
 });
