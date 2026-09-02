@@ -1176,3 +1176,10 @@
       gap: 12px;
     }
 }
+
+
+@media screen and (max-width: 390px) {
+  .ww-media-thumbs .ww-media-thumb {
+    min-width: 0;
+  }
+}
