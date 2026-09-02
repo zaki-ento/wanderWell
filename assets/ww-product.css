@@ -388,6 +388,23 @@
 .ww-add:active {
   transform: scale(.98);
 }
+.ww-add {
+  position: relative;
+  overflow: hidden;
+}
+.ww-add[data-added='true'],
+.ww-sticky-bar__add-btn[data-added='true'] {
+  background: #5AB08A !important;
+  color: transparent !important;
+}
+.ww-add[data-added='true'] .checkmark-burst,
+.ww-sticky-bar__add-btn[data-added='true'] .checkmark-burst {
+  opacity: 1;
+}
+.ww-add[data-added='true'] .add-to-cart__added,
+.ww-sticky-bar__add-btn[data-added='true'] .add-to-cart__added {
+  color: #ffffff;
+}
 .ww-add.is-added {
   background: #5AB08A !important;
 }
@@ -1072,6 +1089,8 @@
   gap: 8px;
   box-shadow: 0 4px 14px rgba(242, 101, 48, 0.25);
   line-height: 1;
+  position: relative;
+  overflow: hidden;
 }
 
 .ww-sticky-bar__add-btn:hover {

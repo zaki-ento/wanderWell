@@ -402,6 +402,10 @@
         if (!activePanel) return;
         var activeAddBtn = activePanel.querySelector('.ww-add button') || activePanel.querySelector('.ww-add');
         if (activeAddBtn) {
+          addBtn.setAttribute('data-added', 'true');
+          setTimeout(function() {
+            addBtn.removeAttribute('data-added');
+          }, 1000);
           // @ts-ignore
           activeAddBtn.click();
         }

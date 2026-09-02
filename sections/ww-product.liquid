@@ -26,6 +26,7 @@
 {% endcomment %}
 
 {{ 'ww-product.css' | asset_url | stylesheet_tag }}
+{% render 'add-to-cart-button-styles' %}
 
 {%- style -%}
   .section-{{ section.id }} {
@@ -465,6 +466,11 @@
             {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
           </span>
           <span class="ww-sticky-bar__add-btn-text">Add to cart</span>
+          <span class="add-to-cart__added">
+            <span class="svg-wrapper add-to-cart__added-icon">
+              {{- 'icon-checkmark-burst.svg' | inline_asset_content -}}
+            </span>
+          </span>
         </button>
       </div>
     </div>
