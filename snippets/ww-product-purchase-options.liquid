@@ -109,7 +109,9 @@
        {%- endif -%}
 
       {%- assign one_time_servings_qty = base_servings -%}
-      {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
+      {%- assign selected_variant = current_prod.selected_or_first_available_variant -%}
+      {%- assign base_unit_price = selected_variant.price -%}
+      {%- assign one_time_compare_price = selected_variant.compare_at_price -%}
       {%- assign one_time_serving_rate = base_unit_price | divided_by: one_time_servings_qty | money -%}
 
       <div class="ww-sub-opt {% unless has_subscription %}on{% endunless %}" data-option-type="one-time">
@@ -137,7 +139,12 @@
             </label>
             
             <span class="ww-sub-opt__price-container">
-              <span class="ww-sub-opt__price">{{ base_unit_price | money }}</span>
+              <span class="ww-sub-opt__price">
+                {{ base_unit_price | money }}
+                {%- if one_time_compare_price > base_unit_price -%}
+                  <s class="ww-sub-opt__compare-price">{{ one_time_compare_price | money }}</s>
+                {%- endif -%}
+              </span>
               <span class="ww-sub-opt__per-serving">{{ one_time_serving_rate }}/serving</span>
             </span>
           </span>
