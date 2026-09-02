@@ -4,6 +4,7 @@
 {% endcomment %}
 
 {{ 'ww-product.css' | asset_url | stylesheet_tag }}
+{% render 'add-to-cart-button-styles' %}
 
 {%- style -%}
   .section-{{ section.id }} {
@@ -139,7 +140,7 @@
                       can_add_to_cart: product.available,
                       show_icon: true,
                       add_to_cart_text: add_to_cart_text,
-                      class: 'ww-add'
+                      class: 'add-to-cart-button ww-add'
                     %}
                   </div>
                 {%- endform -%}

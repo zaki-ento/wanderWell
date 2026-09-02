@@ -378,7 +378,7 @@
   min-height: 52px;
   transition: background .2s, transform .1s;
 }
-.ww-add svg {
+.ww-add .add-to-cart-icon svg {
   width: 18px;
   height: 18px;
 }
@@ -387,9 +387,6 @@
 }
 .ww-add:active {
   transform: scale(.98);
-}
-.ww-add.is-added {
-  background: #5AB08A !important;
 }
 .ww-buy-trust {
   display: flex;
@@ -1072,6 +1069,8 @@
   gap: 8px;
   box-shadow: 0 4px 14px rgba(242, 101, 48, 0.25);
   line-height: 1;
+  position: relative;
+  overflow: hidden;
 }
 
 .ww-sticky-bar__add-btn:hover {
@@ -1084,7 +1083,7 @@
   transform: translateY(0);
 }
 
-.ww-sticky-bar__add-btn svg {
+.ww-sticky-bar__add-btn .add-to-cart-icon svg {
   width: 16px;
   height: 16px;
   display: inline-block;
