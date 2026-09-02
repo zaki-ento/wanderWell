@@ -252,6 +252,7 @@
   overflow: hidden;
   cursor: pointer;
   background-color: var(--cream);
+  min-width: 72px;
   border: 2px solid transparent;
   transition: border-color 0.2s;
 }
