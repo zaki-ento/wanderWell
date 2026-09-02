@@ -26,6 +26,11 @@ html {
   }
 }
 
+.page-wrapper--drawer-open {
+  margin-right: 0 !important;
+  transition-timing-function: var(--animation-timing-fade-in);
+}
+
 /* ── CTA Button Design ── */
 .btn-cta {
   --cta-bg: #ffffff;
