@@ -48,6 +48,9 @@ html {
   margin-right: 0 !important;
   transition-timing-function: var(--animation-timing-fade-in);
 }
+.page-wrapper--drawer-open + .shopify-section .theme-drawer__dialog:before {
+  content: "";
+}
 
 .theme-drawer__dialog[open] {
   right: 0 !important;
