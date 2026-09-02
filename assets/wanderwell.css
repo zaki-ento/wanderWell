@@ -48,8 +48,16 @@ html {
   margin-right: 0 !important;
   transition-timing-function: var(--animation-timing-fade-in);
 }
-.page-wrapper--drawer-open + .shopify-section .theme-drawer__dialog:before {
+.page-wrapper--drawer-open ~ .shopify-section .theme-drawer__dialog:before {
   content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 44, 44, 0.45);
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+  width: calc(100vw - 480px);
 }
 
 .theme-drawer__dialog[open] {
