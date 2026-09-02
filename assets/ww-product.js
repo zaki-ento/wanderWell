@@ -7,7 +7,6 @@
     if (!shop) return;
     
     // @ts-ignore
-    // @ts-ignore
     var seg = shop.querySelector('.ww-seg');
     var ind = shop.querySelector('.ww-seg-ind');
     var buttons = Array.prototype.slice.call(shop.querySelectorAll('.ww-seg-btn'));
@@ -402,8 +401,10 @@
         if (!activePanel) return;
         var activeAddBtn = activePanel.querySelector('.ww-add button') || activePanel.querySelector('.ww-add');
         if (activeAddBtn) {
+          // @ts-ignore
           addBtn.setAttribute('data-added', 'true');
           setTimeout(function() {
+            // @ts-ignore
             addBtn.removeAttribute('data-added');
           }, 1000);
           // @ts-ignore

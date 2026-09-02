@@ -274,7 +274,7 @@
                             can_add_to_cart: current_prod.available,
                             show_icon: true,
                             add_to_cart_text: add_to_cart_text,
-                            class: 'ww-add'
+                            class: 'add-to-cart-button ww-add'
                           %}
                         </div>
                       {%- endform -%}
@@ -461,7 +461,7 @@
       </div>
       
       <div class="ww-sticky-bar__actions">
-        <button type="button" class="ww-sticky-bar__add-btn">
+        <button type="button" class="add-to-cart-button ww-sticky-bar__add-btn">
           <span aria-hidden="true" class="svg-wrapper add-to-cart-icon">
             {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
           </span>
