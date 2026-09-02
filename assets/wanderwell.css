@@ -2,9 +2,26 @@
    WanderWell Global Brand Styles
    ============================================================ */
 
-/* ── Custom Scrollbars ── */
-html {
+/* ── Smooth Scrolling & Custom Scrollbars ── */
+html,
+.page-wrapper {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height, 80px) + 20px);
+}
+
+/* Offset anchor jump targets (e.g. #ww-faq) so sticky headers do not cover them */
+[id] {
+  scroll-margin-top: calc(var(--header-height, 80px) + 20px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  .page-wrapper {
+    scroll-behavior: auto;
+  }
+}
+
+html {
   scrollbar-color: var(--orange-dark) var(--cream);
 }
 ::-webkit-scrollbar {
@@ -26,9 +43,15 @@ html {
   }
 }
 
+/* Prevent scrollbar jump when drawer opens */
 .page-wrapper--drawer-open {
   margin-right: 0 !important;
   transition-timing-function: var(--animation-timing-fade-in);
+}
+
+.theme-drawer__dialog[open] {
+  right: 0 !important;
+  z-index: 20;
 }
 
 /* ── CTA Button Design ── */
