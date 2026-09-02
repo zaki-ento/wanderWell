@@ -18,13 +18,13 @@
             "text": "van-lifers"
           }
         },
-        "ticker_item_A3nhdn": {
+        "ticker_item_VrAADw": {
           "type": "ticker_item",
           "settings": {
             "text": "backsacheters"
           }
         },
-        "ticker_item_VVA9Lh": {
+        "ticker_item_Nypk4D": {
           "type": "ticker_item",
           "settings": {
             "text": "Sightseers"
@@ -41,14 +41,35 @@
           "settings": {
             "text": "travelers"
           }
+        },
+        "ticker_item_YqNXKp": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "van-lifers"
+          }
+        },
+        "ticker_item_A3nhdn": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "backsacheters"
+          }
+        },
+        "ticker_item_VVA9Lh": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Sightseers"
+          }
         }
       },
       "block_order": [
         "ticker_item_jmCLTB",
-        "ticker_item_A3nhdn",
-        "ticker_item_VVA9Lh",
+        "ticker_item_VrAADw",
+        "ticker_item_Nypk4D",
         "ticker_item_P3MDpw",
-        "ticker_item_MKU6jA"
+        "ticker_item_MKU6jA",
+        "ticker_item_YqNXKp",
+        "ticker_item_A3nhdn",
+        "ticker_item_VVA9Lh"
       ],
       "settings": {
         "badge": "Just Launched — Limited Stock",
