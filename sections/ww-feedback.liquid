@@ -26,7 +26,7 @@
   {%- if section.blocks.size > 0 -%}
     <div class="ww-feedback__reviews">
       {%- for block in section.blocks -%}
-        <div class="ww-feedback__app-block" {{ block.shopify_attributes }}>{% render block %}</div>
+        <div class="ww-feedback__app-block will-animate" {{ block.shopify_attributes }}>{% render block %}</div>
       {%- endfor -%}
     </div>
   {%- endif -%}

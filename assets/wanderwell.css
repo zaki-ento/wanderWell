@@ -184,3 +184,18 @@ html {
   transform: translateY(0);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta,
+  .btn-cta::before {
+    animation: none !important;
+  }
+  .will-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .made-for-track {
+    animation-play-state: paused !important;
+  }
+}
+

@@ -61,7 +61,7 @@
       <div class="ww-approach__grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'card_item' -%}
-            <div class="ww-approach__card" {{ block.shopify_attributes }}>
+            <div class="ww-approach__card will-animate" {{ block.shopify_attributes }}>
               {%- if block.settings.icon_svg != blank -%}
                 <div class="ww-approach__card-icon">
                   {{ block.settings.icon_svg }}
