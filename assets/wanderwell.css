@@ -569,6 +569,9 @@ button.cart-discount__button {
   height: auto;
  }
 
+ .header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
+  mask: none;
+ }
 
 
 
