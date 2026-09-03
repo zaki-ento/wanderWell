@@ -306,6 +306,7 @@ html {
   justify-content: center;
   color: var(--charcoal);
   transition: background 0.2s;
+  box-shadow: none;
 }
 
 
@@ -571,6 +572,10 @@ button.cart-discount__button {
 
  .header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
   mask: none;
+ }
+
+ .theme-drawer__close-button:hover:not(:active) {
+  background: var(--offwhite) !important;
  }
 
 
