@@ -278,11 +278,38 @@ html {
 
 
 
-
-.account__close {
-  display: none !important;
+.theme-drawer__dialog .theme-drawer__header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--offwhite);
 }
 
+.theme-drawer__dialog .theme-drawer__header .theme-drawer__title {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+  color: var(--charcoal);
+}
+
+.theme-drawer__dialog .theme-drawer__header .theme-drawer__close-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--white);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--charcoal);
+  transition: background 0.2s;
+}
+
+
+.theme-drawer__dialog .theme-drawer__header .theme-drawer__badge {
+  background: var(--orange);
+  color: var(--white);
+}
 
 
 
