@@ -72,7 +72,7 @@
                   <span class="ww-sub-opt__pack-badge">{{ sub_packs }}</span>
                 </span>
                 <span class="ww-sub-opt__servings">
-                  <strong>{{ sub_servings_qty }} servings · {{ plan.name }}</strong>
+                  <strong>{{ sub_servings_qty }} servings · </strong>{{ plan.name }}
                 </span>
                 {%- if plan.description != blank -%}
                   <span class="ww-sub-opt__plan-desc">{{ plan.description }}</span>
@@ -267,7 +267,6 @@
     .ww-sub-opt__details {
       display: flex;
       flex-direction: column;
-      gap: 4px;
       flex-grow: 1;
       margin-left: 0;
     }
@@ -301,7 +300,14 @@
 
     .ww-sub-opt__servings {
       font-size: .76rem;
+      margin-top: 2px;
+      line-height: 1.1;
       color: var(--charcoal-light);
+    }
+
+    .ww-sub-opt__servings strong {
+      color: var(--charcoal);
+    font-weight: 700;
     }
 
     .ww-sub-opt__plan-desc {
@@ -394,6 +400,10 @@
     }
 
     @media (min-width: 1024px) and (min-height: 640px) {
+
+      .ww-sub-opt__servings {
+        font-size: 0.7rem;
+      }
         .ww-purchase-options {
           margin-bottom: 10px;
         }
@@ -402,6 +412,10 @@
         }
         .ww-sub-opt__title {
           font-size: 1rem;
+        }
+        .ww-sub-opt__plan-desc ul {
+          gap: 5px;
+          margin-top: 9px;
         }
     }
   {% endstyle %}
