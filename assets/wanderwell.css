@@ -166,6 +166,33 @@ html {
     0 0 0 6px var(--charcoal),
     0 24px 44px -8px rgba(44,44,44,0.6);
 }
+
+
+
+
+
+.menu-list__list-item {
+  margin-left: 16px !important;
+  margin-right: 16px !important;
+}
+
+.header-menu__inner .menu-list__link-title{
+  padding: 0 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @keyframes ctaFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
