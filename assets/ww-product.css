@@ -472,6 +472,7 @@
   border-radius: 99px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  display: none;
 }
 .ww-acc-body {
   background: #fff;
