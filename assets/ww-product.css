@@ -846,6 +846,9 @@
       min-height: 48px;
     }
 
+    .ww-add {
+      min-height: 46px;
+    }
     .ww-qty button {
       height: 46px;
     }
