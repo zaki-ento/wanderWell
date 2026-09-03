@@ -192,7 +192,7 @@ html {
 
 .account-button{
   margin-right: 36px;
-  transition: transform 0.2s;
+  transition: transform 0.2s !important;
 }
 
 .account-button:hover {
@@ -222,7 +222,51 @@ html {
   stroke: #fff;
 }
 
+.header-actions__action:has(.header-actions__cart-icon) {
+  overflow: visible;
+}
 
+.header-actions__action .header-actions__cart-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+
+
+.header-actions__action .header-actions__cart-icon:hover {
+    background: var(--orange-dark);
+    transform: translateY(-1px);
+}
+
+.header-actions__action .header-actions__cart-icon .cart-bubble {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 50px;
+    background: var(--charcoal);
+    color: var(--white);
+    font-family: var(--font-tertiary);
+    font-size: 0.68rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0;
+    border: 2px solid var(--offwhite);
+}
 
 
 
