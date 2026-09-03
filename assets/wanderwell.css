@@ -555,7 +555,19 @@ button.cart-discount__button {
 }
 
 
+.cart-items__table .cart-items__quantity .quantity-selector {
+  width: auto;
+  border-radius: 50px;
+}
 
+ .cart-items .cart-items__table .quantity-selector button {
+  width: 28px;
+  height: 30px;
+ }
+
+ .cart-items .cart-items__table .quantity-selector {
+  height: auto;
+ }
 
 
 
