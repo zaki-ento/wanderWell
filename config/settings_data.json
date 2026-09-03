@@ -110,6 +110,8 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "color_text": "#2C2C2C",
+    "color_text_light": "#5A5A5A",
     "sections": {
       "ww-popup": {
         "type": "ww-popup",
