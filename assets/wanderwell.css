@@ -614,7 +614,7 @@ button.cart-discount__button {
  }
 
  .jdgm-cards-carousel .jdgm-media-card .jdgm-rating-section {
-  padding: 0;
+  padding: 0 !important;
   gap: 0 !important;
   align-items: flex-start !important;
  }
@@ -653,6 +653,16 @@ button.cart-discount__button {
     align-items: flex-start !important;
  }
 
+ .jdgm-cards-carousel .jdgm-media-card .jdgm-rating-section .jdgm-stars {
+  position: absolute;
+  top: 0;
+  letter-spacing: 2px;
+  gap: 0 !important;
+ }
+
+ .jdgm-cards-carousel .jdgm-media-card .jdgm-rating-section .jdgm-star {
+  font-size: 1rem !important;
+ }
 
 
 
