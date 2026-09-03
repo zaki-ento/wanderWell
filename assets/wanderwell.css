@@ -196,7 +196,7 @@ html {
 }
 
 .account-button:hover {
-  transform: scale(1.1);
+  transform: translateY(-1px);
 }
 
 .account-button [menu="customer-account-main-menu"] {
