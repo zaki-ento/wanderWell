@@ -32,6 +32,9 @@
       "block_order": [
         "page-content"
       ],
+      "custom_css": [
+        "p {font-size: 1rem; line-height: 1.65; color: var(--charcoal-light,#5A5A5A);}"
+      ],
       "settings": {
         "content_direction": "column",
         "gap": 32,
