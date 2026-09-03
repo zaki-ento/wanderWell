@@ -571,7 +571,7 @@ button.cart-discount__button {
  }
 
  .header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
-  mask: none;
+  mask: none !important;
  }
 
  .theme-drawer__close-button:hover:not(:active) {
