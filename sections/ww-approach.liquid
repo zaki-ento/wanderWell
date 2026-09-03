@@ -3,13 +3,13 @@
   Description: Custom dynamic section outlining brand transparency, ticker statements, and highlights.
 {% endcomment %}
 
-<div id="ww-approach" class="ww-approach section-{{ section.id }}" {{ section.shopify_attributes }}>
+<div class="ww-approach section-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-xl">
     
     {%- if section.settings.label != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
       <div class="ww-approach__header">
         {%- if section.settings.label != blank -%}
-          <span class="ww-approach__label">{{ section.settings.label | escape }}</span>
+          <span id="ww-approach" class="ww-approach__label">{{ section.settings.label | escape }}</span>
         {%- endif -%}
         {%- if section.settings.heading != blank -%}
           <h2 class="ww-approach__title">{{ section.settings.heading | escape }}</h2>
