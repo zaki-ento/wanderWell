@@ -63,7 +63,15 @@ html {
   backdrop-filter: blur(2px);
   width: calc(100vw - 440px);
 }
+.page-wrapper--drawer-open {
+  overflow: hidden;
+  pointer-events: none;
+}
 
+.page-wrapper--drawer-open .theme-drawer,
+.page-wrapper--drawer-open .theme-drawer * {
+  pointer-events: auto;
+}
 .theme-drawer__dialog[open] {
   right: 0 !important;
   z-index: 20;
