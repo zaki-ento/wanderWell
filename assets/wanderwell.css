@@ -647,7 +647,7 @@ button.cart-discount__button {
 
  .jdgm-cards-carousel .jdgm-carousel-item {
   background: var(--offwhite) !important;
-    border-radius: 20px;
+    border-radius: 20px !important;
     padding: 32px !important;
     min-width: 368px !important;
     align-items: flex-start !important;
