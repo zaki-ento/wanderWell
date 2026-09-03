@@ -241,6 +241,10 @@ html {
   transition: background 0.2s, transform 0.2s;
 }
 
+.header__column--right header-actions {
+  margin: 0 !important;
+}
+
 
 
 .header-actions__action .header-actions__cart-icon:hover {
