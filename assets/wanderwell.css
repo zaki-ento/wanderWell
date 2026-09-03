@@ -77,6 +77,19 @@ html {
   z-index: 20;
 }
 
+/* menu .cart-drawer__content */
+.menu-drawer__navigation .menu-drawer__menu.has-submenu .menu-drawer__menu-item-text{
+  border-radius: 12px;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  transition: background 0.15s, color 0.15s;
+}
+
+
 /* ── CTA Button Design ── */
 .btn-cta {
   --cta-bg: #ffffff;
