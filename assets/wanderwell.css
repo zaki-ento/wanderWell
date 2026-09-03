@@ -600,17 +600,24 @@ button.cart-discount__button {
  .jdgm-cards-carousel .jdgm-text p {
   font-size: 0.92rem;
     color: var(--charcoal);
-    line-height: 1.7;
-    margin-bottom: 20px;
+    line-height: 1.7 !important;
+    margin-bottom: 20px !important;
     font-style: italic;
     letter-spacing: -0.02em;
  }
 
- .jdgm-cards-carousel .jdgm-media-card {
-  background: var(--offwhite);
+ .jdgm-cards-carousel .jdgm-media-card .jdgm-text {
+  padding: 0 !important;
+  text-align: left !important;
+  width: 100% !important;
+ }
+
+ .jdgm-cards-carousel .jdgm-carousel-item {
+  background: var(--offwhite) !important;
     border-radius: 20px;
-    padding: 32px;
-    min-width: 368px;
+    padding: 32px !important;
+    min-width: 368px !important;
+    align-items: flex-start !important;
  }
 
 
