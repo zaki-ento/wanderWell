@@ -63,6 +63,7 @@ html {
   backdrop-filter: blur(2px);
   width: calc(100vw - 440px);
 }
+
 .page-wrapper--drawer-open {
   overflow: hidden;
   pointer-events: none;
@@ -72,13 +73,14 @@ html {
 .page-wrapper--drawer-open .theme-drawer * {
   pointer-events: auto;
 }
+
 .theme-drawer__dialog[open] {
   right: 0 !important;
   z-index: 20;
 }
 
 /* menu .cart-drawer__content */
-.menu-drawer__navigation .menu-drawer__menu.has-submenu .menu-drawer__menu-item-text{
+.menu-drawer__navigation .menu-drawer__menu.has-submenu .menu-drawer__menu-item-text {
   border-radius: 12px;
   font-family: var(--font-primary);
   font-size: 0.95rem;
@@ -87,6 +89,11 @@ html {
   text-transform: uppercase;
   color: var(--charcoal);
   transition: background 0.15s, color 0.15s;
+}
+
+.menu-open>.menu-drawer,
+.menu-open>.menu-drawer__submenu:not(.menu-drawer__menu--childlist) {
+  width: min(320px, 85vw);
 }
 
 
