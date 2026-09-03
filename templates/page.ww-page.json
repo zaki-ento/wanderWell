@@ -33,7 +33,7 @@
         "page-content"
       ],
       "custom_css": [
-        "p {font-size: 1rem; line-height: 1.65; color: var(--charcoal-light,#5A5A5A);}"
+        "p {font-size: 1rem; line-height: 1.65; color: var(--charcoal-light, #5a5a5a); margin: 0 0 14px; max-width: 62ch;}"
       ],
       "settings": {
         "content_direction": "column",
