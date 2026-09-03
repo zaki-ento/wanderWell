@@ -249,13 +249,11 @@ html {
 }
 
 .account-button [menu="customer-account-main-menu"]:hover {
-  color: white;
-  stroke: white !important;
   background: var(--charcoal);
 }
 
-.account-button [menu="customer-account-main-menu"] svg circle:hover,
-.account-button [menu="customer-account-main-menu"] svg path:hover {
+.account-button [menu="customer-account-main-menu"]:hover svg,
+.account-button [menu="customer-account-main-menu"] svg:hover {
   color: white;
   stroke: white !important;
 }
