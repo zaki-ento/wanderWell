@@ -249,6 +249,8 @@ html {
 }
 
 .account-button [menu="customer-account-main-menu"]:hover {
+  color: white;
+  stroke: white !important;
   background: var(--charcoal);
 }
 
