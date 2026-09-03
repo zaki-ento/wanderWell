@@ -514,10 +514,7 @@ button.cart-discount__button {
     color: var(--charcoal);
 }
 
-
 .cart-items__table .cart-items__quantity-controls {
-  flex-direction: column;
-  align-items: flex-start;
   gap: 8px;
 }
 
