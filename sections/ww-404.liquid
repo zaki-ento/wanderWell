@@ -1,0 +1,236 @@
+{% comment %}
+  Section: WW 404
+  Description: Custom 404 error page section matching the WanderWell v3 design kit.
+{% endcomment %}
+
+<div class="ww-404 section-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="container ww-404__container max-w-breakpoint-xl">
+    <div class="ww-404__content">
+      {%- if section.settings.code != blank -%}
+        <span class="ww-404__code">{{ section.settings.code | escape }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="ww-404__title">{{ section.settings.heading | escape }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="ww-404__text">
+          <p>{{ section.settings.text | escape }}</p>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_1_label != blank or section.settings.button_2_label != blank -%}
+        <div class="ww-404__actions">
+          {%- if section.settings.button_1_label != blank -%}
+            <a
+              href="{{ section.settings.button_1_link | default: routes.all_products_collection_url }}"
+              class="ww-404__btn ww-404__btn--primary"
+            >
+              {{ section.settings.button_1_label | escape }}
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.button_2_label != blank -%}
+            <a
+              href="{{ section.settings.button_2_link | default: routes.root_url }}"
+              class="ww-404__btn ww-404__btn--secondary"
+            >
+              {{ section.settings.button_2_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .ww-404 {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding: clamp(100px, 12vw, 150px) 0 clamp(60px, 8vw, 90px);
+    background-color: var(--cream, #faf7f2);
+    width: 100%;
+  }
+
+  .ww-404__container {
+    width: 100%;
+  }
+
+  .ww-404__content {
+    max-width: 650px;
+  }
+
+  .ww-404__code {
+    display: inline-block;
+    font-family: var(--font-tertiary);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--orange, #e8632b);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .ww-404__title {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.03;
+    letter-spacing: -0.02em;
+    color: var(--charcoal, #2c2c2c);
+    margin: 0 0 16px;
+    max-width: 18ch;
+  }
+
+  .ww-404__text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--charcoal-light, #5a5a5a);
+    max-width: 50ch;
+    margin: 0 0 28px;
+  }
+
+  .ww-404__text p {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  .ww-404__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .ww-404__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    padding: 15px 30px;
+    border-radius: 100px;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .ww-404__btn--primary {
+    background: var(--orange, #e8632b);
+    color: #ffffff;
+    border: 1.5px solid var(--orange, #e8632b);
+  }
+
+  .ww-404__btn--primary:hover {
+    background: var(--orange-dark, #c94f1d);
+    border-color: var(--orange-dark, #c94f1d);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .ww-404__btn--secondary {
+    border: 1.5px solid rgba(44, 44, 44, 0.25);
+    color: var(--charcoal, #2c2c2c);
+    background: transparent;
+  }
+
+  .ww-404__btn--secondary:hover {
+    border-color: var(--charcoal, #2c2c2c);
+    color: var(--charcoal, #2c2c2c);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .ww-404 {
+      min-height: 60vh;
+      padding: 80px 0 60px;
+    }
+
+    .ww-404__actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .ww-404__btn {
+      width: 100%;
+      min-height: 48px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "WW 404",
+  "tag": "section",
+  "class": "ww-section-404",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "code",
+      "label": "Code Badge",
+      "default": "Error 404"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "This one wandered off"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "The page you're after doesn't exist, or it moved. The products are still exactly where you left them."
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "text",
+      "id": "button_1_label",
+      "label": "Button 1 Label",
+      "default": "Shop the formulas"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "Button 2 Label",
+      "default": "Get help"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW 404"
+    }
+  ]
+}
+{% endschema %}
