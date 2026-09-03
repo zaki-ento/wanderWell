@@ -389,6 +389,13 @@ open .cart-totals__icon {
   letter-spacing: 0.06em;
 }
 
+.cart-discount__content .cart-discount__input:focus-visible {
+    border-color: var(--charcoal);
+    background: var(--white);
+    outline: 2px solid var(--charcoal);
+    outline-offset: 2px;
+}
+
 .cart-discount__input::placeholder {
   text-transform: none;
 }
@@ -446,7 +453,8 @@ button.cart-discount__button {
 }
 
 .cart-discount .cart-discount__form{
-  padding: 0;
+  padding-bottom: 0;
+  gap: 8px;
   height: auto;
 }
 
