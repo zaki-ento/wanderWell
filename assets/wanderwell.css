@@ -322,27 +322,40 @@ html {
 
 
 .cart-drawer__summary {
-  padding: 24px 28px 28px;
+  padding: 24px 28px 28px !important;
     border-top: 1px solid var(--offwhite);
-    background: var(--white);
-    mask-image: none;
-    gap: 28px;
+    background: var(--white)!important;
+    mask-image: none!important;
+    gap: 28px!important;
 }
 
 .cart-actions {
-  margin: 0;
-  border: 0;
+  margin: 0 !important;
+  border: 0 !important;
 }
 
 .cart-actions summary{
-  padding: 0;
-  min-height: inherit;
+  padding: 0 !important;
+  min-height: inherit !important;
+  justify-content: flex-start !important;
+  gap: 4px !important;
+}
+
+.cart-totals__icon svg {
+  width: 0;
+  height: 0;
+}
+
+.cart-totals__icon:before{
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+
 }
 
 
 
 .theme-drawer__dialog {
-  max-width: 440px;
+  max-width: 440px !important;
   background: var(--cream) !important;
 }
 
