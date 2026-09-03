@@ -338,7 +338,18 @@ html {
   padding: 0 !important;
   min-height: inherit !important;
   justify-content: flex-start !important;
-  gap: 4px !important;
+  gap: 5px !important;
+}
+
+.cart-totals__icon {
+  width: 10px !important;
+  height: 10px !important;
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+
+open .cart-totals__icon {
+  transform: rotate(180deg);
 }
 
 .cart-totals__icon svg {
@@ -349,7 +360,12 @@ html {
 .cart-totals__icon:before{
   content: "";
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-
+    background-repeat: no-repeat;
+    background-size: 10px 10px;
+    background-position: center;
+    display: block;
+    width: 10px;
+    height: 10px;
 }
 
 
