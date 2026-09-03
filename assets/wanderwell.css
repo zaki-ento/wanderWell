@@ -190,6 +190,15 @@ html {
   gap: 32px;
 }
 
+.account-button{
+  margin-right: 36px;
+  transition: transform 0.2s;
+}
+
+.account-button:hover {
+  transform: scale(1.1);
+}
+
 .account-button [menu="customer-account-main-menu"] {
   position: relative;
   display: inline-flex;
@@ -202,14 +211,11 @@ html {
   color: var(--charcoal);
   border: 1.5px solid var(--charcoal);
   cursor: pointer;
-  margin-right: 36px;
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 
 .account-button [menu="customer-account-main-menu"]:hover  {
   background: var(--charcoal);
-  color: #fff;
-  transform: scale(1.1);
 }
 
 .account-button [menu="customer-account-main-menu"]:hover svg path {
