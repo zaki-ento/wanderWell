@@ -514,9 +514,45 @@ button.cart-discount__button {
 }
 
 
+.cart-items__table .cart-items__quantity-controls {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cart-items__table .cart-items__quantity-controls .button.cart-items__remove {
+  height: auto;
+  width: auto;
+}
+
+.cart-items__table .cart-items__quantity {
+  margin-top: 12px;
+}
+
+.cart-items__table .cart-items__title {
+  font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+}
 
 
+.cart-items__table .cart-items__table-row--full-width-variants .cart-items__unit-price-wrapper{
+  font-family: var(--font-tertiary);
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--charcoal-light);
+  margin: 0
+}
 
+
+.cart-drawer__items  .cart-items__table .cart-items__table-row.cart-items__table-row--full-width-variants {
+  grid-template-columns: clamp(80px,15cqi,7.5rem) minmax(0,1fr) auto;
+}
 
 
 
