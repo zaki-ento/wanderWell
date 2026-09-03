@@ -437,6 +437,10 @@ button.cart-discount__button {
     gap: 12px;
 }
 
+.cart-drawer__content {
+  background: var(--cream) !important;
+}
+
 .cart-discount:hover button.cart-discount__button {
   background: var(--orange);
 }
