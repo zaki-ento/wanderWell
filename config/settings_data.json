@@ -47,7 +47,7 @@
     "type_line_height_h6": "display-loose",
     "page_background_color": "#E8E0D0",
     "page_width": "narrow",
-    "page_transition_enabled": false,
+    "page_transition_enabled": true,
     "transition_to_main_product": true,
     "card_hover_effect": "none",
     "badge_position": "top-right",
