@@ -6,7 +6,7 @@
 html,
 .page-wrapper {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height, 74px) - 50px);
+  scroll-padding-top: calc(var(--header-height, 74px) + 74px);
 }
 
 /* Offset anchor jump targets (e.g. #ww-faq) so sticky headers do not cover them */
