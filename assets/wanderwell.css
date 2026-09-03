@@ -10,9 +10,6 @@ html,
 }
 
 /* Offset anchor jump targets (e.g. #ww-faq) so sticky headers do not cover them */
-[id] {
-  scroll-margin-top: calc(var(--header-height, 80px) + 20px);
-}
 
 @media (prefers-reduced-motion: reduce) {
   html,
