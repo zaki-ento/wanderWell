@@ -222,11 +222,15 @@ An interactive visual scale comparing the product's capsule size against standar
 
 ## 5. Assets & Scripts Directory
 
-- **`assets/wanderwell.css`**: Central global stylesheet overriding Horizon core layout containers, setting up typography, CTA buttons, drawer styling, and Judge.me review customizations.
+- **`assets/wanderwell.css`**: Central global stylesheet overriding Horizon core layout containers, setting up typography, CTA buttons, drawer styling, page interaction locks (`.page-wrapper--drawer-open`), mobile menu drawer widths, and Judge.me review carousel customizations.
 - **`assets/wanderwell.js`**: Shared JavaScript utilities, scroll observers, drawer management, and notification helpers.
 - **`assets/ww-product.css`**: Scoped styles for the Product Hub, option selectors, frequency pills, tabs, and gallery layout.
 - **`assets/ww-product.js`**: Interactive thumbnail gallery, image zoom, selling plan radio bindings, and accordion toggles.
 - **`assets/ww-problem.js`**: SVG flight path calculations and milestone reveal triggers.
+- **Brand SVG Icons (`assets/icon-*.svg`)**:
+  - `assets/icon-cart.svg`: WanderWell v3 custom shopping cart SVG icon.
+  - `assets/icon-account.svg`: WanderWell v3 custom user avatar icon (`<circle>` and `<path>` structure).
+  - `assets/icon-add-to-cart.svg`: Custom cart action icon matching the cart iconography.
 - **Webfont Assets (`assets/*.woff2`)**:
   - Sofia Pro: `400`, `400-italic`, `500-italic`, `600`, `600-italic`, `700`, `700-italic`, `900`, `900-italic`.
   - Montserrat: `400`, `500`, `600`, `700`.

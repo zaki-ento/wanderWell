@@ -24,6 +24,7 @@ wanderWell/
 │   ├── ww-problem.js               # Interactive route map SVG & scroll triggers
 │   ├── ww-product.css              # Scoped Product Hub stylesheet
 │   ├── ww-product.js               # Product gallery, purchase options & accordion logic
+│   ├── icon-*.svg                  # Custom brand cart and account SVG icons
 │   ├── montserrat-*.woff2          # Montserrat font family assets
 │   └── sofia-pro-*.woff2           # Sofia Pro font family assets
 ├── blocks/                         # Horizon theme blocks
@@ -80,9 +81,11 @@ To maintain theme upgradeability, modifications to Horizon core files are restri
 1. **`layout/theme.liquid`**: Added Sofia Pro webfont preloading and injected the global promotional popup (`{% section 'ww-popup' %}`).
 2. **`snippets/cart-drawer.liquid`**: Added the `no-persist` attribute to prevent the cart drawer from staying open on page navigation.
 3. **`snippets/scripts.liquid`**: Appended `.js` to `cart_change_url` and `cart_update_url` for strict AJAX routing.
-4. **`assets/cart-discount.js` & `assets/component-cart-items.js`**: Added optional chaining and fallback rendering via `sectionRenderer` when section HTML is absent from responses.
-5. **`config/settings_schema.json` & `config/settings_data.json`**: Added WanderWell brand tokens and palette presets.
-6. **`sections/header-group.json` & `sections/footer-group.json`**: Styled header navigation and replaced utilities with `ww-footer`.
+4. **`snippets/header-actions.liquid`**: Updated avatar icon in `account_icon` capture to match WanderWell 24x24 brand SVG.
+5. **`assets/cart-discount.js` & `assets/component-cart-items.js`**: Added optional chaining and fallback rendering via `sectionRenderer` when section HTML is absent from responses.
+6. **`assets/icon-*.svg`**: Replaced cart, account, and add-to-cart SVGs with custom WanderWell v3 minimalist vector icons.
+7. **`config/settings_schema.json` & `config/settings_data.json`**: Added WanderWell brand tokens and palette presets.
+8. **`sections/header-group.json` & `sections/footer-group.json`**: Styled header navigation and replaced utilities with `ww-footer`.
 
 For the comprehensive line-by-line changelog, see [HORIZON_MODIFICATIONS_LOG.md](HORIZON_MODIFICATIONS_LOG.md).
 

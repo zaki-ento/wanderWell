@@ -13,9 +13,13 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 | `layout/theme.liquid` | Core Layout | Enhancement | Font preloads (`sofia-pro`) and global popup (`ww-popup`) injection |
 | `snippets/cart-drawer.liquid` | Core Snippet | Bugfix / UX | Added `no-persist` attribute to prevent drawer reopening on page load |
 | `snippets/scripts.liquid` | Core Snippet | Bugfix / API | Appended `.js` to `cart_change_url` and `cart_update_url` for AJAX routing |
+| `snippets/header-actions.liquid` | Core Snippet | UI / Design | Updated avatar icon markup in `account_icon` capture to match 24x24 brand SVG |
 | `assets/cart-discount.js` | Core Asset | Bugfix / Resilience | Added optional chaining and fallback to `sectionRenderer` when section HTML is absent |
 | `assets/component-cart-items.js` | Core Asset | Bugfix / Resilience | Added fallback handling and `item_count` default when section HTML is absent |
 | `assets/product-form.js` | Core Asset | Formatting | Trailing newline normalization |
+| `assets/icon-cart.svg` | Core Asset / Icon | Brand Design | Replaced Horizon default cart icon with WanderWell v3 custom shopping cart SVG |
+| `assets/icon-account.svg` | Core Asset / Icon | Brand Design | Replaced Horizon default account icon with WanderWell v3 user avatar SVG |
+| `assets/icon-add-to-cart.svg` | Core Asset / Icon | Brand Design | Replaced Horizon default add-to-cart icon with WanderWell v3 custom cart SVG |
 | `config/settings_schema.json` | Configuration | Brand Token | Added WanderWell brand group; set default background to `#F2EDE4` |
 | `config/settings_data.json` | Configuration | Customizer Data | Configured brand typography, palette, logo sizes, and block states |
 | `sections/header-group.json` | Section Group | Layout / Styling | Brand announcements, uppercase nav typography, and custom CSS borders |
@@ -79,7 +83,32 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 4. `assets/cart-discount.js`
+### 4. `snippets/header-actions.liquid`
+
+* **Lines Modified**: Lines 41–55 (`account_icon` capture block).
+* **Changes**:
+  Replaced Horizon's inline account SVG with the WanderWell v3 avatar design:
+  ```liquid
+  {% capture account_icon %}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      slot="signed-out-avatar"
+      class="account-button__icon"
+    >
+      <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
+      <path d="M4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  {% endcapture %}
+  ```
+* **Reason**: Visual consistency across the header navigation actions with 24x24 stroke-aligned iconography.
+
+---
+
+### 5. `assets/cart-discount.js`
 
 * **Changes**:
   1. Imported `sectionRenderer` alongside `morphSection`:
@@ -108,7 +137,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 5. `assets/component-cart-items.js`
+### 6. `assets/component-cart-items.js`
 
 * **Changes**:
   1. Added optional chaining for section HTML extraction:
@@ -133,7 +162,16 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 6. `config/settings_schema.json` & `config/settings_data.json`
+### 7. Brand Icon SVGs (`assets/icon-*.svg`)
+
+* **`assets/icon-cart.svg`**: Updated with WanderWell v3 design icon (custom shopping cart path with 2 wheel circles).
+* **`assets/icon-account.svg`**: Updated with WanderWell v3 user avatar icon (`<circle cx="12" cy="8" r="4"/>` and `<path d="M4 21a8 8 0 0 1 16 0"/>`).
+* **`assets/icon-add-to-cart.svg`**: Updated to match the custom cart icon path.
+* **Reason**: Replaces generic default icons with clean, minimalist iconography matching the Figma / v3 UI kit.
+
+---
+
+### 8. `config/settings_schema.json` & `config/settings_data.json`
 
 * **Changes**:
   - `settings_schema.json`: Added WanderWell brand configuration schema tokens (palette, typography, logo dimensions). Updated default `color_background` to `#F2EDE4`.
@@ -141,7 +179,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 7. Header & Footer Group JSON Templates
+### 9. Header & Footer Group JSON Templates
 
 * **`sections/header-group.json`**:
   - Configured announcement ticker messages (`FREE SHIPPING ON ORDERS OVER $50`, `SUBSCRIBE & SAVE 10%`).
@@ -151,7 +189,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 8. Page & Special JSON Templates
+### 10. Page & Special JSON Templates
 
 * **`templates/404.json`**: Configured to render `ww-404` section.
 * **`templates/index.json`**: Configured to render WanderWell custom section sequence (`ww-hero`, `ww-problem`, `ww-approach`, `ww-product`, `ww-feedback`, `ww-faq`, `ww-footer`).
@@ -164,11 +202,13 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 When a new version of Shopify Horizon is released:
 
-1. **Review Diff Against Upstream**: Run `git diff [upstream-tag] -- [file]` on the 5 core code files:
+1. **Review Diff Against Upstream**: Run `git diff [upstream-tag] -- [file]` on the modified core code files:
    - `layout/theme.liquid`
    - `snippets/cart-drawer.liquid`
    - `snippets/scripts.liquid`
+   - `snippets/header-actions.liquid`
    - `assets/cart-discount.js`
    - `assets/component-cart-items.js`
+   - `assets/icon-*.svg`
 2. **Re-apply Custom Edits**: The modifications listed above are minimal and self-contained; they can be quickly reapplied to newer Horizon base files.
 3. **Leave `ww-*` Files Untouched**: All `sections/ww-*.liquid`, `snippets/ww-*.liquid`, and `assets/ww-*` files are completely independent of Horizon core and require zero upstream merging.
