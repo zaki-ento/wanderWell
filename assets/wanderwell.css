@@ -252,8 +252,8 @@ html {
   background: var(--charcoal);
 }
 
-.account-button [menu="customer-account-main-menu"] svg circle,
-.account-button [menu="customer-account-main-menu"] svg path {
+.account-button [menu="customer-account-main-menu"] svg circle:hover,
+.account-button [menu="customer-account-main-menu"] svg path:hover {
   color: white;
   stroke: white !important;
 }
