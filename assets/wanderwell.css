@@ -373,7 +373,7 @@ open .cart-totals__icon {
   transform: rotate(180deg);
 }
 
-.cart-discount__input {
+.cart-discount__content .cart-discount__input {
   flex: 1;
   height: 42px;
   padding: 0 14px;
