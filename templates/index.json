@@ -170,16 +170,6 @@
     "ww_product": {
       "type": "ww-product",
       "blocks": {
-        "product_tab_qrgY4q": {
-          "type": "product_tab",
-          "settings": {
-            "product": "omer-test-product",
-            "title": "{{ block.settings.product.title }}",
-            "subtitle": "Capsules · Ginger",
-            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere.",
-            "sub_multiplier": 1
-          }
-        },
         "product_tab_YibUzB": {
           "type": "product_tab",
           "settings": {
@@ -293,7 +283,6 @@
         }
       },
       "block_order": [
-        "product_tab_qrgY4q",
         "product_tab_YibUzB",
         "accordion_QDyHNQ",
         "accordion_6QwgTW",
