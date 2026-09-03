@@ -33,8 +33,8 @@
         "page-content"
       ],
       "custom_css": [
-        "h2 {font-family: var(--font-primary); font-weight: 600; font-size: 1.5rem; color: var(--charcoal, #2C2C2C); margin: 0 0 14px; scroll-margin-top: 120px;}",
-        "p {font-size: 1rem; line-height: 1.65; color: var(--charcoal-light, #5a5a5a); margin: 0 0 14px; max-width: 62ch;}"
+        "h2 {font-family: var(--font-primary); font-weight: 600; font-size: 1.5rem; color: var(--charcoal, #2c2c2c); margin: 0 0 14px; scroll-margin-top: 120px; letter-spacing: -0.02rem;}",
+        "p {font-size: 1rem; line-height: 1.65; color: var(--charcoal-light, #5a5a5a); margin: 0 0 14px; max-width: 62ch; letter-spacing: -0.02rem;}"
       ],
       "settings": {
         "content_direction": "column",
