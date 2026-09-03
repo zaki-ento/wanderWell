@@ -278,6 +278,16 @@ html {
 
 
 
+
+.account__close {
+  display: none !important;
+}
+
+
+
+
+
+
 @keyframes ctaFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
