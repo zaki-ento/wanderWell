@@ -954,7 +954,13 @@
   flex-direction: column;
   gap: 2px;
   position: relative; /* important for popover position absolute */
-  flex: 1;
+  padding: 4px 6px;
+  margin-left: -6px;
+  border-radius: 10px;
+}
+
+.ww-sticky-bar__info:hover {
+  background: rgba(44, 44, 44, .05);
 }
 
 .ww-sticky-bar__title {
@@ -971,16 +977,19 @@
 
 .ww-sticky-bar__option-trigger {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: baseline;
+  gap: 10px;
   font-size: 0.85rem;
   color: var(--charcoal-light);
   line-height: 1.4;
 }
 
 .ww-sticky-bar__option-text {
-  font-weight: 600;
-  color: var(--charcoal);
+  font-family: var(--font-primary);
+    font-weight: 600;
+    line-height: 1.6;
+    font-size: .95rem;
+    color: var(--charcoal, #2C2C2C);
 }
 
 .ww-sticky-bar__change-btn {
@@ -997,6 +1006,7 @@
   color: var(--charcoal-light, #5A5A5A);
   transition: color .18s ease;
   cursor: pointer;
+  line-height: 1.6;
 }
 
 .ww-sticky-bar__change-btn .arrow {
@@ -1111,26 +1121,24 @@
   color: var(--white);
   border: none;
   border-radius: 999px;
-  padding: 13px 32px;
+  padding: 14px 32px;
   font-family: var(--font-primary);
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: .98rem;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: background-color 0.25s, transform 0.2s, box-shadow 0.2s;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(242, 101, 48, 0.25);
+  gap: 10px;
   line-height: 1;
   position: relative;
   overflow: hidden;
+  height: 50px;
 }
 
 .ww-sticky-bar__add-btn:hover {
-  background-color: #d6521c;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(242, 101, 48, 0.35);
+  background-color: #d2542c;
 }
 
 .ww-sticky-bar__add-btn:active {
@@ -1138,8 +1146,8 @@
 }
 
 .ww-sticky-bar__add-btn .add-to-cart-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   display: inline-block;
   vertical-align: middle;
 }
