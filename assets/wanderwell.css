@@ -74,7 +74,7 @@ html {
         -webkit-backdrop-filter 0.4s ease;
 }
 
-.page-wrapper--drawer-open ~ .shopify-section .theme-drawer__dialog:before {
+.shopify-section .theme-drawer__dialog[open]:before {
     opacity: 1;
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);

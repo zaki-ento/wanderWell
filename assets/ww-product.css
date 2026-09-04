@@ -945,6 +945,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-left: 32px;
+  padding-right: 32px;
   gap: 20px;
 }
 
@@ -1189,6 +1191,8 @@
   }
   .ww-sticky-bar__inner {
     gap: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
   .ww-sticky-bar__title {
     font-size: 1rem;
