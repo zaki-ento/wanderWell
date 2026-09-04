@@ -493,6 +493,20 @@
   padding: 12px 0;
   border-bottom: 1px solid rgba(44,44,44,.08);
 }
+.ww-info .ww-ing {
+  padding: 16px 0;
+  gap: 14px;
+}
+
+.ww-info .ww-ing h4 {
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+}
+
+.ww-info .ww-ing .amt {
+  font-size: .8rem;
+}
+
 .ww-ing:last-child {
   padding-bottom: 0;
   border-bottom: none;
@@ -506,11 +520,11 @@
   margin-top: 5px;
 }
 .ww-ing h4 {
-  font-family: var(--font-tertiary);
+  font-family: var(--font-primary);
   font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--charcoal);
-  margin: 0 0 5px;
+  font-size: .92rem;
+  color: var(--v2-charcoal);
+  margin: 0 0 3px;
   letter-spacing: -.01em;
   line-height: 1.6;
 }
@@ -524,12 +538,11 @@
   overflow: visible;
 }
 .ww-ing .amt {
-  font-family: var(--font-primary);
+  font-family: var(--font-tertiary);
   font-size: .72rem;
-  font-weight: 700;
-  color: var(--orange);
+  color: var(--v2-orange);
   letter-spacing: .04em;
-  margin-left: 6px;
+  line-height: 1.6;
 }
 
 .ww-sf-panel {
@@ -830,6 +843,14 @@
 
 
 @media (min-width: 1024px) and (min-height: 640px) {
+  .ww-ing h4 {
+        font-size: .86rem;
+        margin-bottom: 1px;
+    }
+    .ww-ing {
+      padding: 5px 0;
+      gap: 9px;
+    }
     .ww-panel-inner {
         max-height: none;
         padding: 20px;
