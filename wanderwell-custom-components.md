@@ -108,7 +108,9 @@ Asynchronous contact inquiry section matching the WanderWell v3 design kit.
 ### 10. WW Legal & Policy Page Builder (`sections/ww-info-page.liquid`)
 Universal content layout section powering all legal, policy, and compliance pages.
 - **Key Features**:
-  - Supports Table of Contents quick-navigation sidebars.
+  - Interactive Table of Contents quick-navigation grid with smart anchor matching (automatically normalizes numbered section headings, e.g. `1. Scope & definitions` -> `#scope-definitions`).
+  - Native sticky-header scroll compensation (`scroll-margin-top: calc(var(--header-height, 80px) + 32px)`) preventing target headings from being obscured.
+  - Smooth-scroll event listeners for TOC link clicks and deep-linked URL hashes on initial page load.
   - Formatted legal lead paragraphs, bullet points, warning callouts, contact grids, and last-updated metadata badges.
   - Utilized by: `templates/page.ww-privacy.json`, `templates/page.ww-terms.json`, `templates/page.ww-accessibility.json`, `templates/page.ww-prop65.json`, and `templates/page.ww-page.json`.
 

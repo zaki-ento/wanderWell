@@ -86,6 +86,14 @@
             "content": "<p>Subscribe &amp; Save sends a fresh box on the cadence you pick (every 30, 45, or 60 days). When you subscribe:</p><ul><li>We email you <strong>3 days</strong> before each renewal so nothing surprises you.</li><li>Subscriptions ship at 10% off with free shipping. You can pause, skip, change cadence, swap products, or cancel any time in your account or by emailing us. If your order has already been processed, changes apply to the following renewal.</li><li>Your saved card is charged on the renewal date. If it fails twice, we pause the subscription and let you know.</li><li>Subscription discounts apply only while the subscription is active. Cancelling forfeits the discount on future one-time orders.</li></ul>"
           }
         },
+        "section_7": {
+          "type": "rich_text",
+          "settings": {
+            "heading": "7. Health disclaimer",
+            "heading_size": "h2",
+            "content": ""
+          }
+        },
         "health_callout": {
           "type": "callout",
           "settings": {
@@ -214,6 +222,7 @@
         "section_4",
         "section_5",
         "section_6",
+        "section_7",
         "health_callout",
         "section_8",
         "section_9",
