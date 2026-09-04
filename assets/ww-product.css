@@ -933,7 +933,7 @@
   border-top: 1px solid rgba(44, 44, 44, 0.12);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
   z-index: 9;
-  padding: 14px 0;
+  padding: 12px 0;
   transform: translateY(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -952,11 +952,12 @@
 .ww-sticky-bar__info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   position: relative; /* important for popover position absolute */
   padding: 4px 6px;
   margin-left: -6px;
   border-radius: 10px;
+  transition: background .18s ease;
 }
 
 .ww-sticky-bar__info:hover {
@@ -1123,9 +1124,9 @@
   border-radius: 999px;
   padding: 14px 32px;
   font-family: var(--font-primary);
-  font-weight: 700;
+  font-weight: 600;
   font-size: .98rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: background-color 0.25s, transform 0.2s, box-shadow 0.2s;
   display: inline-flex;
