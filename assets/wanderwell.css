@@ -736,6 +736,13 @@ button.cart-discount__button {
   font-size: 1rem !important;
 }
 
+.announcement-bar__slides .announcement-bar__text {
+  font-family: var(--font-tertiary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
 
 
 
