@@ -94,6 +94,10 @@ html {
   z-index: 20;
 }
 
+.theme-drawer__dialog {
+  height: 100vh !important;
+}
+
 /* menu .cart-drawer__content */
 .menu-drawer__navigation .menu-drawer__menu.has-submenu .menu-drawer__menu-item-text {
   border-radius: 12px;
