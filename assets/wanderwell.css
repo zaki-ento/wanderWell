@@ -544,6 +544,10 @@ button.cart-discount__button {
   gap: 12px;
 }
 
+.cart__ctas .cart__checkout-button > span:after {
+  content: "";
+}
+
 .cart-drawer__content {
   background: var(--cream) !important;
 }
