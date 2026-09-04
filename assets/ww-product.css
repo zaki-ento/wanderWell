@@ -1009,6 +1009,17 @@
   transform: rotate(180deg);
 }
 
+.shopify-section.shopify-section-group-header-group:has(.announcement-bar) {
+  position: sticky;
+  top: 0;
+  z-index: 11;
+}
+
+.header-section:has(>#header-component[sticky=always]),
+.header-section:has(>#header-component[sticky=scroll-up][data-sticky-state=active]) {
+  top: 36px !important;
+}
+
 /* Options Popover */
 .ww-sticky-bar__popover {
   position: absolute;
