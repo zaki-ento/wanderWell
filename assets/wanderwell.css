@@ -542,6 +542,12 @@ button.cart-discount__button {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  height: auto !important;
+  min-height: 69px;
+}
+
+.cart__ctas .cart__checkout-button:hover {
+  background: var(--orange-dark);
 }
 
 .cart__ctas .cart__checkout-button > span {
