@@ -51,7 +51,17 @@ html {
   transition-timing-function: var(--animation-timing-fade-in);
 }
 
-.page-wrapper--drawer-open~.shopify-section .theme-drawer__dialog:before {
+
+
+
+
+
+/* =========================================
+   CUSTOM DRAWER OVERLAY
+   ========================================= */
+
+/* Base / Closed State */
+.shopify-section .theme-drawer__dialog:before {
     content: "";
     position: fixed;
     top: 0;
@@ -66,16 +76,44 @@ html {
     z-index: -1;
     pointer-events: none;
 
+    opacity: 0;
+
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+
+    transition:
+        opacity 0.4s ease,
+        backdrop-filter 0.4s ease,
+        -webkit-backdrop-filter 0.4s ease;
+}
+
+
+/* =========================================
+   Open State
+   ========================================= */
+
+.page-wrapper--drawer-open ~ .shopify-section .theme-drawer__dialog:before {
     opacity: 1;
 
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
-
-    transition:
-        opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        backdrop-filter 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        -webkit-backdrop-filter 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .page-wrapper--drawer-open {
   overflow: hidden;
