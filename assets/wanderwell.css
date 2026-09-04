@@ -240,6 +240,7 @@ html {
 
 .header-menu__inner .menu-list__link-title {
   padding: 0 !important;
+  line-height: 20px;
 }
 
 
