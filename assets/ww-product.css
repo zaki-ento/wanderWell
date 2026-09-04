@@ -540,7 +540,7 @@
 .ww-ing .amt {
   font-family: var(--font-tertiary);
   font-size: .72rem;
-  color: var(--v2-orange);
+  color: var(--orange);
   letter-spacing: .04em;
   line-height: 1.6;
 }
