@@ -302,9 +302,9 @@ html {
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 
-.account-button [menu=customer-account-main-menu] :has(.account-button__avatar)  {
+.account-button [menu=customer-account-main-menu] :has(.account-button__avatar) {
   background: var(--orange);
-  border: none;
+  border: 1px solid var(--orange);
 }
 
 .account-button [menu="customer-account-main-menu"]:hover {
