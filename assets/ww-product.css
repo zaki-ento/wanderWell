@@ -361,6 +361,7 @@
 }
 .ww-add {
   flex: 1;
+  height: auto;
   border: none;
   border-radius: 999px;
   background: var(--orange);
@@ -840,10 +841,6 @@
     .ww-media-thumbs .ww-media-thumb {
         aspect-ratio: auto;
         height: clamp(52px, 7vh, 78px);
-    }
-
-    .ww-add {
-      min-height: 48px;
     }
 
     .ww-add {
