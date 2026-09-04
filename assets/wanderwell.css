@@ -267,6 +267,9 @@ html {
 .account-button [menu=customer-account-main-menu] span[slot="signed-out-avatar"] {
   max-width: 18px;
 }
+.account-button [menu=customer-account-main-menu] {
+  background-color: var(--orange);
+}
 
 
 .menu-list__list-item:hover a span,
