@@ -432,7 +432,7 @@
             "card_color": "#e8e0d0",
             "stars_color": "{{ settings.color_palette.color2 }}",
             "arrows_color": "#000000",
-            "transition_speed": 60,
+            "transition_speed": 2,
             "header_text": "",
             "show_average_rating": true,
             "rating_display": "show_nothing"
