@@ -251,8 +251,22 @@
   background-color: var(--cream);
   min-height: 72px;
   border: 2px solid transparent;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, transform .18s ease,box-shadow .18s ease;
 }
+
+.ww-media-thumbs .ww-media-thumb:not(.is-active){
+  opacity: .62;
+}
+
+.ww-media-thumbs .ww-media-thumb:not(.is-active):hover {
+  opacity: 1;
+}
+
+.ww-media-thumbs .ww-media-thumb:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .14);
+}
+
 .ww-media-thumbs .ww-media-thumb.is-active {
   border-color: var(--orange);
 }
