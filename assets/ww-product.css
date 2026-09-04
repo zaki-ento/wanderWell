@@ -245,7 +245,7 @@
 .ww-media-thumbs .ww-media-thumb {
   width: calc(25% - 6px);
   aspect-ratio: 1/1;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   background-color: var(--cream);
