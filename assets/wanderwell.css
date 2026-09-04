@@ -820,6 +820,12 @@ button.cart-discount__button {
     flex-direction: row-reverse;
     justify-content: space-between;
   }
+  .announcement-bar__slides {
+    width: auto !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
 
   #header-component[data-menu-style=drawer] .header__column.header__column--left {
     padding-right: 8px;
