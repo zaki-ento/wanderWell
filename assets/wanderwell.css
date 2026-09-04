@@ -268,7 +268,7 @@ html {
   max-width: 18px;
 }
 .account-button [menu=customer-account-main-menu] {
-  background-color: var(--orange);
+  background: var(--orange);
 }
 
 
