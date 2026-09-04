@@ -869,5 +869,10 @@ button.cart-discount__button {
   }
 }
 
-
+@media (max-width: 440px) {
+  .theme-drawer__dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
 
