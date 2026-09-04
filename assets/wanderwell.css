@@ -52,16 +52,29 @@ html {
 }
 
 .page-wrapper--drawer-open~.shopify-section .theme-drawer__dialog:before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(44, 44, 44, 0.45);
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  backdrop-filter: blur(2px);
-  width: calc(100vw - 440px);
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    width: calc(100vw - 440px);
+
+    background: rgba(44, 44, 44, 0.45);
+
+    z-index: -1;
+    pointer-events: none;
+
+    opacity: 1;
+
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+
+    transition:
+        opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        backdrop-filter 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        -webkit-backdrop-filter 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .page-wrapper--drawer-open {
@@ -75,7 +88,6 @@ html {
 }
 
 .theme-drawer__dialog[open] {
-  right: 0 !important;
   z-index: 20;
 }
 
@@ -355,8 +367,13 @@ html {
 
 
 
+
 .theme-drawer__dialog {
-  border: 0;
+  max-width: 440px !important;
+  background: var(--cream) !important;
+  border: 0 !important;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: right;
 }
 
 .theme-drawer__dialog .theme-drawer__header {
@@ -551,10 +568,6 @@ button.cart-discount__button {
 
 
 
-.theme-drawer__dialog {
-  max-width: 440px !important;
-  background: var(--cream) !important;
-}
 
 .cart-totals__container.cart-totals__container--has-installments {
   row-gap: 8px !important;
