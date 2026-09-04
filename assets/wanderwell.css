@@ -241,6 +241,16 @@ html {
 .header-menu__inner .menu-list__link-title {
   padding: 3px 0 0 !important;
   line-height: 20px;
+  letter-spacing: 0.02em !important;
+}
+
+.header-actions__action:not(.account-button) svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.account-button [menu=customer-account-main-menu] span[slot="signed-out-avatar"] {
+  max-width: 18px;
 }
 
 
