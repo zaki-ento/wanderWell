@@ -814,7 +814,7 @@ button.cart-discount__button {
     display: flex !important;
   }
   #header-component[data-menu-style=drawer] .header__column {
-    display: flex;
+    display: flex !important;
     width: 100%;
     flex: auto;
     flex-direction: row-reverse;
@@ -829,7 +829,7 @@ button.cart-discount__button {
     width: auto;
   }
   #header-component[data-menu-style=drawer] .header__drawer {
-    min-height: auto;
+    min-height: auto !important;
   }
 }
 
