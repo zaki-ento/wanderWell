@@ -357,12 +357,6 @@
     "checkout": {
       "general": {
         "cart": "Bag"
-      },
-      "stock": {
-        "removed_from_cart_notice": "Removed from bag",
-        "remove_from_cart_button_label": "Remove from bag",
-        "go_back_to_cart_button_label": "Go back to bag",
-        "empty_cart_label": "Your bag is empty"
       }
     }
   }
