@@ -741,6 +741,7 @@ button.cart-discount__button {
   font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
+  line-height: 12px;
   letter-spacing: 0.12em;
 }
 
