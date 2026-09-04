@@ -806,6 +806,33 @@ button.cart-discount__button {
   }
 }
 
+@media (max-width: 767px) {
+  .account-button {
+    margin-right: 8px;
+  }
+  #header-component[data-menu-style=drawer] .header__columns {
+    display: flex !important;
+  }
+  #header-component[data-menu-style=drawer] .header__column {
+    display: flex;
+    width: 100%;
+    flex: auto;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  #header-component[data-menu-style=drawer] .header__column.header__column--left {
+    padding-right: 8px;
+  }
+
+  #header-component[data-menu-style=drawer] .header__column.header__column--right {
+    width: auto;
+  }
+  #header-component[data-menu-style=drawer] .header__drawer {
+    min-height: auto;
+  }
+}
+
 /* ── Scroll-in animation ── */
 .will-animate {
   opacity: 0;
@@ -838,8 +865,3 @@ button.cart-discount__button {
 
 
 
-@media (max-width: 480px) {
-  .account-button {
-    margin-right: 8px;
-  }
-}
