@@ -19,7 +19,7 @@
           "name": "t:names.announcement",
           "settings": {
             "text": "FREE SHIPPING ON ORDERS OVER $50",
-            "link": "",
+            "link": "#ww-products",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
             "weight": "600",
@@ -33,7 +33,7 @@
           "type": "_announcement",
           "settings": {
             "text": "SUBSCRIBE & SAVE 10%",
-            "link": "",
+            "link": "#ww-products",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
             "weight": "600",
