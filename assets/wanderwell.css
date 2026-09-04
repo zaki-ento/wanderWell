@@ -239,7 +239,7 @@ html {
 }
 
 .header-menu__inner .menu-list__link-title {
-  padding: 0 !important;
+  padding: 3px 0 0 !important;
   line-height: 20px;
 }
 
@@ -250,7 +250,7 @@ html {
 }
 
 .header__columns .header__column--right {
-  gap: 32px;
+  gap: 26px;
 }
 
 .account-button {
