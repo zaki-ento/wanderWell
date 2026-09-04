@@ -250,7 +250,6 @@
   cursor: pointer;
   background-color: var(--cream);
   min-height: 72px;
-  border: 2px solid transparent;
   transition: border-color 0.2s, transform .18s ease,box-shadow .18s ease;
 }
 
@@ -268,7 +267,7 @@
 }
 
 .ww-media-thumbs .ww-media-thumb.is-active {
-  border-color: var(--orange);
+  box-shadow: 0 0 0 2px var(--orange);
 }
 .ww-media-thumbs .ww-media-thumb img {
   width: 100%;
