@@ -267,9 +267,6 @@ html {
 .account-button [menu=customer-account-main-menu] span[slot="signed-out-avatar"] {
   max-width: 18px;
 }
-.account-button [menu=customer-account-main-menu] {
-  background: var(--orange);
-}
 
 
 .menu-list__list-item:hover a span,
@@ -303,6 +300,11 @@ html {
   border: 1.5px solid var(--charcoal);
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.account-button [menu=customer-account-main-menu] :has(.account-button__avatar)  {
+  background: var(--orange);
+  border: none;
 }
 
 .account-button [menu="customer-account-main-menu"]:hover {
