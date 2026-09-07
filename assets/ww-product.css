@@ -1326,7 +1326,7 @@
     }
 
     .ww-products {
-      padding-top: 48px;
-      padding-bottom: 48px;
+      padding-top: 48px !important;
+      padding-bottom: 48px !important;
     }
 }
