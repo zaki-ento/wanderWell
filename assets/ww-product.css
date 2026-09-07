@@ -1256,6 +1256,14 @@
 }
 
 @media screen and (max-width: 767px) {
+
+  .menu-drawer-container .header__icon--summary {
+    padding: 0;
+    border: 1px solid var(--color-foreground);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+  }
   .ww-sticky-bar {
     padding: 10px 0;
   }
