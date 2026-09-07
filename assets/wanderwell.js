@@ -26,52 +26,26 @@ document.addEventListener('DOMContentLoaded', () => {
       observer.observe(el);
     });
   };
-  // // Disable add-to-cart button and show tick during cart request on custom forms
-  // document.addEventListener('submit', (e) => {
-  //   const form = e.target.closest('.ww-product-form');
-  //   if (!form) return;
 
-  //   const btn = form.querySelector('button[name="add"]');
-  //   if (btn) {
-  //     setTimeout(() => {
-  //       btn.disabled = true;
-  //       btn.setAttribute('data-added', 'true');
-  //     }, 0);
-  //   }
-  // });
-
-  // // Re-enable button and clear tick when request completes or fails
-  // const resetCustomFormButtons = () => {
-  //   document.querySelectorAll('.ww-product-form button[name="add"]').forEach((btn) => {
-  //     btn.disabled = false;
-  //     btn.removeAttribute('data-added');
-  //   });
-  // };
-
-  // document.addEventListener('shopify:cart:lines-update', (event) => {
-  //   if (event.promise) {
-  //     event.promise.then(resetCustomFormButtons).catch(resetCustomFormButtons);
-  //   } else {
-  //     resetCustomFormButtons();
-  //   }
-  // });
-
-  // document.addEventListener('shopify:cart:error', resetCustomFormButtons);
 
   initScrollReveal();
 
   // Close mobile side menu drawer when clicking navigation links (including anchor links)
-  // document.addEventListener('click', (e) => {
-  //   const link = e.target.closest('.menu-drawer a');
-  //   if (!link) return;
+  document.addEventListener('click', (e) => {
+    // @ts-ignore
+    const link = e.target.closest('.menu-drawer a');
+    if (!link) return;
 
-  //   // Ignore accordion toggle summaries or non-navigating elements
-  //   const href = link.getAttribute('href');
-  //   if (!href || href === '#') return;
+    // Ignore accordion toggle summaries or non-navigating elements
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
 
-  //   const headerDrawer = document.querySelector('header-drawer');
-  //   if (headerDrawer && typeof headerDrawer.close === 'function' && headerDrawer.isOpen) {
-  //     headerDrawer.close();
-  //   }
-  // });
+    const headerDrawer = document.querySelector('header-drawer');
+    // @ts-ignore
+    if (headerDrawer && typeof headerDrawer.close === 'function' && headerDrawer.isOpen) {
+      // @ts-ignore
+      headerDrawer.close();
+    }
+  });
+
 });
