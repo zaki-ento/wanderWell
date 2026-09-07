@@ -73,6 +73,9 @@
     .ww-seg {
         margin-bottom: 16px;
     }
+    .products-header {
+      margin-bottom: 18px;
+    }
 }
 .ww-seg-btn {
   flex: 1;
