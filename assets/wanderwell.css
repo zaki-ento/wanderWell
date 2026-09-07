@@ -24,6 +24,11 @@ html {
   scrollbar-color: var(--orange-dark) var(--cream);
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.02em;
+}
+
 ::-webkit-scrollbar {
   width: 12px;
 }
