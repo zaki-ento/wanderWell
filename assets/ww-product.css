@@ -1,7 +1,5 @@
-#ww-product-hub,
 .ww-products {
   background-color: var(--offwhite);
-  scroll-margin-top: calc(var(--header-height, 74px) + 20px);
 }
 .products-header {
   text-align: center;
