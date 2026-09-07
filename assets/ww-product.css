@@ -851,10 +851,18 @@
   .ww-panel-inner {
     padding: 36px;
   }
+
+
 }
 
 
 @media (min-width: 1024px) and (min-height: 640px) {
+
+    .ww-detail-title {
+      font-size: clamp(1.9rem, 3.2vh, 2.6rem);
+      margin-bottom: 14px;
+    }
+
   .ww-ing h4 {
         font-size: .86rem;
         margin-bottom: 1px;
