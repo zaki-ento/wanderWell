@@ -266,6 +266,7 @@
         }
         
         // 3. Update sticky bar content
+        observeCurrentBuyBox();
         updateStickyContent();
       });
     }
@@ -278,6 +279,8 @@
       }
     });
 
+    var lastPopoverKey = '';
+
     // Extract options from active panel and populate popover
     function updateStickyContent() {
       // @ts-ignore
@@ -287,16 +290,23 @@
       // Update Title
       var activeTitleEl = activePanel.querySelector('.ww-detail-title');
       if (activeTitleEl && titleEl) {
-        titleEl.textContent = activeTitleEl.textContent.trim();
+        var targetTitle = activeTitleEl.textContent.trim();
+        if (titleEl.textContent !== targetTitle) {
+          titleEl.textContent = targetTitle;
+        }
       }
 
       // Update Product Toggle Button (Switch product)
       if (productToggleBtn) {
         var buttons = Array.prototype.slice.call(shop.querySelectorAll('.ww-seg-btn'));
         if (buttons.length <= 1) {
-          productToggleBtn.style.display = 'none';
+          if (productToggleBtn.style.display !== 'none') {
+            productToggleBtn.style.display = 'none';
+          }
         } else {
-          productToggleBtn.style.display = 'inline-flex';
+          if (productToggleBtn.style.display !== 'inline-flex') {
+            productToggleBtn.style.display = 'inline-flex';
+          }
           var activeBtn = shop.querySelector('.ww-seg-btn.on');
           var curIdx = buttons.indexOf(activeBtn);
           if (curIdx === -1) curIdx = 0;
@@ -310,8 +320,10 @@
             nextTitle = clone.textContent.trim();
           }
           var ariaMsg = nextTitle ? ('Switch to ' + nextTitle) : 'Switch product';
-          productToggleBtn.setAttribute('title', ariaMsg);
-          productToggleBtn.setAttribute('aria-label', ariaMsg);
+          if (productToggleBtn.getAttribute('title') !== ariaMsg) {
+            productToggleBtn.setAttribute('title', ariaMsg);
+            productToggleBtn.setAttribute('aria-label', ariaMsg);
+          }
         }
       }
 
@@ -381,18 +393,23 @@
 
       // Hide or show CHANGE button depending on number of available options
       if (optionsList.length <= 1) {
-        if (changeBtn) {
+        if (changeBtn && changeBtn.style.display !== 'none') {
           changeBtn.style.display = 'none';
         }
         togglePopover(false);
       } else {
-        if (changeBtn) {
+        if (changeBtn && changeBtn.style.display !== 'inline-flex') {
           changeBtn.style.display = 'inline-flex';
         }
       }
 
-      // Render options in popover
-      if (popover) {
+      // Render options in popover only if changed
+      var currentOptionsKey = activePanel.getAttribute('data-prod') + '::' + optionsList.map(function(o) {
+        return o.label + '__' + o.price + '__' + (o.selected ? '1' : '0');
+      }).join('||');
+
+      if (popover && currentOptionsKey !== lastPopoverKey) {
+        lastPopoverKey = currentOptionsKey;
         popover.innerHTML = '';
         if (optionsList.length > 0) {
           // @ts-ignore
@@ -437,35 +454,31 @@
           .replace(/\s+/g, ' ')
           .trim();
 
-        if (priceEl) {
-          priceEl.textContent = selectedOpt.price || '';
+        var targetPrice = selectedOpt.price || '';
+        if (priceEl && priceEl.textContent !== targetPrice) {
+          priceEl.textContent = targetPrice;
         }
-        if (separatorEl) {
-          separatorEl.style.display = cleanLabel && selectedOpt.price ? 'inline' : 'none';
+
+        var targetSep = (cleanLabel && selectedOpt.price) ? 'inline' : 'none';
+        if (separatorEl && separatorEl.style.display !== targetSep) {
+          separatorEl.style.display = targetSep;
         }
-        if (optionTextEl) {
-          if (priceEl) {
-            optionTextEl.textContent = cleanLabel;
-          } else {
-            optionTextEl.textContent = cleanLabel ? (selectedOpt.price + ' · ' + cleanLabel) : selectedOpt.price;
-          }
+
+        if (optionTextEl && optionTextEl.textContent !== cleanLabel) {
+          optionTextEl.textContent = cleanLabel;
         }
       } else {
         // Fallback if no option cards found (standard price rendering)
         var mainPriceEl = activePanel.querySelector('.price') || activePanel.querySelector('.ww-buy-row .ww-add');
         var fallbackPrice = mainPriceEl ? mainPriceEl.textContent.replace(/\b1\s*pack\b/gi, '').replace(/\s+/g, ' ').trim() : "";
-        if (priceEl) {
+        if (priceEl && priceEl.textContent !== fallbackPrice) {
           priceEl.textContent = fallbackPrice;
         }
-        if (separatorEl) {
+        if (separatorEl && separatorEl.style.display !== 'none') {
           separatorEl.style.display = 'none';
         }
-        if (optionTextEl) {
-          if (!priceEl) {
-            optionTextEl.textContent = fallbackPrice;
-          } else {
-            optionTextEl.textContent = "";
-          }
+        if (optionTextEl && optionTextEl.textContent !== "") {
+          optionTextEl.textContent = "";
         }
       }
 
@@ -475,26 +488,34 @@
         // @ts-ignore
         var isAvailable = !activeAddBtn.disabled;
         // @ts-ignore
-        addBtn.disabled = !isAvailable;
+        if (addBtn.disabled !== !isAvailable) {
+          // @ts-ignore
+          addBtn.disabled = !isAvailable;
+        }
         
         var btnTextEl = addBtn.querySelector('.ww-sticky-bar__add-btn-text');
         var activeTextEl = activeAddBtn.querySelector('.add-to-cart-text__content') || activeAddBtn;
         if (btnTextEl && activeTextEl) {
-          btnTextEl.textContent = activeTextEl.textContent.replace(/\(\d+\)/g, '').trim();
+          var targetBtnText = activeTextEl.textContent.replace(/\(\d+\)/g, '').trim();
+          if (btnTextEl.textContent !== targetBtnText) {
+            btnTextEl.textContent = targetBtnText;
+          }
         }
       }
-
-      // Re-observe active panel's buy box
-      observeCurrentBuyBox();
     }
 
     // Intersection Observer variables for visibility sync
     var buyBoxObserver = null;
+    var observedBuyBox = null;
     var pastBuyBox = false, atFooter = false;
+    var prevSticky = null;
 
     // Synchronize sticky bar status (toggle on/off states)
     function syncVisibility() {
       var isSticky = pastBuyBox && !atFooter;
+      if (isSticky === prevSticky) return;
+      prevSticky = isSticky;
+
       // @ts-ignore
       stickyBar.classList.toggle('on', isSticky);
       // @ts-ignore
@@ -509,22 +530,25 @@
     function observeCurrentBuyBox() {
       if (!('IntersectionObserver' in window)) return;
       var activePanel = shop.querySelector('.ww-panel.on');
-      var buyBox = (activePanel ? activePanel.querySelector('.ww-buy') : null) || shop.querySelector('.ww-buy');
-      if (!buyBox) return;
+      var currentBuyBox = (activePanel ? activePanel.querySelector('.ww-buy') : null) || shop.querySelector('.ww-buy');
+      if (!currentBuyBox || currentBuyBox === observedBuyBox) return;
 
-      if (buyBoxObserver) {
-        buyBoxObserver.disconnect();
+      if (buyBoxObserver && observedBuyBox) {
+        buyBoxObserver.unobserve(observedBuyBox);
       }
 
-      buyBoxObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          /* only "past" — not before the shop has been reached */
-          pastBuyBox = !e.isIntersecting && e.boundingClientRect.top < 0;
-          syncVisibility();
-        });
-      }, { threshold: 0 });
+      observedBuyBox = currentBuyBox;
+      if (!buyBoxObserver) {
+        buyBoxObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            /* only "past" — not before the shop has been reached */
+            pastBuyBox = !e.isIntersecting && e.boundingClientRect.top < 0;
+            syncVisibility();
+          });
+        }, { threshold: 0 });
+      }
 
-      buyBoxObserver.observe(buyBox);
+      buyBoxObserver.observe(currentBuyBox);
     }
 
     observeCurrentBuyBox();
@@ -581,6 +605,7 @@
       btn.addEventListener('click', function() {
         // Wait for tab animation/class toggling
         setTimeout(function() {
+          observeCurrentBuyBox();
           updateStickyContent();
         }, 120);
       });
