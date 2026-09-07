@@ -290,7 +290,7 @@
 .ww-detail-title {
   font-family: var(--font-tertiary);
   font-weight: 500;
-  font-size: 1.3rem;
+  font-size: 2.1rem;
   line-height: 1;
   letter-spacing: -.03em;
   color: var(--charcoal);
@@ -825,7 +825,7 @@
     padding: 28px;
   }
   .ww-detail-title {
-    font-size: 1.6rem;
+    font-size: 2.6rem;
   }
   .ww-info {
     margin-top: 36px;
@@ -846,7 +846,7 @@
 
 @media screen and (min-width: 1024px) {
   .ww-detail-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
   .ww-panel-inner {
     padding: 36px;
