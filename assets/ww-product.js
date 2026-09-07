@@ -178,7 +178,7 @@
     if (!stickyBar || !shop) return;
 
     var titleEl = stickyBar.querySelector('.ww-sticky-bar__title');
-    var optionTextEl = "Subscribe & Save";  //stickyBar.querySelector('.ww-sticky-bar__option-text');
+    var optionTextEl = stickyBar.querySelector('.ww-sticky-bar__option-text');
     var changeBtn = stickyBar.querySelector('.ww-sticky-bar__change-btn');
     var popover = stickyBar.querySelector('.ww-sticky-bar__popover');
     var addBtn = stickyBar.querySelector('.ww-sticky-bar__add-btn');
@@ -240,7 +240,18 @@
 
           if (mainTitle) {
             // Clean up title text by stripping off badges/extra classes if any
-            titleText = mainTitle.textContent.replace(/Most popular|save \d+%/i, '').trim();
+            var titleClone = mainTitle.cloneNode(true);
+            // @ts-ignore
+            var packBadge = titleClone.querySelector('.ww-sub-opt__pack-badge');
+            if (packBadge && /1\s*pack/i.test(packBadge.textContent)) {
+              packBadge.remove();
+            }
+            // @ts-ignore
+            titleText = titleClone.textContent
+              .replace(/Most popular|save \d+%/gi, '')
+              .replace(/\b1\s*pack\b/gi, '')
+              .replace(/\s+/g, ' ')
+              .trim();
           } else {
             var contentRows = card.querySelectorAll('.ww-sub-opt__row, .ww-sub-opt__details');
             if (contentRows.length > 0) {
@@ -250,6 +261,7 @@
               // @ts-ignore
               titleText = card.textContent.trim().split('\n')[0].trim();
             }
+            titleText = titleText.replace(/\b1\s*pack\b/gi, '').replace(/\s+/g, ' ').trim();
           }
 
           // Price
@@ -313,12 +325,18 @@
       // @ts-ignore
       var selectedOpt = optionsList.find(function(o) { return o.selected; });
       if (selectedOpt && optionTextEl) {
-        optionTextEl.textContent = selectedOpt.price + ' · ' + selectedOpt.label;
+        var cleanLabel = (selectedOpt.label || '')
+          .replace(/\s*·\s*1\s*pack\b/gi, '')
+          .replace(/\b1\s*pack\b/gi, '')
+          .replace(/^\s*[-·]\s*|\s*[-·]\s*$/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        optionTextEl.textContent = cleanLabel ? (selectedOpt.price + ' · ' + cleanLabel) : selectedOpt.price;
       } else if (optionTextEl) {
         // Fallback if no option cards found (standard price rendering)
         var mainPriceEl = activePanel.querySelector('.price') || activePanel.querySelector('.ww-buy-row .ww-add');
         if (mainPriceEl) {
-          optionTextEl.textContent = mainPriceEl.textContent.trim();
+          optionTextEl.textContent = mainPriceEl.textContent.replace(/\b1\s*pack\b/gi, '').replace(/\s+/g, ' ').trim();
         } else {
           optionTextEl.textContent = "";
         }
