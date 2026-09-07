@@ -178,7 +178,7 @@
     if (!stickyBar || !shop) return;
 
     var titleEl = stickyBar.querySelector('.ww-sticky-bar__title');
-    var optionTextEl = stickyBar.querySelector('.ww-sticky-bar__option-text');
+    var optionTextEl = "Subscribe & Save";  //stickyBar.querySelector('.ww-sticky-bar__option-text');
     var changeBtn = stickyBar.querySelector('.ww-sticky-bar__change-btn');
     var popover = stickyBar.querySelector('.ww-sticky-bar__popover');
     var addBtn = stickyBar.querySelector('.ww-sticky-bar__add-btn');
