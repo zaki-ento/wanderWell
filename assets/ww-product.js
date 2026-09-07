@@ -178,6 +178,8 @@
     if (!stickyBar || !shop) return;
 
     var titleEl = stickyBar.querySelector('.ww-sticky-bar__title');
+    var priceEl = stickyBar.querySelector('.ww-sticky-bar__price');
+    var separatorEl = stickyBar.querySelector('.ww-sticky-bar__separator');
     var optionTextEl = stickyBar.querySelector('.ww-sticky-bar__option-text');
     var changeBtn = stickyBar.querySelector('.ww-sticky-bar__change-btn');
     var popover = stickyBar.querySelector('.ww-sticky-bar__popover');
@@ -324,21 +326,43 @@
       // Update current selected option summary text
       // @ts-ignore
       var selectedOpt = optionsList.find(function(o) { return o.selected; });
-      if (selectedOpt && optionTextEl) {
+      if (selectedOpt) {
         var cleanLabel = (selectedOpt.label || '')
           .replace(/\s*·\s*1\s*pack\b/gi, '')
           .replace(/\b1\s*pack\b/gi, '')
           .replace(/^\s*[-·]\s*|\s*[-·]\s*$/g, '')
           .replace(/\s+/g, ' ')
           .trim();
-        optionTextEl.textContent = cleanLabel ? (selectedOpt.price + ' · ' + cleanLabel) : selectedOpt.price;
-      } else if (optionTextEl) {
+
+        if (priceEl) {
+          priceEl.textContent = selectedOpt.price || '';
+        }
+        if (separatorEl) {
+          separatorEl.style.display = cleanLabel && selectedOpt.price ? 'inline' : 'none';
+        }
+        if (optionTextEl) {
+          if (priceEl) {
+            optionTextEl.textContent = cleanLabel;
+          } else {
+            optionTextEl.textContent = cleanLabel ? (selectedOpt.price + ' · ' + cleanLabel) : selectedOpt.price;
+          }
+        }
+      } else {
         // Fallback if no option cards found (standard price rendering)
         var mainPriceEl = activePanel.querySelector('.price') || activePanel.querySelector('.ww-buy-row .ww-add');
-        if (mainPriceEl) {
-          optionTextEl.textContent = mainPriceEl.textContent.replace(/\b1\s*pack\b/gi, '').replace(/\s+/g, ' ').trim();
-        } else {
-          optionTextEl.textContent = "";
+        var fallbackPrice = mainPriceEl ? mainPriceEl.textContent.replace(/\b1\s*pack\b/gi, '').replace(/\s+/g, ' ').trim() : "";
+        if (priceEl) {
+          priceEl.textContent = fallbackPrice;
+        }
+        if (separatorEl) {
+          separatorEl.style.display = 'none';
+        }
+        if (optionTextEl) {
+          if (!priceEl) {
+            optionTextEl.textContent = fallbackPrice;
+          } else {
+            optionTextEl.textContent = "";
+          }
         }
       }
 
