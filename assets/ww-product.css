@@ -1010,11 +1010,11 @@
 }
 
 .ww-sticky-bar__option-text {
-  font-family: var(--font-primary);
-  font-weight: 600;
-  line-height: 1.6;
-  font-size: .95rem;
-  color: var(--charcoal, #2C2C2C);
+ font-family: var(--font-tertiary);
+    font-size: .66rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--charcoal-light, #5A5A5A);
 }
 
 .ww-sticky-bar__change-btn {
