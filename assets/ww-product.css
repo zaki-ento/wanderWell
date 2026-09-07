@@ -1,5 +1,7 @@
+#ww-product-hub,
 .ww-products {
   background-color: var(--offwhite);
+  scroll-margin-top: calc(var(--header-height, 74px) + 20px);
 }
 .products-header {
   text-align: center;
@@ -973,6 +975,49 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23e8632b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 }
 
+.ww-sticky-bar__title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ww-sticky-bar__product-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(232, 99, 43, 0.08);
+  border: 1px solid rgba(232, 99, 43, 0.25);
+  border-radius: 999px;
+  padding: 2px 9px 2px 7px;
+  font-family: var(--font-tertiary);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--orange);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.5;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.ww-sticky-bar__product-toggle:hover {
+  background: var(--orange);
+  color: var(--white);
+  border-color: var(--orange);
+}
+
+.ww-sticky-bar__product-toggle:hover .ww-sticky-bar__toggle-icon {
+  stroke: var(--white);
+}
+
+.ww-sticky-bar__toggle-icon {
+  stroke: var(--orange);
+  transition: stroke 0.2s ease;
+  flex-shrink: 0;
+}
+
 .ww-sticky-bar__title {
   font-family: var(--font-primary);
   font-weight: 600;
@@ -1208,6 +1253,13 @@
     gap: 12px;
     padding-left: 12px;
     padding-right: 12px;
+  }
+  .ww-sticky-bar__title-row {
+    gap: 8px;
+  }
+  .ww-sticky-bar__product-toggle {
+    font-size: 0.6rem;
+    padding: 2px 7px;
   }
   .ww-sticky-bar__title {
     font-size: 1rem;

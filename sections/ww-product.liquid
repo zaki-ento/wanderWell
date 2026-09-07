@@ -43,7 +43,7 @@
   {%- endif -%}
 {%- endstyle -%}
 
-<section class="ww-products section-{{ section.id }}" {{ section.shopify_attributes }}>
+<section id="ww-product-hub" class="ww-products section-{{ section.id }}" {{ section.shopify_attributes }}>
   <div class="container">
     <div class="products-header">
       {%- if section.settings.label != blank -%}
@@ -94,10 +94,26 @@
     </div>
 
     <div class="ww-shop">
+      {%- assign default_tab_id = '' -%}
+      {%- assign first_tab_id = '' -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'product_tab' -%}
+          {%- if first_tab_id == '' -%}
+            {%- assign first_tab_id = block.id -%}
+          {%- endif -%}
+          {%- assign p_obj = block.settings.product -%}
+          {%- if p_obj.selling_plan_groups.size > 0 and default_tab_id == '' -%}
+            {%- assign default_tab_id = block.id -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if default_tab_id == '' -%}
+        {%- assign default_tab_id = first_tab_id -%}
+      {%- endif -%}
+
       <div class="ww-seg-wrap">
         <div class="ww-seg" role="tablist" aria-label="Choose a product">
           <span class="ww-seg-ind" aria-hidden="true"></span>
-          {%- assign is_first_tab = true -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'product_tab' -%}
               {%- assign current_prod = block.settings.product -%}
@@ -107,7 +123,7 @@
                 | default: current_prod.metafields.custom.subtitle
               -%}
               <button
-                class="ww-seg-btn {% if is_first_tab %}on{% endif %}"
+                class="ww-seg-btn {% if block.id == default_tab_id %}on{% endif %}"
                 data-prod="block-{{ block.id }}"
                 role="tab"
                 {{ block.shopify_attributes }}
@@ -115,7 +131,6 @@
                 {{ title | escape }}
                 <span class="ww-seg-sub">{{ subtitle | escape }}</span>
               </button>
-              {%- assign is_first_tab = false -%}
             {%- endif -%}
           {%- endfor -%}
         </div>
@@ -134,7 +149,7 @@
           {%- assign desc = block.settings.description | default: current_prod.description -%}
 
           <div
-            class="ww-panel {% if forloop.first %}on{% endif %}"
+            class="ww-panel {% if block.id == default_tab_id %}on{% endif %}"
             data-prod="{{ key }}"
             role="tabpanel"
             {{ block.shopify_attributes }}
@@ -446,7 +461,15 @@
   <div class="ww-sticky-bar" id="ww-sticky-bar" data-section-id="{{ section.id }}" data-active="false">
     <div class="ww-sticky-bar__inner container">
       <div class="ww-sticky-bar__info">
-        <h4 class="ww-sticky-bar__title"></h4>
+        <div class="ww-sticky-bar__title-row">
+          <h4 class="ww-sticky-bar__title"></h4>
+          <button type="button" class="ww-sticky-bar__product-toggle" aria-label="Switch product" title="Switch product">
+            <svg class="ww-sticky-bar__toggle-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"></path>
+            </svg>
+            <span class="ww-sticky-bar__toggle-text">Switch</span>
+          </button>
+        </div>
         <div class="ww-sticky-bar__option-trigger">
           <span class="ww-sticky-bar__price"></span>
           <span class="ww-sticky-bar__separator">·</span>

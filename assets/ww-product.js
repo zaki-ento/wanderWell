@@ -1,6 +1,8 @@
 (function() {
   'use strict';
   
+  var selectProductTab = null;
+
   // Tab control switching
   function initTabs() {
     var shop = document.querySelector('.ww-shop');
@@ -31,9 +33,28 @@
       });
       // @ts-ignore
       panels.forEach(function(p) {
-        p.classList.toggle('on', p.getAttribute('data-prod') === key);
+        var on = p.getAttribute('data-prod') === key;
+        p.classList.toggle('on', on);
+        if (on) {
+          // If this panel has subscription options, ensure subscription option is active
+          var subOpt = p.querySelector('.ww-sub-opt[data-option-type="subscription"]');
+          if (subOpt && !subOpt.classList.contains('on')) {
+            var subRadio = subOpt.querySelector('.ww-sub-opt__radio-input');
+            if (subRadio) {
+              subRadio.checked = true;
+              subRadio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            var container = subOpt.closest('.ww-purchase-options');
+            if (container) {
+              container.querySelectorAll('.ww-sub-opt').forEach(function(item) { item.classList.remove('on'); });
+            }
+            subOpt.classList.add('on');
+          }
+        }
       });
     }
+    
+    selectProductTab = selectTab;
     
     // @ts-ignore
     buttons.forEach(function(btn) {
@@ -42,8 +63,17 @@
       });
     });
     
-    // Init first tab
-    var start = buttons[0];
+    // Init default tab: prioritize subscription product
+    var subBtn = null;
+    for (var i = 0; i < buttons.length; i++) {
+      var bKey = buttons[i].getAttribute('data-prod');
+      var p = panels.find(function(panel) { return panel.getAttribute('data-prod') === bKey; });
+      if (p && p.querySelector('.ww-sub-opt[data-option-type="subscription"]')) {
+        subBtn = buttons[i];
+        break;
+      }
+    }
+    var start = subBtn || buttons[0];
     if (start) {
       selectTab(start.getAttribute('data-prod'));
       setTimeout(function() {
@@ -184,6 +214,7 @@
     var changeBtn = stickyBar.querySelector('.ww-sticky-bar__change-btn');
     var popover = stickyBar.querySelector('.ww-sticky-bar__popover');
     var addBtn = stickyBar.querySelector('.ww-sticky-bar__add-btn');
+    var productToggleBtn = stickyBar.querySelector('.ww-sticky-bar__product-toggle');
 
     // Toggle popover
     // @ts-ignore
@@ -201,6 +232,41 @@
       changeBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         togglePopover();
+      });
+    }
+
+    // Product toggle in sticky bar
+    if (productToggleBtn) {
+      productToggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        var buttons = Array.prototype.slice.call(shop.querySelectorAll('.ww-seg-btn'));
+        if (buttons.length < 2) return;
+        
+        var activeBtn = shop.querySelector('.ww-seg-btn.on');
+        var curIdx = buttons.indexOf(activeBtn);
+        if (curIdx === -1) curIdx = 0;
+        
+        var nextIdx = (curIdx + 1) % buttons.length;
+        var nextBtn = buttons[nextIdx];
+        if (!nextBtn) return;
+        
+        // 1. Switch active product tab
+        var nextKey = nextBtn.getAttribute('data-prod');
+        if (typeof selectProductTab === 'function') {
+          selectProductTab(nextKey);
+        } else {
+          nextBtn.click();
+        }
+        
+        // 2. Smoothly jump/scroll to ww-product-hub section
+        var hub = document.getElementById('ww-product-hub') || document.getElementById('ww-products') || shop.closest('.ww-products') || shop;
+        if (hub) {
+          hub.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // 3. Update sticky bar content
+        updateStickyContent();
       });
     }
 
@@ -222,6 +288,31 @@
       var activeTitleEl = activePanel.querySelector('.ww-detail-title');
       if (activeTitleEl && titleEl) {
         titleEl.textContent = activeTitleEl.textContent.trim();
+      }
+
+      // Update Product Toggle Button (Switch product)
+      if (productToggleBtn) {
+        var buttons = Array.prototype.slice.call(shop.querySelectorAll('.ww-seg-btn'));
+        if (buttons.length <= 1) {
+          productToggleBtn.style.display = 'none';
+        } else {
+          productToggleBtn.style.display = 'inline-flex';
+          var activeBtn = shop.querySelector('.ww-seg-btn.on');
+          var curIdx = buttons.indexOf(activeBtn);
+          if (curIdx === -1) curIdx = 0;
+          var nextIdx = (curIdx + 1) % buttons.length;
+          var nextBtn = buttons[nextIdx];
+          var nextTitle = "";
+          if (nextBtn) {
+            var clone = nextBtn.cloneNode(true);
+            var sub = clone.querySelector('.ww-seg-sub');
+            if (sub) sub.remove();
+            nextTitle = clone.textContent.trim();
+          }
+          var ariaMsg = nextTitle ? ('Switch to ' + nextTitle) : 'Switch product';
+          productToggleBtn.setAttribute('title', ariaMsg);
+          productToggleBtn.setAttribute('aria-label', ariaMsg);
+        }
       }
 
       // Update Options
@@ -286,6 +377,18 @@
             element: card
           });
         });
+      }
+
+      // Hide or show CHANGE button depending on number of available options
+      if (optionsList.length <= 1) {
+        if (changeBtn) {
+          changeBtn.style.display = 'none';
+        }
+        togglePopover(false);
+      } else {
+        if (changeBtn) {
+          changeBtn.style.display = 'inline-flex';
+        }
       }
 
       // Render options in popover
@@ -380,11 +483,13 @@
           btnTextEl.textContent = activeTextEl.textContent.replace(/\(\d+\)/g, '').trim();
         }
       }
+
+      // Re-observe active panel's buy box
+      observeCurrentBuyBox();
     }
 
     // Intersection Observer variables for visibility sync
-    var buyBox = shop.querySelector('.ww-panel.on .ww-buy') || shop.querySelector('.ww-buy');
-    var footer = document.querySelector('footer') || document.querySelector('[class*="footer-group"]');
+    var buyBoxObserver = null;
     var pastBuyBox = false, atFooter = false;
 
     // Synchronize sticky bar status (toggle on/off states)
@@ -401,38 +506,53 @@
       }
     }
 
-    if (buyBox) {
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            /* only "past" — not before the shop has been reached */
-            pastBuyBox = !e.isIntersecting && e.boundingClientRect.top < 0;
-            syncVisibility();
-          });
-        }, { threshold: 0 }).observe(buyBox);
+    function observeCurrentBuyBox() {
+      if (!('IntersectionObserver' in window)) return;
+      var activePanel = shop.querySelector('.ww-panel.on');
+      var buyBox = (activePanel ? activePanel.querySelector('.ww-buy') : null) || shop.querySelector('.ww-buy');
+      if (!buyBox) return;
 
-        if (footer) {
-          new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              atFooter = e.isIntersecting;
-              syncVisibility();
-            });
-          }, { threshold: 0 }).observe(footer);
-        }
-      } else {
-        // Fallback for browsers without IntersectionObserver support
-        // @ts-ignore
-        window.addEventListener('scroll', function() {
-          // @ts-ignore
-          var rect = buyBox.getBoundingClientRect();
-          pastBuyBox = rect.bottom < 80;
-          if (footer) {
-            var footerRect = footer.getBoundingClientRect();
-            atFooter = footerRect.top < window.innerHeight;
-          }
+      if (buyBoxObserver) {
+        buyBoxObserver.disconnect();
+      }
+
+      buyBoxObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          /* only "past" — not before the shop has been reached */
+          pastBuyBox = !e.isIntersecting && e.boundingClientRect.top < 0;
           syncVisibility();
         });
-      }
+      }, { threshold: 0 });
+
+      buyBoxObserver.observe(buyBox);
+    }
+
+    observeCurrentBuyBox();
+
+    var footer = document.querySelector('footer') || document.querySelector('[class*="footer-group"]');
+    if (footer && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          atFooter = e.isIntersecting;
+          syncVisibility();
+        });
+      }, { threshold: 0 }).observe(footer);
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      window.addEventListener('scroll', function() {
+        var activePanel = shop.querySelector('.ww-panel.on');
+        var buyBox = (activePanel ? activePanel.querySelector('.ww-buy') : null) || shop.querySelector('.ww-buy');
+        if (buyBox) {
+          var rect = buyBox.getBoundingClientRect();
+          pastBuyBox = rect.bottom < 80;
+        }
+        if (footer) {
+          var footerRect = footer.getBoundingClientRect();
+          atFooter = footerRect.top < window.innerHeight;
+        }
+        syncVisibility();
+      });
     }
 
     // Add submit hook to addBtn
