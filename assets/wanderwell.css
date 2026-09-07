@@ -892,6 +892,10 @@ button.cart-discount__button {
   }
 }
 
+.header__column.header__column--right * {
+  opacity: 1 !important;
+}
+
 /* ── Scroll-in animation ── */
 .will-animate {
   opacity: 0;
