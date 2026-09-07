@@ -1324,4 +1324,9 @@
       margin-top: 8px;
       gap: 12px;
     }
+
+    .ww-products {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
 }
