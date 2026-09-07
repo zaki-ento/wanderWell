@@ -94,6 +94,19 @@ html {
   z-index: 20;
 }
 
+.account-button__avatar {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--charcoal) !important;
+}
+.account-button__avatar:before {
+  display: none;
+}
+
+.account-button [menu=customer-account-main-menu]:hover .account-button__avatar {
+  color: #fff !important;
+}
+
 /* menu .cart-drawer__content */
 .menu-drawer__navigation .menu-drawer__menu.has-submenu .menu-drawer__menu-item-text {
   border-radius: 12px;
