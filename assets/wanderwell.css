@@ -763,7 +763,6 @@ button.cart-discount__button {
   background: var(--offwhite) !important;
   border-radius: 20px !important;
   padding: 32px !important;
-  min-width: 368px !important;
   align-items: flex-start !important;
   padding-top: 73.58px !important;
 }
@@ -824,8 +823,15 @@ button.cart-discount__button {
     padding: 18px 76px 18px 24px;
   }
 }
+@media (min-width: 768px) {
+  .jdgm-cards-carousel .jdgm-carousel-item {
+    min-width: 368px !important;
+  }
+}
 
 @media (max-width: 767px) {
+  
+
   .account-button {
     margin-right: 8px;
   }
