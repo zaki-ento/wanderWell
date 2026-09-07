@@ -1273,6 +1273,7 @@
     padding-left: 12px;
     padding-right: 12px;
   }
+  .ww-sticky-bar__info {margin-left: 0;}
   .ww-sticky-bar__title-row {
     gap: 8px;
   }
