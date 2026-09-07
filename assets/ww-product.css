@@ -1305,6 +1305,9 @@
     width: 100%;
     justify-content: center;
   }
+  .ww-sticky-bar__info {
+    width: 100%;
+  }
 }
 .ww-shop .ww-detail p,
 .ww-shop .ww-detail .v2-detail-lede {
