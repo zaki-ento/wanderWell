@@ -706,7 +706,23 @@ button.cart-discount__button {
 }
 
 .jdgm-cards-carousel .jdgm-cards-wrapper .jdgm-videos-container {
-  gap: 24px !important;
+  gap: 12px !important;
+}
+
+.jdgm-cards-carousel .jdgm-content {
+  margin-bottom: 0 !important;
+}
+
+.jdgm-widget.jdgm-cards-carousel {
+  padding: 0 !important;
+}
+.jdgm-cards-carousel .jdgm-title,
+.jdgm-header {
+  margin: 0 !important;
+}
+
+.ww-feedback__header {
+  margin-bottom: 64px !important;
 }
 
 .jdgm-testimonials-carousel .jdgm-text p,
@@ -762,7 +778,7 @@ button.cart-discount__button {
 .jdgm-cards-carousel .jdgm-carousel-item {
   background: var(--offwhite) !important;
   border-radius: 20px !important;
-  padding: 32px !important;
+  padding: 12px !important;
   align-items: flex-start !important;
   padding-top: 73.58px !important;
 }
@@ -826,6 +842,13 @@ button.cart-discount__button {
 @media (min-width: 768px) {
   .jdgm-cards-carousel .jdgm-carousel-item {
     min-width: 368px !important;
+  }
+  .jdgm-cards-carousel .jdgm-cards-wrapper .jdgm-videos-container {
+    gap: 24px !important;
+  }
+  .jdgm-cards-carousel .jdgm-carousel-item {
+    padding: 32px !important;
+    padding-top: 73.58px !important;
   }
 }
 
