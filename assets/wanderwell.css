@@ -94,19 +94,6 @@ html {
   z-index: 20;
 }
 
-.account-button__avatar {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  color: var(--charcoal) !important;
-}
-.account-button__avatar:before {
-  display: none;
-}
-
-.account-button [menu=customer-account-main-menu]:hover .account-button__avatar {
-  color: #fff !important;
-}
-
 /* menu .cart-drawer__content */
 .menu-drawer__navigation .menu-drawer__menu.has-submenu .menu-drawer__menu-item-text {
   border-radius: 12px;
@@ -281,11 +268,6 @@ html {
   max-width: 18px;
 }
 
-.account-button [menu=customer-account-main-menu] {
-  background-color: var(--orange)!important;
-  border-color: var(--orange)!important;
-}
-
 
 .menu-list__list-item:hover a span,
 .menu-list__list-item:focus-within a span {
@@ -318,11 +300,6 @@ html {
   border: 1.5px solid var(--charcoal);
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.2s;
-}
-
-.account-button [menu=customer-account-main-menu] :has(.account-button__avatar) {
-  background: var(--orange);
-  border: 1px solid var(--orange);
 }
 
 .account-button [menu="customer-account-main-menu"]:hover {
