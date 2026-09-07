@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!href || href === '#') return;
 
     const headerDrawer = document.querySelector('header-drawer');
-    if (headerDrawer && typeof headerDrawer.close === 'function' && headerDrawer.isOpen) {
-      headerDrawer.close();
-    }
+    // if (headerDrawer && typeof headerDrawer.close === 'function' && headerDrawer.isOpen) {
+    //   headerDrawer.close();
+    // }
   });
 });
