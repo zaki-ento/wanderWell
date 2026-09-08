@@ -1197,7 +1197,7 @@
 
 .ww-sticky-bar__add-btn {
   background-color: var(--orange);
-  color: var(--white) !important;
+  color: var(--white);
   border: none;
   border-radius: 999px;
   padding: 14px 32px;
@@ -1214,6 +1214,10 @@
   position: relative;
   overflow: hidden;
   height: 50px;
+}
+
+.ww-sticky-bar__add-btn:not([data-added="true"]) {
+  color: var(--white) !important;
 }
 
 .ww-sticky-bar__add-btn:hover {
