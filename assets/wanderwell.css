@@ -50,6 +50,9 @@ body {
   }
 }
 
+.quantity-selector input[type=number] {
+  min-width: 40px;
+}
 /* Prevent scrollbar jump when drawer opens */
 .page-wrapper--drawer-open {
   margin-right: 0 !important;
