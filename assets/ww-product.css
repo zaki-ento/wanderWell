@@ -1,10 +1,6 @@
 .ww-products {
   background-color: var(--offwhite);
 }
-
-.ww-products + .ww-sticky-bar {
-  box-shadow: none !important;
-}
 .products-header {
   text-align: center;
   max-width: 640px;
