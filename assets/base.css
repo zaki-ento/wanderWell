@@ -42,6 +42,10 @@ html:has(.page-wrapper) body .page-wrapper:not(.page-wrapper--drawer-open) secti
   z-index: 1;
 }
 
+html:has(.page-wrapper) body .page-wrapper:not(.page-wrapper--drawer-open) section.shopify-section.ww-section-products {
+  z-index: 2;
+}
+
 html[scroll-lock],
 html[scroll-lock] .page-wrapper {
   overflow: hidden;
