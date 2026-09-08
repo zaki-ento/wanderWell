@@ -30,8 +30,12 @@ html {
 }
 
 @media (min-width: 990px) {
-  html:has(.page-wrapper),
+  /* html:has(.page-wrapper),
   html:has(.page-wrapper) body {
+    height: 100dvh;
+    overflow: hidden;
+  } */
+  html:has(.page-wrapper) {
     height: 100dvh;
     overflow: hidden;
   }
