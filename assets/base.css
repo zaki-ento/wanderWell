@@ -37,7 +37,7 @@ html {
   }
 }
 
-html:has(.page-wrapper) body .shopify-section {
+html:has(.page-wrapper) body .page-wrapper:not(.page-wrapper--drawer-open) section.shopify-section {
   position: relative;
   z-index: 1;
 }
