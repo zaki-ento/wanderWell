@@ -60,7 +60,6 @@ body {
 }
 .shopify-section .theme-drawer__dialog .cart-drawer__inner {
   background: var(--cream);
-  height: 100dvh;
 }
 
 .shopify-section .theme-drawer__dialog:before {
