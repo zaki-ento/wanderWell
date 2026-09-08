@@ -41,10 +41,10 @@ html {
   }
 }
 
-html[scroll-lock],
+/* html[scroll-lock],
 html[scroll-lock] .page-wrapper {
   overflow: hidden;
-}
+} */
 
 .page-wrapper {
   display: flex;
