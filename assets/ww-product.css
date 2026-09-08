@@ -1197,7 +1197,7 @@
 
 .ww-sticky-bar__add-btn {
   background-color: var(--orange);
-  color: var(--white);
+  color: var(--white) !important;
   border: none;
   border-radius: 999px;
   padding: 14px 32px;
