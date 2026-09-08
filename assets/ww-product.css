@@ -1220,6 +1220,10 @@
   color: var(--white) !important;
 }
 
+.add-to-cart-button[data-added=true] .add-to-cart__added {
+  color: #fff !important;
+}
+
 .ww-sticky-bar__add-btn:hover {
   background-color: #d2542c;
 }
