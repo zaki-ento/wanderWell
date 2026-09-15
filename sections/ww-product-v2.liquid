@@ -85,6 +85,17 @@
             {%- assign first_tab_id = block.id -%}
           {%- endif -%}
           {%- assign p_obj = block.settings.product -%}
+          {%- if p_obj == blank -%}
+            {%- assign handle_guess = block.settings.title | handleize -%}
+            {%- assign p_obj = all_products[handle_guess] -%}
+            {%- if p_obj == blank and forloop.index == 1 -%}
+              {%- assign p_obj = all_products['digestive-support'] -%}
+            {%- elsif p_obj == blank and forloop.index == 2 -%}
+              {%- assign p_obj = all_products['immune-support'] -%}
+            {%- elsif p_obj == blank and forloop.index == 3 -%}
+              {%- assign p_obj = all_products['the-travel-duo'] -%}
+            {%- endif -%}
+          {%- endif -%}
           {%- if p_obj.selling_plan_groups.size > 0 and default_tab_id == '' -%}
             {%- assign default_tab_id = block.id -%}
           {%- endif -%}
@@ -100,6 +111,17 @@
           {%- for block in section.blocks -%}
             {%- if block.type == 'product_tab' -%}
               {%- assign current_prod = block.settings.product -%}
+              {%- if current_prod == blank -%}
+                {%- assign handle_guess = block.settings.title | handleize -%}
+                {%- assign current_prod = all_products[handle_guess] -%}
+                {%- if current_prod == blank and forloop.index == 1 -%}
+                  {%- assign current_prod = all_products['digestive-support'] -%}
+                {%- elsif current_prod == blank and forloop.index == 2 -%}
+                  {%- assign current_prod = all_products['immune-support'] -%}
+                {%- elsif current_prod == blank and forloop.index == 3 -%}
+                  {%- assign current_prod = all_products['the-travel-duo'] -%}
+                {%- endif -%}
+              {%- endif -%}
               {%- assign title = block.settings.title | default: current_prod.title -%}
               {%- assign subtitle = block.settings.subtitle
                 | default: current_prod.metafields.custom.subtitle.value
@@ -122,6 +144,17 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'product_tab' -%}
           {%- assign current_prod = block.settings.product -%}
+          {%- if current_prod == blank -%}
+            {%- assign handle_guess = block.settings.title | handleize -%}
+            {%- assign current_prod = all_products[handle_guess] -%}
+            {%- if current_prod == blank and forloop.index == 1 -%}
+              {%- assign current_prod = all_products['digestive-support'] -%}
+            {%- elsif current_prod == blank and forloop.index == 2 -%}
+              {%- assign current_prod = all_products['immune-support'] -%}
+            {%- elsif current_prod == blank and forloop.index == 3 -%}
+              {%- assign current_prod = all_products['the-travel-duo'] -%}
+            {%- endif -%}
+          {%- endif -%}
           {%- assign key = 'block-' | append: block.id -%}
 
           {%- assign title = block.settings.title | default: current_prod.title -%}
@@ -686,7 +719,7 @@
 
 {% schema %}
 {
-  "name": "WW Products Hub (Variant Architecture)",
+  "name": "WW Products Hub v2",
   "tag": "section",
   "class": "ww-section-products ww-section-products--v2",
   "settings": [
