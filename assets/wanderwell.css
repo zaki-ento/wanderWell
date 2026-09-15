@@ -1224,7 +1224,7 @@ announcement-bar-component[paused] .ww-announcement-pause .ww-announcement-pause
 
 /* ── Method 1: Variant Architecture & Locked Cart Quantity ── */
 .cart-quantity-locked {
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: inherit;
