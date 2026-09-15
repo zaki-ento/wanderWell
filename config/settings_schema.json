@@ -1530,6 +1530,12 @@
         "content": "t:content.cart_features"
       },
       {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold ($)",
+        "default": 50
+      },
+      {
         "type": "checkbox",
         "id": "show_cart_note",
         "label": "t:settings.seller_note",

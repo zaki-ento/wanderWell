@@ -1,0 +1,50 @@
+{% comment %}
+  Snippet: WW Cart Free Shipping
+  Description: Renders dynamic free shipping progress bar and spend calculation based on store threshold.
+{% endcomment %}
+
+{%- liquid
+  assign threshold_setting = settings.free_shipping_threshold | default: shop.metafields.custom.free_shipping_threshold.value | default: shop.metafields.custom.free_shipping_threshold | default: 50
+  assign threshold_num = threshold_setting | plus: 0
+  if threshold_num < 500
+    assign threshold_cents = threshold_num | times: 100
+  else
+    assign threshold_cents = threshold_num
+  endif
+
+  assign cart_total = cart.total_price | default: 0
+
+  if cart_total >= threshold_cents
+    assign is_free_shipping = true
+    assign progress_pct = 100
+    assign remaining_cents = 0
+  else
+    assign is_free_shipping = false
+    assign remaining_cents = threshold_cents | minus: cart_total
+    assign progress_pct = cart_total | times: 100.0 | divided_by: threshold_cents | round
+  endif
+-%}
+
+<div
+  class="ww-free-shipping"
+  data-free-shipping-threshold="{{ threshold_cents }}"
+  data-cart-total="{{ cart_total }}"
+>
+  <div class="ww-free-shipping__text">
+    {%- if is_free_shipping -%}
+      <span class="ww-free-shipping__unlocked">YOU'VE UNLOCKED FREE SHIPPING!</span>
+    {%- else -%}
+      <span class="ww-free-shipping__remaining">SPEND {{ remaining_cents | money }} MORE FOR FREE SHIPPING</span>
+    {%- endif -%}
+  </div>
+  <div class="ww-free-shipping__bar">
+    <div
+      class="ww-free-shipping__progress{% if is_free_shipping %} ww-free-shipping__progress--unlocked{% endif %}"
+      style="width: {{ progress_pct }}%;"
+      role="progressbar"
+      aria-valuenow="{{ progress_pct }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
+</div>
