@@ -295,7 +295,6 @@
         "accordion_PHtdAa",
         "accordion_y9kEnR"
       ],
-      "disabled": true,
       "settings": {
         "label": "Our Products",
         "heading": "Made to travel with you",
@@ -441,6 +440,7 @@
         "accordion_PHtdAa",
         "accordion_y9kEnR"
       ],
+      "disabled": true,
       "settings": {
         "label": "Our Products",
         "heading": "Made to travel with you",
