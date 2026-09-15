@@ -1,20 +1,72 @@
 {% comment %}
   Snippet: WW Cart Free Shipping
-  Description: Renders dynamic free shipping progress bar and spend calculation based on store threshold.
+  Description: Renders dynamic free shipping progress bar and spend calculation.
+  Controlled from shop-level properties (shop.shipping_rates, shop.free_shipping_threshold, shop metafields)
+  with fallback to theme customizer settings.free_shipping_threshold.
 {% endcomment %}
 
 {%- liquid
-  assign threshold_setting = settings.free_shipping_threshold | default: shop.metafields.custom.free_shipping_threshold.value | default: shop.metafields.custom.free_shipping_threshold | default: 50
-  assign threshold_num = threshold_setting | plus: 0
-  if threshold_num < 500
-    assign threshold_cents = threshold_num | times: 100
+  assign shipping_rates_threshold = null
+  if shop.shipping_rates != blank and shop.shipping_rates.size > 0
+    for rate in shop.shipping_rates
+      assign rate_price = rate.price | plus: 0
+      assign rate_title = rate.title | downcase
+      if rate_price == 0 or rate_title contains 'free'
+        if rate.min_order_subtotal != blank and rate.min_order_subtotal > 0
+          assign shipping_rates_threshold = rate.min_order_subtotal
+          break
+        elsif rate.minimum_order_subtotal != blank and rate.minimum_order_subtotal > 0
+          assign shipping_rates_threshold = rate.minimum_order_subtotal
+          break
+        elsif rate.min_order_price != blank and rate.min_order_price > 0
+          assign shipping_rates_threshold = rate.min_order_price
+          break
+        elsif rate.minimum_order_price != blank and rate.minimum_order_price > 0
+          assign shipping_rates_threshold = rate.minimum_order_price
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  assign shop_threshold = null
+  if shop.free_shipping_threshold != blank
+    assign shop_threshold = shop.free_shipping_threshold.value | default: shop.free_shipping_threshold
+  elsif shop.metafields.shipping.free_shipping_threshold != blank
+    assign shop_threshold = shop.metafields.shipping.free_shipping_threshold.value | default: shop.metafields.shipping.free_shipping_threshold
+  elsif shop.metafields.custom.free_shipping_threshold != blank
+    assign shop_threshold = shop.metafields.custom.free_shipping_threshold.value | default: shop.metafields.custom.free_shipping_threshold
+  elsif shop.metafields.globals.free_shipping_threshold != blank
+    assign shop_threshold = shop.metafields.globals.free_shipping_threshold.value | default: shop.metafields.globals.free_shipping_threshold
+  endif
+
+  if shipping_rates_threshold != blank
+    assign raw_threshold = shipping_rates_threshold
+    assign is_already_cents = true
+  elsif shop_threshold != blank
+    assign raw_threshold = shop_threshold
+    assign is_already_cents = false
+  elsif settings.free_shipping_threshold != blank
+    assign raw_threshold = settings.free_shipping_threshold
+    assign is_already_cents = false
   else
-    assign threshold_cents = threshold_num
+    assign raw_threshold = 50
+    assign is_already_cents = false
+  endif
+
+  assign threshold_num = raw_threshold | plus: 0.0
+
+  if is_already_cents
+    assign threshold_cents = threshold_num | round
+  elsif threshold_num < 500
+    assign threshold_cents = threshold_num | times: 100 | round
+  else
+    assign threshold_cents = threshold_num | round
   endif
 
   assign cart_total = cart.total_price | default: 0
 
-  if cart_total >= threshold_cents
+  if threshold_cents <= 0 or cart_total >= threshold_cents
     assign is_free_shipping = true
     assign progress_pct = 100
     assign remaining_cents = 0
