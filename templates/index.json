@@ -323,7 +323,7 @@
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Capsules · Ginger",
             "description": "",
-            "sub_multiplier": 4
+            "sub_multiplier": 1
           }
         },
         "accordion_QDyHNQ": {
