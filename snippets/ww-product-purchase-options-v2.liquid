@@ -35,14 +35,34 @@
       endif
     endif
 
-    # 2. Identify Appstle Selling Plan on 2-Pack variant
+    # Dynamic pack badge names from variant title
+    if variant_2_pack.title != blank and variant_2_pack.title != 'Default Title'
+      assign sub_packs = variant_2_pack.title
+    else
+      assign sub_packs = '2 Packs'
+    endif
+
+    if variant_1_pack.title != blank and variant_1_pack.title != 'Default Title'
+      assign one_time_packs = variant_1_pack.title
+    else
+      assign one_time_packs = '1 Pack'
+    endif
+
+    # 2. Identify Appstle Selling Plan & Group on 2-Pack variant
     assign sub_allocation = null
+    assign sub_plan = null
+    assign sub_group = null
+
     if variant_2_pack != blank and variant_2_pack.selling_plan_allocations.size > 0
       assign sub_allocation = variant_2_pack.selling_plan_allocations[0]
       assign sub_plan = sub_allocation.selling_plan
-    elsif current_prod.selling_plan_groups.size > 0
+      assign sub_group = sub_allocation.selling_plan_group
+    endif
+
+    if sub_plan == null and current_prod.selling_plan_groups.size > 0
       for group in current_prod.selling_plan_groups
         if group.selling_plans.size > 0
+          assign sub_group = group
           assign sub_plan = group.selling_plans[0]
           break
         endif
@@ -51,13 +71,14 @@
 
     # 3. Base Servings
     assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15
-    assign servings_1_pack = base_servings
-    assign servings_2_pack = base_servings | times: 2
+    assign servings_1_pack = base_servings | at_least: 1
+    assign servings_2_pack = base_servings | times: 2 | at_least: 1
 
     # 4. Prices for 1-Pack (One-Time)
     assign price_1_pack = variant_1_pack.price
     assign compare_price_1_pack = variant_1_pack.compare_at_price
-    assign serving_rate_1_pack = price_1_pack | times: 1.0 | divided_by: servings_1_pack | round | money
+    # Precise per-serving price calculation ($29.99 / 15 -> $1.99 instead of $2.00)
+    assign serving_rate_1_pack = price_1_pack | times: 1.0 | divided_by: servings_1_pack | floor | money
 
     # 5. Prices for 2-Pack (Subscribe & Save)
     if variant_2_pack.price > 0
@@ -72,8 +93,8 @@
       assign adjustment = sub_plan.price_adjustments[0]
       if adjustment.value_type == 'percentage'
         assign discount_percentage = adjustment.value
-        assign discount_amount = compare_price_2_pack | times: discount_percentage | divided_by: 100
-        assign sub_price = compare_price_2_pack | minus: discount_amount
+        assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+        assign sub_price = compare_price_2_pack | times: discount_factor | round
       elsif adjustment.value_type == 'fixed_amount'
         assign sub_price = compare_price_2_pack | minus: adjustment.value
       elsif adjustment.value_type == 'price'
@@ -83,11 +104,12 @@
       endif
     else
       # Default to 10% discount ($59.98 -> $53.99)
-      assign discount_amount = compare_price_2_pack | times: 10 | divided_by: 100
-      assign sub_price = compare_price_2_pack | minus: discount_amount
+      assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0
+      assign sub_price = compare_price_2_pack | times: discount_factor | round
     endif
 
-    assign serving_rate_2_pack = sub_price | times: 1.0 | divided_by: servings_2_pack | round | money
+    # Precise per-serving price calculation ($53.99 / 30 -> $1.79)
+    assign serving_rate_2_pack = sub_price | times: 1.0 | divided_by: servings_2_pack | floor | money
 
     # Plan details & frequency text
     assign plan_name = sub_plan.name | default: 'Delivered every 30 days'
@@ -107,7 +129,15 @@
       data-variant-id="{{ variant_2_pack.id }}"
       data-selling-plan-id="{{ sub_plan.id }}"
     >
-      <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
+      {%- if sub_plan.price_adjustments.size > 0 -%}
+        {%- if sub_plan.price_adjustments[0].value_type == 'percentage' -%}
+          <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value }}% + free shipping</span>
+        {%- else -%}
+          <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value | money }} + free shipping</span>
+        {%- endif -%}
+      {%- else -%}
+        <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
+      {%- endif -%}
 
       <span class="ww-sub-opt__content">
         <span class="ww-sub-opt__row">
@@ -122,6 +152,7 @@
               data-selling-plan-id="{{ sub_plan.id }}"
               data-price="{{ sub_price | money }}"
               data-compare-price="{{ compare_price_2_pack | money }}"
+              aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
               checked
             >
             <span class="ww-sub-opt__radio-bullet"></span>
@@ -130,16 +161,24 @@
           <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-sub" class="ww-sub-opt__details">
             <span class="ww-sub-opt__title">
               Subscribe & Save
-              <span class="ww-sub-opt__pack-badge">2 Packs</span>
+              <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
             </span>
             <span class="ww-sub-opt__servings">
               <strong>{{ servings_2_pack }} servings · </strong>{{ plan_name }}
             </span>
 
-            <span class="ww-sub-opt__perks">
-              <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
-              <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
-            </span>
+            {%- if sub_plan.description != blank -%}
+              <span class="ww-sub-opt__plan-desc">{{ sub_plan.description }}</span>
+            {%- elsif sub_group.description != blank -%}
+              <span class="ww-sub-opt__perks">
+                <span class="ww-sub-opt__perk">{{ sub_group.description }}</span>
+              </span>
+            {%- else -%}
+              <span class="ww-sub-opt__perks">
+                <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
+                <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
+              </span>
+            {%- endif -%}
           </label>
 
           <span class="ww-sub-opt__price-container">
@@ -177,6 +216,7 @@
               data-selling-plan-id=""
               data-price="{{ price_1_pack | money }}"
               data-compare-price="{% if compare_price_1_pack > price_1_pack %}{{ compare_price_1_pack | money }}{% endif %}"
+              aria-label="One-Time Purchase {{ one_time_packs }}, {{ price_1_pack | money }}"
             >
             <span class="ww-sub-opt__radio-bullet"></span>
           </span>
@@ -184,7 +224,7 @@
           <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime" class="ww-sub-opt__details">
             <span class="ww-sub-opt__title">
               One-Time Purchase
-              <span class="ww-sub-opt__pack-badge">1 Pack</span>
+              <span class="ww-sub-opt__pack-badge">{{ one_time_packs | escape }}</span>
             </span>
             <span class="ww-sub-opt__servings">{{ servings_1_pack }} servings · delivered once</span>
           </label>
@@ -361,22 +401,41 @@
       font-weight: 700;
     }
 
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc {
+      font-size: 12px;
+      color: var(--charcoal-light, #5A5A5A);
+      line-height: 1.35;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc p {
+      margin-bottom: 0;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul,
     .ww-purchase-options--v2 .ww-sub-opt__perks {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
       margin-top: 10px;
     }
 
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul li,
     .ww-purchase-options--v2 .ww-sub-opt__perk {
       font-size: 0.82rem;
       color: var(--charcoal, #1A1A1A);
       display: flex;
       align-items: center;
       gap: 8px;
-      line-height: 14px;
+      line-height: 15px;
     }
 
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul li::before,
     .ww-purchase-options--v2 .ww-sub-opt__perk::before {
       content: "";
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e8632b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5 5L20 6.5'/%3E%3C/svg%3E");
