@@ -363,7 +363,7 @@
             "product": "immune-support",
             "title": "{{ block.settings.product.title }}",
             "subtitle": "Powder · Vitamin C",
-            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere.",
+            "description": "",
             "sub_multiplier": 1
           }
         },
