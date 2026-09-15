@@ -1,0 +1,968 @@
+{% comment %}
+  Section: WW Products Hub (Variant Architecture - Method 1)
+  Description: Duplicated product hub testing Native Variant Architecture.
+  - Variant A: 1 Pack ($29.99)
+  - Variant B: 2 Pack ($59.98)
+  - Appstle Subscription Plan strictly attached to 2-Pack ($53.99, save 10%)
+  - Custom UI pairing with 2 radio options
+  - Locks PDP quantity to 1 when Subscribe & Save is active
+{% endcomment %}
+
+{{ 'ww-product.css' | asset_url | stylesheet_tag }}
+{% render 'add-to-cart-button-styles' %}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  {%- if section.settings.layout_width == 'full' -%}
+    .section-{{ section.id }} .container {
+      max-width: none !important;
+      width: 100%;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<section id="ww-product-hub" class="ww-products ww-products--v2 section-{{ section.id }}" {{ section.shopify_attributes }}>
+  <div class="container">
+    <div class="products-header">
+      {%- if section.settings.label != blank -%}
+        <span id="ww-products" class="section-label">{{ section.settings.label | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="section-subtitle">{{ section.settings.subheading | newline_to_br }}</p>
+      {%- endif -%}
+
+      <div class="products-badges">
+        {%- if section.settings.badge_1_text != blank -%}
+          <span class="product-badge">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 21v-9"></path>
+              <path d="M12 12c0-4 -3-6-7-6 0 4 3 6 7 6z"></path>
+              <path d="M12 12c0-5 3-8 8-8 0 5-3 8-8 8z"></path>
+            </svg>
+            {{ section.settings.badge_1_text | escape }}
+          </span>
+        {%- endif -%}
+        {%- if section.settings.badge_2_text != blank -%}
+          <span class="product-badge">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+            {{ section.settings.badge_2_text | escape }}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="ww-shop">
+      {%- assign default_tab_id = '' -%}
+      {%- assign first_tab_id = '' -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'product_tab' -%}
+          {%- if first_tab_id == '' -%}
+            {%- assign first_tab_id = block.id -%}
+          {%- endif -%}
+          {%- assign p_obj = block.settings.product -%}
+          {%- if p_obj.selling_plan_groups.size > 0 and default_tab_id == '' -%}
+            {%- assign default_tab_id = block.id -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if default_tab_id == '' -%}
+        {%- assign default_tab_id = first_tab_id -%}
+      {%- endif -%}
+
+      <div class="ww-seg-wrap">
+        <div class="ww-seg" role="tablist" aria-label="Choose a product">
+          <span class="ww-seg-ind" aria-hidden="true"></span>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'product_tab' -%}
+              {%- assign current_prod = block.settings.product -%}
+              {%- assign title = block.settings.title | default: current_prod.title -%}
+              {%- assign subtitle = block.settings.subtitle
+                | default: current_prod.metafields.custom.subtitle.value
+                | default: current_prod.metafields.custom.subtitle
+              -%}
+              <button
+                class="ww-seg-btn {% if block.id == default_tab_id %}on{% endif %}"
+                data-prod="block-{{ block.id }}"
+                role="tab"
+                {{ block.shopify_attributes }}
+              >
+                {{ title | escape }}
+                <span class="ww-seg-sub">{{ subtitle | escape }}</span>
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'product_tab' -%}
+          {%- assign current_prod = block.settings.product -%}
+          {%- assign key = 'block-' | append: block.id -%}
+
+          {%- assign title = block.settings.title | default: current_prod.title -%}
+          {%- assign subtitle = block.settings.subtitle
+            | default: current_prod.metafields.custom.subtitle.value
+            | default: current_prod.metafields.custom.subtitle
+          -%}
+          {%- assign desc = block.settings.description | default: current_prod.description -%}
+
+          <div
+            class="ww-panel {% if block.id == default_tab_id %}on{% endif %}"
+            data-prod="{{ key }}"
+            role="tabpanel"
+            {{ block.shopify_attributes }}
+          >
+            <div class="ww-panel-inner">
+              <div class="ww-media">
+                <div class="ww-media-main">
+                  <div class="ww-media-stage">
+                    {%- assign product_images = current_prod.images -%}
+
+                    {%- if product_images.size > 0 -%}
+                      {%- for image in product_images limit: 4 -%}
+                        {%- assign slide_alt = image.alt | default: title | default: shop.name -%}
+                        <div class="ww-media-slide {% if forloop.first %}is-on{% endif %}">
+                          {{
+                            image
+                            | image_url: width: 800
+                            | image_tag:
+                              widths: '320, 480, 640, 800',
+                              sizes: '(max-width: 768px) 90vw, 520px',
+                              loading: 'lazy',
+                              decoding: 'async',
+                              alt: slide_alt
+                          }}
+                        </div>
+                      {%- endfor -%}
+                    {%- else -%}
+                      <div class="ww-media-slide is-on">
+                        {%- if settings.logo_inverse != blank -%}
+                          {{
+                            settings.logo_inverse
+                            | image_url: width: 400
+                            | image_tag: class: 'ww-media-logo', loading: 'lazy', decoding: 'async', alt: shop.name
+                          }}
+                        {%- endif -%}
+                      </div>
+                      <div class="ww-media-slide"></div>
+                      <div class="ww-media-slide"></div>
+                      <div class="ww-media-slide"></div>
+                    {%- endif -%}
+                  </div>
+
+                  {%- assign has_multiple_images = false -%}
+                  {%- if product_images.size > 1 -%}
+                    {%- assign has_multiple_images = true -%}
+                  {%- endif -%}
+
+                  {%- if has_multiple_images -%}
+                    <button class="ww-media-nav ww-media-nav--prev" type="button" aria-label="Previous image">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M15 5l-7 7 7 7"></path>
+                      </svg>
+                    </button>
+                    <button class="ww-media-nav ww-media-nav--next" type="button" aria-label="Next image">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    </button>
+                  {%- endif -%}
+                </div>
+
+                <div class="ww-media-thumbs" role="tablist" aria-label="Product image thumbnails">
+                  {%- if product_images.size > 0 -%}
+                    {%- for image in product_images limit: 4 -%}
+                      {%- assign thumb_alt = image.alt
+                        | default: title
+                        | default: shop.name
+                        | default: 'Product thumbnail'
+                      -%}
+                      <div
+                        class="ww-media-thumb {% if forloop.first %}is-active{% endif %}"
+                        role="tab"
+                        tabindex="0"
+                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                        aria-label="Thumbnail {{ forloop.index }} of {{ product_images.size }}"
+                      >
+                        {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: thumb_alt }}
+                      </div>
+                    {%- endfor -%}
+                  {%- else -%}
+                    <div
+                      class="ww-media-thumb is-active"
+                      role="tab"
+                      tabindex="0"
+                      aria-selected="true"
+                      aria-label="Product thumbnail 1"
+                    ></div>
+                    <div
+                      class="ww-media-thumb"
+                      role="tab"
+                      tabindex="0"
+                      aria-selected="false"
+                      aria-label="Product thumbnail 2"
+                    ></div>
+                    <div
+                      class="ww-media-thumb"
+                      role="tab"
+                      tabindex="0"
+                      aria-selected="false"
+                      aria-label="Product thumbnail 3"
+                    ></div>
+                    <div
+                      class="ww-media-thumb"
+                      role="tab"
+                      tabindex="0"
+                      aria-selected="false"
+                      aria-label="Product thumbnail 4"
+                    ></div>
+                  {%- endif -%}
+                </div>
+              </div>
+
+              <div class="ww-detail">
+                <div class="ww-detail-eyebrow">{{ title | escape }} · {{ subtitle | escape }}</div>
+                <h3 class="ww-detail-title">{{ title | escape }}</h3>
+
+                {%- if desc != blank -%}
+                  <p class="ww-detail-lede">{{ desc }}</p>
+                {%- endif -%}
+
+                {%- if current_prod != blank -%}
+                  <div class="ww-buy">
+                    {%- liquid
+                      # Identify 1-pack and 2-pack variants
+                      assign v_1_pack = null
+                      assign v_2_pack = null
+                      for v in current_prod.variants
+                        assign vt = v.title | downcase
+                        if vt contains '2' or vt contains 'two' or vt contains 'double' or vt contains 'pair'
+                          assign v_2_pack = v
+                        elsif vt contains '1' or vt contains 'one' or vt contains 'single'
+                          assign v_1_pack = v
+                        endif
+                      endfor
+
+                      if v_1_pack == null and current_prod.variants.size > 0
+                        assign v_1_pack = current_prod.variants[0]
+                      endif
+                      if v_2_pack == null
+                        if current_prod.variants.size > 1
+                          assign v_2_pack = current_prod.variants[1]
+                        else
+                          assign v_2_pack = v_1_pack
+                        endif
+                      endif
+
+                      # Initial selling plan for 2-pack
+                      assign init_sub_plan_id = ''
+                      if v_2_pack != blank and v_2_pack.selling_plan_allocations.size > 0
+                        assign init_sub_plan_id = v_2_pack.selling_plan_allocations[0].selling_plan.id
+                      elsif current_prod.selling_plan_groups.size > 0
+                        assign init_sub_plan_id = current_prod.selling_plan_groups[0].selling_plans[0].id
+                      endif
+
+                      # Default to 2-pack variant ID for Subscribe & Save initial selection
+                      assign initial_variant_id = v_2_pack.id | default: current_prod.selected_or_first_available_variant.id
+                    -%}
+
+                    {%- assign product_form_id = 'ww-product-form-' | append: block.id -%}
+                    <product-form-component
+                      data-section-id="{{ section.id }}"
+                      data-product-id="{{ current_prod.id }}"
+                      data-product-url="{{ current_prod.url }}"
+                      on:submit="/handleSubmit"
+                      data-quantity-default="1"
+                    >
+                      <div
+                        class="visually-hidden"
+                        aria-live="assertive"
+                        role="status"
+                        aria-atomic="true"
+                        ref="liveRegion"
+                      ></div>
+                      {%- form 'product',
+                        current_prod,
+                        id: product_form_id,
+                        class: 'ww-product-form ww-product-form--v2',
+                        data-type: 'add-to-cart-form'
+                      -%}
+                        <input
+                          type="hidden"
+                          name="id"
+                          ref="variantId"
+                          value="{{ initial_variant_id }}"
+                          class="ww-variant-id-input"
+                        >
+                        <input
+                          type="hidden"
+                          name="selling_plan"
+                          value="{{ init_sub_plan_id }}"
+                          class="ww-selling-plan-input"
+                          {% if init_sub_plan_id == blank %}
+                            disabled
+                          {% endif %}
+                        >
+                        <input type="hidden" name="quantity" value="1" class="ww-qty-input">
+
+                        {% render 'ww-product-purchase-options-v2', current_prod: current_prod, block: block %}
+
+                        <span class="product-form-text__error hidden" ref="addToCartTextError">
+                          <span class="svg-wrapper">
+                            {{- 'icon-error.svg' | inline_asset_content -}}
+                          </span>
+                        </span>
+
+                        <div class="ww-buy-row">
+                          <div class="ww-qty" style="display: none;">
+                            <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
+                            <span class="v">1</span>
+                            <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
+                          </div>
+
+                          {%- assign add_to_cart_text = 'products.product.add_to_cart' | t -%}
+                          {%- if current_prod.available == false -%}
+                            {%- assign add_to_cart_text = 'products.product.sold_out' | t -%}
+                          {%- endif -%}
+
+                          {% render 'add-to-cart-button',
+                            product: current_prod,
+                            can_add_to_cart: current_prod.available,
+                            show_icon: true,
+                            add_to_cart_text: add_to_cart_text,
+                            class: 'add-to-cart-button ww-add'
+                          %}
+                        </div>
+                      {%- endform -%}
+                    </product-form-component>
+
+                    <div class="ww-buy-trust">
+                      <span>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M9 12l2 2 4-4"></path>
+                          <circle cx="12" cy="12" r="9"></circle>
+                        </svg>
+                        Free shipping $50+
+                      </span>
+                      <span>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+                          <polyline points="9 12 11 14 15 10"></polyline>
+                        </svg>
+                        3rd-party tested
+                      </span>
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+
+            <div class="ww-info">
+              {%- assign found_our_tab = false -%}
+              {%- for sub_block in section.blocks -%}
+                {%- if sub_block.id == block.id -%}
+                  {%- assign found_our_tab = true -%}
+                {%- elsif sub_block.type == 'product_tab' -%}
+                  {%- if found_our_tab -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- if found_our_tab and sub_block.type == 'accordion' -%}
+                  {%- assign acc_title = sub_block.settings.title | default: 'Ingredients' -%}
+                  {%- assign acc_type = sub_block.settings.content_type -%}
+                  {%- assign acc_content = '' -%}
+
+                  {%- if acc_type == 'custom' -%}
+                    {%- assign acc_content = sub_block.settings.content -%}
+                  {%- elsif acc_type == 'ingredients' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-ingredients', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'bundle' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-bundle', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'supplement_facts' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-supplement-facts', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'capsule_size' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-capsule', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- endif -%}
+
+                  {%- assign show_acc = false -%}
+                  {%- if acc_content != blank -%}
+                    {%- assign show_acc = true -%}
+                  {%- endif -%}
+
+                  {%- if show_acc -%}
+                    <details class="ww-acc" {{ sub_block.shopify_attributes }}>
+                      <summary>
+                        <span class="ww-acc-plus">+</span>
+                        <span class="ww-acc-t">{{ acc_title | escape }}</span>
+                        {%- if sub_block.settings.items_count != blank -%}
+                          <span class="ww-acc-c">{{ sub_block.settings.items_count | escape }}</span>
+                        {%- elsif acc_type == 'ingredients' -%}
+                          {%- assign ingredients_list = current_prod.metafields.custom.ingredients.value -%}
+                          {%- if ingredients_list != blank -%}
+                            <span class="ww-acc-c">{{ ingredients_list.size }} items</span>
+                          {%- endif -%}
+                        {%- elsif acc_type == 'bundle' -%}
+                          {%- assign bundle_products = blank -%}
+                          {%- assign bundle_rules = shop.metafields.appstle_bundles.bundle_rules.value -%}
+                          {%- if bundle_rules != blank -%}
+                            {%- for rule in bundle_rules -%}
+                              {%- if rule.bundleProductId == current_prod.id or rule.productId == current_prod.id -%}
+                                {%- assign bundle_products = rule.products -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                          {%- if bundle_products != blank -%}
+                            {%- capture products_str -%}{{ bundle_products }}{%- endcapture -%}
+                            {%- assign parts = products_str | split: '"productHandle":"' -%}
+                            {%- assign parts_size = parts.size | minus: 1 -%}
+                            {%- if parts_size > 0 -%}
+                              <span class="ww-acc-c">{{ parts_size }} products</span>
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                      </summary>
+                      <div class="ww-acc-body">
+                        {{ acc_content }}
+                      </div>
+                    </details>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if section.settings.trust_heading != blank -%}
+                <div class="ww-info-trust">
+                  <div class="ww-info-trust-h">{{ section.settings.trust_heading | escape }}</div>
+                  <div class="ww-info-trust-grid">
+                    {%- if section.settings.trust_item_1_title != blank
+                      or section.settings.trust_item_1_text != blank
+                    -%}
+                      <div>
+                        {%- if section.settings.trust_item_1_title != blank -%}
+                          <h4>{{ section.settings.trust_item_1_title | escape }}</h4>
+                        {%- endif -%}
+                        {%- if section.settings.trust_item_1_text != blank -%}
+                          <p>{{ section.settings.trust_item_1_text | escape }}</p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if section.settings.trust_item_2_title != blank
+                      or section.settings.trust_item_2_text != blank
+                    -%}
+                      <div>
+                        {%- if section.settings.trust_item_2_title != blank -%}
+                          <h4>{{ section.settings.trust_item_2_title | escape }}</h4>
+                        {%- endif -%}
+                        {%- if section.settings.trust_item_2_text != blank -%}
+                          <p>{{ section.settings.trust_item_2_text | escape }}</p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+            <!-- Close .ww-info -->
+          </div>
+          <!-- Close .ww-panel -->
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.enable_sticky_add_to_cart != false -%}
+  <div class="ww-sticky-bar" id="ww-sticky-bar" data-section-id="{{ section.id }}" data-active="false">
+    <div class="ww-sticky-bar__inner container">
+      <div class="ww-sticky-bar__info">
+        <div class="ww-sticky-bar__title-row">
+          <h4 class="ww-sticky-bar__title"></h4>
+          <button
+            type="button"
+            class="ww-sticky-bar__product-toggle"
+            aria-label="Switch product"
+            title="Switch product"
+          >
+            <svg
+              class="ww-sticky-bar__toggle-icon"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"></path>
+            </svg>
+            <span class="ww-sticky-bar__toggle-text">Switch</span>
+          </button>
+        </div>
+        <div class="ww-sticky-bar__option-trigger">
+          <span class="ww-sticky-bar__price"></span>
+          <span class="ww-sticky-bar__separator">·</span>
+          <span class="ww-sticky-bar__option-text"></span>
+          <button type="button" class="ww-sticky-bar__change-btn">CHANGE <span class="arrow">▲</span></button>
+        </div>
+
+        <!-- Option selector popover -->
+        <div class="ww-sticky-bar__popover">
+          <!-- Dynamic options will be rendered by JS -->
+        </div>
+      </div>
+
+      <div class="ww-sticky-bar__actions">
+        <button type="button" class="add-to-cart-button ww-sticky-bar__add-btn">
+          <span aria-hidden="true" class="svg-wrapper add-to-cart-icon">
+            {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+          </span>
+          <span class="ww-sticky-bar__add-btn-text">Add to cart</span>
+          <span class="add-to-cart__added">
+            <span class="svg-wrapper add-to-cart__added-icon">
+              {{- 'icon-checkmark-burst.svg' | inline_asset_content -}}
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<script src="{{ 'ww-product.js' | asset_url }}" defer></script>
+<script>
+  (function () {
+    function initVariantArchitectureV2(root) {
+      var scope = root || document;
+      var forms = scope.querySelectorAll('.section-{{ section.id }} .ww-product-form');
+      forms.forEach(function (form) {
+        if (form.__wwV2Init) return;
+        form.__wwV2Init = true;
+
+        var variantInput = form.querySelector('input[name="id"]');
+        var sellingPlanInput = form.querySelector('input.ww-selling-plan-input');
+        var qtyContainer = form.querySelector('.ww-qty');
+        var qtyInput = form.querySelector('.ww-qty-input');
+        var qtyVal = form.querySelector('.ww-qty .v');
+
+        function updateQuantityState() {
+          var selectedRadio = form.querySelector('input[type="radio"][name^="purchase_type"]:checked');
+          if (!selectedRadio) return;
+
+          var optCard = selectedRadio.closest('.ww-sub-opt');
+          var container = selectedRadio.closest('.ww-purchase-options');
+          if (container) {
+            container.querySelectorAll('.ww-sub-opt').forEach(function (card) {
+              card.classList.remove('on');
+            });
+          }
+          if (optCard) {
+            optCard.classList.add('on');
+          }
+
+          var isSub = selectedRadio.value === 'subscription';
+          var varId = selectedRadio.getAttribute('data-variant-id');
+          var planId = selectedRadio.getAttribute('data-selling-plan-id');
+
+          // Update hidden form inputs
+          if (variantInput && varId) {
+            variantInput.value = varId;
+            variantInput.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+
+          if (sellingPlanInput) {
+            if (isSub && planId) {
+              sellingPlanInput.value = planId;
+              sellingPlanInput.removeAttribute('disabled');
+            } else {
+              sellingPlanInput.value = '';
+              sellingPlanInput.setAttribute('disabled', 'disabled');
+            }
+          }
+
+          // Quantity restriction handling
+          if (qtyContainer && qtyInput) {
+            if (isSub) {
+              qtyInput.value = '1';
+              if (qtyVal) qtyVal.textContent = '1';
+              qtyContainer.style.display = 'none';
+            } else {
+              qtyContainer.style.display = 'flex';
+            }
+          }
+        }
+
+        // Add event listeners to radio options
+        var radios = form.querySelectorAll('input[type="radio"][name^="purchase_type"]');
+        radios.forEach(function (radio) {
+          radio.addEventListener('change', updateQuantityState);
+        });
+
+        // Delegate whole card clicks to the corresponding radio input
+        var cards = form.querySelectorAll('.ww-sub-opt');
+        cards.forEach(function (card) {
+          card.addEventListener('click', function (e) {
+            var radio = card.querySelector('input[type="radio"][name^="purchase_type"]');
+            if (radio && !radio.checked) {
+              radio.checked = true;
+              radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        });
+
+        // Run initial synchronization
+        updateQuantityState();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        initVariantArchitectureV2();
+      });
+    } else {
+      initVariantArchitectureV2();
+    }
+
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target && e.target.classList.contains('section-{{ section.id }}')) {
+        initVariantArchitectureV2(e.target);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WW Products Hub (Variant Architecture)",
+  "tag": "section",
+  "class": "ww-section-products ww-section-products--v2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Our Products"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Made to travel with you"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Each product comes in individually-sealed sachets.\nDesigned to toss in your bag and take on the go."
+    },
+    {
+      "type": "text",
+      "id": "badge_1_text",
+      "label": "Badge 1 Label",
+      "default": "Plant-based"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_text",
+      "label": "Badge 2 Label",
+      "default": "3rd-party tested"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "layout_width",
+      "label": "Section Width",
+      "options": [
+        { "value": "page", "label": "Page width (max 1200px)" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "page"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Trust / Quality Badges Settings"
+    },
+    {
+      "type": "text",
+      "id": "trust_heading",
+      "label": "Trust Section Heading",
+      "default": "Commitment to Quality"
+    },
+    {
+      "type": "text",
+      "id": "trust_item_1_title",
+      "label": "Trust Item 1 Title",
+      "default": "Third-party testing"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_item_1_text",
+      "label": "Trust Item 1 Text",
+      "default": "Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications."
+    },
+    {
+      "type": "text",
+      "id": "trust_item_2_title",
+      "label": "Trust Item 2 Title",
+      "default": "Manufacturing excellence"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_item_2_text",
+      "label": "Trust Item 2 Text",
+      "default": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_add_to_cart",
+      "label": "Enable Sticky Add to Cart",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "product_tab",
+      "name": "Product Tab",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title",
+          "default": "Digestive Support"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Custom Subtitle",
+          "default": "Capsules · Ginger"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere."
+        },
+        {
+          "type": "range",
+          "id": "sub_multiplier",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "label": "Subscription Pack Multiplier",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Ingredients"
+        },
+        {
+          "type": "text",
+          "id": "items_count",
+          "label": "Badge Count (e.g. \"4 items\")"
+        },
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Content Source",
+          "options": [
+            { "value": "ingredients", "label": "Ingredients list (Default Template)" },
+            { "value": "bundle", "label": "What's Inside (Bundle Products)" },
+            { "value": "supplement_facts", "label": "Product Information / Facts (Default Template)" },
+            { "value": "capsule_size", "label": "Capsule Size Scale Graphic" },
+            { "value": "custom", "label": "Custom HTML Override" }
+          ],
+          "default": "ingredients"
+        },
+        {
+          "type": "html",
+          "id": "content",
+          "label": "Custom Content HTML"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Products Hub (Variant Architecture)",
+      "blocks": [
+        {
+          "type": "product_tab",
+          "settings": {
+            "title": "Digestive Support",
+            "subtitle": "Capsules · Ginger",
+            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere."
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "content_type": "ingredients"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "content_type": "supplement_facts"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule size",
+            "content_type": "capsule_size"
+          }
+        },
+        {
+          "type": "product_tab",
+          "settings": {
+            "title": "Immune Support",
+            "subtitle": "Powder · Vitamin C",
+            "description": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Vitamin C helps support your immune function wherever you go. One sachet mixes into water. Lightly flavored with notes of passionfruit, pineapple and citrus."
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "content_type": "ingredients"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "content_type": "supplement_facts"
+          }
+        },
+        {
+          "type": "product_tab",
+          "settings": {
+            "title": "The Travel Duo",
+            "subtitle": "Both · save up to 10%",
+            "description": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together."
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "What's inside",
+            "content_type": "ingredients"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "content_type": "supplement_facts"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule size",
+            "content_type": "capsule_size"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

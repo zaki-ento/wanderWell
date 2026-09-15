@@ -1222,6 +1222,31 @@ announcement-bar-component[paused] .ww-announcement-pause .ww-announcement-pause
   }
 }
 
+/* ── Method 1: Variant Architecture & Locked Cart Quantity ── */
+.cart-quantity-locked {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: var(--font-size--sm, 14px);
+  font-weight: 600;
+  color: var(--color-foreground, #1A1A1A);
+  background-color: rgba(44, 44, 44, 0.05);
+  border: 1px solid rgba(44, 44, 44, 0.12);
+  border-radius: 6px;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  text-align: center;
+  user-select: none;
+  line-height: 1;
+}
 
-
-
+@media (max-width: 767px) {
+  .cart-quantity-locked {
+    min-width: 34px;
+    height: 34px;
+    font-size: 13px;
+    padding: 0 8px;
+  }
+}
