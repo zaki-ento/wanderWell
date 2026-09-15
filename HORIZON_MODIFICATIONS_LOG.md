@@ -213,6 +213,7 @@ When a new version of Shopify Horizon is released:
 1. **Review Diff Against Upstream**: Run `git diff [upstream-tag] -- [file]` on the modified core code files:
    - `layout/theme.liquid`
    - `snippets/cart-drawer.liquid`
+   - `snippets/cart-summary.liquid`
    - `snippets/scripts.liquid`
    - `snippets/header-actions.liquid`
    - `assets/cart-discount.js`
