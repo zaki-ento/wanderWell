@@ -88,12 +88,9 @@
           {%- if p_obj == blank -%}
             {%- assign handle_guess = block.settings.title | handleize -%}
             {%- assign p_obj = all_products[handle_guess] -%}
-            {%- if p_obj == blank and forloop.index == 1 -%}
-              {%- assign p_obj = all_products['digestive-support'] -%}
-            {%- elsif p_obj == blank and forloop.index == 2 -%}
-              {%- assign p_obj = all_products['immune-support'] -%}
-            {%- elsif p_obj == blank and forloop.index == 3 -%}
-              {%- assign p_obj = all_products['the-travel-duo'] -%}
+            {%- if p_obj == blank and collections.all.products.size > 0 -%}
+              {%- assign prod_idx = forloop.index0 | modulo: collections.all.products.size -%}
+              {%- assign p_obj = collections.all.products[prod_idx] -%}
             {%- endif -%}
           {%- endif -%}
           {%- if p_obj.selling_plan_groups.size > 0 and default_tab_id == '' -%}
@@ -114,12 +111,9 @@
               {%- if current_prod == blank -%}
                 {%- assign handle_guess = block.settings.title | handleize -%}
                 {%- assign current_prod = all_products[handle_guess] -%}
-                {%- if current_prod == blank and forloop.index == 1 -%}
-                  {%- assign current_prod = all_products['digestive-support'] -%}
-                {%- elsif current_prod == blank and forloop.index == 2 -%}
-                  {%- assign current_prod = all_products['immune-support'] -%}
-                {%- elsif current_prod == blank and forloop.index == 3 -%}
-                  {%- assign current_prod = all_products['the-travel-duo'] -%}
+                {%- if current_prod == blank and collections.all.products.size > 0 -%}
+                  {%- assign prod_idx = forloop.index0 | modulo: collections.all.products.size -%}
+                  {%- assign current_prod = collections.all.products[prod_idx] -%}
                 {%- endif -%}
               {%- endif -%}
               {%- assign title = block.settings.title | default: current_prod.title -%}
@@ -147,12 +141,9 @@
           {%- if current_prod == blank -%}
             {%- assign handle_guess = block.settings.title | handleize -%}
             {%- assign current_prod = all_products[handle_guess] -%}
-            {%- if current_prod == blank and forloop.index == 1 -%}
-              {%- assign current_prod = all_products['digestive-support'] -%}
-            {%- elsif current_prod == blank and forloop.index == 2 -%}
-              {%- assign current_prod = all_products['immune-support'] -%}
-            {%- elsif current_prod == blank and forloop.index == 3 -%}
-              {%- assign current_prod = all_products['the-travel-duo'] -%}
+            {%- if current_prod == blank and collections.all.products.size > 0 -%}
+              {%- assign prod_idx = forloop.index0 | modulo: collections.all.products.size -%}
+              {%- assign current_prod = collections.all.products[prod_idx] -%}
             {%- endif -%}
           {%- endif -%}
           {%- assign key = 'block-' | append: block.id -%}
@@ -294,7 +285,7 @@
                       assign initial_variant_id = current_variant.id
 
                       assign is_bundle = false
-                      if current_prod.type == 'Bundle' or current_prod.handle == 'the-travel-duo'
+                      if current_prod.type == 'Bundle'
                         assign is_bundle = true
                       endif
 
