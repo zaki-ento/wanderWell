@@ -313,6 +313,151 @@
         "enable_sticky_add_to_cart": true
       }
     },
+    "ww_product_v2": {
+      "type": "ww-product-v2",
+      "blocks": {
+        "product_tab_YibUzB": {
+          "type": "product_tab",
+          "settings": {
+            "product": "digestive-support",
+            "title": "{{ block.settings.product.title }}",
+            "subtitle": "Capsules · Ginger",
+            "description": "",
+            "sub_multiplier": 1
+          }
+        },
+        "accordion_QDyHNQ": {
+          "type": "accordion",
+          "name": "Digestive Product",
+          "settings": {
+            "title": "Ingredients",
+            "items_count": "4 Items",
+            "content_type": "ingredients",
+            "content": "hh"
+          }
+        },
+        "accordion_6QwgTW": {
+          "type": "accordion",
+          "name": "Digestive Product",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "2 items",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
+        "accordion_QG3q6V": {
+          "type": "accordion",
+          "name": "Digestive Product",
+          "settings": {
+            "title": "Capsule size",
+            "items_count": "",
+            "content_type": "capsule_size",
+            "content": ""
+          }
+        },
+        "product_tab_i94QCt": {
+          "type": "product_tab",
+          "name": "Product Tab",
+          "settings": {
+            "product": "immune-support",
+            "title": "{{ block.settings.product.title }}",
+            "subtitle": "Powder · Vitamin C",
+            "description": "Travel can bring on digestive discomfort during or after a trip: bloating, irregularity, an upset stomach. Organic ginger root extract helps keep digestion steady wherever you're headed. We made the capsule small on purpose, so it's easy to take anywhere.",
+            "sub_multiplier": 1
+          }
+        },
+        "accordion_Y6PeRJ": {
+          "type": "accordion",
+          "name": "Immune Product",
+          "settings": {
+            "title": "Ingredients",
+            "items_count": "6 items",
+            "content_type": "ingredients",
+            "content": ""
+          }
+        },
+        "accordion_KGRFRR": {
+          "type": "accordion",
+          "name": "Immune Product",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
+        "product_tab_6ncFYp": {
+          "type": "product_tab",
+          "settings": {
+            "product": "the-travel-duo",
+            "title": "{{ block.settings.product.title }}",
+            "subtitle": "Both · Save upto 10%",
+            "description": "",
+            "sub_multiplier": 1
+          }
+        },
+        "accordion_RaV7PR": {
+          "type": "accordion",
+          "name": "Duo Product",
+          "settings": {
+            "title": "what's inside",
+            "items_count": "",
+            "content_type": "bundle",
+            "content": ""
+          }
+        },
+        "accordion_PHtdAa": {
+          "type": "accordion",
+          "name": "Duo Product",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
+        "accordion_y9kEnR": {
+          "type": "accordion",
+          "name": "Duo Product",
+          "settings": {
+            "title": "Capsule Size",
+            "items_count": "",
+            "content_type": "capsule_size",
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_tab_YibUzB",
+        "accordion_QDyHNQ",
+        "accordion_6QwgTW",
+        "accordion_QG3q6V",
+        "product_tab_i94QCt",
+        "accordion_Y6PeRJ",
+        "accordion_KGRFRR",
+        "product_tab_6ncFYp",
+        "accordion_RaV7PR",
+        "accordion_PHtdAa",
+        "accordion_y9kEnR"
+      ],
+      "settings": {
+        "label": "Our Products",
+        "heading": "Made to travel with you",
+        "subheading": "Each product comes in individually-sealed sachets.\nDesigned to toss in your bag and take on the go.",
+        "badge_1_text": "Plant-based",
+        "badge_2_text": "3rd-party tested",
+        "layout_width": "page",
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "trust_heading": "Commitment to Quality",
+        "trust_item_1_title": "Third-party testing",
+        "trust_item_1_text": "Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications.",
+        "trust_item_2_title": "Manufacturing excellence",
+        "trust_item_2_text": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally.",
+        "enable_sticky_add_to_cart": true
+      }
+    },
     "ww_approach": {
       "type": "ww-approach",
       "blocks": {
@@ -732,6 +877,7 @@
     "ww_hero",
     "ww_problem",
     "ww_product",
+    "ww_product_v2",
     "ww_approach",
     "ww_feedback_iKzQxh",
     "ww_faq",
