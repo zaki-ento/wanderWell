@@ -1,0 +1,69 @@
+{% comment %}
+  Snippet: WW Announcement Bar Pause Button (ADA Compliance - WCAG 2.2.2)
+  Description: Provides an accessible Play/Pause toggle control for rotating announcement slides.
+{% endcomment %}
+
+<button
+  type="button"
+  class="ww-announcement-pause"
+  data-ww-announcement-pause
+  aria-label="Pause announcement"
+  aria-pressed="false"
+  title="Pause announcement rotation"
+>
+  <span class="ww-announcement-pause__icon" aria-hidden="true">
+    <!-- Pause icon (two vertical bars) -->
+    <svg class="ww-announcement-pause__icon-pause" viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+      <rect x="5" y="4" width="4" height="16" rx="1"></rect>
+      <rect x="15" y="4" width="4" height="16" rx="1"></rect>
+    </svg>
+    <!-- Play icon (triangle) -->
+    <svg class="ww-announcement-pause__icon-play" viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+      <polygon points="6 4 20 12 6 20 6 4"></polygon>
+    </svg>
+  </span>
+</button>
+
+<script>
+  (function() {
+    function initAnnouncementPause() {
+      var btn = document.querySelector('[data-ww-announcement-pause]');
+      if (!btn) return;
+      var bar = btn.closest('announcement-bar-component') || document.querySelector('announcement-bar-component');
+      if (!bar) return;
+
+      function updateButtonState(isPaused) {
+        btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+        btn.setAttribute('aria-label', isPaused ? 'Play announcement rotation' : 'Pause announcement rotation');
+        btn.setAttribute('title', isPaused ? 'Play announcement rotation' : 'Pause announcement rotation');
+        btn.classList.toggle('is-paused', isPaused);
+      }
+
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (bar.paused) {
+          bar.play();
+          updateButtonState(false);
+        } else {
+          bar.pause();
+          updateButtonState(true);
+        }
+      });
+
+      // ADA/WCAG compliance: pause by default if user has reduced motion preference
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (typeof bar.pause === 'function') {
+          bar.pause();
+          updateButtonState(true);
+        }
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnnouncementPause);
+    } else {
+      initAnnouncementPause();
+    }
+  })();
+</script>

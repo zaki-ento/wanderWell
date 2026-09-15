@@ -23,6 +23,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 | `assets/icon-add-to-cart.svg` | Core Asset / Icon | Brand Design | Replaced Horizon default add-to-cart icon with WanderWell v3 custom cart SVG |
 | `config/settings_schema.json` | Configuration | Brand Token | Added WanderWell brand group; set default background to `#F2EDE4` |
 | `config/settings_data.json` | Configuration | Customizer Data | Configured brand typography, palette, logo sizes, and block states |
+| `sections/header-announcements.liquid` | Core Section | Accessibility / ADA | Rendered `ww-announcement-pause` for WCAG 2.2.2 pause/play compliance |
 | `sections/header-group.json` | Section Group | Layout / Styling | Brand announcements, uppercase nav typography, and custom CSS borders |
 | `sections/footer-group.json` | Section Group | Layout | Replaced default utilities with custom `ww-footer` section |
 | `templates/index.json` | Template | Composition | Composed homepage using custom `ww-` sections |
@@ -125,7 +126,14 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 5. `assets/cart-discount.js`
+### 6. `sections/header-announcements.liquid`
+
+* **Lines Modified**: Added `{% render 'ww-announcement-pause' %}` inside `<announcement-bar-component>`.
+* **Reason**: Provides an accessible Pause/Play mechanism for rotating announcements, satisfying ADA / WCAG 2.2.2 (Pause, Stop, Hide).
+
+---
+
+### 7. `assets/cart-discount.js`
 
 * **Changes**:
   1. Imported `sectionRenderer` alongside `morphSection`:
@@ -225,6 +233,7 @@ When a new version of Shopify Horizon is released:
    - `snippets/cart-summary.liquid`
    - `snippets/scripts.liquid`
    - `snippets/header-actions.liquid`
+   - `sections/header-announcements.liquid`
    - `assets/cart-discount.js`
    - `assets/component-cart-items.js`
    - `assets/icon-*.svg`

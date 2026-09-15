@@ -37,6 +37,10 @@
     <div class="announcement-bar__slides">
       {% content_for 'blocks' %}
     </div>
+
+    {%- if section.blocks.size > 1 -%}
+      {% render 'ww-announcement-pause' %}
+    {%- endif -%}
   </announcement-bar-component>
 </aside>
 
