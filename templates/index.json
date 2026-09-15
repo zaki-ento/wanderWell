@@ -589,6 +589,143 @@
         "padding_top": 80,
         "padding_bottom": 80
       }
+    },
+    "ww_product_v2_xdHPJx": {
+      "type": "ww-product-v2",
+      "blocks": {
+        "product_tab_PQBBeh": {
+          "type": "product_tab",
+          "settings": {
+            "product": "digestive-support",
+            "title": "Digestive Support",
+            "subtitle": "Capsules · Ginger",
+            "description": "",
+            "sub_multiplier": 1
+          }
+        },
+        "accordion_X9XYd4": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "items_count": "",
+            "content_type": "ingredients",
+            "content": ""
+          }
+        },
+        "accordion_RyFfX6": {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
+        "accordion_td84RG": {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule size",
+            "items_count": "",
+            "content_type": "capsule_size",
+            "content": ""
+          }
+        },
+        "product_tab_jdkH4Q": {
+          "type": "product_tab",
+          "settings": {
+            "product": "immune-support",
+            "title": "Immune Support",
+            "subtitle": "Powder · Vitamin C",
+            "description": "Travel can wear down your defenses: disrupted sleep, stress, new environments, all in the same week. Vitamin C helps support your immune function wherever you go. One sachet mixes into water. Lightly flavored with notes of passionfruit, pineapple and citrus.",
+            "sub_multiplier": 1
+          }
+        },
+        "accordion_KrPyjN": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "items_count": "",
+            "content_type": "ingredients",
+            "content": ""
+          }
+        },
+        "accordion_waBPzQ": {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
+        "product_tab_kLQ6jH": {
+          "type": "product_tab",
+          "settings": {
+            "product": "the-travel-duo",
+            "title": "The Travel Duo",
+            "subtitle": "Both · save up to 10%",
+            "description": "Both formulas, one duo. Digestive Support for your stomach and Immune Support for your defenses. The full travel routine, bundled together.",
+            "sub_multiplier": 1
+          }
+        },
+        "accordion_kLB3gD": {
+          "type": "accordion",
+          "settings": {
+            "title": "What's inside",
+            "items_count": "",
+            "content_type": "ingredients",
+            "content": ""
+          }
+        },
+        "accordion_LCBfjb": {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "items_count": "",
+            "content_type": "supplement_facts",
+            "content": ""
+          }
+        },
+        "accordion_L8NTRC": {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule size",
+            "items_count": "",
+            "content_type": "capsule_size",
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_tab_PQBBeh",
+        "accordion_X9XYd4",
+        "accordion_RyFfX6",
+        "accordion_td84RG",
+        "product_tab_jdkH4Q",
+        "accordion_KrPyjN",
+        "accordion_waBPzQ",
+        "product_tab_kLQ6jH",
+        "accordion_kLB3gD",
+        "accordion_LCBfjb",
+        "accordion_L8NTRC"
+      ],
+      "name": "WW Products Hub (Variant Architecture)",
+      "settings": {
+        "label": "Our Products",
+        "heading": "Made to travel with you",
+        "subheading": "Each product comes in individually-sealed sachets.\nDesigned to toss in your bag and take on the go.",
+        "badge_1_text": "Plant-based",
+        "badge_2_text": "3rd-party tested",
+        "layout_width": "page",
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "trust_heading": "Commitment to Quality",
+        "trust_item_1_title": "Third-party testing",
+        "trust_item_1_text": "Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications.",
+        "trust_item_2_title": "Manufacturing excellence",
+        "trust_item_2_text": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally.",
+        "enable_sticky_add_to_cart": true
+      }
     }
   },
   "order": [
@@ -597,6 +734,7 @@
     "ww_product",
     "ww_approach",
     "ww_feedback_iKzQxh",
-    "ww_faq"
+    "ww_faq",
+    "ww_product_v2_xdHPJx"
   ]
 }
