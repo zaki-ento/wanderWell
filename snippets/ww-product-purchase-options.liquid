@@ -29,29 +29,53 @@
        {%- else -%}
             {%- assign sub_packs = "1 Pack" -%}
        {%- endif -%}
-        {%- assign base_unit_price = current_prod.selected_or_first_available_variant.price -%}
+        {%- assign current_variant = current_prod.selected_or_first_available_variant -%}
+        {%- assign base_unit_price = current_variant.price -%}
         {%- assign compare_price = base_unit_price | times: sub_multiplier -%}
         
-        {%- if plan.price_adjustments.size > 0 -%}
+        {%- assign allocation = null -%}
+        {%- for alloc in current_variant.selling_plan_allocations -%}
+          {%- if alloc.selling_plan.id == plan.id -%}
+            {%- assign allocation = alloc -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if allocation != blank -%}
+          {%- assign sub_price = allocation.price | times: sub_multiplier -%}
+        {%- elsif plan.price_adjustments.size > 0 -%}
           {%- assign adjustment = plan.price_adjustments[0] -%}
           {%- if adjustment.value_type == 'percentage' -%}
             {%- assign discount_percentage = adjustment.value -%}
-            {%- assign discount_amount = compare_price | times: discount_percentage | divided_by: 100 -%}
+            {%- assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0 -%}
+            {%- assign sub_price = compare_price | times: discount_factor | round -%}
+          {%- elsif adjustment.value_type == 'fixed_amount' -%}
+            {%- assign discount_amount = adjustment.value | times: sub_multiplier -%}
             {%- assign sub_price = compare_price | minus: discount_amount -%}
+          {%- elsif adjustment.value_type == 'price' -%}
+            {%- assign sub_price = adjustment.value | times: sub_multiplier -%}
           {%- else -%}
-            {%- assign sub_price = adjustment.value -%}
+            {%- assign sub_price = compare_price -%}
           {%- endif -%}
         {%- else -%}
           {%- assign sub_price = compare_price -%}
         {%- endif -%}
         
         {%- assign sub_servings_qty = base_servings | times: sub_multiplier -%}
-        {%- assign sub_serving_rate = sub_price | divided_by: sub_servings_qty | money -%}
+        {%- assign sub_serving_rate = sub_price | times: 1.0 | divided_by: sub_servings_qty | round | money -%}
 
         {% comment %} {{ plan | json }} {% endcomment %}
 
         <div class="ww-sub-opt ww-sub-opt--best {% if is_first_plan %}on{% endif %}" data-option-type="subscription">
-          <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments[0].value }}% + free shipping</span>
+          {%- if plan.price_adjustments.size > 0 -%}
+            {%- if plan.price_adjustments[0].value_type == 'percentage' -%}
+              <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments[0].value }}% + free shipping</span>
+            {%- else -%}
+              <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments[0].value | money }} + free shipping</span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="ww-sub-badge">Most popular · free shipping</span>
+          {%- endif -%}
           <span class="ww-sub-opt__content">
             <span class="ww-sub-opt__row">
               <span class="ww-sub-opt__radio-bullet-wrapper">
@@ -86,7 +110,7 @@
               <span class="ww-sub-opt__price-container">
                 <span class="ww-sub-opt__price">
                   {{ sub_price | money }}
-                  {%- if plan.price_adjustments.size > 0 -%}
+                  {%- if plan.price_adjustments.size > 0 and compare_price > sub_price -%}
                     <s class="ww-sub-opt__compare-price">{{ compare_price | money }}</s>
                   {%- endif -%}
                 </span>
@@ -112,7 +136,7 @@
       {%- assign selected_variant = current_prod.selected_or_first_available_variant -%}
       {%- assign base_unit_price = selected_variant.price -%}
       {%- assign one_time_compare_price = selected_variant.compare_at_price -%}
-      {%- assign one_time_serving_rate = base_unit_price | divided_by: one_time_servings_qty | money -%}
+      {%- assign one_time_serving_rate = base_unit_price | times: 1.0 | divided_by: one_time_servings_qty | round | money -%}
 
       <div class="ww-sub-opt {% unless has_subscription %}on{% endunless %}" data-option-type="one-time">
         <span class="ww-sub-opt__content">
