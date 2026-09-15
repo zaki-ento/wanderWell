@@ -155,9 +155,9 @@
       {%- if sub_plan.price_adjustments.size > 0 -%}
         {%- if sub_plan.price_adjustments[0].value_type == 'percentage' -%}
           <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value }}% + free shipping</span>
-        {%- else -%}
+        {% comment %} {%- else -%}
           <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value | money }} + free shipping</span>
-        {%- endif -%}
+        {%- endif -%} {% endcomment %}
       {%- else -%}
         <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
       {%- endif -%}
