@@ -45,7 +45,6 @@
     height="20"
     viewBox="0 0 24 24"
     fill="none"
-    slot="signed-out-avatar"
     class="account-button__icon"
   >
     <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
@@ -78,35 +77,27 @@
         assign account_actions_style = '--header-actions-font-family: ' | append: font_family_safe | append: '; --header-actions-font-weight: ' | append: font_obj.weight | append: ';'
       endif
     %}
-    <div
-      class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %} color-custom-popover"
+    <a
+      href="{{ routes.account_url }}"
+      class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %}"
+      aria-label="{{ 'content.account_title' | t }}"
+      {% if account_actions_style != blank %}
+        style="{{ account_actions_style }}"
+      {% endif %}
     >
-      <shopify-account
-        menu="{{ customer_account_menu }}"
-        {% if account_actions_style != blank %}
-          style="{{ account_actions_style }}"
-        {% endif %}
+      <span
+        class="account-button__text header-actions__text-style {% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}"
       >
-        {% if customer %}
-          <div class="account-button__fallback"></div>
-        {% else %}
-          <span
-            slot="signed-out-avatar"
-            class="account-button__text header-actions__text-style {% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}"
-          >
-            {{ 'content.account_title' | t }}
-          </span>
+        {{ 'content.account_title' | t }}
+      </span>
 
-          <span
-            slot="signed-out-avatar"
-            class="{% if display_style != 'icon' %}desktop:hidden{% endif %}"
-            aria-hidden="true"
-          >
-            {{ account_icon }}
-          </span>
-        {% endif %}
-      </shopify-account>
-    </div>
+      <span
+        class="account-button__icon-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}"
+        aria-hidden="true"
+      >
+        {{ account_icon }}
+      </span>
+    </a>
   {% endif %}
 
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}

@@ -93,26 +93,35 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ### 5. `snippets/header-actions.liquid`
 
-* **Lines Modified**: Lines 41–55 (`account_icon` capture block).
+* **Lines Modified**: Lines 41–55 (`account_icon` capture block) and lines 80–108 (`account-button` markup).
 * **Changes**:
-  Replaced Horizon's inline account SVG with the WanderWell v3 avatar design:
-  ```liquid
-  {% capture account_icon %}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      slot="signed-out-avatar"
-      class="account-button__icon"
-    >
-      <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
-      <path d="M4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  {% endcapture %}
-  ```
-* **Reason**: Visual consistency across the header navigation actions with 24x24 stroke-aligned iconography.
+  1. Replaced Horizon's inline account SVG with the WanderWell v3 avatar design:
+     ```liquid
+     {% capture account_icon %}
+       <svg
+         xmlns="http://www.w3.org/2000/svg"
+         width="20"
+         height="20"
+         viewBox="0 0 24 24"
+         fill="none"
+         class="account-button__icon"
+       >
+         <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/>
+         <path d="M4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/>
+       </svg>
+     {% endcapture %}
+     ```
+  2. Replaced `<shopify-account>` dropdown/popover component with a direct anchor tag navigating directly to `routes.account_url` (`/account`):
+     ```liquid
+     <a
+       href="{{ routes.account_url }}"
+       class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %}"
+       aria-label="{{ 'content.account_title' | t }}"
+     >
+       ...
+     </a>
+     ```
+* **Reason**: User requirement to navigate directly to the customer account portal (`/account`) on click instead of opening a menu popover.
 
 ---
 

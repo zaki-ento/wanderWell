@@ -1084,3 +1084,64 @@ button.cart-discount__button {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   HEADER: DIRECT ACCOUNT LINK BUTTON (Goto /account instead of dropdown)
+   ══════════════════════════════════════════════════════════════════ */
+a.account-button {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--charcoal);
+  border: 1.5px solid var(--charcoal);
+  cursor: pointer;
+  margin-right: 36px;
+  text-decoration: none !important;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+a.account-button:hover {
+  background: var(--charcoal);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+a.account-button svg,
+a.account-button .account-button__icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  color: inherit;
+}
+
+a.account-button:hover svg,
+a.account-button:hover .account-button__icon {
+  color: #ffffff;
+  stroke: #ffffff !important;
+}
+
+a.account-button:hover svg circle,
+a.account-button:hover svg path {
+  stroke: #ffffff !important;
+}
+
+@media (max-width: 767px) {
+  a.account-button {
+    margin-right: 8px;
+    width: 38px;
+    height: 38px;
+  }
+  a.account-button svg,
+  a.account-button .account-button__icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+
