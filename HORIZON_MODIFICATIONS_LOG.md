@@ -13,6 +13,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 | `layout/theme.liquid` | Core Layout | Enhancement | Font preloads (`sofia-pro`) and global popup (`ww-popup`) injection |
 | `snippets/cart-drawer.liquid` | Core Snippet | Bugfix / UX | Added `no-persist` attribute to prevent drawer reopening on page load |
 | `snippets/scripts.liquid` | Core Snippet | Bugfix / API | Appended `.js` to `cart_change_url` and `cart_update_url` for AJAX routing |
+| `snippets/cart-summary.liquid` | Core Snippet | Feature / UI | Added `ww-cart-free-shipping` bar and `ww-payment-icons` |
 | `snippets/header-actions.liquid` | Core Snippet | UI / Design | Updated avatar icon markup in `account_icon` capture to match 24x24 brand SVG |
 | `assets/cart-discount.js` | Core Asset | Bugfix / Resilience | Added optional chaining and fallback to `sectionRenderer` when section HTML is absent |
 | `assets/component-cart-items.js` | Core Asset | Bugfix / Resilience | Added fallback handling and `item_count` default when section HTML is absent |
@@ -83,7 +84,14 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 4. `snippets/header-actions.liquid`
+### 4. `snippets/cart-summary.liquid`
+
+* **Lines Modified**: Added `{% render 'ww-cart-free-shipping' %}` above cart totals and `{% render 'ww-payment-icons' %}` below checkout CTA button.
+* **Reason**: Injects the dynamic $50+ free shipping progress calculation and accepted payment method badges into the cart drawer and cart page.
+
+---
+
+### 5. `snippets/header-actions.liquid`
 
 * **Lines Modified**: Lines 41–55 (`account_icon` capture block).
 * **Changes**:
