@@ -71,7 +71,7 @@
     "cart_type": "drawer",
     "cart_price_font": "accent",
     "auto_open_cart_drawer": true,
-    "free_shipping_threshold": 0,
+    "free_shipping_threshold": 50,
     "show_cart_note": false,
     "show_add_discount_code": true,
     "empty_cart_button_link": "https://wanderwell-development.myshopify.com",
