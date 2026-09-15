@@ -289,39 +289,28 @@
                 {%- if current_prod != blank -%}
                   <div class="ww-buy">
                     {%- liquid
-                      # Identify 1-pack and 2-pack variants
-                      assign v_1_pack = null
-                      assign v_2_pack = null
-                      for v in current_prod.variants
-                        assign vt = v.title | downcase
-                        if vt contains '2' or vt contains 'two' or vt contains 'double' or vt contains 'pair'
-                          assign v_2_pack = v
-                        elsif vt contains '1' or vt contains 'one' or vt contains 'single'
-                          assign v_1_pack = v
-                        endif
-                      endfor
+                      # Single simple product variant
+                      assign current_variant = current_prod.selected_or_first_available_variant
+                      assign initial_variant_id = current_variant.id
 
-                      if v_1_pack == null and current_prod.variants.size > 0
-                        assign v_1_pack = current_prod.variants[0]
-                      endif
-                      if v_2_pack == null
-                        if current_prod.variants.size > 1
-                          assign v_2_pack = current_prod.variants[1]
-                        else
-                          assign v_2_pack = v_1_pack
-                        endif
+                      assign is_bundle = false
+                      if current_prod.type == 'Bundle' or current_prod.handle == 'the-travel-duo'
+                        assign is_bundle = true
                       endif
 
-                      # Initial selling plan for 2-pack
+                      # Initial selling plan
                       assign init_sub_plan_id = ''
-                      if v_2_pack != blank and v_2_pack.selling_plan_allocations.size > 0
-                        assign init_sub_plan_id = v_2_pack.selling_plan_allocations[0].selling_plan.id
+                      if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+                        assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
                       elsif current_prod.selling_plan_groups.size > 0
                         assign init_sub_plan_id = current_prod.selling_plan_groups[0].selling_plans[0].id
                       endif
 
-                      # Default to 2-pack variant ID for Subscribe & Save initial selection
-                      assign initial_variant_id = v_2_pack.id | default: current_prod.selected_or_first_available_variant.id
+                      # Initial locked quantity for subscription (2 for simple product, 1 for bundle)
+                      assign init_sub_qty = 2
+                      if is_bundle
+                        assign init_sub_qty = 1
+                      endif
                     -%}
 
                     {%- assign product_form_id = 'ww-product-form-' | append: block.id -%}
@@ -361,7 +350,7 @@
                             disabled
                           {% endif %}
                         >
-                        <input type="hidden" name="quantity" value="1" class="ww-qty-input">
+                        <input type="hidden" name="quantity" value="{{ init_sub_qty }}" class="ww-qty-input">
 
                         {% render 'ww-product-purchase-options-v2', current_prod: current_prod, block: block %}
 
@@ -649,6 +638,7 @@
           var isSub = selectedRadio.value === 'subscription';
           var varId = selectedRadio.getAttribute('data-variant-id');
           var planId = selectedRadio.getAttribute('data-selling-plan-id');
+          var targetQty = selectedRadio.getAttribute('data-quantity') || (isSub ? '2' : '1');
 
           // Update hidden form inputs
           if (variantInput && varId) {
@@ -666,15 +656,43 @@
             }
           }
 
-          // Quantity restriction handling
+          // Quantity restriction handling: lock to targetQty on subscription, enable on one-time
           if (qtyContainer && qtyInput) {
             if (isSub) {
-              qtyInput.value = '1';
-              if (qtyVal) qtyVal.textContent = '1';
+              qtyInput.value = targetQty;
+              if (qtyVal) qtyVal.textContent = targetQty;
               qtyContainer.style.display = 'none';
             } else {
+              qtyInput.value = '1';
+              if (qtyVal) qtyVal.textContent = '1';
               qtyContainer.style.display = 'flex';
             }
+          }
+        }
+
+        // Stepper buttons for One-Time mode
+        if (qtyContainer) {
+          var btnMinus = qtyContainer.querySelector('.ww-qty-btn-minus');
+          var btnPlus = qtyContainer.querySelector('.ww-qty-btn-plus');
+          if (btnMinus && !btnMinus.dataset.bound) {
+            btnMinus.dataset.bound = 'true';
+            btnMinus.addEventListener('click', function (e) {
+              e.preventDefault();
+              var current = parseInt(qtyInput.value, 10) || 1;
+              var next = Math.max(1, current - 1);
+              qtyInput.value = next;
+              if (qtyVal) qtyVal.textContent = next;
+            });
+          }
+          if (btnPlus && !btnPlus.dataset.bound) {
+            btnPlus.dataset.bound = 'true';
+            btnPlus.addEventListener('click', function (e) {
+              e.preventDefault();
+              var current = parseInt(qtyInput.value, 10) || 1;
+              var next = current + 1;
+              qtyInput.value = next;
+              if (qtyVal) qtyVal.textContent = next;
+            });
           }
         }
 

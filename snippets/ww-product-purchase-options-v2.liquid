@@ -1,8 +1,8 @@
 {% comment %}
-  Snippet: WW Product Purchase Options (v2 - Variant Architecture)
-  Description: Custom purchase options widget coupling radio buttons directly with Shopify pack variants (Method 1).
-  - Option 1 (Subscribe & Save): Selects 2 Pack variant ID, assigns Appstle selling plan, shows discounted recurring price.
-  - Option 2 (One-Time Purchase): Selects 1 Pack variant ID, removes selling plan, shows single pack price.
+  Snippet: WW Product Purchase Options (v2 - Single-Variant Architecture)
+  Description: Custom purchase options widget supporting:
+  - Simple Products: Single variant with locked 2-pack subscription ($53.99 / 30 servings) and 1-pack one-time purchase ($29.99 / 15 servings).
+  - Bundle Products: Both badges "2 Packs", both 30 servings, compare_at_price crossed out, quantity 1.
   Accepts:
     - current_prod: Product object (required)
     - block: Section block containing customizer settings (required)
@@ -10,51 +10,22 @@
 
 {%- if current_prod != blank -%}
   {%- liquid
-    # 1. Identify 1-Pack (Variant A) and 2-Pack (Variant B)
-    assign variant_1_pack = null
-    assign variant_2_pack = null
+    # 1. Single simple product variant
+    assign current_variant = current_prod.selected_or_first_available_variant
 
-    for v in current_prod.variants
-      assign v_title = v.title | downcase
-      if v_title contains '2' or v_title contains 'two' or v_title contains 'double' or v_title contains 'pair'
-        assign variant_2_pack = v
-      elsif v_title contains '1' or v_title contains 'one' or v_title contains 'single'
-        assign variant_1_pack = v
-      endif
-    endfor
-
-    # Fallback by index if variants are not titled with 1/2 pack
-    if variant_1_pack == null and current_prod.variants.size > 0
-      assign variant_1_pack = current_prod.variants[0]
-    endif
-    if variant_2_pack == null
-      if current_prod.variants.size > 1
-        assign variant_2_pack = current_prod.variants[1]
-      else
-        assign variant_2_pack = variant_1_pack
-      endif
+    # 2. Check if bundle product
+    assign is_bundle = false
+    if current_prod.type == 'Bundle' or current_prod.handle == 'the-travel-duo'
+      assign is_bundle = true
     endif
 
-    # Dynamic pack badge names from variant title
-    if variant_2_pack.title != blank and variant_2_pack.title != 'Default Title'
-      assign sub_packs = variant_2_pack.title
-    else
-      assign sub_packs = '2 Packs'
-    endif
-
-    if variant_1_pack.title != blank and variant_1_pack.title != 'Default Title'
-      assign one_time_packs = variant_1_pack.title
-    else
-      assign one_time_packs = '1 Pack'
-    endif
-
-    # 2. Identify Appstle Selling Plan & Group on 2-Pack variant
+    # 3. Identify Appstle Selling Plan & Group
     assign sub_allocation = null
     assign sub_plan = null
     assign sub_group = null
 
-    if variant_2_pack != blank and variant_2_pack.selling_plan_allocations.size > 0
-      assign sub_allocation = variant_2_pack.selling_plan_allocations[0]
+    if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+      assign sub_allocation = current_variant.selling_plan_allocations[0]
       assign sub_plan = sub_allocation.selling_plan
       assign sub_group = sub_allocation.selling_plan_group
     endif
@@ -69,65 +40,117 @@
       endfor
     endif
 
-    # 3. Base Servings
+    # 4. Servings, Badges, Prices & Quantities
     assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15
-    assign servings_1_pack = base_servings | at_least: 1
-    assign servings_2_pack = base_servings | times: 2 | at_least: 1
 
-    # 4. Prices for 1-Pack (One-Time)
-    assign price_1_pack = variant_1_pack.price
-    assign compare_price_1_pack = variant_1_pack.compare_at_price
-    # Precise per-serving price calculation ($29.99 / 15 -> $1.99 instead of $2.00)
-    assign serving_rate_1_pack = price_1_pack | times: 1.0 | divided_by: servings_1_pack | floor | money
+    if is_bundle
+      # ==========================================
+      # BUNDLE PRODUCT LOGIC
+      # ==========================================
+      assign sub_packs = '2 Packs'
+      assign one_time_packs = '2 Packs'
+      assign servings_sub = 30
+      assign servings_onetime = 30
+      assign sub_qty = 1
+      assign onetime_qty = 1
 
-    # 5. Prices for 2-Pack (Subscribe & Save)
-    if variant_2_pack.price > 0
-      assign compare_price_2_pack = variant_2_pack.price
-    else
-      assign compare_price_2_pack = price_1_pack | times: 2
-    endif
-
-    if sub_allocation != blank
-      assign sub_price = sub_allocation.price
-    elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
-      assign adjustment = sub_plan.price_adjustments[0]
-      if adjustment.value_type == 'percentage'
-        assign discount_percentage = adjustment.value
-        assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
-        assign sub_price = compare_price_2_pack | times: discount_factor | round
-      elsif adjustment.value_type == 'fixed_amount'
-        assign sub_price = compare_price_2_pack | minus: adjustment.value
-      elsif adjustment.value_type == 'price'
-        assign sub_price = adjustment.value
-      else
-        assign sub_price = compare_price_2_pack
+      # One-Time: Use compare_at_price ($59.98) for strikethrough, actual price ($53.99)
+      assign onetime_price = current_variant.price
+      assign onetime_compare_price = current_variant.compare_at_price
+      if onetime_compare_price == blank or onetime_compare_price <= onetime_price
+        assign onetime_compare_price = 5998
       endif
-    else
-      # Default to 10% discount ($59.98 -> $53.99)
-      assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0
-      assign sub_price = compare_price_2_pack | times: discount_factor | round
-    endif
+      assign onetime_serving_rate = onetime_price | times: 1.0 | divided_by: servings_onetime | floor | money
 
-    # Precise per-serving price calculation ($53.99 / 30 -> $1.79)
-    assign serving_rate_2_pack = sub_price | times: 1.0 | divided_by: servings_2_pack | floor | money
+      # Subscribe & Save: Use compare_at_price ($59.98) for strikethrough
+      assign sub_compare_price = current_variant.compare_at_price
+      if sub_compare_price == blank or sub_compare_price <= current_variant.price
+        assign sub_compare_price = 5998
+      endif
+
+      if sub_allocation != blank
+        assign sub_price = sub_allocation.price
+      elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
+        assign adjustment = sub_plan.price_adjustments[0]
+        if adjustment.value_type == 'percentage'
+          assign discount_percentage = adjustment.value
+          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+          assign sub_price = current_variant.price | times: discount_factor | round
+        elsif adjustment.value_type == 'fixed_amount'
+          assign sub_price = current_variant.price | minus: adjustment.value
+        elsif adjustment.value_type == 'price'
+          assign sub_price = adjustment.value
+        else
+          assign sub_price = current_variant.price
+        endif
+      else
+        assign sub_price = current_variant.price
+      endif
+      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
+
+    else
+      # ==========================================
+      # SIMPLE PRODUCT LOGIC
+      # ==========================================
+      assign sub_packs = '2 Packs'
+      assign one_time_packs = '1 Pack'
+      assign servings_onetime = base_servings | at_least: 1
+      assign servings_sub = base_servings | times: 2 | at_least: 1
+      assign sub_qty = 2
+      assign onetime_qty = 1
+
+      # One-Time: 1 Pack base price ($29.99)
+      assign onetime_price = current_variant.price
+      assign onetime_compare_price = current_variant.compare_at_price
+      assign onetime_serving_rate = onetime_price | times: 1.0 | divided_by: servings_onetime | floor | money
+
+      # Subscribe & Save: Locked 2-pack calculations (Price x 2 = $59.98, discounted total = $53.99)
+      assign sub_compare_price = current_variant.price | times: 2
+
+      if sub_plan != blank and sub_plan.price_adjustments.size > 0
+        assign adjustment = sub_plan.price_adjustments[0]
+        if adjustment.value_type == 'percentage'
+          assign discount_percentage = adjustment.value
+          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+          assign sub_price = sub_compare_price | times: discount_factor | round
+        elsif adjustment.value_type == 'fixed_amount'
+          assign discount_total = adjustment.value | times: 2
+          assign sub_price = sub_compare_price | minus: discount_total
+        elsif adjustment.value_type == 'price'
+          assign sub_price = adjustment.value | times: 2
+        else
+          assign sub_price = sub_compare_price
+        endif
+      elsif sub_allocation != blank
+        assign sub_price = sub_allocation.price | times: 2
+      else
+        # Default 10% discount ($59.98 -> $53.99)
+        assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0
+        assign sub_price = sub_compare_price | times: discount_factor | round
+      endif
+
+      # Precise per-serving rate calculation ($53.99 / 30 -> $1.79)
+      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
+    endif
 
     # Plan details & frequency text
-    assign plan_name = sub_plan.name | default: 'Delivered every 30 days'
+    assign plan_name = sub_plan.name | default: 'ships every 4 weeks'
   -%}
 
-  <fieldset class="ww-purchase-options ww-purchase-options--v2" data-variant-architecture="true">
+  <fieldset class="ww-purchase-options ww-purchase-options--v2" data-variant-architecture="false">
     <legend class="visually-hidden">Purchase Options</legend>
 
     {%- comment -%}
       ======================================================
-      Option 1: Subscribe & Save (2 Pack Variant + Appstle)
+      Option 1: Subscribe & Save
       ======================================================
     {%- endcomment -%}
     <div
       class="ww-sub-opt ww-sub-opt--best on"
       data-option-type="subscription"
-      data-variant-id="{{ variant_2_pack.id }}"
+      data-variant-id="{{ current_variant.id }}"
       data-selling-plan-id="{{ sub_plan.id }}"
+      data-quantity="{{ sub_qty }}"
     >
       {%- if sub_plan.price_adjustments.size > 0 -%}
         {%- if sub_plan.price_adjustments[0].value_type == 'percentage' -%}
@@ -148,10 +171,11 @@
               value="subscription"
               id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub"
               class="ww-sub-opt__radio-input"
-              data-variant-id="{{ variant_2_pack.id }}"
+              data-variant-id="{{ current_variant.id }}"
               data-selling-plan-id="{{ sub_plan.id }}"
+              data-quantity="{{ sub_qty }}"
               data-price="{{ sub_price | money }}"
-              data-compare-price="{{ compare_price_2_pack | money }}"
+              data-compare-price="{{ sub_compare_price | money }}"
               aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
               checked
             >
@@ -164,7 +188,7 @@
               <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
             </span>
             <span class="ww-sub-opt__servings">
-              <strong>{{ servings_2_pack }} servings · </strong>{{ plan_name }}
+              <strong>{{ servings_sub }} servings · </strong>{{ plan_name }}
             </span>
 
             {%- if sub_plan.description != blank -%}
@@ -175,6 +199,7 @@
               </span>
             {%- else -%}
               <span class="ww-sub-opt__perks">
+                <span class="ww-sub-opt__perk">Free Shipping on $50+</span>
                 <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
                 <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
               </span>
@@ -184,9 +209,11 @@
           <span class="ww-sub-opt__price-container">
             <span class="ww-sub-opt__price">
               {{ sub_price | money }}
-              <s class="ww-sub-opt__compare-price">{{ compare_price_2_pack | money }}</s>
+              {%- if sub_compare_price > sub_price -%}
+                <s class="ww-sub-opt__compare-price">{{ sub_compare_price | money }}</s>
+              {%- endif -%}
             </span>
-            <span class="ww-sub-opt__per-serving">{{ serving_rate_2_pack }}/serving</span>
+            <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
           </span>
         </span>
       </span>
@@ -194,14 +221,15 @@
 
     {%- comment -%}
       ======================================================
-      Option 2: One-Time Purchase (1 Pack Variant)
+      Option 2: One-Time Purchase
       ======================================================
     {%- endcomment -%}
     <div
       class="ww-sub-opt"
       data-option-type="onetime"
-      data-variant-id="{{ variant_1_pack.id }}"
+      data-variant-id="{{ current_variant.id }}"
       data-selling-plan-id=""
+      data-quantity="{{ onetime_qty }}"
     >
       <span class="ww-sub-opt__content">
         <span class="ww-sub-opt__row">
@@ -212,11 +240,12 @@
               value="onetime"
               id="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime"
               class="ww-sub-opt__radio-input"
-              data-variant-id="{{ variant_1_pack.id }}"
+              data-variant-id="{{ current_variant.id }}"
               data-selling-plan-id=""
-              data-price="{{ price_1_pack | money }}"
-              data-compare-price="{% if compare_price_1_pack > price_1_pack %}{{ compare_price_1_pack | money }}{% endif %}"
-              aria-label="One-Time Purchase {{ one_time_packs }}, {{ price_1_pack | money }}"
+              data-quantity="{{ onetime_qty }}"
+              data-price="{{ onetime_price | money }}"
+              data-compare-price="{% if onetime_compare_price > onetime_price %}{{ onetime_compare_price | money }}{% endif %}"
+              aria-label="One-Time Purchase {{ one_time_packs }}, {{ onetime_price | money }}"
             >
             <span class="ww-sub-opt__radio-bullet"></span>
           </span>
@@ -226,17 +255,17 @@
               One-Time Purchase
               <span class="ww-sub-opt__pack-badge">{{ one_time_packs | escape }}</span>
             </span>
-            <span class="ww-sub-opt__servings">{{ servings_1_pack }} servings · delivered once</span>
+            <span class="ww-sub-opt__servings">{{ servings_onetime }} servings · delivered once</span>
           </label>
 
           <span class="ww-sub-opt__price-container">
             <span class="ww-sub-opt__price">
-              {{ price_1_pack | money }}
-              {%- if compare_price_1_pack > price_1_pack -%}
-                <s class="ww-sub-opt__compare-price">{{ compare_price_1_pack | money }}</s>
+              {{ onetime_price | money }}
+              {%- if onetime_compare_price > onetime_price -%}
+                <s class="ww-sub-opt__compare-price">{{ onetime_compare_price | money }}</s>
               {%- endif -%}
             </span>
-            <span class="ww-sub-opt__per-serving">{{ serving_rate_1_pack }}/serving</span>
+            <span class="ww-sub-opt__per-serving">{{ onetime_serving_rate }}/serving</span>
           </span>
         </span>
       </span>
