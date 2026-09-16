@@ -1,8 +1,6 @@
 {% comment %}
-  Section: WW Products Hub (Variant Architecture - Method 1)
-  Description: Duplicated product hub testing Native Variant Architecture.
-  - Variant A: 1 Pack ($29.99)
-  - Variant B: 2 Pack ($59.98)
+  Section: WW Products Hub v2
+  Description: Duplicated product hub Architecture.
   - Appstle Subscription Plan strictly attached to 2-Pack ($53.99, save 10%)
   - Custom UI pairing with 2 radio options
   - Locks PDP quantity to 1 when Subscribe & Save is active
@@ -85,164 +83,178 @@
     flex: 0 0 calc(100vw - 64px);
     max-width: 380px;
     min-width: 280px;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     scroll-snap-stop: always;
     display: flex;
     box-sizing: border-box;
   }
 
-  @media screen and (min-width: 480px) and (max-width: 1023px) {
+  @media screen and (min-width: 600px) and (max-width: 1023px) {
     .ww-mob-carousel__track {
-      padding: 10px max(24px, calc((100% - 380px) / 2)) 20px;
+      padding: 14px 32px 24px;
+      gap: 20px;
     }
     .ww-mob-carousel__slide {
       flex: 0 0 380px;
+      max-width: 380px;
     }
   }
 
-  .ww-mob-card {
-    background: #FFFFFF;
-    border-radius: 28px;
-    padding: 14px 14px 20px 14px;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(44, 44, 44, 0.06);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: left;
-  }
-
-  .ww-mob-card__media {
+  .ww-arrae-card {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 480px;
     border-radius: 20px;
     overflow: hidden;
+    background-color: #FAF7F2;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #94A671;
+    flex-direction: column;
+    justify-content: flex-end;
     text-decoration: none;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .ww-mob-card__pill {
+  .ww-arrae-card:active {
+    transform: scale(0.99);
+  }
+
+  .ww-arrae-card__media {
     position: absolute;
-    top: 14px;
-    left: 14px;
-    background-color: var(--orange, #E8632B);
-    color: #FFFFFF;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 20px;
-    line-height: 1;
-    z-index: 3;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #FAF7F2;
   }
 
-  .ww-mob-card__img {
+  .ww-arrae-card__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 25%;
     display: block;
   }
 
-  .ww-mob-card__placeholder {
+  .ww-arrae-card__placeholder {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(145deg, #FAF7F2 0%, #EFECE6 100%);
   }
 
-  .ww-mob-card__logo {
-    color: #FFFFFF;
+  .ww-arrae-card__logo {
+    color: #1A1A1A;
     font-family: var(--font-heading, inherit);
-    font-size: 2.3rem;
+    font-size: 2.2rem;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
+    opacity: 0.85;
     user-select: none;
   }
 
-  .ww-mob-card__body {
-    padding: 16px 6px 0 6px;
+  .ww-arrae-card__content {
+    position: relative;
+    z-index: 2;
+    padding: 36px 18px 20px 18px;
+    background: linear-gradient(to top, rgba(250, 247, 242, 0.96) 0%, rgba(250, 247, 242, 0.85) 60%, rgba(250, 247, 242, 0) 100%);
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    text-align: left;
+    box-sizing: border-box;
   }
 
-  .ww-mob-card__eyebrow {
-    color: var(--orange, #E8632B);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+  .ww-arrae-card__title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin: 0 0 4px;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    margin-bottom: 6px;
-    line-height: 1.2;
   }
 
-  .ww-mob-card__title {
-    font-size: 1.55rem;
-    font-weight: 800;
-    color: #1A1A1A;
-    margin: 0 0 8px;
-    line-height: 1.18;
-    letter-spacing: -0.015em;
-    text-decoration: none;
-  }
-
-  .ww-mob-card__desc {
+  .ww-arrae-card__subtitle {
     font-size: 0.92rem;
-    line-height: 1.44;
+    line-height: 1.38;
     color: #555555;
-    margin: 0 0 16px;
-    flex-grow: 1;
-  }
-
-  .ww-mob-card__price-row {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .ww-mob-card__price {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #1A1A1A;
-    line-height: 1;
-    letter-spacing: -0.01em;
-  }
-
-  .ww-mob-card__serving-rate {
-    font-size: 0.95rem;
-    color: #7A7A7A;
+    margin: 0 0 14px;
     font-weight: 400;
   }
 
-  .ww-mob-card__cta {
+  .ww-arrae-card__bottom {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 2px;
+  }
+
+  .ww-arrae-card__link {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #1A1A1A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s ease;
+  }
+
+  .ww-arrae-card:hover .ww-arrae-card__link {
+    color: var(--orange, #E8632B);
+  }
+
+  .ww-arrae-card__price {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    white-space: nowrap;
+  }
+
+  .ww-arrae-card__price-prefix {
+    font-weight: 400;
+    color: #555555;
+    margin-right: 3px;
+  }
+
+  .ww-mob-carousel__arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #242424;
+    color: #FFFFFF;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    background-color: var(--orange, #E8632B);
-    color: #FFFFFF !important;
-    font-size: 1.05rem;
-    font-weight: 700;
-    text-decoration: none;
-    padding: 15px 20px;
-    border-radius: 14px;
-    box-sizing: border-box;
-    transition: background-color 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
     cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
   }
 
-  .ww-mob-card__cta:active {
-    transform: scale(0.98);
-    background-color: #D4541F;
+  .ww-mob-carousel__arrow:hover {
+    background-color: #000000;
+  }
+
+  .ww-mob-carousel__arrow:active {
+    transform: translateY(-50%) scale(0.92);
+  }
+
+  .ww-mob-carousel__arrow svg {
+    width: 18px;
+    height: 18px;
   }
 
   .ww-mob-carousel__dots {
@@ -805,6 +817,10 @@
                 {%- endif -%}
 
                 {%- assign title = block.settings.title | default: current_prod.title -%}
+                {%- if title contains '{{' or title contains 'product.title' or title == blank -%}
+                  {%- assign title = current_prod.title -%}
+                {%- endif -%}
+
                 {%- assign subtitle = block.settings.subtitle
                   | default: current_prod.metafields.custom.subtitle.value
                   | default: current_prod.metafields.custom.subtitle
@@ -825,29 +841,12 @@
                 {%- assign card_price = current_variant.price | money -%}
                 {%- assign card_serving_rate = current_variant.price | times: 1.0 | divided_by: base_servings | floor | money -%}
 
-                {%- comment -%} Check format_type and ingredient_badge directly from product metafield {%- endcomment -%}
+                {%- comment -%} Check subtitle directly from product metafield or non-boilerplate block setting {%- endcomment -%}
                 {%- assign product_subtitle = current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
-                {%- assign format_type = '' -%}
-                {%- assign ingredient_badge = '' -%}
-
-                {%- if product_subtitle != blank -%}
-                  {%- if product_subtitle contains '·' -%}
-                    {%- assign sub_parts = product_subtitle | split: '·' -%}
-                    {%- assign format_type = sub_parts[0] | strip -%}
-                    {%- assign ingredient_badge = sub_parts[1] | strip | upcase -%}
-                  {%- else -%}
-                    {%- assign format_type = product_subtitle | strip -%}
-                  {%- endif -%}
-                {%- endif -%}
-
-                {%- comment -%} Background color per product matching brand aesthetic {%- endcomment -%}
-                {%- assign prod_handle = current_prod.handle | default: title | handleize -%}
-                {%- if prod_handle contains 'immune' -%}
-                  {%- assign bg_color = '#E9B36B' -%}
-                {%- elsif prod_handle contains 'duo' or is_bundle -%}
-                  {%- assign bg_color = '#B89B7B' -%}
-                {%- else -%}
-                  {%- assign bg_color = '#94A671' -%}
+                {%- if product_subtitle == blank and block.settings.subtitle != blank -%}
+                  {%- unless block.settings.subtitle == 'Capsules · Ginger' or block.settings.subtitle == 'Powder · Vitamin C' or block.settings.subtitle contains 'save up to 10%' or block.settings.subtitle contains 'Save upto 10%' -%}
+                    {%- assign product_subtitle = block.settings.subtitle -%}
+                  {%- endunless -%}
                 {%- endif -%}
 
                 <div
@@ -855,54 +854,50 @@
                   data-slide-index="{{ mob_slide_count }}"
                   {{ block.shopify_attributes }}
                 >
-                  <div class="ww-mob-card">
-                    <a
-                      href="{{ current_prod.url | default: '#' }}"
-                      class="ww-mob-card__media"
-                      aria-label="View {{ title | escape }}"
-                    >
-                      {%- if ingredient_badge != blank -%}
-                        <span class="ww-mob-card__pill">{{ ingredient_badge }}</span>
-                      {%- endif -%}
-
+                  <a
+                    href="{{ current_prod.url | default: '#' }}"
+                    class="ww-arrae-card"
+                    aria-label="{{ title | escape }}"
+                  >
+                    <div class="ww-arrae-card__media">
                       {%- if current_prod.featured_image != blank -%}
                         {{
                           current_prod.featured_image
-                          | image_url: width: 700
+                          | image_url: width: 800
                           | image_tag:
-                            class: 'ww-mob-card__img',
+                            class: 'ww-arrae-card__img',
                             loading: 'lazy',
                             decoding: 'async',
                             alt: title
                         }}
                       {%- else -%}
-                        <div class="ww-mob-card__placeholder">
-                          <span class="ww-mob-card__logo">wanderWell</span>
+                        <div class="ww-arrae-card__placeholder">
+                          <span class="ww-arrae-card__logo">wanderWell</span>
                         </div>
                       {%- endif -%}
-                    </a>
+                    </div>
 
-                    <div class="ww-mob-card__body">
-                      <div class="ww-mob-card__eyebrow">
-                        {{ title | upcase }}{% if format_type != blank %} · {{ format_type | upcase }}{% endif %}
-                      </div>
-                      <a href="{{ current_prod.url | default: '#' }}" class="ww-mob-card__title">
-                        {{ title | escape }}
-                      </a>
-                      {%- if desc != blank -%}
-                        <p class="ww-mob-card__desc">{{ desc }}</p>
+                    <div class="ww-arrae-card__content">
+                      <h3 class="ww-arrae-card__title">
+                        {{ title | upcase }}
+                      </h3>
+
+                      {%- if product_subtitle != blank -%}
+                        <div class="ww-arrae-card__subtitle">
+                          {{ product_subtitle | escape }}
+                        </div>
                       {%- endif -%}
 
-                      <div class="ww-mob-card__price-row">
-                        <span class="ww-mob-card__price">{{ card_price }}</span>
-                        <span class="ww-mob-card__serving-rate">{{ card_serving_rate }}/serving</span>
+                      <div class="ww-arrae-card__bottom">
+                        <span class="ww-arrae-card__link">
+                          view details -&gt;
+                        </span>
+                        <span class="ww-arrae-card__price">
+                          <span class="ww-arrae-card__price-prefix">from</span> {{ card_price }}
+                        </span>
                       </div>
-
-                      <a href="{{ current_prod.url | default: '#' }}" class="ww-mob-card__cta">
-                        View Detail
-                      </a>
                     </div>
-                  </div>
+                  </a>
                 </div>
                 {%- assign mob_slide_count = mob_slide_count | plus: 1 -%}
               {%- endif -%}
@@ -910,6 +905,16 @@
           </div>
 
           {%- if mob_slide_count > 1 -%}
+            <button
+              type="button"
+              class="ww-mob-carousel__arrow ww-mob-carousel__arrow--next"
+              aria-label="Next product"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+
             <div class="ww-mob-carousel__dots" role="tablist" aria-label="Product carousel navigation">
               {%- for i in (1..mob_slide_count) -%}
                 <button
@@ -1162,6 +1167,20 @@
             }
           });
         });
+
+        // Click arrow to navigate to next slide (loops to beginning if at end)
+        var nextBtn = carousel.querySelector('.ww-mob-carousel__arrow--next');
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var slideWidth = slides[0].offsetWidth + 16;
+            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 24) {
+              track.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+              track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+            }
+          });
+        }
       });
     }
 
