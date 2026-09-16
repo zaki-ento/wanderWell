@@ -817,22 +817,16 @@
                 {%- endif -%}
 
                 {%- assign title = block.settings.title | default: current_prod.title -%}
-                {%- assign short_description = block.settings.short_description | default: current_prod.metafields.custom.short_description.value | default: current_prod.metafields.custom.subtitle -%}
-                {%- assign desc = block.settings.description | default: current_prod.description -%}
+
+                {%- assign short_description = current_prod.metafields.custom.short_description.value
+                  | default: current_prod.metafields.custom.short_description
+                  | default: current_prod.metafields.custom.subtitle.value
+                  | default: current_prod.metafields.custom.subtitle
+                  | default: block.settings.short_description
+                -%}
 
                 {%- assign current_variant = current_prod.selected_or_first_available_variant -%}
-                {%- assign is_bundle = false -%}
-                {%- if current_prod.type == 'Bundle' or current_prod.handle == 'the-travel-duo' -%}
-                  {%- assign is_bundle = true -%}
-                {%- endif -%}
-
                 {%- assign card_price = current_variant.price | money -%}
-                
-
-                {%- comment -%} Check subtitle directly from product metafield or non-boilerplate block setting {%- endcomment -%}
-                {%- assign short_description = current_prod.metafields.custom.short_description.value | default: current_prod.metafields.custom.subtitle -%}
-                {%- if short_description == blank and block.settings.short_description != blank -%}
-                {%- endif -%}
 
                 <div
                   class="ww-mob-carousel__slide"
@@ -874,11 +868,15 @@
                       {%- endif -%}
 
                       <div class="ww-mobile-card__bottom">
-                       <span class="ww-mobile-card__price">
+                        <span class="ww-mobile-card__price">
                           <span class="ww-mobile-card__price-prefix">from</span> {{ card_price }}
                         </span>
-                        <a href="{{ current_prod.url | default: '#' }}" class="ww-mobile-card__link">
-                          View details
+                        <a class="ww-mobile-card__link">
+                          <span>view details</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M13 5l7 7-7 7"></path>
+                          </svg>
                         </a>
                       </div>
                     </div>
