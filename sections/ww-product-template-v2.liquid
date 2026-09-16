@@ -21,11 +21,9 @@
 
 <section class="ww-products section-{{ section.id }}" id="ww-product-template-v2" {{ section.shopify_attributes }}>
   <div class="container">
-    
     <div class="ww-shop">
       <div class="ww-panel on">
         <div class="ww-panel-inner">
-          
           <!-- Media Gallery -->
           <div class="ww-media">
             <div class="ww-media-main">
@@ -36,19 +34,26 @@
                   {%- for image in product_images limit: 4 -%}
                     {%- assign slide_alt = image.alt | default: product.title | default: shop.name -%}
                     <div class="ww-media-slide {% if forloop.first %}is-on{% endif %}">
-                      {{ image | image_url: width: 800 | image_tag: 
-                        widths: '320, 480, 640, 800',
-                        sizes: '(max-width: 768px) 90vw, 520px',
-                        loading: 'lazy',
-                        decoding: 'async',
-                        alt: slide_alt
+                      {{
+                        image
+                        | image_url: width: 800
+                        | image_tag:
+                          widths: '320, 480, 640, 800',
+                          sizes: '(max-width: 768px) 90vw, 520px',
+                          loading: 'lazy',
+                          decoding: 'async',
+                          alt: slide_alt
                       }}
                     </div>
                   {%- endfor -%}
                 {%- else -%}
                   <div class="ww-media-slide is-on">
                     {%- if settings.logo_inverse != blank -%}
-                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'ww-media-logo', loading: 'lazy', decoding: 'async', alt: shop.name }}
+                      {{
+                        settings.logo_inverse
+                        | image_url: width: 400
+                        | image_tag: class: 'ww-media-logo', loading: 'lazy', decoding: 'async', alt: shop.name
+                      }}
                     {%- endif -%}
                   </div>
                   <div class="ww-media-slide"></div>
@@ -79,23 +84,61 @@
             <div class="ww-media-thumbs" role="tablist" aria-label="Product image thumbnails">
               {%- if product_images.size > 0 -%}
                 {%- for image in product_images limit: 4 -%}
-                  {%- assign thumb_alt = image.alt | default: product.title | default: shop.name | default: 'Product thumbnail' -%}
-                  <div class="ww-media-thumb {% if forloop.first %}is-active{% endif %}" role="tab" tabindex="0" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Thumbnail {{ forloop.index }} of {{ product_images.size }}">
+                  {%- assign thumb_alt = image.alt
+                    | default: product.title
+                    | default: shop.name
+                    | default: 'Product thumbnail'
+                  -%}
+                  <div
+                    class="ww-media-thumb {% if forloop.first %}is-active{% endif %}"
+                    role="tab"
+                    tabindex="0"
+                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-label="Thumbnail {{ forloop.index }} of {{ product_images.size }}"
+                  >
                     {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: thumb_alt }}
                   </div>
                 {%- endfor -%}
               {%- else -%}
-                <div class="ww-media-thumb is-active" role="tab" tabindex="0" aria-selected="true" aria-label="Product thumbnail 1"></div>
-                <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 2"></div>
-                <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 3"></div>
-                <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 4"></div>
+                <div
+                  class="ww-media-thumb is-active"
+                  role="tab"
+                  tabindex="0"
+                  aria-selected="true"
+                  aria-label="Product thumbnail 1"
+                ></div>
+                <div
+                  class="ww-media-thumb"
+                  role="tab"
+                  tabindex="0"
+                  aria-selected="false"
+                  aria-label="Product thumbnail 2"
+                ></div>
+                <div
+                  class="ww-media-thumb"
+                  role="tab"
+                  tabindex="0"
+                  aria-selected="false"
+                  aria-label="Product thumbnail 3"
+                ></div>
+                <div
+                  class="ww-media-thumb"
+                  role="tab"
+                  tabindex="0"
+                  aria-selected="false"
+                  aria-label="Product thumbnail 4"
+                ></div>
               {%- endif -%}
             </div>
           </div>
 
           <!-- Product Details & Buy Box -->
           <div class="ww-detail">
-            {%- assign subtitle = product.metafields.custom.subtitle.value | default: product.metafields.custom.subtitle | default: product.metafields.custom.short_description.value | default: product.metafields.custom.short_description -%}
+            {%- assign subtitle = product.metafields.custom.subtitle.value
+              | default: product.metafields.custom.subtitle
+              | default: product.metafields.custom.short_description.value
+              | default: product.metafields.custom.short_description
+            -%}
             {%- if subtitle != blank -%}
               <div class="ww-detail-eyebrow">{{ subtitle | escape }}</div>
             {%- else -%}
@@ -141,10 +184,35 @@
                 on:submit="/handleSubmit"
                 data-quantity-default="1"
               >
-                <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
-                {%- form 'product', product, id: product_form_id, class: 'ww-product-form ww-product-form--v2', data-type: 'add-to-cart-form' -%}
-                  <input type="hidden" name="id" ref="variantId" value="{{ initial_variant_id }}" class="ww-variant-id-input">
-                  <input type="hidden" name="selling_plan" value="{{ init_sub_plan_id }}" class="ww-selling-plan-input" {% if init_sub_plan_id == blank %}disabled{% endif %}>
+                <div
+                  class="visually-hidden"
+                  aria-live="assertive"
+                  role="status"
+                  aria-atomic="true"
+                  ref="liveRegion"
+                ></div>
+                {%- form 'product',
+                  product,
+                  id: product_form_id,
+                  class: 'ww-product-form ww-product-form--v2',
+                  data-type: 'add-to-cart-form'
+                -%}
+                  <input
+                    type="hidden"
+                    name="id"
+                    ref="variantId"
+                    value="{{ initial_variant_id }}"
+                    class="ww-variant-id-input"
+                  >
+                  <input
+                    type="hidden"
+                    name="selling_plan"
+                    value="{{ init_sub_plan_id }}"
+                    class="ww-selling-plan-input"
+                    {% if init_sub_plan_id == blank %}
+                      disabled
+                    {% endif %}
+                  >
                   <input type="hidden" name="quantity" value="{{ init_sub_qty }}" class="ww-qty-input">
 
                   {% render 'ww-product-purchase-options-v2', current_prod: product, block: section %}
@@ -180,14 +248,28 @@
 
               <div class="ww-buy-trust">
                 <span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path d="M9 12l2 2 4-4"></path>
                     <circle cx="12" cy="12" r="9"></circle>
                   </svg>
                   Free shipping $50+
                 </span>
                 <span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
                     <polyline points="9 12 11 14 15 10"></polyline>
                   </svg>
@@ -195,7 +277,6 @@
                 </span>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -250,7 +331,6 @@
             {%- endif -%}
           {%- endfor -%}
         </div>
-
       </div>
     </div>
 
@@ -274,7 +354,6 @@
         </div>
       </div>
     {%- endif -%}
-
   </div>
 </section>
 
@@ -312,6 +391,7 @@
           var isSub = selectedRadio.value === 'subscription';
           var varId = selectedRadio.getAttribute('data-variant-id');
           var planId = selectedRadio.getAttribute('data-selling-plan-id');
+          console.log(planId, 'planId');
           var targetQty = selectedRadio.getAttribute('data-quantity') || (isSub ? '2' : '1');
 
           // Update hidden form inputs
