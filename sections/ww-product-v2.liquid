@@ -581,20 +581,10 @@
 
                       # Initial selling plan
                       assign init_sub_plan_id = ''
-                      for alloc in current_variant.selling_plan_allocations
-                        assign init_sub_plan_id = alloc.selling_plan.id
-                        break
-                      endfor
-                      if init_sub_plan_id == blank and current_prod.selling_plan_groups.size > 0
-                        for group in current_prod.selling_plan_groups
-                          for plan in group.selling_plans
-                            assign init_sub_plan_id = plan.id
-                            break
-                          endfor
-                          if init_sub_plan_id != blank
-                            break
-                          endif
-                        endfor
+                      if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+                        assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
+                      elsif current_prod.selling_plan_groups.size > 0
+                        assign init_sub_plan_id = current_prod.selling_plan_groups[0].selling_plans[0].id
                       endif
 
                       # Initial locked quantity for subscription (2 for simple product, 1 for bundle)
@@ -636,7 +626,6 @@
                           type="hidden"
                           name="selling_plan"
                           value="{{ init_sub_plan_id }}"
-                          data-default-plan-id="{{ init_sub_plan_id }}"
                           class="ww-selling-plan-input"
                           {% if init_sub_plan_id == blank %}
                             disabled
@@ -1047,9 +1036,6 @@
 
         function updateQuantityState() {
           var selectedRadio = form.querySelector('input[type="radio"][name^="purchase_type"]:checked');
-          if (!selectedRadio) {
-            selectedRadio = form.querySelector('input[type="radio"][name^="purchase_type"]');
-          }
           if (!selectedRadio) return;
 
           var optCard = selectedRadio.closest('.ww-sub-opt');
@@ -1066,12 +1052,6 @@
           var isSub = selectedRadio.value === 'subscription';
           var varId = selectedRadio.getAttribute('data-variant-id');
           var planId = selectedRadio.getAttribute('data-selling-plan-id');
-          if (!planId && optCard) {
-            planId = optCard.getAttribute('data-selling-plan-id');
-          }
-          if (!planId && isSub && sellingPlanInput) {
-            planId = sellingPlanInput.getAttribute('data-default-plan-id') || sellingPlanInput.defaultValue;
-          }
           var targetQty = selectedRadio.getAttribute('data-quantity') || (isSub ? '2' : '1');
 
           // Update hidden form inputs
@@ -1084,11 +1064,9 @@
             if (isSub && planId) {
               sellingPlanInput.value = planId;
               sellingPlanInput.removeAttribute('disabled');
-              sellingPlanInput.disabled = false;
             } else {
               sellingPlanInput.value = '';
               sellingPlanInput.setAttribute('disabled', 'disabled');
-              sellingPlanInput.disabled = true;
             }
           }
 
@@ -1149,11 +1127,6 @@
             }
           });
         });
-
-        // Ensure inputs are synchronized right before Horizon's product-form-component submits FormData
-        form.addEventListener('submit', function () {
-          updateQuantityState();
-        }, true);
 
         // Run initial synchronization
         updateQuantityState();

@@ -25,22 +25,16 @@
     assign sub_group = null
 
     if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-      for alloc in current_variant.selling_plan_allocations
-        assign sub_allocation = alloc
-        assign sub_plan = alloc.selling_plan
-        assign sub_group = alloc.selling_plan_group
-        break
-      endfor
+      assign sub_allocation = current_variant.selling_plan_allocations[0]
+      assign sub_plan = sub_allocation.selling_plan
+      assign sub_group = sub_allocation.selling_plan_group
     endif
 
     if sub_plan == null and current_prod.selling_plan_groups.size > 0
       for group in current_prod.selling_plan_groups
-        for plan in group.selling_plans
+        if group.selling_plans.size > 0
           assign sub_group = group
-          assign sub_plan = plan
-          break
-        endfor
-        if sub_plan != null
+          assign sub_plan = group.selling_plans[0]
           break
         endif
       endfor
@@ -77,7 +71,7 @@
       if sub_allocation != blank
         assign sub_price = sub_allocation.price
       elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
-        assign adjustment = sub_plan.price_adjustments.first
+        assign adjustment = sub_plan.price_adjustments[0]
         if adjustment.value_type == 'percentage'
           assign discount_percentage = adjustment.value
           assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
@@ -114,7 +108,7 @@
       assign sub_compare_price = current_variant.price | times: 2
 
       if sub_plan != blank and sub_plan.price_adjustments.size > 0
-        assign adjustment = sub_plan.price_adjustments.first
+        assign adjustment = sub_plan.price_adjustments[0]
         if adjustment.value_type == 'percentage'
           assign discount_percentage = adjustment.value
           assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
@@ -158,13 +152,12 @@
       data-selling-plan-id="{{ sub_plan.id }}"
       data-quantity="{{ sub_qty }}"
     >
-      {%- if sub_plan != blank and sub_plan.price_adjustments.size > 0 -%}
-        {%- assign adjustment = sub_plan.price_adjustments.first -%}
-        {%- if adjustment.value_type == 'percentage' -%}
-          <span class="ww-sub-badge">Most popular · save {{ adjustment.value }}% + free shipping</span>
-        {%- else -%}
-          <span class="ww-sub-badge">Most popular · save {{ adjustment.value | money }} + free shipping</span>
-        {%- endif -%}
+      {%- if sub_plan.price_adjustments.size > 0 -%}
+        {%- if sub_plan.price_adjustments[0].value_type == 'percentage' -%}
+          <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value }}% + free shipping</span>
+      {%- else -%}
+          <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
+       {%- endif -%}
       {%- else -%}
         <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
       {%- endif -%}
