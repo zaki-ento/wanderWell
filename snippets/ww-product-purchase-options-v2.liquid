@@ -20,27 +20,21 @@
     endif
 
     # 3. Identify Appstle Selling Plan & Group
-    assign sub_allocation = nil
-    assign sub_plan = nil
-    assign sub_group = nil
+    assign sub_allocation = null
+    assign sub_plan = null
+    assign sub_group = null
 
     if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-      for alloc in current_variant.selling_plan_allocations
-        assign sub_allocation = alloc
-        assign sub_plan = alloc.selling_plan
-        assign sub_group = alloc.selling_plan_group
-        break
-      endfor
+      assign sub_allocation = current_variant.selling_plan_allocations[0]
+      assign sub_plan = sub_allocation.selling_plan
+      assign sub_group = sub_allocation.selling_plan_group
     endif
 
-    if sub_plan == blank and current_prod.selling_plan_groups.size > 0
+    if sub_plan == null and current_prod.selling_plan_groups.size > 0
       for group in current_prod.selling_plan_groups
-        for plan in group.selling_plans
+        if group.selling_plans.size > 0
           assign sub_group = group
-          assign sub_plan = plan
-          break
-        endfor
-        if sub_plan != blank
+          assign sub_plan = group.selling_plans[0]
           break
         endif
       endfor
@@ -77,7 +71,7 @@
       if sub_allocation != blank
         assign sub_price = sub_allocation.price
       elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
-        assign adjustment = sub_plan.price_adjustments.first
+        assign adjustment = sub_plan.price_adjustments[0]
         if adjustment.value_type == 'percentage'
           assign discount_percentage = adjustment.value
           assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
@@ -114,7 +108,7 @@
       assign sub_compare_price = current_variant.price | times: 2
 
       if sub_plan != blank and sub_plan.price_adjustments.size > 0
-        assign adjustment = sub_plan.price_adjustments.first
+        assign adjustment = sub_plan.price_adjustments[0]
         if adjustment.value_type == 'percentage'
           assign discount_percentage = adjustment.value
           assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
@@ -143,7 +137,7 @@
     assign plan_name = sub_plan.name | default: 'ships every 4 weeks'
   -%}
 
-  <fieldset class="ww-purchase-options ww-purchase-options--v2">
+  <fieldset class="ww-purchase-options ww-purchase-options--v2" data-variant-architecture="false">
     <legend class="visually-hidden">Purchase Options</legend>
 
     {%- comment -%}
@@ -154,16 +148,16 @@
     <div
       class="ww-sub-opt ww-sub-opt--best on"
       data-option-type="subscription"
+      data-variant-id="{{ current_variant.id }}"
       data-selling-plan-id="{{ sub_plan.id }}"
       data-quantity="{{ sub_qty }}"
     >
       {%- if sub_plan.price_adjustments.size > 0 -%}
-        {%- assign badge_adj = sub_plan.price_adjustments.first -%}
-        {%- if badge_adj.value_type == 'percentage' -%}
-          <span class="ww-sub-badge">Most popular · save {{ badge_adj.value }}% + free shipping</span>
-        {%- else -%}
+        {%- if sub_plan.price_adjustments[0].value_type == 'percentage' -%}
+          <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value }}% + free shipping</span>
+      {%- else -%}
           <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
-        {%- endif -%}
+       {%- endif -%}
       {%- else -%}
         <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
       {%- endif -%}
@@ -177,6 +171,7 @@
               value="subscription"
               id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub"
               class="ww-sub-opt__radio-input"
+              data-variant-id="{{ current_variant.id }}"
               data-selling-plan-id="{{ sub_plan.id }}"
               data-quantity="{{ sub_qty }}"
               data-price="{{ sub_price | money }}"
@@ -232,6 +227,7 @@
     <div
       class="ww-sub-opt"
       data-option-type="onetime"
+      data-variant-id="{{ current_variant.id }}"
       data-selling-plan-id=""
       data-quantity="{{ onetime_qty }}"
     >
@@ -244,6 +240,7 @@
               value="onetime"
               id="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime"
               class="ww-sub-opt__radio-input"
+              data-variant-id="{{ current_variant.id }}"
               data-selling-plan-id=""
               data-quantity="{{ onetime_qty }}"
               data-price="{{ onetime_price | money }}"
