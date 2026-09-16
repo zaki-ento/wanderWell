@@ -100,7 +100,7 @@
     }
   }
 
-  .ww-arrae-card {
+  .ww-mobile-card {
     position: relative;
     width: 100%;
     height: 480px;
@@ -117,11 +117,11 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .ww-arrae-card:active {
+  .ww-mobile-card:active {
     transform: scale(0.99);
   }
 
-  .ww-arrae-card__media {
+  .ww-mobile-card__media {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -130,7 +130,7 @@
     background-color: #FAF7F2;
   }
 
-  .ww-arrae-card__img {
+  .ww-mobile-card__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -138,7 +138,7 @@
     display: block;
   }
 
-  .ww-arrae-card__placeholder {
+  .ww-mobile-card__placeholder {
     width: 100%;
     height: 100%;
     display: flex;
@@ -147,7 +147,7 @@
     background: linear-gradient(145deg, #FAF7F2 0%, #EFECE6 100%);
   }
 
-  .ww-arrae-card__logo {
+  .ww-mobile-card__logo {
     color: #1A1A1A;
     font-family: var(--font-heading, inherit);
     font-size: 2.2rem;
@@ -157,7 +157,7 @@
     user-select: none;
   }
 
-  .ww-arrae-card__content {
+  .ww-mobile-card__content {
     position: relative;
     z-index: 2;
     padding: 36px 18px 20px 18px;
@@ -168,7 +168,7 @@
     box-sizing: border-box;
   }
 
-  .ww-arrae-card__title {
+  .ww-mobile-card__title {
     font-size: 1.15rem;
     font-weight: 800;
     color: #1A1A1A;
@@ -178,7 +178,7 @@
     text-transform: uppercase;
   }
 
-  .ww-arrae-card__subtitle {
+  .ww-mobile-card__subtitle {
     font-size: 0.92rem;
     line-height: 1.38;
     color: #555555;
@@ -186,7 +186,7 @@
     font-weight: 400;
   }
 
-  .ww-arrae-card__bottom {
+  .ww-mobile-card__bottom {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -194,7 +194,7 @@
     margin-top: 2px;
   }
 
-  .ww-arrae-card__link {
+  .ww-mobile-card__link {
     font-size: 0.92rem;
     font-weight: 500;
     color: #1A1A1A;
@@ -207,18 +207,18 @@
     transition: color 0.15s ease;
   }
 
-  .ww-arrae-card:hover .ww-arrae-card__link {
+  .ww-mobile-card:hover .ww-mobile-card__link {
     color: var(--orange, #E8632B);
   }
 
-  .ww-arrae-card__price {
+  .ww-mobile-card__price {
     font-size: 0.95rem;
     font-weight: 700;
     color: #1A1A1A;
     white-space: nowrap;
   }
 
-  .ww-arrae-card__price-prefix {
+  .ww-mobile-card__price-prefix {
     font-weight: 400;
     color: #555555;
     margin-right: 3px;
@@ -817,14 +817,7 @@
                 {%- endif -%}
 
                 {%- assign title = block.settings.title | default: current_prod.title -%}
-                {%- if title contains '{{' or title contains 'product.title' or title == blank -%}
-                  {%- assign title = current_prod.title -%}
-                {%- endif -%}
-
-                {%- assign subtitle = block.settings.subtitle
-                  | default: current_prod.metafields.custom.subtitle.value
-                  | default: current_prod.metafields.custom.subtitle
-                -%}
+                {%- assign short_description = block.settings.short_description | default: current_prod.metafields.custom.short_description.value | default: current_prod.metafields.custom.subtitle -%}
                 {%- assign desc = block.settings.description | default: current_prod.description -%}
 
                 {%- assign current_variant = current_prod.selected_or_first_available_variant -%}
@@ -833,20 +826,12 @@
                   {%- assign is_bundle = true -%}
                 {%- endif -%}
 
-                {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15 -%}
-                {%- if is_bundle -%}
-                  {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 30 -%}
-                {%- endif -%}
-
                 {%- assign card_price = current_variant.price | money -%}
-                {%- assign card_serving_rate = current_variant.price | times: 1.0 | divided_by: base_servings | floor | money -%}
+                
 
                 {%- comment -%} Check subtitle directly from product metafield or non-boilerplate block setting {%- endcomment -%}
-                {%- assign product_subtitle = current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
-                {%- if product_subtitle == blank and block.settings.subtitle != blank -%}
-                  {%- unless block.settings.subtitle == 'Capsules · Ginger' or block.settings.subtitle == 'Powder · Vitamin C' or block.settings.subtitle contains 'save up to 10%' or block.settings.subtitle contains 'Save upto 10%' -%}
-                    {%- assign product_subtitle = block.settings.subtitle -%}
-                  {%- endunless -%}
+                {%- assign short_description = current_prod.metafields.custom.short_description.value | default: current_prod.metafields.custom.subtitle -%}
+                {%- if short_description == blank and block.settings.short_description != blank -%}
                 {%- endif -%}
 
                 <div
@@ -856,45 +841,45 @@
                 >
                   <a
                     href="{{ current_prod.url | default: '#' }}"
-                    class="ww-arrae-card"
+                    class="ww-mobile-card"
                     aria-label="{{ title | escape }}"
                   >
-                    <div class="ww-arrae-card__media">
+                    <div class="ww-mobile-card__media">
                       {%- if current_prod.featured_image != blank -%}
                         {{
                           current_prod.featured_image
                           | image_url: width: 800
                           | image_tag:
-                            class: 'ww-arrae-card__img',
+                            class: 'ww-mobile-card__img',
                             loading: 'lazy',
                             decoding: 'async',
                             alt: title
                         }}
                       {%- else -%}
-                        <div class="ww-arrae-card__placeholder">
-                          <span class="ww-arrae-card__logo">wanderWell</span>
+                        <div class="ww-mobile-card__placeholder">
+                          <span class="ww-mobile-card__logo">wanderWell</span>
                         </div>
                       {%- endif -%}
                     </div>
 
-                    <div class="ww-arrae-card__content">
-                      <h3 class="ww-arrae-card__title">
+                    <div class="ww-mobile-card__content">
+                      <h3 class="ww-mobile-card__title">
                         {{ title | upcase }}
                       </h3>
 
-                      {%- if product_subtitle != blank -%}
-                        <div class="ww-arrae-card__subtitle">
-                          {{ product_subtitle | escape }}
+                      {%- if short_description != blank -%}
+                        <div class="ww-mobile-card__subtitle">
+                          {{ short_description | escape }}
                         </div>
                       {%- endif -%}
 
-                      <div class="ww-arrae-card__bottom">
-                        <span class="ww-arrae-card__link">
-                          view details -&gt;
+                      <div class="ww-mobile-card__bottom">
+                       <span class="ww-mobile-card__price">
+                          <span class="ww-mobile-card__price-prefix">from</span> {{ card_price }}
                         </span>
-                        <span class="ww-arrae-card__price">
-                          <span class="ww-arrae-card__price-prefix">from</span> {{ card_price }}
-                        </span>
+                        <a href="{{ current_prod.url | default: '#' }}" class="ww-mobile-card__link">
+                          View details
+                        </a>
                       </div>
                     </div>
                   </a>
