@@ -819,42 +819,35 @@
 
                 {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15 -%}
                 {%- if is_bundle -%}
-                  {%- assign base_servings = 30 -%}
+                  {%- assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 30 -%}
                 {%- endif -%}
 
                 {%- assign card_price = current_variant.price | money -%}
                 {%- assign card_serving_rate = current_variant.price | times: 1.0 | divided_by: base_servings | floor | money -%}
 
-                {%- comment -%} Parse format type and ingredient badge {%- endcomment -%}
-                {%- assign format_type = 'Capsules' -%}
-                {%- assign ingredient_badge = 'GINGER' -%}
+                {%- comment -%} Check format_type and ingredient_badge directly from product metafield {%- endcomment -%}
+                {%- assign product_subtitle = current_prod.metafields.custom.subtitle.value | default: current_prod.metafields.custom.subtitle -%}
+                {%- assign format_type = '' -%}
+                {%- assign ingredient_badge = '' -%}
 
-                {%- if subtitle contains '·' -%}
-                  {%- assign sub_parts = subtitle | split: '·' -%}
-                  {%- assign format_type = sub_parts[0] | strip -%}
-                  {%- assign ingredient_badge = sub_parts[1] | strip | upcase -%}
-                {%- elsif subtitle != blank -%}
-                  {%- assign format_type = subtitle -%}
-                  {%- assign ingredient_badge = subtitle | upcase -%}
+                {%- if product_subtitle != blank -%}
+                  {%- if product_subtitle contains '·' -%}
+                    {%- assign sub_parts = product_subtitle | split: '·' -%}
+                    {%- assign format_type = sub_parts[0] | strip -%}
+                    {%- assign ingredient_badge = sub_parts[1] | strip | upcase -%}
+                  {%- else -%}
+                    {%- assign format_type = product_subtitle | strip -%}
+                  {%- endif -%}
                 {%- endif -%}
 
                 {%- comment -%} Background color per product matching brand aesthetic {%- endcomment -%}
                 {%- assign prod_handle = current_prod.handle | default: title | handleize -%}
                 {%- if prod_handle contains 'immune' -%}
                   {%- assign bg_color = '#E9B36B' -%}
-                  {%- if ingredient_badge == blank or ingredient_badge == 'GINGER' -%}
-                    {%- assign ingredient_badge = 'VITAMIN C' -%}
-                  {%- endif -%}
                 {%- elsif prod_handle contains 'duo' or is_bundle -%}
                   {%- assign bg_color = '#B89B7B' -%}
-                  {%- if ingredient_badge == blank or ingredient_badge == 'GINGER' -%}
-                    {%- assign ingredient_badge = 'THE DUO' -%}
-                  {%- endif -%}
                 {%- else -%}
                   {%- assign bg_color = '#94A671' -%}
-                  {%- if ingredient_badge == blank -%}
-                    {%- assign ingredient_badge = 'GINGER' -%}
-                  {%- endif -%}
                 {%- endif -%}
 
                 <div
@@ -866,7 +859,6 @@
                     <a
                       href="{{ current_prod.url | default: '#' }}"
                       class="ww-mob-card__media"
-                      style="background-color: {{ bg_color }};"
                       aria-label="View {{ title | escape }}"
                     >
                       {%- if ingredient_badge != blank -%}
@@ -892,13 +884,13 @@
 
                     <div class="ww-mob-card__body">
                       <div class="ww-mob-card__eyebrow">
-                        {{ title | upcase }} · {{ format_type | upcase }}
+                        {{ title | upcase }}{% if format_type != blank %} · {{ format_type | upcase }}{% endif %}
                       </div>
                       <a href="{{ current_prod.url | default: '#' }}" class="ww-mob-card__title">
                         {{ title | escape }}
                       </a>
                       {%- if desc != blank -%}
-                        <p class="ww-mob-card__desc">{{ desc | escape }}</p>
+                        <p class="ww-mob-card__desc">{{ desc }}</p>
                       {%- endif -%}
 
                       <div class="ww-mob-card__price-row">
