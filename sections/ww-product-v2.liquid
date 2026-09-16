@@ -56,6 +56,7 @@
 
   /* Mobile/Tablet Carousel Styles */
   .ww-mob-carousel {
+    --card-width: min(350px, calc(100vw - 64px));
     position: relative;
     width: 100%;
     margin: 0 auto;
@@ -70,7 +71,7 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 10px 20px 20px;
+    padding: 14px max(20px, calc((100% - var(--card-width)) / 2)) 24px;
     gap: 16px;
     box-sizing: border-box;
   }
@@ -80,22 +81,27 @@
   }
 
   .ww-mob-carousel__slide {
-    flex: 0 0 calc(100vw - 64px);
-    max-width: 380px;
-    min-width: 280px;
-    scroll-snap-align: start;
+    flex: 0 0 var(--card-width);
+    width: var(--card-width);
+    max-width: 360px;
+    min-width: 260px;
+    scroll-snap-align: center;
     scroll-snap-stop: always;
     display: flex;
     box-sizing: border-box;
   }
 
   @media screen and (min-width: 600px) and (max-width: 1023px) {
+    .ww-mob-carousel {
+      --card-width: 380px;
+    }
     .ww-mob-carousel__track {
-      padding: 14px 32px 24px;
-      gap: 20px;
+      padding: 16px calc((100% - var(--card-width)) / 2) 28px;
+      gap: 24px;
     }
     .ww-mob-carousel__slide {
-      flex: 0 0 380px;
+      flex: 0 0 var(--card-width);
+      width: var(--card-width);
       max-width: 380px;
     }
   }
@@ -918,6 +924,7 @@
               type="button"
               class="ww-mob-carousel__arrow ww-mob-carousel__arrow--prev"
               aria-label="Previous product"
+              style="display: none;"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M15 19l-7-7 7-7"/>
@@ -1148,7 +1155,31 @@
           });
         }
 
-        // Scroll listener to update active dot
+        var nextBtn = carousel.querySelector('.ww-mob-carousel__arrow--next');
+        var prevBtn = carousel.querySelector('.ww-mob-carousel__arrow--prev');
+        var currentIdx = 0;
+
+        function updateArrows(index) {
+          if (prevBtn) {
+            if (index <= 0) {
+              prevBtn.style.display = 'none';
+            } else {
+              prevBtn.style.display = 'flex';
+            }
+          }
+          if (nextBtn) {
+            if (index >= slides.length - 1) {
+              nextBtn.style.display = 'none';
+            } else {
+              nextBtn.style.display = 'flex';
+            }
+          }
+        }
+
+        // Initialize arrows for first slide
+        updateArrows(0);
+
+        // Scroll listener to update active dot and arrows
         var scrollTimer;
         track.addEventListener(
           'scroll',
@@ -1170,8 +1201,10 @@
                 }
               });
 
+              currentIdx = closestIdx;
               setActiveDot(closestIdx);
-            }, 40);
+              updateArrows(closestIdx);
+            }, 30);
           },
           { passive: true }
         );
@@ -1182,35 +1215,37 @@
             var idx = parseInt(this.getAttribute('data-slide-index'), 10);
             if (!isNaN(idx) && slides[idx]) {
               slides[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              currentIdx = idx;
               setActiveDot(idx);
+              updateArrows(idx);
             }
           });
         });
 
-        // Click arrow to navigate to next slide (loops to beginning if at end)
-        var nextBtn = carousel.querySelector('.ww-mob-carousel__arrow--next');
+        // Click arrow to navigate to next slide
         if (nextBtn) {
           nextBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            var slideWidth = slides[0].offsetWidth + 16;
-            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 24) {
-              track.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-              track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+            var targetIdx = Math.min(currentIdx + 1, slides.length - 1);
+            if (slides[targetIdx]) {
+              slides[targetIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              currentIdx = targetIdx;
+              setActiveDot(targetIdx);
+              updateArrows(targetIdx);
             }
           });
         }
 
-        // Click arrow to navigate to prev slide (loops to end if at beginning)
-        var prevBtn = carousel.querySelector('.ww-mob-carousel__arrow--prev');
+        // Click arrow to navigate to prev slide
         if (prevBtn) {
           prevBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            var slideWidth = slides[0].offsetWidth + 16;
-            if (track.scrollLeft <= 24) {
-              track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
-            } else {
-              track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+            var targetIdx = Math.max(currentIdx - 1, 0);
+            if (slides[targetIdx]) {
+              slides[targetIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              currentIdx = targetIdx;
+              setActiveDot(targetIdx);
+              updateArrows(targetIdx);
             }
           });
         }
