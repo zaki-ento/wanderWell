@@ -178,6 +178,11 @@
     text-transform: uppercase;
   }
 
+  .ww-mobile-card__title-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .ww-mobile-card__subtitle {
     font-size: 0.92rem;
     line-height: 1.38;
@@ -203,12 +208,24 @@
     text-decoration-thickness: 1px;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     transition: color 0.15s ease;
+  }
+
+  .ww-mobile-card__link svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.2;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
   }
 
   .ww-mobile-card:hover .ww-mobile-card__link {
     color: var(--orange, #E8632B);
+  }
+
+  .ww-mobile-card:hover .ww-mobile-card__link svg {
+    transform: translateX(3px);
   }
 
   .ww-mobile-card__price {
@@ -226,12 +243,11 @@
 
   .ww-mob-carousel__arrow {
     position: absolute;
-    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: #242424;
     color: #FFFFFF;
@@ -242,6 +258,14 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .ww-mob-carousel__arrow--prev {
+    left: 8px;
+  }
+
+  .ww-mob-carousel__arrow--next {
+    right: 8px;
   }
 
   .ww-mob-carousel__arrow:hover {
@@ -833,12 +857,12 @@
                   data-slide-index="{{ mob_slide_count }}"
                   {{ block.shopify_attributes }}
                 >
-                  <a
-                    href="{{ current_prod.url | default: '#' }}"
-                    class="ww-mobile-card"
-                    aria-label="{{ title | escape }}"
-                  >
-                    <div class="ww-mobile-card__media">
+                  <div class="ww-mobile-card">
+                    <a
+                      href="{{ current_prod.url | default: '#' }}"
+                      class="ww-mobile-card__media"
+                      aria-label="{{ title | escape }}"
+                    >
                       {%- if current_prod.featured_image != blank -%}
                         {{
                           current_prod.featured_image
@@ -854,11 +878,13 @@
                           <span class="ww-mobile-card__logo">wanderWell</span>
                         </div>
                       {%- endif -%}
-                    </div>
+                    </a>
 
                     <div class="ww-mobile-card__content">
                       <h3 class="ww-mobile-card__title">
-                        {{ title | upcase }}
+                        <a href="{{ current_prod.url | default: '#' }}" class="ww-mobile-card__title-link">
+                          {{ title | upcase }}
+                        </a>
                       </h3>
 
                       {%- if short_description != blank -%}
@@ -871,16 +897,16 @@
                         <span class="ww-mobile-card__price">
                           <span class="ww-mobile-card__price-prefix">from</span> {{ card_price }}
                         </span>
-                        <a class="ww-mobile-card__link">
+                        <a href="{{ current_prod.url | default: '#' }}" class="ww-mobile-card__link">
                           <span>view details</span>
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M5 12h14"></path>
                             <path d="M13 5l7 7-7 7"></path>
                           </svg>
                         </a>
                       </div>
                     </div>
-                  </a>
+                  </div>
                 </div>
                 {%- assign mob_slide_count = mob_slide_count | plus: 1 -%}
               {%- endif -%}
@@ -890,11 +916,21 @@
           {%- if mob_slide_count > 1 -%}
             <button
               type="button"
+              class="ww-mob-carousel__arrow ww-mob-carousel__arrow--prev"
+              aria-label="Previous product"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+
+            <button
+              type="button"
               class="ww-mob-carousel__arrow ww-mob-carousel__arrow--next"
               aria-label="Next product"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+                <path d="M9 5l7 7-7 7"/>
               </svg>
             </button>
 
@@ -1161,6 +1197,20 @@
               track.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
               track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+            }
+          });
+        }
+
+        // Click arrow to navigate to prev slide (loops to end if at beginning)
+        var prevBtn = carousel.querySelector('.ww-mob-carousel__arrow--prev');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var slideWidth = slides[0].offsetWidth + 16;
+            if (track.scrollLeft <= 24) {
+              track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+            } else {
+              track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
             }
           });
         }
