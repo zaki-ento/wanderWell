@@ -121,21 +121,9 @@
                 # 2. Initial selling plan
                 assign init_sub_plan_id = ''
                 if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-                  for alloc in current_variant.selling_plan_allocations
-                    assign init_sub_plan_id = alloc.selling_plan.id
-                    break
-                  endfor
-                endif
-                if init_sub_plan_id == blank and product.selling_plan_groups.size > 0
-                  for group in product.selling_plan_groups
-                    for plan in group.selling_plans
-                      assign init_sub_plan_id = plan.id
-                      break
-                    endfor
-                    if init_sub_plan_id != blank
-                      break
-                    endif
-                  endfor
+                  assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
+                elsif product.selling_plan_groups.size > 0
+                  assign init_sub_plan_id = product.selling_plan_groups[0].selling_plans[0].id
                 endif
 
                 # 3. Initial locked quantity for subscription (2 for simple product, 1 for bundle)
@@ -156,7 +144,7 @@
                 <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
                 {%- form 'product', product, id: product_form_id, class: 'ww-product-form ww-product-form--v2', data-type: 'add-to-cart-form' -%}
                   <input type="hidden" name="id" ref="variantId" value="{{ initial_variant_id }}" class="ww-variant-id-input">
-                  <input type="hidden" name="selling_plan" value="{{ init_sub_plan_id }}" class="ww-selling-plan-input" data-init-selling-plan-id="{{ init_sub_plan_id }}" {% if init_sub_plan_id == blank %}disabled{% endif %}>
+                  <input type="hidden" name="selling_plan" value="{{ init_sub_plan_id }}" class="ww-selling-plan-input" {% if init_sub_plan_id == blank %}disabled{% endif %}>
                   <input type="hidden" name="quantity" value="{{ init_sub_qty }}" class="ww-qty-input">
 
                   {% render 'ww-product-purchase-options-v2', current_prod: product, block: section %}
@@ -295,14 +283,7 @@
   (function () {
     function initVariantArchitectureV2(root) {
       var scope = root || document;
-      var forms = scope.querySelectorAll('.section-{{ section.id }} .ww-product-form, #ww-product-template-v2 .ww-product-form, .ww-section-product-template--v2 .ww-product-form');
-      if (forms.length === 0 && scope.classList && scope.classList.contains('ww-product-form')) {
-        forms = [scope];
-      }
-      if (forms.length === 0 && document.querySelector('#ww-product-template-v2 .ww-product-form')) {
-        forms = document.querySelectorAll('#ww-product-template-v2 .ww-product-form');
-      }
-
+      var forms = scope.querySelectorAll('.section-{{ section.id }} .ww-product-form');
       forms.forEach(function (form) {
         if (form.__wwV2Init) return;
         form.__wwV2Init = true;
@@ -331,18 +312,6 @@
           var isSub = selectedRadio.value === 'subscription';
           var varId = selectedRadio.getAttribute('data-variant-id');
           var planId = selectedRadio.getAttribute('data-selling-plan-id');
-
-          // Fallbacks for planId if not present directly on checked radio
-          if (isSub && !planId) {
-            var subCard = form.querySelector('.ww-sub-opt[data-option-type="subscription"]');
-            if (subCard) {
-              planId = subCard.getAttribute('data-selling-plan-id');
-            }
-          }
-          if (isSub && !planId && sellingPlanInput) {
-            planId = sellingPlanInput.getAttribute('data-init-selling-plan-id') || sellingPlanInput.value;
-          }
-
           var targetQty = selectedRadio.getAttribute('data-quantity') || (isSub ? '2' : '1');
 
           // Update hidden form inputs
@@ -353,13 +322,10 @@
 
           if (sellingPlanInput) {
             if (isSub && planId) {
-              sellingPlanInput.name = 'selling_plan';
               sellingPlanInput.value = planId;
-              sellingPlanInput.disabled = false;
               sellingPlanInput.removeAttribute('disabled');
             } else {
               sellingPlanInput.value = '';
-              sellingPlanInput.disabled = true;
               sellingPlanInput.setAttribute('disabled', 'disabled');
             }
           }
@@ -423,18 +389,6 @@
           });
         });
 
-        // Ensure inputs are synced immediately before submission (capture phase runs before Horizon's FormData)
-        form.addEventListener('submit', function () {
-          updateQuantityState();
-        }, true);
-
-        var atcBtn = form.querySelector('[type="submit"], .ww-add button, .ww-add');
-        if (atcBtn) {
-          atcBtn.addEventListener('click', function () {
-            updateQuantityState();
-          }, true);
-        }
-
         // Initial setup on load
         updateQuantityState();
       });
@@ -449,7 +403,7 @@
     }
 
     document.addEventListener('shopify:section:load', function (e) {
-      if (e.target && (e.target.classList.contains('section-{{ section.id }}') || e.target.querySelector('.ww-product-form'))) {
+      if (e.target && e.target.classList.contains('section-{{ section.id }}')) {
         initVariantArchitectureV2(e.target);
       }
     });

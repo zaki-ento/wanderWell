@@ -15,7 +15,7 @@
 
     # 2. Check if bundle product
     assign is_bundle = false
-    if current_prod.type == 'Bundle' or current_prod.handle == 'the-travel-duo'
+    if current_prod.type == 'Bundle'
       assign is_bundle = true
     endif
 
@@ -25,22 +25,16 @@
     assign sub_group = null
 
     if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-      for alloc in current_variant.selling_plan_allocations
-        assign sub_allocation = alloc
-        assign sub_plan = alloc.selling_plan
-        assign sub_group = alloc.selling_plan_group
-        break
-      endfor
+      assign sub_allocation = current_variant.selling_plan_allocations[0]
+      assign sub_plan = sub_allocation.selling_plan
+      assign sub_group = sub_allocation.selling_plan_group
     endif
 
     if sub_plan == null and current_prod.selling_plan_groups.size > 0
       for group in current_prod.selling_plan_groups
-        for plan in group.selling_plans
+        if group.selling_plans.size > 0
           assign sub_group = group
-          assign sub_plan = plan
-          break
-        endfor
-        if sub_plan != null
+          assign sub_plan = group.selling_plans[0]
           break
         endif
       endfor
