@@ -1,0 +1,548 @@
+{% comment %}
+  Section: WW Product Template v2
+  Description: Custom styled, upgrade-safe single product template with v2 purchase architecture:
+  - Single variant architecture with locked 2-pack subscription ($53.99, save 10%)
+  - 1-pack one-time purchase ($29.99) with active quantity stepper
+  - Bundle products with compare-at price strikethrough ($59.98 -> $53.99) and quantity 1
+  - Dynamic media gallery with thumbnails & nav arrows
+  - Dynamic accordions supporting ingredients, supplement facts, capsule size, bundle items, and custom text
+  - Commitment to quality trust section
+{% endcomment %}
+
+{{ 'ww-product.css' | asset_url | stylesheet_tag }}
+{% render 'add-to-cart-button-styles' %}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section class="ww-products section-{{ section.id }}" id="ww-product-template-v2" {{ section.shopify_attributes }}>
+  <div class="container">
+    
+    <div class="ww-shop">
+      <div class="ww-panel on">
+        <div class="ww-panel-inner">
+          
+          <!-- Media Gallery -->
+          <div class="ww-media">
+            <div class="ww-media-main">
+              <div class="ww-media-stage">
+                {%- assign product_images = product.images -%}
+
+                {%- if product_images.size > 0 -%}
+                  {%- for image in product_images limit: 4 -%}
+                    {%- assign slide_alt = image.alt | default: product.title | default: shop.name -%}
+                    <div class="ww-media-slide {% if forloop.first %}is-on{% endif %}">
+                      {{ image | image_url: width: 800 | image_tag: 
+                        widths: '320, 480, 640, 800',
+                        sizes: '(max-width: 768px) 90vw, 520px',
+                        loading: 'lazy',
+                        decoding: 'async',
+                        alt: slide_alt
+                      }}
+                    </div>
+                  {%- endfor -%}
+                {%- else -%}
+                  <div class="ww-media-slide is-on">
+                    {%- if settings.logo_inverse != blank -%}
+                      {{ settings.logo_inverse | image_url: width: 400 | image_tag: class: 'ww-media-logo', loading: 'lazy', decoding: 'async', alt: shop.name }}
+                    {%- endif -%}
+                  </div>
+                  <div class="ww-media-slide"></div>
+                  <div class="ww-media-slide"></div>
+                  <div class="ww-media-slide"></div>
+                {%- endif -%}
+              </div>
+
+              {%- assign has_multiple_images = false -%}
+              {%- if product_images.size > 1 -%}
+                {%- assign has_multiple_images = true -%}
+              {%- endif -%}
+
+              {%- if has_multiple_images -%}
+                <button class="ww-media-nav ww-media-nav--prev" type="button" aria-label="Previous image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15 5l-7 7 7 7"></path>
+                  </svg>
+                </button>
+                <button class="ww-media-nav ww-media-nav--next" type="button" aria-label="Next image">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              {%- endif -%}
+            </div>
+
+            <div class="ww-media-thumbs" role="tablist" aria-label="Product image thumbnails">
+              {%- if product_images.size > 0 -%}
+                {%- for image in product_images limit: 4 -%}
+                  {%- assign thumb_alt = image.alt | default: product.title | default: shop.name | default: 'Product thumbnail' -%}
+                  <div class="ww-media-thumb {% if forloop.first %}is-active{% endif %}" role="tab" tabindex="0" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Thumbnail {{ forloop.index }} of {{ product_images.size }}">
+                    {{ image | image_url: width: 120 | image_tag: loading: 'lazy', alt: thumb_alt }}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="ww-media-thumb is-active" role="tab" tabindex="0" aria-selected="true" aria-label="Product thumbnail 1"></div>
+                <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 2"></div>
+                <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 3"></div>
+                <div class="ww-media-thumb" role="tab" tabindex="0" aria-selected="false" aria-label="Product thumbnail 4"></div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <!-- Product Details & Buy Box -->
+          <div class="ww-detail">
+            {%- assign subtitle = product.metafields.custom.subtitle.value | default: product.metafields.custom.subtitle | default: product.metafields.custom.short_description.value | default: product.metafields.custom.short_description -%}
+            {%- if subtitle != blank -%}
+              <div class="ww-detail-eyebrow">{{ subtitle | escape }}</div>
+            {%- else -%}
+              <div class="ww-detail-eyebrow">{{ product.title | escape }}</div>
+            {%- endif -%}
+            <h3 class="ww-detail-title">{{ product.title | escape }}</h3>
+
+            {%- if product.description != blank -%}
+              <div class="ww-detail-lede">{{ product.description }}</div>
+            {%- endif -%}
+
+            <div class="ww-buy">
+              {%- liquid
+                # 1. Single simple product variant
+                assign current_variant = product.selected_or_first_available_variant
+                assign initial_variant_id = current_variant.id
+
+                assign is_bundle = false
+                if product.type == 'Bundle' or product.handle == 'the-travel-duo'
+                  assign is_bundle = true
+                endif
+
+                # 2. Initial selling plan
+                assign init_sub_plan_id = ''
+                if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+                  assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
+                elsif product.selling_plan_groups.size > 0
+                  assign init_sub_plan_id = product.selling_plan_groups[0].selling_plans[0].id
+                endif
+
+                # 3. Initial locked quantity for subscription (2 for simple product, 1 for bundle)
+                assign init_sub_qty = 2
+                if is_bundle
+                  assign init_sub_qty = 1
+                endif
+              -%}
+
+              {%- assign product_form_id = 'ww-product-form-' | append: section.id -%}
+              <product-form-component
+                data-section-id="{{ section.id }}"
+                data-product-id="{{ product.id }}"
+                data-product-url="{{ product.url }}"
+                on:submit="/handleSubmit"
+                data-quantity-default="1"
+              >
+                <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                {%- form 'product', product, id: product_form_id, class: 'ww-product-form ww-product-form--v2', data-type: 'add-to-cart-form' -%}
+                  <input type="hidden" name="id" ref="variantId" value="{{ initial_variant_id }}" class="ww-variant-id-input">
+                  <input type="hidden" name="selling_plan" value="{{ init_sub_plan_id }}" class="ww-selling-plan-input" {% if init_sub_plan_id == blank %}disabled{% endif %}>
+                  <input type="hidden" name="quantity" value="{{ init_sub_qty }}" class="ww-qty-input">
+
+                  {% render 'ww-product-purchase-options-v2', current_prod: product, block: section %}
+
+                  <span class="product-form-text__error hidden" ref="addToCartTextError">
+                    <span class="svg-wrapper">
+                      {{- 'icon-error.svg' | inline_asset_content -}}
+                    </span>
+                  </span>
+
+                  <div class="ww-buy-row">
+                    <div class="ww-qty" style="display: none;">
+                      <button type="button" class="ww-qty-btn-minus" aria-label="Decrease quantity">−</button>
+                      <span class="v">1</span>
+                      <button type="button" class="ww-qty-btn-plus" aria-label="Increase quantity">+</button>
+                    </div>
+
+                    {%- assign add_to_cart_text = 'products.product.add_to_cart' | t -%}
+                    {%- if product.available == false -%}
+                      {%- assign add_to_cart_text = 'products.product.sold_out' | t -%}
+                    {%- endif -%}
+
+                    {% render 'add-to-cart-button',
+                      product: product,
+                      can_add_to_cart: product.available,
+                      show_icon: true,
+                      add_to_cart_text: add_to_cart_text,
+                      class: 'add-to-cart-button ww-add'
+                    %}
+                  </div>
+                {%- endform -%}
+              </product-form-component>
+
+              <div class="ww-buy-trust">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                  </svg>
+                  Free shipping $50+
+                </span>
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l-9 4.5V12c0 5 4 9 9 10 5-1 9-5 9-10V6.5L12 2z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                  3rd-party tested
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Accordions -->
+        <div class="ww-info">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion' -%}
+              {%- assign acc_title = block.settings.title -%}
+              {%- assign acc_type = block.settings.content_type -%}
+              {%- assign acc_content = '' -%}
+
+              {%- if acc_type == 'custom' -%}
+                {%- assign acc_content = block.settings.content -%}
+              {%- elsif acc_type == 'ingredients' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-ingredients', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- elsif acc_type == 'bundle' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-bundle', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- elsif acc_type == 'supplement_facts' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-supplement-facts', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- elsif acc_type == 'capsule_size' -%}
+                {%- capture rendered_snippet -%}
+                  {%- render 'ww-product-capsule', product: product -%}
+                {%- endcapture -%}
+                {%- assign acc_content = rendered_snippet | strip -%}
+              {%- endif -%}
+
+              {%- assign show_acc = false -%}
+              {%- if acc_content != blank -%}
+                {%- assign show_acc = true -%}
+              {%- endif -%}
+
+              {%- if show_acc -%}
+                <details class="ww-acc" {{ block.shopify_attributes }}>
+                  <summary>
+                    <span class="ww-acc-plus">+</span>
+                    <span class="ww-acc-t">{{ acc_title | escape }}</span>
+                  </summary>
+                  <div class="ww-acc-body">
+                    {{ acc_content }}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Trust Quality Section -->
+    {%- if section.settings.trust_heading != blank -%}
+      <div class="ww-trust">
+        <h2 class="ww-trust__heading">{{ section.settings.trust_heading | escape }}</h2>
+        <div class="ww-trust__grid">
+          {%- if section.settings.trust_item_1_title != blank -%}
+            <div class="ww-trust__col">
+              <h4 class="ww-trust__col-title">{{ section.settings.trust_item_1_title | escape }}</h4>
+              <p class="ww-trust__col-text">{{ section.settings.trust_item_1_text | escape }}</p>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.trust_item_2_title != blank -%}
+            <div class="ww-trust__col">
+              <h4 class="ww-trust__col-title">{{ section.settings.trust_item_2_title | escape }}</h4>
+              <p class="ww-trust__col-text">{{ section.settings.trust_item_2_text | escape }}</p>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script src="{{ 'ww-product.js' | asset_url }}" defer></script>
+<script>
+  (function () {
+    function initVariantArchitectureV2(root) {
+      var scope = root || document;
+      var forms = scope.querySelectorAll('.section-{{ section.id }} .ww-product-form');
+      forms.forEach(function (form) {
+        if (form.__wwV2Init) return;
+        form.__wwV2Init = true;
+
+        var variantInput = form.querySelector('input[name="id"]');
+        var sellingPlanInput = form.querySelector('input.ww-selling-plan-input');
+        var qtyContainer = form.querySelector('.ww-qty');
+        var qtyInput = form.querySelector('.ww-qty-input');
+        var qtyVal = form.querySelector('.ww-qty .v');
+
+        function updateQuantityState() {
+          var selectedRadio = form.querySelector('input[type="radio"][name^="purchase_type"]:checked');
+          if (!selectedRadio) return;
+
+          var optCard = selectedRadio.closest('.ww-sub-opt');
+          var container = selectedRadio.closest('.ww-purchase-options');
+          if (container) {
+            container.querySelectorAll('.ww-sub-opt').forEach(function (card) {
+              card.classList.remove('on');
+            });
+          }
+          if (optCard) {
+            optCard.classList.add('on');
+          }
+
+          var isSub = selectedRadio.value === 'subscription';
+          var varId = selectedRadio.getAttribute('data-variant-id');
+          var planId = selectedRadio.getAttribute('data-selling-plan-id');
+          var targetQty = selectedRadio.getAttribute('data-quantity') || (isSub ? '2' : '1');
+
+          // Update hidden form inputs
+          if (variantInput && varId) {
+            variantInput.value = varId;
+            variantInput.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+
+          if (sellingPlanInput) {
+            if (isSub && planId) {
+              sellingPlanInput.value = planId;
+              sellingPlanInput.removeAttribute('disabled');
+            } else {
+              sellingPlanInput.value = '';
+              sellingPlanInput.setAttribute('disabled', 'disabled');
+            }
+          }
+
+          // Quantity restriction handling: lock to targetQty on subscription, enable on one-time
+          if (qtyContainer && qtyInput) {
+            if (isSub) {
+              qtyInput.value = targetQty;
+              if (qtyVal) qtyVal.textContent = targetQty;
+              qtyContainer.style.display = 'none';
+            } else {
+              qtyInput.value = '1';
+              if (qtyVal) qtyVal.textContent = '1';
+              qtyContainer.style.display = 'flex';
+            }
+          }
+        }
+
+        // Stepper buttons for One-Time mode
+        if (qtyContainer) {
+          var btnMinus = qtyContainer.querySelector('.ww-qty-btn-minus');
+          var btnPlus = qtyContainer.querySelector('.ww-qty-btn-plus');
+          if (btnMinus && !btnMinus.dataset.bound) {
+            btnMinus.dataset.bound = 'true';
+            btnMinus.addEventListener('click', function (e) {
+              e.preventDefault();
+              var current = parseInt(qtyInput.value, 10) || 1;
+              var next = Math.max(1, current - 1);
+              qtyInput.value = next;
+              if (qtyVal) qtyVal.textContent = next;
+            });
+          }
+          if (btnPlus && !btnPlus.dataset.bound) {
+            btnPlus.dataset.bound = 'true';
+            btnPlus.addEventListener('click', function (e) {
+              e.preventDefault();
+              var current = parseInt(qtyInput.value, 10) || 1;
+              var next = current + 1;
+              qtyInput.value = next;
+              if (qtyVal) qtyVal.textContent = next;
+            });
+          }
+        }
+
+        // Add event listeners to radio options
+        var radios = form.querySelectorAll('input[type="radio"][name^="purchase_type"]');
+        radios.forEach(function (radio) {
+          radio.addEventListener('change', updateQuantityState);
+        });
+
+        // Delegate whole card clicks to the corresponding radio input
+        var cards = form.querySelectorAll('.ww-sub-opt');
+        cards.forEach(function (card) {
+          card.addEventListener('click', function (e) {
+            if (e.target.closest('input[type="radio"]')) return;
+            var radio = card.querySelector('input[type="radio"][name^="purchase_type"]');
+            if (radio && !radio.checked) {
+              radio.checked = true;
+              radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        });
+
+        // Initial setup on load
+        updateQuantityState();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        initVariantArchitectureV2();
+      });
+    } else {
+      initVariantArchitectureV2();
+    }
+
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target && e.target.classList.contains('section-{{ section.id }}')) {
+        initVariantArchitectureV2(e.target);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WW Product Template v2",
+  "tag": "section",
+  "class": "ww-section-product-template ww-section-product-template--v2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "sub_multiplier",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Subscription Pack Multiplier",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Trust Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "trust_heading",
+      "label": "Trust Heading",
+      "default": "Commitment to Quality"
+    },
+    {
+      "type": "text",
+      "id": "trust_item_1_title",
+      "label": "Trust Item 1 Title",
+      "default": "Third-party testing"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_item_1_text",
+      "label": "Trust Item 1 Body",
+      "default": "Every finished product lot is tested by independent labs for microbial contamination, heavy metals, and glyphosate. We also conduct third-party testing to verify that our products meet applicable label claims and potency specifications."
+    },
+    {
+      "type": "text",
+      "id": "trust_item_2_title",
+      "label": "Trust Item 2 Title",
+      "default": "Manufacturing excellence"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_item_2_text",
+      "label": "Trust Item 2 Body",
+      "default": "Our products are manufactured in the U.S. in FDA-registered, NSF GMP-certified facilities with ingredients that are sourced globally."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Accordion Title",
+          "default": "Ingredients"
+        },
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Accordion Content Type",
+          "options": [
+            { "value": "custom", "label": "Custom Text" },
+            { "value": "ingredients", "label": "Ingredients (Dynamic)" },
+            { "value": "bundle", "label": "What's Inside Bundle (Dynamic)" },
+            { "value": "supplement_facts", "label": "Product Info / Supplement Facts (Dynamic)" },
+            { "value": "capsule_size", "label": "Capsule Size (Dynamic)" }
+          ],
+          "default": "custom"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Custom Accordion Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WW Product Template v2",
+      "blocks": [
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "content_type": "ingredients"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Product Information",
+            "content_type": "supplement_facts"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Capsule size",
+            "content_type": "capsule_size"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
