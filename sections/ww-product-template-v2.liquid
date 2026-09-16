@@ -121,9 +121,18 @@
                 # 2. Initial selling plan
                 assign init_sub_plan_id = ''
                 if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-                  assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
-                elsif product.selling_plan_groups.size > 0
-                  assign init_sub_plan_id = product.selling_plan_groups[0].selling_plans[0].id
+                  assign init_sub_plan_id = current_variant.selling_plan_allocations.first.selling_plan.id
+                endif
+                if init_sub_plan_id == blank and product.selling_plan_groups.size > 0
+                  for group in product.selling_plan_groups
+                    for plan in group.selling_plans
+                      assign init_sub_plan_id = plan.id
+                      break
+                    endfor
+                    if init_sub_plan_id != blank
+                      break
+                    endif
+                  endfor
                 endif
 
                 # 3. Initial locked quantity for subscription (2 for simple product, 1 for bundle)
@@ -283,19 +292,28 @@
   (function () {
     function initVariantArchitectureV2(root) {
       var scope = root || document;
-      var forms = scope.querySelectorAll('.section-{{ section.id }} .ww-product-form');
+      var forms = [];
+      if (scope.classList && (scope.classList.contains('ww-product-form') || scope.classList.contains('ww-product-form--v2'))) {
+        forms = [scope];
+      } else {
+        forms = scope.querySelectorAll('.ww-product-form--v2, .section-{{ section.id }} .ww-product-form, #ww-product-template-v2 .ww-product-form');
+      }
+
       forms.forEach(function (form) {
         if (form.__wwV2Init) return;
         form.__wwV2Init = true;
 
         var variantInput = form.querySelector('input[name="id"]');
-        var sellingPlanInput = form.querySelector('input.ww-selling-plan-input');
+        var sellingPlanInput = form.querySelector('input[name="selling_plan"]');
         var qtyContainer = form.querySelector('.ww-qty');
-        var qtyInput = form.querySelector('.ww-qty-input');
+        var qtyInput = form.querySelector('input[name="quantity"]');
         var qtyVal = form.querySelector('.ww-qty .v');
 
         function updateQuantityState() {
           var selectedRadio = form.querySelector('input[type="radio"][name^="purchase_type"]:checked');
+          if (!selectedRadio) {
+            selectedRadio = form.querySelector('.ww-sub-opt input[type="radio"]');
+          }
           if (!selectedRadio) return;
 
           var optCard = selectedRadio.closest('.ww-sub-opt');
@@ -312,6 +330,15 @@
           var isSub = selectedRadio.value === 'subscription';
           var varId = selectedRadio.getAttribute('data-variant-id');
           var planId = selectedRadio.getAttribute('data-selling-plan-id');
+
+          // Fallback plan ID discovery from parent card or initial input
+          if (isSub && !planId && optCard) {
+            planId = optCard.getAttribute('data-selling-plan-id');
+          }
+          if (isSub && !planId && sellingPlanInput && sellingPlanInput.defaultValue) {
+            planId = sellingPlanInput.defaultValue;
+          }
+
           var targetQty = selectedRadio.getAttribute('data-quantity') || (isSub ? '2' : '1');
 
           // Update hidden form inputs
@@ -324,22 +351,26 @@
             if (isSub && planId) {
               sellingPlanInput.value = planId;
               sellingPlanInput.removeAttribute('disabled');
+              sellingPlanInput.disabled = false;
             } else {
               sellingPlanInput.value = '';
               sellingPlanInput.setAttribute('disabled', 'disabled');
+              sellingPlanInput.disabled = true;
             }
           }
 
           // Quantity restriction handling: lock to targetQty on subscription, enable on one-time
-          if (qtyContainer && qtyInput) {
+          if (qtyInput) {
             if (isSub) {
               qtyInput.value = targetQty;
               if (qtyVal) qtyVal.textContent = targetQty;
-              qtyContainer.style.display = 'none';
+              if (qtyContainer) qtyContainer.style.display = 'none';
             } else {
-              qtyInput.value = '1';
-              if (qtyVal) qtyVal.textContent = '1';
-              qtyContainer.style.display = 'flex';
+              var cur = parseInt(qtyInput.value, 10);
+              var nextVal = (isNaN(cur) || cur < 1) ? '1' : cur.toString();
+              qtyInput.value = nextVal;
+              if (qtyVal) qtyVal.textContent = nextVal;
+              if (qtyContainer) qtyContainer.style.display = 'flex';
             }
           }
         }
@@ -389,6 +420,19 @@
           });
         });
 
+        // Ensure inputs are synced immediately before submission (capture phase runs before Horizon's FormData)
+        form.addEventListener('submit', function () {
+          updateQuantityState();
+        }, true);
+
+        // Also sync when the Add to Cart button is clicked
+        var atcBtn = form.querySelector('[type="submit"], .ww-add button, .ww-add');
+        if (atcBtn) {
+          atcBtn.addEventListener('click', function () {
+            updateQuantityState();
+          }, true);
+        }
+
         // Initial setup on load
         updateQuantityState();
       });
@@ -403,7 +447,7 @@
     }
 
     document.addEventListener('shopify:section:load', function (e) {
-      if (e.target && e.target.classList.contains('section-{{ section.id }}')) {
+      if (e.target && (e.target.classList.contains('section-{{ section.id }}') || e.target.id === 'ww-product-template-v2')) {
         initVariantArchitectureV2(e.target);
       }
     });

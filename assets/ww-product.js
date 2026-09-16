@@ -168,7 +168,7 @@
     document.querySelectorAll('.ww-buy').forEach(function(buyBox) {
       var qtyWrapper = buyBox.querySelector('.ww-qty');
       var form = buyBox.querySelector('.ww-product-form');
-      if (!qtyWrapper || !form) return;
+      if (!qtyWrapper || !form || form.classList.contains('ww-product-form--v2')) return;
       
       var valEl = qtyWrapper.querySelector('.v');
       var inputEl = form.querySelector('.ww-qty-input');
