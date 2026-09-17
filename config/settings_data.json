@@ -117,7 +117,7 @@
       "ww-popup": {
         "type": "ww-popup",
         "settings": {
-          "enable": true,
+          "enable": false,
           "show_in_theme_editor": false,
           "trigger": "timer",
           "delay": 5,
