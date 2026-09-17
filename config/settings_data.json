@@ -153,8 +153,16 @@
         "disabled": true,
         "settings": {}
       },
-      "7427844207058552356": {
-        "type": "shopify://apps/rapid-cart/blocks/cart-drawer/019e87e1-d1f3-73ac-b0a5-22681f5095ca",
+      "18228966181090706294": {
+        "type": "shopify://apps/selleasy/blocks/app-embed/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+        "disabled": false,
+        "settings": {
+          "storefrontAccessToken": "",
+          "scriptInitMode": "immediate"
+        }
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
         "settings": {}
       }
