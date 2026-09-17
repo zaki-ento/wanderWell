@@ -12,8 +12,8 @@
     "cart-section": {
       "type": "main-cart",
       "blocks": {
-        "selleasy_lb_upsell_widget_icuc_766dKP": {
-          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-icuc/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+        "selleasy_lb_upsell_widget_icul_KK6ri8": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-icul/790c1a03-a71f-4bc1-9869-00dad526d3c2",
           "settings": {}
         },
         "cart-page-title": {
@@ -70,7 +70,7 @@
         }
       },
       "block_order": [
-        "selleasy_lb_upsell_widget_icuc_766dKP"
+        "selleasy_lb_upsell_widget_icul_KK6ri8"
       ],
       "settings": {
         "section_width": "page-width",
