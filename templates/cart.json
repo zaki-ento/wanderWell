@@ -12,7 +12,7 @@
     "cart-section": {
       "type": "main-cart",
       "blocks": {
-        "essential_cart_drawer_spend_tier_bar_cfdxga": {
+        "essential_cart_drawer_spend_tier_bar_83j6Tc": {
           "type": "shopify://apps/essential-cart-drawer/blocks/spend-tier-bar/824bb1f9-5f36-4608-a60c-1f2b6a6f8834",
           "settings": {}
         },
@@ -70,7 +70,7 @@
         }
       },
       "block_order": [
-        "essential_cart_drawer_spend_tier_bar_cfdxga"
+        "essential_cart_drawer_spend_tier_bar_83j6Tc"
       ],
       "settings": {
         "section_width": "page-width",
