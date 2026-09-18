@@ -420,7 +420,6 @@
         "accordion_y9kEnR": {
           "type": "accordion",
           "name": "Duo Product",
-          "disabled": true,
           "settings": {
             "title": "Capsule Size",
             "items_count": "",
