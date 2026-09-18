@@ -88,25 +88,30 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ### 4. `snippets/cart-products.liquid`
 
-* **Lines Modified**: Lines 345–356.
-* **Changes**: Wrapped line item quantity selector with conditional checking `item.selling_plan_allocation`:
-  ```liquid
-  {% if item.selling_plan_allocation %}
-    <!-- Display static quantity for subscription items -->
-    <span class="cart-quantity-locked" aria-label="Quantity: {{ item.quantity }}">{{ item.quantity }}</span>
-  {% else %}
-    {% render 'quantity-selector',
-      product: item.product,
-      variant: item.variant,
-      in_cart_quantity: item.quantity,
-      line_index: item.index,
-      class: 'cart-primary-typography',
-      can_update_quantity: can_update_quantity
-    %}
-  {% endif %}
-  ```
-* **Reason**: Enforces the subscription architecture rule preventing customers from changing subscription bundle quantities inside the cart and cart drawer.
-* **Upgrade Safety Note**: When upgrading Horizon, preserve this conditional check around the `quantity-selector` render in `snippets/cart-products.liquid`.
+* **Lines Modified**: Lines 47–53 and lines 327–335.
+* **Changes**:
+  1. Wrapped line item quantity selector with conditional checking `item.selling_plan_allocation`:
+     ```liquid
+     {% if item.selling_plan_allocation %}
+       <!-- Display static quantity for subscription items -->
+       <span class="cart-quantity-locked" aria-label="Quantity: {{ item.quantity }}">{{ item.quantity }}</span>
+     {% else %}
+       {% render 'quantity-selector',
+         product: item.product,
+         variant: item.variant,
+         in_cart_quantity: item.quantity,
+         line_index: item.index,
+         class: 'cart-primary-typography',
+         can_update_quantity: can_update_quantity
+       %}
+     {% endif %}
+     ```
+  2. Rendered `ww-cart-upgrade` snippet and loaded `ww-cart-upgrade.css` & `ww-cart-upgrade.js`:
+     ```liquid
+     {% render 'ww-cart-upgrade', item: item, context: context %}
+     ```
+* **Reason**: Enforces subscription quantity locking and renders native Product Upgrade / Upsell banner on cart line items.
+* **Upgrade Safety Note**: When upgrading Horizon, preserve these custom snippet renders inside `snippets/cart-products.liquid`.
 
 ---
 
