@@ -359,6 +359,7 @@
         "product_tab_i94QCt": {
           "type": "product_tab",
           "name": "Product Tab",
+          "disabled": true,
           "settings": {
             "product": "immune-support",
             "title": "{{ block.settings.product.title }}",
@@ -370,6 +371,7 @@
         "accordion_Y6PeRJ": {
           "type": "accordion",
           "name": "Immune Product",
+          "disabled": true,
           "settings": {
             "title": "Ingredients",
             "items_count": "6 items",
@@ -380,6 +382,7 @@
         "accordion_KGRFRR": {
           "type": "accordion",
           "name": "Immune Product",
+          "disabled": true,
           "settings": {
             "title": "Product Information",
             "items_count": "",
@@ -389,6 +392,7 @@
         },
         "product_tab_6ncFYp": {
           "type": "product_tab",
+          "disabled": true,
           "settings": {
             "product": "the-travel-duo",
             "title": "{{ block.settings.product.title }}",
