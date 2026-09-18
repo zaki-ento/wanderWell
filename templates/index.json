@@ -370,7 +370,6 @@
         "accordion_Y6PeRJ": {
           "type": "accordion",
           "name": "Immune Product",
-          "disabled": true,
           "settings": {
             "title": "Ingredients",
             "items_count": "6 items",
@@ -381,7 +380,6 @@
         "accordion_KGRFRR": {
           "type": "accordion",
           "name": "Immune Product",
-          "disabled": true,
           "settings": {
             "title": "Product Information",
             "items_count": "",
@@ -403,6 +401,7 @@
         "accordion_RaV7PR": {
           "type": "accordion",
           "name": "Duo Product",
+          "disabled": true,
           "settings": {
             "title": "what's inside",
             "items_count": "",
@@ -413,6 +412,7 @@
         "accordion_PHtdAa": {
           "type": "accordion",
           "name": "Duo Product",
+          "disabled": true,
           "settings": {
             "title": "Product Information",
             "items_count": "",
@@ -423,6 +423,7 @@
         "accordion_y9kEnR": {
           "type": "accordion",
           "name": "Duo Product",
+          "disabled": true,
           "settings": {
             "title": "Capsule Size",
             "items_count": "",
