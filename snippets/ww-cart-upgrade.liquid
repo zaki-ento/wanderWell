@@ -8,111 +8,119 @@
 {% endcomment %}
 
 {% liquid
-  assign upgrade_meta = item.product.metafields.custom.upgrade_variant
-  if upgrade_meta == blank
-    assign upgrade_meta = item.variant.metafields.custom.upgrade_variant
+  # 1. Fetch metafield object from product or variant level
+  assign metafield_obj = item.product.metafields.custom.upgrade_variant
+  if metafield_obj == blank or metafield_obj.value == blank
+    assign metafield_obj = item.variant.metafields.custom.upgrade_variant
   endif
 
-  assign upgrade_val = upgrade_meta.value | default: upgrade_meta
-
-  # Handle array / list of products or variants vs single object
-  assign target_obj = upgrade_val
-  if upgrade_val.first != blank
-    assign target_obj = upgrade_val.first
+  # 2. Extract raw value (.value if present)
+  assign val = metafield_obj.value
+  if val == blank
+    assign val = metafield_obj
   endif
 
-  assign upgrade_product = nil
-  assign upgrade_variant = nil
+  # 3. Handle array/list vs single object
+  assign candidate = val
+  if val.first != blank
+    assign candidate = val.first
+  endif
 
-  if target_obj != blank
-    if target_obj.first_available_variant != blank
-      # target_obj is a Product object
-      assign upgrade_product = target_obj
-      assign upgrade_variant = target_obj.first_available_variant | default: target_obj.variants.first
-    elsif target_obj.product != blank
-      # target_obj is a Variant object
-      assign upgrade_variant = target_obj
-      assign upgrade_product = target_obj.product
+  # 4. Resolve Product and Variant drops
+  assign target_product = nil
+  assign target_variant = nil
+
+  if candidate != blank
+    if candidate.variants != blank
+      # Candidate is a Product Drop
+      assign target_product = candidate
+      assign target_variant = candidate.selected_or_first_available_variant | default: candidate.first_available_variant | default: candidate.variants.first
+    elsif candidate.product != blank
+      # Candidate is a Variant Drop
+      assign target_variant = candidate
+      assign target_product = candidate.product
+    elsif candidate.title != blank
+      # Candidate is a Product object fallback
+      assign target_product = candidate
+      assign target_variant = candidate.variants.first
     else
-      # Fallback object
-      assign upgrade_variant = target_obj
-      assign upgrade_product = target_obj.product | default: target_obj
+      # Candidate might be a handle string or ID
+      assign target_product = all_products[candidate]
+      if target_product != blank
+        assign target_variant = target_product.selected_or_first_available_variant | default: target_product.first_available_variant | default: target_product.variants.first
+      endif
     endif
   endif
 %}
 
-{% if upgrade_variant != blank and upgrade_variant.id != item.variant.id %}
+<!-- WW Upsell Debug: item={{ item.product.title | escape }} | metafield_found={% if metafield_obj != blank %}true{% else %}false{% endif %} | target_variant={% if target_variant != blank %}{{ target_variant.id }}{% else %}none{% endif %} -->
+
+{% if target_variant != blank and target_variant.id != item.variant.id %}
   {% liquid
-    assign is_available = upgrade_variant.available
-    if is_available == blank
-      assign is_available = upgrade_product.available
+    assign upgrade_variant = target_variant
+    assign upgrade_product = target_product | default: target_variant.product
+
+    assign upgrade_title = upgrade_product.title
+    if upgrade_variant.title != 'Default Title' and upgrade_variant.title != blank and upgrade_variant.title != upgrade_product.title
+      assign upgrade_title = upgrade_product.title | append: ' - ' | append: upgrade_variant.title
     endif
+
+    assign price_diff = upgrade_variant.price | minus: item.final_price
+    assign upgrade_image = upgrade_variant.featured_image | default: upgrade_product.featured_image
   %}
 
-  {% if is_available != false and is_available != blank %}
-    {% liquid
-      assign upgrade_title = upgrade_product.title
-      if upgrade_variant.title != 'Default Title' and upgrade_variant.title != blank and upgrade_variant.title != upgrade_product.title
-        assign upgrade_title = upgrade_product.title | append: ' - ' | append: upgrade_variant.title
-      endif
-
-      assign price_diff = upgrade_variant.price | minus: item.final_price
-      assign upgrade_image = upgrade_variant.featured_image | default: upgrade_product.featured_image
-    %}
-
-    <div class="cart-upsell-container" id="cart-upsell">
-      <div class="cart-upsell-wrap">
+  <div class="cart-upsell-container" id="cart-upsell">
+    <div class="cart-upsell-wrap">
+      <div
+        class="cart-upsell"
+        data-line-key="{{ item.key }}"
+        data-line-index="{{ item.index }}"
+        data-upgrade-id="{{ upgrade_variant.id }}"
+        data-quantity="{{ item.quantity }}"
+      >
         <div
-          class="cart-upsell"
-          data-line-key="{{ item.key }}"
-          data-line-index="{{ item.index }}"
-          data-upgrade-id="{{ upgrade_variant.id }}"
-          data-quantity="{{ item.quantity }}"
+          class="cart-upsell-thumb"
+          {% if upgrade_image == blank %}
+            style="background:linear-gradient(to bottom, #E8632B, #a8b87a);"
+          {% endif %}
         >
-          <div
-            class="cart-upsell-thumb"
-            {% if upgrade_image == blank %}
-              style="background:linear-gradient(to bottom, #E8632B, #a8b87a);"
-            {% endif %}
-          >
-            {% if upgrade_image != blank %}
-              {{ upgrade_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: upgrade_title, class: 'cart-upsell-thumb-img' }}
-            {% else %}
-              <span class="cart-upsell-thumb-text">{{ upgrade_title }}</span>
-            {% endif %}
-          </div>
-
-          <div class="cart-upsell-info">
-            <div class="cart-upsell-label">
-              {% if price_diff > 0 %}
-                Upgrade for {{ price_diff | money }}
-              {% else %}
-                Upgrade for {{ upgrade_variant.price | money }}
-              {% endif %}
-            </div>
-            <div class="cart-upsell-name">{{ upgrade_title }}</div>
-            <div class="cart-upsell-price">
-              {{ upgrade_variant.price | money }}
-              {% if upgrade_variant.compare_at_price > upgrade_variant.price %}
-                {% assign savings = upgrade_variant.compare_at_price | minus: upgrade_variant.price %}
-                · save {{ savings | money }}
-              {% elsif upgrade_variant.title != 'Default Title' and upgrade_variant.title != blank %}
-                · {{ upgrade_variant.title }}
-              {% endif %}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            class="cart-upsell-btn"
-            onclick="window.upgradeToDuo ? window.upgradeToDuo(this) : window.WanderWell.upgradeCartItem(this)"
-            aria-label="Upgrade to {{ upgrade_title | escape }}"
-          >
-            <span class="cart-upsell-btn-text">Upgrade</span>
-            <span class="cart-upsell-btn-spinner" aria-hidden="true" style="display:none;"></span>
-          </button>
+          {% if upgrade_image != blank %}
+            {{ upgrade_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: upgrade_title, class: 'cart-upsell-thumb-img' }}
+          {% else %}
+            <span class="cart-upsell-thumb-text">{{ upgrade_title }}</span>
+          {% endif %}
         </div>
+
+        <div class="cart-upsell-info">
+          <div class="cart-upsell-label">
+            {% if price_diff > 0 %}
+              Upgrade for {{ price_diff | money }}
+            {% else %}
+              Upgrade for {{ upgrade_variant.price | money }}
+            {% endif %}
+          </div>
+          <div class="cart-upsell-name">{{ upgrade_title }}</div>
+          <div class="cart-upsell-price">
+            {{ upgrade_variant.price | money }}
+            {% if upgrade_variant.compare_at_price > upgrade_variant.price %}
+              {% assign savings = upgrade_variant.compare_at_price | minus: upgrade_variant.price %}
+              · save {{ savings | money }}
+            {% elsif upgrade_variant.title != 'Default Title' and upgrade_variant.title != blank %}
+              · {{ upgrade_variant.title }}
+            {% endif %}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="cart-upsell-btn"
+          onclick="window.upgradeToDuo ? window.upgradeToDuo(this) : window.WanderWell.upgradeCartItem(this)"
+          aria-label="Upgrade to {{ upgrade_title | escape }}"
+        >
+          <span class="cart-upsell-btn-text">Upgrade</span>
+          <span class="cart-upsell-btn-spinner" aria-hidden="true" style="display:none;"></span>
+        </button>
       </div>
     </div>
-  {% endif %}
+  </div>
 {% endif %}
