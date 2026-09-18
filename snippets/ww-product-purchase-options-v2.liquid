@@ -3,6 +3,8 @@
   Description: Custom purchase options widget supporting:
   - Simple Products: Single variant with locked 2-pack subscription ($53.99 / 30 servings) and 1-pack one-time purchase ($29.99 / 15 servings).
   - Bundle Products: Both badges "2 Packs", both 30 servings, compare_at_price crossed out, quantity 1.
+  - Option 1 (Subscribe & Save): Includes interactive "SHIPS EVERY" radio segmented control (1 Month, 2 Months, 3 Months).
+  - Option 2 (One-Time Purchase): Standard single delivery purchase.
   Accepts:
     - current_prod: Product object (required)
     - block: Section block containing customizer settings (required)
@@ -19,7 +21,71 @@
       assign is_bundle = true
     endif
 
-    # 3. Base calculations for servings & quantities
+    # 3. Identify Appstle Selling Plan & Group
+    assign sub_allocation = null
+    assign sub_plan = null
+    assign sub_group = null
+
+    if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+      assign sub_allocation = current_variant.selling_plan_allocations.first
+      assign sub_plan = sub_allocation.selling_plan
+      assign sub_group = sub_allocation.selling_plan_group
+    endif
+
+    if sub_plan == null and current_prod.selling_plan_groups.size > 0
+      for group in current_prod.selling_plan_groups
+        if group.selling_plans.size > 0
+          assign sub_group = group
+          assign sub_plan = group.selling_plans.first
+          break
+        endif
+      endfor
+    endif
+
+    # 4. Map frequency plans (1 Month, 2 Months, 3 Months)
+    assign plan_1 = null
+    assign plan_2 = null
+    assign plan_3 = null
+
+    for group in current_prod.selling_plan_groups
+      for plan in group.selling_plans
+        assign p_name = plan.name | downcase
+        if p_name contains '1 month' or p_name contains '30 day' or p_name contains '4 week'
+          if plan_1 == null
+            assign plan_1 = plan
+          endif
+        elsif p_name contains '2 month' or p_name contains '60 day' or p_name contains '8 week'
+          if plan_2 == null
+            assign plan_2 = plan
+          endif
+        elsif p_name contains '3 month' or p_name contains '90 day' or p_name contains '12 week'
+          if plan_3 == null
+            assign plan_3 = plan
+          endif
+        endif
+      endfor
+    endfor
+
+    # Sequential fallback if plans weren't matched by name keyword
+    assign p_idx = 0
+    for group in current_prod.selling_plan_groups
+      for plan in group.selling_plans
+        if p_idx == 0 and plan_1 == null
+          assign plan_1 = plan
+        elsif p_idx == 1 and plan_2 == null
+          assign plan_2 = plan
+        elsif p_idx == 2 and plan_3 == null
+          assign plan_3 = plan
+        endif
+        assign p_idx = p_idx | plus: 1
+      endfor
+    endfor
+
+    assign plan_1 = plan_1 | default: sub_plan
+    assign plan_2 = plan_2 | default: plan_1
+    assign plan_3 = plan_3 | default: plan_2
+
+    # 5. Base calculations for servings & quantities
     assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15
 
     if is_bundle
@@ -46,6 +112,27 @@
       if sub_compare_price == blank or sub_compare_price <= current_variant.price
         assign sub_compare_price = 5998
       endif
+
+      if sub_allocation != blank
+        assign sub_price = sub_allocation.price
+      elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
+        assign adjustment = sub_plan.price_adjustments.first
+        if adjustment.value_type == 'percentage'
+          assign discount_percentage = adjustment.value
+          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+          assign sub_price = current_variant.price | times: discount_factor | round
+        elsif adjustment.value_type == 'fixed_amount'
+          assign sub_price = current_variant.price | minus: adjustment.value
+        elsif adjustment.value_type == 'price'
+          assign sub_price = adjustment.value
+        else
+          assign sub_price = current_variant.price
+        endif
+      else
+        assign sub_price = current_variant.price
+      endif
+      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
+
     else
       # ==========================================
       # SIMPLE PRODUCT LOGIC
@@ -64,6 +151,37 @@
 
       # Subscribe & Save: Locked 2-pack calculations (Price x 2 = $59.98)
       assign sub_compare_price = current_variant.price | times: 2
+
+      if sub_plan != blank and sub_plan.price_adjustments.size > 0
+        assign adjustment = sub_plan.price_adjustments.first
+        if adjustment.value_type == 'percentage'
+          assign discount_percentage = adjustment.value
+          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+          assign sub_price = sub_compare_price | times: discount_factor | round
+        elsif adjustment.value_type == 'fixed_amount'
+          assign discount_total = adjustment.value | times: 2
+          assign sub_price = sub_compare_price | minus: discount_total
+        elsif adjustment.value_type == 'price'
+          assign sub_price = adjustment.value | times: 2
+        else
+          assign sub_price = sub_compare_price
+        endif
+      elsif sub_allocation != blank
+        assign sub_price = sub_allocation.price | times: 2
+      else
+        assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0
+        assign sub_price = sub_compare_price | times: discount_factor | round
+      endif
+
+      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
+    endif
+
+    assign plan_name = sub_plan.name | default: 'ships every 1 month'
+    assign savings = current_prod.metafields.custom.savings.value | default: current_prod.metafields.custom.savings | default: 'save 10% + free shipping'
+
+    assign has_subscription = false
+    if sub_plan != null or current_prod.selling_plan_groups.size > 0
+      assign has_subscription = true
     endif
   -%}
 
@@ -72,157 +190,147 @@
 
     {%- comment -%}
       ======================================================
-      Subscription Plans (Loop through all selling plans)
+      Option 1: Subscribe & Save (Includes Radio Delivery Cadence)
       ======================================================
     {%- endcomment -%}
-    {%- assign has_subscription = false -%}
-    {%- assign plan_count = 0 -%}
-
-    {%- for group in current_prod.selling_plan_groups -%}
-      {%- for plan in group.selling_plans -%}
-        {%- assign has_subscription = true -%}
-        {%- assign plan_count = plan_count | plus: 1 -%}
-        {%- assign is_first_plan = false -%}
-        {%- if forloop.first and forloop.parentloop.first -%}
-          {%- assign is_first_plan = true -%}
-        {%- endif -%}
-
-        {%- comment -%} Locate variant allocation for this plan if available {%- endcomment -%}
-        {%- assign sub_allocation = null -%}
-        {%- for alloc in current_variant.selling_plan_allocations -%}
-          {%- if alloc.selling_plan.id == plan.id -%}
-            {%- assign sub_allocation = alloc -%}
-            {%- break -%}
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- comment -%} Calculate Plan Specific Price & Discount {%- endcomment -%}
-        {%- assign discount_percentage = 10 -%}
-        {%- if plan.price_adjustments.size > 0 -%}
-          {%- assign adjustment = plan.price_adjustments[0] -%}
-          {%- if adjustment.value_type == 'percentage' -%}
-            {%- assign discount_percentage = adjustment.value -%}
-            {%- assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0 -%}
-            {%- if is_bundle -%}
-              {%- assign sub_price = current_variant.price | times: discount_factor | round -%}
-            {%- else -%}
-              {%- assign sub_price = sub_compare_price | times: discount_factor | round -%}
-            {%- endif -%}
-          {%- elsif adjustment.value_type == 'fixed_amount' -%}
-            {%- if is_bundle -%}
-              {%- assign sub_price = current_variant.price | minus: adjustment.value -%}
-            {%- else -%}
-              {%- assign discount_total = adjustment.value | times: 2 -%}
-              {%- assign sub_price = sub_compare_price | minus: discount_total -%}
-            {%- endif -%}
-          {%- elsif adjustment.value_type == 'price' -%}
-            {%- if is_bundle -%}
-              {%- assign sub_price = adjustment.value -%}
-            {%- else -%}
-              {%- assign sub_price = adjustment.value | times: 2 -%}
-            {%- endif -%}
+    {%- if has_subscription -%}
+      <div
+        class="ww-sub-opt ww-sub-opt--best on"
+        data-option-type="subscription"
+        data-variant-id="{{ current_variant.id }}"
+        data-selling-plan-id="{{ plan_1.id | default: sub_plan.id }}"
+        data-quantity="{{ sub_qty }}"
+      >
+        {%- if sub_plan.price_adjustments.size > 0 -%}
+          {%- if sub_plan.price_adjustments.first.value_type == 'percentage' -%}
+            <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments.first.value }}% + free shipping</span>
           {%- else -%}
-            {%- if is_bundle -%}
-              {%- assign sub_price = current_variant.price -%}
-            {%- else -%}
-              {%- assign sub_price = sub_compare_price -%}
-            {%- endif -%}
-          {%- endif -%}
-        {%- elsif sub_allocation != blank -%}
-          {%- if is_bundle -%}
-            {%- assign sub_price = sub_allocation.price -%}
-          {%- else -%}
-            {%- assign sub_price = sub_allocation.price | times: 2 -%}
+            <span class="ww-sub-badge">Most popular · {{ savings }}</span>
           {%- endif -%}
         {%- else -%}
-          {%- assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0 -%}
-          {%- assign sub_price = sub_compare_price | times: discount_factor | round -%}
+          <span class="ww-sub-badge">Most popular · {{ savings }}</span>
         {%- endif -%}
 
-        {%- assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money -%}
-        {%- assign plan_name = plan.name | default: 'ships every 4 weeks' -%}
+        <span class="ww-sub-opt__content">
+          <span class="ww-sub-opt__row">
+            <span class="ww-sub-opt__radio-bullet-wrapper">
+              <input
+                type="radio"
+                name="purchase_type_{{ block.id | default: current_prod.id }}"
+                value="subscription"
+                id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub"
+                class="ww-sub-opt__radio-input"
+                data-variant-id="{{ current_variant.id }}"
+                data-selling-plan-id="{{ plan_1.id | default: sub_plan.id }}"
+                data-quantity="{{ sub_qty }}"
+                data-price="{{ sub_price | money }}"
+                data-compare-price="{{ sub_compare_price | money }}"
+                aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
+                checked
+              >
+              <span class="ww-sub-opt__radio-bullet"></span>
+            </span>
 
-        <div
-          class="ww-sub-opt ww-sub-opt--sub {% if is_first_plan %}ww-sub-opt--best on{% endif %}"
-          data-option-type="subscription"
-          data-variant-id="{{ current_variant.id }}"
-          data-selling-plan-id="{{ plan.id }}"
-          data-quantity="{{ sub_qty }}"
-        >
-          {%- if plan.price_adjustments.size > 0 and plan.price_adjustments[0].value_type == 'percentage' -%}
-            {%- if is_first_plan -%}
-              <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments[0].value }}% + free shipping</span>
-            {%- else -%}
-              <span class="ww-sub-badge">Save {{ plan.price_adjustments[0].value }}% + free shipping</span>
-            {%- endif -%}
-          {%- elsif is_first_plan -%}
-            <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
-          {%- else -%}
-            <span class="ww-sub-badge">Save 10% + free shipping</span>
-          {%- endif -%}
-
-          <span class="ww-sub-opt__content">
-            <span class="ww-sub-opt__row">
-              <span class="ww-sub-opt__radio-bullet-wrapper">
-                <input
-                  type="radio"
-                  name="purchase_type_{{ block.id | default: current_prod.id }}"
-                  value="subscription"
-                  id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub-{{ plan.id }}"
-                  class="ww-sub-opt__radio-input"
-                  data-variant-id="{{ current_variant.id }}"
-                  data-selling-plan-id="{{ plan.id }}"
-                  data-quantity="{{ sub_qty }}"
-                  data-price="{{ sub_price | money }}"
-                  data-compare-price="{{ sub_compare_price | money }}"
-                  aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
-                  {% if is_first_plan %}checked{% endif %}
-                >
-                <span class="ww-sub-opt__radio-bullet"></span>
+            <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-sub" class="ww-sub-opt__details">
+              <span class="ww-sub-opt__title">
+                Subscribe & Save
+                <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
               </span>
+              <span class="ww-sub-opt__servings">
+                <strong>{{ servings_sub }} servings · </strong><span class="ww-sub-opt__cadence-text">{{ plan_name }}</span>
+              </span>
+            </label>
 
-              <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-sub-{{ plan.id }}" class="ww-sub-opt__details">
-                <span class="ww-sub-opt__title">
-                  Subscribe & Save
-                  <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
-                </span>
-                <span class="ww-sub-opt__servings">
-                  <strong>{{ servings_sub }} servings · </strong>{{ plan_name }}
-                </span>
-
-                {%- if plan.description != blank -%}
-                  <span class="ww-sub-opt__plan-desc">{{ plan.description }}</span>
-                {%- elsif group.description != blank -%}
-                  <span class="ww-sub-opt__perks">
-                    <span class="ww-sub-opt__perk">{{ group.description }}</span>
-                  </span>
-                {%- else -%}
-                  <span class="ww-sub-opt__perks">
-                    <span class="ww-sub-opt__perk">Free Shipping on $50+</span>
-                    <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
-                    <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
-                  </span>
+            <span class="ww-sub-opt__price-container">
+              <span class="ww-sub-opt__price">
+                {{ sub_price | money }}
+                {%- if sub_compare_price > sub_price -%}
+                  <s class="ww-sub-opt__compare-price">{{ sub_compare_price | money }}</s>
                 {%- endif -%}
-              </label>
-
-              <span class="ww-sub-opt__price-container">
-                <span class="ww-sub-opt__price">
-                  {{ sub_price | money }}
-                  {%- if sub_compare_price > sub_price -%}
-                    <s class="ww-sub-opt__compare-price">{{ sub_compare_price | money }}</s>
-                  {%- endif -%}
-                </span>
-                <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
               </span>
+              <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
             </span>
           </span>
-        </div>
-      {%- endfor -%}
-    {%- endfor -%}
+
+          {%- comment -%}
+            ======================================================
+            Delivery Cadence Selector: SHIPS EVERY (Radio Pills)
+            ======================================================
+          {%- endcomment -%}
+          <div class="ww-sub-opt__freq-wrap" data-frequency-selector>
+            <div class="ww-sub-opt__freq-title">SHIPS EVERY:</div>
+            <div class="ww-sub-opt__freq-bar" role="radiogroup" aria-label="Ships every">
+              <label
+                class="ww-sub-opt__freq-pill is-active"
+                data-plan-id="{{ plan_1.id | default: sub_plan.id }}"
+                data-interval-text="ships every 1 month"
+              >
+                <input
+                  type="radio"
+                  name="subscription_frequency_{{ block.id | default: current_prod.id }}"
+                  value="1_month"
+                  class="ww-sub-opt__freq-radio visually-hidden"
+                  data-plan-id="{{ plan_1.id | default: sub_plan.id }}"
+                  data-interval-text="ships every 1 month"
+                  checked
+                >
+                <span class="ww-sub-opt__freq-text">1 Month</span>
+              </label>
+
+              <label
+                class="ww-sub-opt__freq-pill"
+                data-plan-id="{{ plan_2.id | default: sub_plan.id }}"
+                data-interval-text="ships every 2 months"
+              >
+                <input
+                  type="radio"
+                  name="subscription_frequency_{{ block.id | default: current_prod.id }}"
+                  value="2_months"
+                  class="ww-sub-opt__freq-radio visually-hidden"
+                  data-plan-id="{{ plan_2.id | default: sub_plan.id }}"
+                  data-interval-text="ships every 2 months"
+                >
+                <span class="ww-sub-opt__freq-text">2 Months</span>
+              </label>
+
+              <label
+                class="ww-sub-opt__freq-pill"
+                data-plan-id="{{ plan_3.id | default: sub_plan.id }}"
+                data-interval-text="ships every 3 months"
+              >
+                <input
+                  type="radio"
+                  name="subscription_frequency_{{ block.id | default: current_prod.id }}"
+                  value="3_months"
+                  class="ww-sub-opt__freq-radio visually-hidden"
+                  data-plan-id="{{ plan_3.id | default: sub_plan.id }}"
+                  data-interval-text="ships every 3 months"
+                >
+                <span class="ww-sub-opt__freq-text">3 Months</span>
+              </label>
+            </div>
+          </div>
+
+          {%- if sub_plan.description != blank -%}
+            <span class="ww-sub-opt__plan-desc">{{ sub_plan.description }}</span>
+          {%- elsif sub_group.description != blank -%}
+            <span class="ww-sub-opt__perks">
+              <span class="ww-sub-opt__perk">{{ sub_group.description }}</span>
+            </span>
+          {%- else -%}
+            <span class="ww-sub-opt__perks">
+              <span class="ww-sub-opt__perk">Free Shipping on $50+</span>
+              <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
+              <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
+            </span>
+          {%- endif -%}
+        </span>
+      </div>
+    {%- endif -%}
 
     {%- comment -%}
       ======================================================
-      Option: One-Time Purchase
+      Option 2: One-Time Purchase
       ======================================================
     {%- endcomment -%}
     {%- unless current_prod.requires_selling_plan -%}
@@ -434,6 +542,78 @@
       font-weight: 700;
     }
 
+    /* Frequency Selector: SHIPS EVERY */
+    .ww-purchase-options--v2 .ww-sub-opt__freq-wrap {
+      margin-top: 2px;
+      margin-bottom: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7E7369;
+      line-height: 1.2;
+      padding-left: 2px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background-color: #F4EBE5;
+      border-radius: 9999px;
+      padding: 4px;
+      gap: 4px;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      padding: 9px 12px;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      margin: 0;
+      text-align: center;
+      border: none;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-pill:hover:not(.is-active) {
+      background-color: rgba(207, 89, 43, 0.08);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-pill .ww-sub-opt__freq-text {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #2C2C2C;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      white-space: nowrap;
+      transition: color 0.2s ease, font-weight 0.2s ease;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-pill.is-active {
+      background: linear-gradient(135deg, #CF592B 0%, #B84A22 100%);
+      box-shadow: 0 2px 7px rgba(184, 74, 34, 0.32);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-pill.is-active .ww-sub-opt__freq-text {
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
     .ww-purchase-options--v2 .ww-sub-opt__plan-desc {
       font-size: 12px;
       color: var(--charcoal-light, #5A5A5A);
@@ -455,7 +635,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      margin-top: 10px;
+      margin-top: 4px;
     }
 
     .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul li,
@@ -511,6 +691,15 @@
       color: var(--charcoal-light, #5A5A5A);
     }
 
+    @media screen and (max-width: 440px) {
+      .ww-purchase-options--v2 .ww-sub-opt__freq-pill {
+        padding: 8px 4px;
+      }
+      .ww-purchase-options--v2 .ww-sub-opt__freq-pill .ww-sub-opt__freq-text {
+        font-size: 0.78rem;
+      }
+    }
+
     @media screen and (max-width: 420px) {
       .ww-purchase-options--v2 .ww-sub-opt__row {
         flex-wrap: wrap;
@@ -538,4 +727,79 @@
       }
     }
   {% endstyle %}
+
+  <script>
+    (function () {
+      function initFrequencyPills() {
+        var pills = document.querySelectorAll('.ww-purchase-options--v2 .ww-sub-opt__freq-pill');
+        pills.forEach(function (pill) {
+          if (pill.__wwBound) return;
+          pill.__wwBound = true;
+
+          pill.addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            var radioInput = pill.querySelector('.ww-sub-opt__freq-radio');
+            var planId = pill.getAttribute('data-plan-id') || (radioInput ? radioInput.getAttribute('data-plan-id') : '');
+            var intervalText = pill.getAttribute('data-interval-text') || (radioInput ? radioInput.getAttribute('data-interval-text') : '');
+
+            var container = pill.closest('.ww-purchase-options--v2');
+            if (!container) return;
+
+            var subCard = container.querySelector('.ww-sub-opt[data-option-type="subscription"]');
+            var form = container.closest('form');
+
+            // 1. Update active pill in this bar
+            var bar = pill.closest('.ww-sub-opt__freq-bar');
+            if (bar) {
+              bar.querySelectorAll('.ww-sub-opt__freq-pill').forEach(function (p) {
+                p.classList.remove('is-active');
+                var r = p.querySelector('.ww-sub-opt__freq-radio');
+                if (r) r.checked = false;
+              });
+            }
+            pill.classList.add('is-active');
+            if (radioInput) radioInput.checked = true;
+
+            // 2. Update selling plan on card and radio
+            if (subCard && planId) {
+              subCard.setAttribute('data-selling-plan-id', planId);
+              var subRadio = subCard.querySelector('input[type="radio"][value="subscription"]');
+              if (subRadio) {
+                subRadio.setAttribute('data-selling-plan-id', planId);
+                if (!subRadio.checked) {
+                  subRadio.checked = true;
+                  subRadio.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }
+            }
+
+            // 3. Update hidden selling_plan input in the form
+            if (form && planId) {
+              var sellingPlanInput = form.querySelector('input.ww-selling-plan-input') || form.querySelector('input[name="selling_plan"]');
+              if (sellingPlanInput) {
+                sellingPlanInput.value = planId;
+                sellingPlanInput.removeAttribute('disabled');
+              }
+            }
+
+            // 4. Update cadence text in servings label
+            if (subCard && intervalText) {
+              var cadenceEl = subCard.querySelector('.ww-sub-opt__cadence-text');
+              if (cadenceEl) {
+                cadenceEl.textContent = intervalText;
+              }
+            }
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initFrequencyPills);
+      } else {
+        initFrequencyPills();
+      }
+      document.addEventListener('shopify:section:load', initFrequencyPills);
+    })();
+  </script>
 {%- endif -%}

@@ -460,7 +460,7 @@
         var cards = form.querySelectorAll('.ww-sub-opt');
         cards.forEach(function (card) {
           card.addEventListener('click', function (e) {
-            if (e.target.closest('input[type="radio"]')) return;
+            if (e.target.closest('input[type="radio"]') || e.target.closest('.ww-sub-opt__freq-wrap')) return;
             var radio = card.querySelector('input[type="radio"][name^="purchase_type"]');
             if (radio && !radio.checked) {
               radio.checked = true;
