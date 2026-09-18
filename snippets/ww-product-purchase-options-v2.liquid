@@ -3,7 +3,7 @@
   Description: Custom purchase options widget supporting:
   - Simple Products: Single variant with locked 2-pack subscription ($53.99 / 30 servings) and 1-pack one-time purchase ($29.99 / 15 servings).
   - Bundle Products: Both badges "2 Packs", both 30 servings, compare_at_price crossed out, quantity 1.
-  - Option 1 (Subscribe & Save): Includes interactive "SHIPS EVERY" radio segmented control (1 Month, 2 Months, 3 Months).
+  - Option 1 (Subscribe & Save): Dynamically loops through product selling plans and renders matching radio pills (2 plans -> 2 pills, 3 plans -> 3 pills, etc.).
   - Option 2 (One-Time Purchase): Standard single delivery purchase.
   Accepts:
     - current_prod: Product object (required)
@@ -21,7 +21,7 @@
       assign is_bundle = true
     endif
 
-    # 3. Identify Appstle Selling Plan & Group
+    # 3. Identify First Appstle Selling Plan & Group
     assign sub_allocation = null
     assign sub_plan = null
     assign sub_group = null
@@ -42,48 +42,13 @@
       endfor
     endif
 
-    # 4. Map frequency plans (1 Month, 2 Months, 3 Months)
-    assign plan_1 = null
-    assign plan_2 = null
-    assign plan_3 = null
-
+    # 4. Count total available selling plans across groups
+    assign total_plans = 0
     for group in current_prod.selling_plan_groups
       for plan in group.selling_plans
-        assign p_name = plan.name | downcase
-        if p_name contains '1 month' or p_name contains '30 day' or p_name contains '4 week'
-          if plan_1 == null
-            assign plan_1 = plan
-          endif
-        elsif p_name contains '2 month' or p_name contains '60 day' or p_name contains '8 week'
-          if plan_2 == null
-            assign plan_2 = plan
-          endif
-        elsif p_name contains '3 month' or p_name contains '90 day' or p_name contains '12 week'
-          if plan_3 == null
-            assign plan_3 = plan
-          endif
-        endif
+        assign total_plans = total_plans | plus: 1
       endfor
     endfor
-
-    # Sequential fallback if plans weren't matched by name keyword
-    assign p_idx = 0
-    for group in current_prod.selling_plan_groups
-      for plan in group.selling_plans
-        if p_idx == 0 and plan_1 == null
-          assign plan_1 = plan
-        elsif p_idx == 1 and plan_2 == null
-          assign plan_2 = plan
-        elsif p_idx == 2 and plan_3 == null
-          assign plan_3 = plan
-        endif
-        assign p_idx = p_idx | plus: 1
-      endfor
-    endfor
-
-    assign plan_1 = plan_1 | default: sub_plan
-    assign plan_2 = plan_2 | default: plan_1
-    assign plan_3 = plan_3 | default: plan_2
 
     # 5. Base calculations for servings & quantities
     assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15
@@ -176,11 +141,11 @@
       assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
     endif
 
-    assign plan_name = sub_plan.name | default: 'ships every 1 month'
+    assign initial_plan_name = sub_plan.name | default: '1 Month'
     assign savings = current_prod.metafields.custom.savings.value | default: current_prod.metafields.custom.savings | default: 'save 10% + free shipping'
 
     assign has_subscription = false
-    if sub_plan != null or current_prod.selling_plan_groups.size > 0
+    if sub_plan != null or total_plans > 0
       assign has_subscription = true
     endif
   -%}
@@ -190,7 +155,7 @@
 
     {%- comment -%}
       ======================================================
-      Option 1: Subscribe & Save (Includes Radio Delivery Cadence)
+      Option 1: Subscribe & Save (Includes Dynamic Plan Radio Pills)
       ======================================================
     {%- endcomment -%}
     {%- if has_subscription -%}
@@ -198,7 +163,7 @@
         class="ww-sub-opt ww-sub-opt--best on"
         data-option-type="subscription"
         data-variant-id="{{ current_variant.id }}"
-        data-selling-plan-id="{{ plan_1.id | default: sub_plan.id }}"
+        data-selling-plan-id="{{ sub_plan.id }}"
         data-quantity="{{ sub_qty }}"
       >
         {%- if sub_plan.price_adjustments.size > 0 -%}
@@ -221,11 +186,11 @@
                 id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub"
                 class="ww-sub-opt__radio-input"
                 data-variant-id="{{ current_variant.id }}"
-                data-selling-plan-id="{{ plan_1.id | default: sub_plan.id }}"
+                data-selling-plan-id="{{ sub_plan.id }}"
                 data-quantity="{{ sub_qty }}"
                 data-price="{{ sub_price | money }}"
                 data-compare-price="{{ sub_compare_price | money }}"
-                aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
+                aria-label="Subscribe and Save {{ sub_packs }}, {{ initial_plan_name }}, {{ sub_price | money }}"
                 checked
               >
               <span class="ww-sub-opt__radio-bullet"></span>
@@ -237,7 +202,7 @@
                 <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
               </span>
               <span class="ww-sub-opt__servings">
-                <strong>{{ servings_sub }} servings · </strong><span class="ww-sub-opt__cadence-text">{{ plan_name }}</span>
+                <strong>{{ servings_sub }} servings · </strong><span class="ww-sub-opt__cadence-text">ships every {{ initial_plan_name }}</span>
               </span>
             </label>
 
@@ -254,62 +219,104 @@
 
           {%- comment -%}
             ======================================================
-            Delivery Cadence Selector: SHIPS EVERY (Radio Pills)
+            Dynamic Cadence Selector: SHIPS EVERY (Dynamic Radio Pills)
             ======================================================
           {%- endcomment -%}
-          <div class="ww-sub-opt__freq-wrap" data-frequency-selector>
-            <div class="ww-sub-opt__freq-title">SHIPS EVERY:</div>
-            <div class="ww-sub-opt__freq-bar" role="radiogroup" aria-label="Ships every">
-              <label
-                class="ww-sub-opt__freq-pill is-active"
-                data-plan-id="{{ plan_1.id | default: sub_plan.id }}"
-                data-interval-text="ships every 1 month"
-              >
-                <input
-                  type="radio"
-                  name="subscription_frequency_{{ block.id | default: current_prod.id }}"
-                  value="1_month"
-                  class="ww-sub-opt__freq-radio visually-hidden"
-                  data-plan-id="{{ plan_1.id | default: sub_plan.id }}"
-                  data-interval-text="ships every 1 month"
-                  checked
-                >
-                <span class="ww-sub-opt__freq-text">1 Month</span>
-              </label>
+          {%- if total_plans > 0 or sub_plan != null -%}
+            <div class="ww-sub-opt__freq-wrap" data-frequency-selector>
+              <div class="ww-sub-opt__freq-title">SHIPS EVERY:</div>
+              <div class="ww-sub-opt__freq-bar" role="radiogroup" aria-label="Ships every">
+                {%- assign plan_idx = 0 -%}
+                {%- for group in current_prod.selling_plan_groups -%}
+                  {%- for plan in group.selling_plans -%}
+                    {%- assign is_active_plan = false -%}
+                    {%- if plan_idx == 0 -%}
+                      {%- assign is_active_plan = true -%}
+                    {%- endif -%}
 
-              <label
-                class="ww-sub-opt__freq-pill"
-                data-plan-id="{{ plan_2.id | default: sub_plan.id }}"
-                data-interval-text="ships every 2 months"
-              >
-                <input
-                  type="radio"
-                  name="subscription_frequency_{{ block.id | default: current_prod.id }}"
-                  value="2_months"
-                  class="ww-sub-opt__freq-radio visually-hidden"
-                  data-plan-id="{{ plan_2.id | default: sub_plan.id }}"
-                  data-interval-text="ships every 2 months"
-                >
-                <span class="ww-sub-opt__freq-text">2 Months</span>
-              </label>
+                    {%- comment -%} Plan specific pricing {%- endcomment -%}
+                    {%- assign p_compare_price = sub_compare_price -%}
+                    {%- assign p_price = sub_price -%}
+                    {%- if plan.price_adjustments.size > 0 -%}
+                      {%- assign p_adj = plan.price_adjustments[0] -%}
+                      {%- if p_adj.value_type == 'percentage' -%}
+                        {%- assign p_disc_factor = 100.0 | minus: p_adj.value | divided_by: 100.0 -%}
+                        {%- if is_bundle -%}
+                          {%- assign p_price = current_variant.price | times: p_disc_factor | round -%}
+                        {%- else -%}
+                          {%- assign p_price = sub_compare_price | times: p_disc_factor | round -%}
+                        {%- endif -%}
+                      {%- elsif p_adj.value_type == 'fixed_amount' -%}
+                        {%- if is_bundle -%}
+                          {%- assign p_price = current_variant.price | minus: p_adj.value -%}
+                        {%- else -%}
+                          {%- assign p_disc_total = p_adj.value | times: 2 -%}
+                          {%- assign p_price = sub_compare_price | minus: p_disc_total -%}
+                        {%- endif -%}
+                      {%- elsif p_adj.value_type == 'price' -%}
+                        {%- if is_bundle -%}
+                          {%- assign p_price = p_adj.value -%}
+                        {%- else -%}
+                          {%- assign p_price = p_adj.value | times: 2 -%}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- assign p_serving_rate = p_price | times: 1.0 | divided_by: servings_sub | floor | money -%}
 
-              <label
-                class="ww-sub-opt__freq-pill"
-                data-plan-id="{{ plan_3.id | default: sub_plan.id }}"
-                data-interval-text="ships every 3 months"
-              >
-                <input
-                  type="radio"
-                  name="subscription_frequency_{{ block.id | default: current_prod.id }}"
-                  value="3_months"
-                  class="ww-sub-opt__freq-radio visually-hidden"
-                  data-plan-id="{{ plan_3.id | default: sub_plan.id }}"
-                  data-interval-text="ships every 3 months"
-                >
-                <span class="ww-sub-opt__freq-text">3 Months</span>
-              </label>
+                    <label
+                      class="ww-sub-opt__freq-pill {% if is_active_plan %}is-active{% endif %}"
+                      data-plan-id="{{ plan.id }}"
+                      data-plan-name="{{ plan.name | escape }}"
+                      data-price="{{ p_price | money }}"
+                      data-compare-price="{% if p_compare_price > p_price %}{{ p_compare_price | money }}{% endif %}"
+                      data-serving-rate="{{ p_serving_rate }}/serving"
+                    >
+                      <input
+                        type="radio"
+                        name="subscription_frequency_{{ block.id | default: current_prod.id }}"
+                        value="{{ plan.id }}"
+                        class="ww-sub-opt__freq-radio visually-hidden"
+                        data-plan-id="{{ plan.id }}"
+                        data-plan-name="{{ plan.name | escape }}"
+                        data-price="{{ p_price | money }}"
+                        data-compare-price="{% if p_compare_price > p_price %}{{ p_compare_price | money }}{% endif %}"
+                        data-serving-rate="{{ p_serving_rate }}/serving"
+                        {% if is_active_plan %}checked{% endif %}
+                      >
+                      <span class="ww-sub-opt__freq-text">{{ plan.name }}</span>
+                    </label>
+                    {%- assign plan_idx = plan_idx | plus: 1 -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+
+                {%- comment -%} Fallback if single plan found from allocation {%- endcomment -%}
+                {%- if total_plans == 0 and sub_plan != null -%}
+                  <label
+                    class="ww-sub-opt__freq-pill is-active"
+                    data-plan-id="{{ sub_plan.id }}"
+                    data-plan-name="{{ initial_plan_name | escape }}"
+                    data-price="{{ sub_price | money }}"
+                    data-compare-price="{% if sub_compare_price > sub_price %}{{ sub_compare_price | money }}{% endif %}"
+                    data-serving-rate="{{ sub_serving_rate }}/serving"
+                  >
+                    <input
+                      type="radio"
+                      name="subscription_frequency_{{ block.id | default: current_prod.id }}"
+                      value="{{ sub_plan.id }}"
+                      class="ww-sub-opt__freq-radio visually-hidden"
+                      data-plan-id="{{ sub_plan.id }}"
+                      data-plan-name="{{ initial_plan_name | escape }}"
+                      data-price="{{ sub_price | money }}"
+                      data-compare-price="{% if sub_compare_price > sub_price %}{{ sub_compare_price | money }}{% endif %}"
+                      data-serving-rate="{{ sub_serving_rate }}/serving"
+                      checked
+                    >
+                    <span class="ww-sub-opt__freq-text">{{ initial_plan_name }}</span>
+                  </label>
+                {%- endif -%}
+              </div>
             </div>
-          </div>
+          {%- endif -%}
 
           {%- if sub_plan.description != blank -%}
             <span class="ww-sub-opt__plan-desc">{{ sub_plan.description }}</span>
@@ -563,8 +570,7 @@
     }
 
     .ww-purchase-options--v2 .ww-sub-opt__freq-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
       background-color: #F4EBE5;
       border-radius: 9999px;
       padding: 4px;
@@ -575,6 +581,8 @@
     }
 
     .ww-purchase-options--v2 .ww-sub-opt__freq-pill {
+      flex: 1 1 0;
+      min-width: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -601,6 +609,8 @@
       letter-spacing: -0.01em;
       line-height: 1.15;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       transition: color 0.2s ease, font-weight 0.2s ease;
     }
 
@@ -741,7 +751,10 @@
 
             var radioInput = pill.querySelector('.ww-sub-opt__freq-radio');
             var planId = pill.getAttribute('data-plan-id') || (radioInput ? radioInput.getAttribute('data-plan-id') : '');
-            var intervalText = pill.getAttribute('data-interval-text') || (radioInput ? radioInput.getAttribute('data-interval-text') : '');
+            var planName = pill.getAttribute('data-plan-name') || (radioInput ? radioInput.getAttribute('data-plan-name') : '');
+            var price = pill.getAttribute('data-price') || (radioInput ? radioInput.getAttribute('data-price') : '');
+            var comparePrice = pill.getAttribute('data-compare-price') || (radioInput ? radioInput.getAttribute('data-compare-price') : '');
+            var servingRate = pill.getAttribute('data-serving-rate') || (radioInput ? radioInput.getAttribute('data-serving-rate') : '');
 
             var container = pill.closest('.ww-purchase-options--v2');
             if (!container) return;
@@ -749,7 +762,7 @@
             var subCard = container.querySelector('.ww-sub-opt[data-option-type="subscription"]');
             var form = container.closest('form');
 
-            // 1. Update active pill in this bar
+            // 1. Update active pill state in this bar
             var bar = pill.closest('.ww-sub-opt__freq-bar');
             if (bar) {
               bar.querySelectorAll('.ww-sub-opt__freq-pill').forEach(function (p) {
@@ -761,15 +774,35 @@
             pill.classList.add('is-active');
             if (radioInput) radioInput.checked = true;
 
-            // 2. Update selling plan on card and radio
+            // 2. Update selling plan and pricing on subscription card
             if (subCard && planId) {
               subCard.setAttribute('data-selling-plan-id', planId);
               var subRadio = subCard.querySelector('input[type="radio"][value="subscription"]');
               if (subRadio) {
                 subRadio.setAttribute('data-selling-plan-id', planId);
+                if (price) subRadio.setAttribute('data-price', price);
+                if (comparePrice) subRadio.setAttribute('data-compare-price', comparePrice);
                 if (!subRadio.checked) {
                   subRadio.checked = true;
                   subRadio.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }
+
+              // Update price elements if present
+              if (price) {
+                var priceEl = subCard.querySelector('.ww-sub-opt__price');
+                if (priceEl) {
+                  if (comparePrice) {
+                    priceEl.innerHTML = price + ' <s class="ww-sub-opt__compare-price">' + comparePrice + '</s>';
+                  } else {
+                    priceEl.textContent = price;
+                  }
+                }
+              }
+              if (servingRate) {
+                var servingRateEl = subCard.querySelector('.ww-sub-opt__per-serving');
+                if (servingRateEl) {
+                  servingRateEl.textContent = servingRate;
                 }
               }
             }
@@ -784,10 +817,14 @@
             }
 
             // 4. Update cadence text in servings label
-            if (subCard && intervalText) {
+            if (subCard && planName) {
               var cadenceEl = subCard.querySelector('.ww-sub-opt__cadence-text');
               if (cadenceEl) {
-                cadenceEl.textContent = intervalText;
+                var displayCadence = planName;
+                if (!/^(ships|deliver)/i.test(displayCadence)) {
+                  displayCadence = 'ships every ' + displayCadence;
+                }
+                cadenceEl.textContent = displayCadence;
               }
             }
           });
