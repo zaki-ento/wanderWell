@@ -296,6 +296,9 @@
                     {%- endif -%}
                   </div>
 
+                  {% if item.selling_plan_allocation %}
+                  
+                  {% else %}
                   <div class="cart-items__unit-price-wrapper">
                     <div>
                       {% if item.original_price != item.final_price %}
@@ -325,6 +328,7 @@
                       {% endif %}
                     </div>
                   </div>
+                  {% endif %}
                 </td>
                 <td
                   class="cart-items__quantity"
