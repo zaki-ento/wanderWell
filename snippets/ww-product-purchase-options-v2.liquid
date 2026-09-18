@@ -19,28 +19,7 @@
       assign is_bundle = true
     endif
 
-    # 3. Identify Appstle Selling Plan & Group
-    assign sub_allocation = null
-    assign sub_plan = null
-    assign sub_group = null
-
-    if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-      assign sub_allocation = current_variant.selling_plan_allocations[0]
-      assign sub_plan = sub_allocation.selling_plan
-      assign sub_group = sub_allocation.selling_plan_group
-    endif
-
-    if sub_plan == null and current_prod.selling_plan_groups.size > 0
-      for group in current_prod.selling_plan_groups
-        if group.selling_plans.size > 0
-          assign sub_group = group
-          assign sub_plan = group.selling_plans[0]
-          break
-        endif
-      endfor
-    endif
-
-    # 4. Servings, Badges, Prices & Quantities
+    # 3. Base calculations for servings & quantities
     assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15
 
     if is_bundle
@@ -62,32 +41,11 @@
       endif
       assign onetime_serving_rate = onetime_price | times: 1.0 | divided_by: servings_onetime | floor | money
 
-      # Subscribe & Save: Use compare_at_price ($59.98) for strikethrough
+      # Subscribe & Save base compare price ($59.98)
       assign sub_compare_price = current_variant.compare_at_price
       if sub_compare_price == blank or sub_compare_price <= current_variant.price
         assign sub_compare_price = 5998
       endif
-
-      if sub_allocation != blank
-        assign sub_price = sub_allocation.price
-      elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
-        assign adjustment = sub_plan.price_adjustments[0]
-        if adjustment.value_type == 'percentage'
-          assign discount_percentage = adjustment.value
-          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
-          assign sub_price = current_variant.price | times: discount_factor | round
-        elsif adjustment.value_type == 'fixed_amount'
-          assign sub_price = current_variant.price | minus: adjustment.value
-        elsif adjustment.value_type == 'price'
-          assign sub_price = adjustment.value
-        else
-          assign sub_price = current_variant.price
-        endif
-      else
-        assign sub_price = current_variant.price
-      endif
-      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
-
     else
       # ==========================================
       # SIMPLE PRODUCT LOGIC
@@ -104,37 +62,9 @@
       assign onetime_compare_price = current_variant.compare_at_price
       assign onetime_serving_rate = onetime_price | times: 1.0 | divided_by: servings_onetime | floor | money
 
-      # Subscribe & Save: Locked 2-pack calculations (Price x 2 = $59.98, discounted total = $53.99)
+      # Subscribe & Save: Locked 2-pack calculations (Price x 2 = $59.98)
       assign sub_compare_price = current_variant.price | times: 2
-
-      if sub_plan != blank and sub_plan.price_adjustments.size > 0
-        assign adjustment = sub_plan.price_adjustments[0]
-        if adjustment.value_type == 'percentage'
-          assign discount_percentage = adjustment.value
-          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
-          assign sub_price = sub_compare_price | times: discount_factor | round
-        elsif adjustment.value_type == 'fixed_amount'
-          assign discount_total = adjustment.value | times: 2
-          assign sub_price = sub_compare_price | minus: discount_total
-        elsif adjustment.value_type == 'price'
-          assign sub_price = adjustment.value | times: 2
-        else
-          assign sub_price = sub_compare_price
-        endif
-      elsif sub_allocation != blank
-        assign sub_price = sub_allocation.price | times: 2
-      else
-        # Default 10% discount ($59.98 -> $53.99)
-        assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0
-        assign sub_price = sub_compare_price | times: discount_factor | round
-      endif
-
-      # Precise per-serving rate calculation ($53.99 / 30 -> $1.79)
-      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
     endif
-
-    # Plan details & frequency text
-    assign plan_name = sub_plan.name | default: 'ships every 4 weeks'
   -%}
 
   <fieldset class="ww-purchase-options ww-purchase-options--v2" data-variant-architecture="false">
@@ -142,134 +72,208 @@
 
     {%- comment -%}
       ======================================================
-      Option 1: Subscribe & Save
+      Subscription Plans (Loop through all selling plans)
       ======================================================
     {%- endcomment -%}
-    <div
-      class="ww-sub-opt ww-sub-opt--best on"
-      data-option-type="subscription"
-      data-variant-id="{{ current_variant.id }}"
-      data-selling-plan-id="{{ sub_plan.id }}"
-      data-quantity="{{ sub_qty }}"
-    >
-      {%- if sub_plan.price_adjustments.size > 0 -%}
-        {%- if sub_plan.price_adjustments[0].value_type == 'percentage' -%}
-          <span class="ww-sub-badge">Most popular · save {{ sub_plan.price_adjustments[0].value }}% + free shipping</span>
-      {%- else -%}
-          <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
-       {%- endif -%}
-      {%- else -%}
-        <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
-      {%- endif -%}
+    {%- assign has_subscription = false -%}
+    {%- assign plan_count = 0 -%}
 
-      <span class="ww-sub-opt__content">
-        <span class="ww-sub-opt__row">
-          <span class="ww-sub-opt__radio-bullet-wrapper">
-            <input
-              type="radio"
-              name="purchase_type_{{ block.id | default: current_prod.id }}"
-              value="subscription"
-              id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub"
-              class="ww-sub-opt__radio-input"
-              data-variant-id="{{ current_variant.id }}"
-              data-selling-plan-id="{{ sub_plan.id }}"
-              data-quantity="{{ sub_qty }}"
-              data-price="{{ sub_price | money }}"
-              data-compare-price="{{ sub_compare_price | money }}"
-              aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
-              checked
-            >
-            <span class="ww-sub-opt__radio-bullet"></span>
-          </span>
+    {%- for group in current_prod.selling_plan_groups -%}
+      {%- for plan in group.selling_plans -%}
+        {%- assign has_subscription = true -%}
+        {%- assign plan_count = plan_count | plus: 1 -%}
+        {%- assign is_first_plan = false -%}
+        {%- if forloop.first and forloop.parentloop.first -%}
+          {%- assign is_first_plan = true -%}
+        {%- endif -%}
 
-          <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-sub" class="ww-sub-opt__details">
-            <span class="ww-sub-opt__title">
-              Subscribe & Save
-              <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
-            </span>
-            <span class="ww-sub-opt__servings">
-              <strong>{{ servings_sub }} servings · </strong>{{ plan_name }}
-            </span>
+        {%- comment -%} Locate variant allocation for this plan if available {%- endcomment -%}
+        {%- assign sub_allocation = null -%}
+        {%- for alloc in current_variant.selling_plan_allocations -%}
+          {%- if alloc.selling_plan.id == plan.id -%}
+            {%- assign sub_allocation = alloc -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
 
-            {%- if sub_plan.description != blank -%}
-              <span class="ww-sub-opt__plan-desc">{{ sub_plan.description }}</span>
-            {%- elsif sub_group.description != blank -%}
-              <span class="ww-sub-opt__perks">
-                <span class="ww-sub-opt__perk">{{ sub_group.description }}</span>
-              </span>
+        {%- comment -%} Calculate Plan Specific Price & Discount {%- endcomment -%}
+        {%- assign discount_percentage = 10 -%}
+        {%- if plan.price_adjustments.size > 0 -%}
+          {%- assign adjustment = plan.price_adjustments[0] -%}
+          {%- if adjustment.value_type == 'percentage' -%}
+            {%- assign discount_percentage = adjustment.value -%}
+            {%- assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0 -%}
+            {%- if is_bundle -%}
+              {%- assign sub_price = current_variant.price | times: discount_factor | round -%}
             {%- else -%}
-              <span class="ww-sub-opt__perks">
-                <span class="ww-sub-opt__perk">Free Shipping on $50+</span>
-                <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
-                <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
-              </span>
+              {%- assign sub_price = sub_compare_price | times: discount_factor | round -%}
             {%- endif -%}
-          </label>
+          {%- elsif adjustment.value_type == 'fixed_amount' -%}
+            {%- if is_bundle -%}
+              {%- assign sub_price = current_variant.price | minus: adjustment.value -%}
+            {%- else -%}
+              {%- assign discount_total = adjustment.value | times: 2 -%}
+              {%- assign sub_price = sub_compare_price | minus: discount_total -%}
+            {%- endif -%}
+          {%- elsif adjustment.value_type == 'price' -%}
+            {%- if is_bundle -%}
+              {%- assign sub_price = adjustment.value -%}
+            {%- else -%}
+              {%- assign sub_price = adjustment.value | times: 2 -%}
+            {%- endif -%}
+          {%- else -%}
+            {%- if is_bundle -%}
+              {%- assign sub_price = current_variant.price -%}
+            {%- else -%}
+              {%- assign sub_price = sub_compare_price -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- elsif sub_allocation != blank -%}
+          {%- if is_bundle -%}
+            {%- assign sub_price = sub_allocation.price -%}
+          {%- else -%}
+            {%- assign sub_price = sub_allocation.price | times: 2 -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0 -%}
+          {%- assign sub_price = sub_compare_price | times: discount_factor | round -%}
+        {%- endif -%}
 
-          <span class="ww-sub-opt__price-container">
-            <span class="ww-sub-opt__price">
-              {{ sub_price | money }}
-              {%- if sub_compare_price > sub_price -%}
-                <s class="ww-sub-opt__compare-price">{{ sub_compare_price | money }}</s>
-              {%- endif -%}
+        {%- assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money -%}
+        {%- assign plan_name = plan.name | default: 'ships every 4 weeks' -%}
+
+        <div
+          class="ww-sub-opt ww-sub-opt--sub {% if is_first_plan %}ww-sub-opt--best on{% endif %}"
+          data-option-type="subscription"
+          data-variant-id="{{ current_variant.id }}"
+          data-selling-plan-id="{{ plan.id }}"
+          data-quantity="{{ sub_qty }}"
+        >
+          {%- if plan.price_adjustments.size > 0 and plan.price_adjustments[0].value_type == 'percentage' -%}
+            {%- if is_first_plan -%}
+              <span class="ww-sub-badge">Most popular · save {{ plan.price_adjustments[0].value }}% + free shipping</span>
+            {%- else -%}
+              <span class="ww-sub-badge">Save {{ plan.price_adjustments[0].value }}% + free shipping</span>
+            {%- endif -%}
+          {%- elsif is_first_plan -%}
+            <span class="ww-sub-badge">Most popular · save 10% + free shipping</span>
+          {%- else -%}
+            <span class="ww-sub-badge">Save 10% + free shipping</span>
+          {%- endif -%}
+
+          <span class="ww-sub-opt__content">
+            <span class="ww-sub-opt__row">
+              <span class="ww-sub-opt__radio-bullet-wrapper">
+                <input
+                  type="radio"
+                  name="purchase_type_{{ block.id | default: current_prod.id }}"
+                  value="subscription"
+                  id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub-{{ plan.id }}"
+                  class="ww-sub-opt__radio-input"
+                  data-variant-id="{{ current_variant.id }}"
+                  data-selling-plan-id="{{ plan.id }}"
+                  data-quantity="{{ sub_qty }}"
+                  data-price="{{ sub_price | money }}"
+                  data-compare-price="{{ sub_compare_price | money }}"
+                  aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
+                  {% if is_first_plan %}checked{% endif %}
+                >
+                <span class="ww-sub-opt__radio-bullet"></span>
+              </span>
+
+              <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-sub-{{ plan.id }}" class="ww-sub-opt__details">
+                <span class="ww-sub-opt__title">
+                  Subscribe & Save
+                  <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
+                </span>
+                <span class="ww-sub-opt__servings">
+                  <strong>{{ servings_sub }} servings · </strong>{{ plan_name }}
+                </span>
+
+                {%- if plan.description != blank -%}
+                  <span class="ww-sub-opt__plan-desc">{{ plan.description }}</span>
+                {%- elsif group.description != blank -%}
+                  <span class="ww-sub-opt__perks">
+                    <span class="ww-sub-opt__perk">{{ group.description }}</span>
+                  </span>
+                {%- else -%}
+                  <span class="ww-sub-opt__perks">
+                    <span class="ww-sub-opt__perk">Free Shipping on $50+</span>
+                    <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
+                    <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
+                  </span>
+                {%- endif -%}
+              </label>
+
+              <span class="ww-sub-opt__price-container">
+                <span class="ww-sub-opt__price">
+                  {{ sub_price | money }}
+                  {%- if sub_compare_price > sub_price -%}
+                    <s class="ww-sub-opt__compare-price">{{ sub_compare_price | money }}</s>
+                  {%- endif -%}
+                </span>
+                <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
+              </span>
             </span>
-            <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
           </span>
-        </span>
-      </span>
-    </div>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
 
     {%- comment -%}
       ======================================================
-      Option 2: One-Time Purchase
+      Option: One-Time Purchase
       ======================================================
     {%- endcomment -%}
-    <div
-      class="ww-sub-opt"
-      data-option-type="onetime"
-      data-variant-id="{{ current_variant.id }}"
-      data-selling-plan-id=""
-      data-quantity="{{ onetime_qty }}"
-    >
-      <span class="ww-sub-opt__content">
-        <span class="ww-sub-opt__row">
-          <span class="ww-sub-opt__radio-bullet-wrapper">
-            <input
-              type="radio"
-              name="purchase_type_{{ block.id | default: current_prod.id }}"
-              value="onetime"
-              id="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime"
-              class="ww-sub-opt__radio-input"
-              data-variant-id="{{ current_variant.id }}"
-              data-selling-plan-id=""
-              data-quantity="{{ onetime_qty }}"
-              data-price="{{ onetime_price | money }}"
-              data-compare-price="{% if onetime_compare_price > onetime_price %}{{ onetime_compare_price | money }}{% endif %}"
-              aria-label="One-Time Purchase {{ one_time_packs }}, {{ onetime_price | money }}"
-            >
-            <span class="ww-sub-opt__radio-bullet"></span>
-          </span>
-
-          <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime" class="ww-sub-opt__details">
-            <span class="ww-sub-opt__title">
-              One-Time Purchase
-              <span class="ww-sub-opt__pack-badge">{{ one_time_packs | escape }}</span>
+    {%- unless current_prod.requires_selling_plan -%}
+      <div
+        class="ww-sub-opt {% unless has_subscription %}on{% endunless %}"
+        data-option-type="onetime"
+        data-variant-id="{{ current_variant.id }}"
+        data-selling-plan-id=""
+        data-quantity="{{ onetime_qty }}"
+      >
+        <span class="ww-sub-opt__content">
+          <span class="ww-sub-opt__row">
+            <span class="ww-sub-opt__radio-bullet-wrapper">
+              <input
+                type="radio"
+                name="purchase_type_{{ block.id | default: current_prod.id }}"
+                value="onetime"
+                id="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime"
+                class="ww-sub-opt__radio-input"
+                data-variant-id="{{ current_variant.id }}"
+                data-selling-plan-id=""
+                data-quantity="{{ onetime_qty }}"
+                data-price="{{ onetime_price | money }}"
+                data-compare-price="{% if onetime_compare_price > onetime_price %}{{ onetime_compare_price | money }}{% endif %}"
+                aria-label="One-Time Purchase {{ one_time_packs }}, {{ onetime_price | money }}"
+                {% unless has_subscription %}checked{% endunless %}
+              >
+              <span class="ww-sub-opt__radio-bullet"></span>
             </span>
-            <span class="ww-sub-opt__servings">{{ servings_onetime }} servings · delivered once</span>
-          </label>
 
-          <span class="ww-sub-opt__price-container">
-            <span class="ww-sub-opt__price">
-              {{ onetime_price | money }}
-              {%- if onetime_compare_price > onetime_price -%}
-                <s class="ww-sub-opt__compare-price">{{ onetime_compare_price | money }}</s>
-              {%- endif -%}
+            <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime" class="ww-sub-opt__details">
+              <span class="ww-sub-opt__title">
+                One-Time Purchase
+                <span class="ww-sub-opt__pack-badge">{{ one_time_packs | escape }}</span>
+              </span>
+              <span class="ww-sub-opt__servings">{{ servings_onetime }} servings · delivered once</span>
+            </label>
+
+            <span class="ww-sub-opt__price-container">
+              <span class="ww-sub-opt__price">
+                {{ onetime_price | money }}
+                {%- if onetime_compare_price > onetime_price -%}
+                  <s class="ww-sub-opt__compare-price">{{ onetime_compare_price | money }}</s>
+                {%- endif -%}
+              </span>
+              <span class="ww-sub-opt__per-serving">{{ onetime_serving_rate }}/serving</span>
             </span>
-            <span class="ww-sub-opt__per-serving">{{ onetime_serving_rate }}/serving</span>
           </span>
         </span>
-      </span>
-    </div>
+      </div>
+    {%- endunless -%}
   </fieldset>
 
   {% style %}

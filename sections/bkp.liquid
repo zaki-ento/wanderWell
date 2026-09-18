@@ -1,0 +1,538 @@
+{% comment %}
+  Snippet: WW Product Purchase Options (v2 - Single-Variant Architecture)
+  Description: Custom purchase options widget supporting:
+  - Simple Products: Single variant with locked 2-pack subscription ($53.99 / 30 servings) and 1-pack one-time purchase ($29.99 / 15 servings).
+  - Bundle Products: Both badges "2 Packs", both 30 servings, compare_at_price crossed out, quantity 1.
+  Accepts:
+    - current_prod: Product object (required)
+    - block: Section block containing customizer settings (required)
+{% endcomment %}
+
+{%- if current_prod != blank -%}
+  {%- liquid
+    # 1. Single simple product variant
+    assign current_variant = current_prod.selected_or_first_available_variant
+
+    # 2. Check if bundle product
+    assign is_bundle = false
+    if current_prod.type == 'Bundle'
+      assign is_bundle = true
+    endif
+
+    # 3. Identify Appstle Selling Plan & Group
+    assign sub_allocation = null
+    assign sub_plan = null
+    assign sub_group = null
+
+    if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+      assign sub_allocation = current_variant.selling_plan_allocations.first
+      assign sub_plan = sub_allocation.selling_plan
+      assign sub_group = sub_allocation.selling_plan_group
+    endif
+
+    if sub_plan == null and current_prod.selling_plan_groups.size > 0
+      for group in current_prod.selling_plan_groups
+        if group.selling_plans.size > 0
+          assign sub_group = group
+          assign sub_plan = group.selling_plans.first
+          break
+        endif
+      endfor
+    endif
+
+    # 4. Servings, Badges, Prices & Quantities
+    assign base_servings = current_prod.metafields.custom.servings.value | default: current_prod.metafields.custom.servings | default: 15
+
+    if is_bundle
+      # ==========================================
+      # BUNDLE PRODUCT LOGIC
+      # ==========================================
+      assign sub_packs = '2 Packs'
+      assign one_time_packs = '2 Packs'
+      assign servings_sub = 30
+      assign servings_onetime = 30
+      assign sub_qty = 1
+      assign onetime_qty = 1
+
+      # One-Time: Use compare_at_price ($59.98) for strikethrough, actual price ($53.99)
+      assign onetime_price = current_variant.price
+      assign onetime_compare_price = current_variant.compare_at_price
+      if onetime_compare_price == blank or onetime_compare_price <= onetime_price
+        assign onetime_compare_price = 5998
+      endif
+      assign onetime_serving_rate = onetime_price | times: 1.0 | divided_by: servings_onetime | floor | money
+
+      # Subscribe & Save: Use compare_at_price ($59.98) for strikethrough
+      assign sub_compare_price = current_variant.compare_at_price
+      if sub_compare_price == blank or sub_compare_price <= current_variant.price
+        assign sub_compare_price = 5998
+      endif
+
+      if sub_allocation != blank
+        assign sub_price = sub_allocation.price
+      elsif sub_plan != blank and sub_plan.price_adjustments.size > 0
+        assign adjustment = sub_plan.price_adjustments.first
+        if adjustment.value_type == 'percentage'
+          assign discount_percentage = adjustment.value
+          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+          assign sub_price = current_variant.price | times: discount_factor | round
+        elsif adjustment.value_type == 'fixed_amount'
+          assign sub_price = current_variant.price | minus: adjustment.value
+        elsif adjustment.value_type == 'price'
+          assign sub_price = adjustment.value
+        else
+          assign sub_price = current_variant.price
+        endif
+      else
+        assign sub_price = current_variant.price
+      endif
+      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
+
+    else
+      # ==========================================
+      # SIMPLE PRODUCT LOGIC
+      # ==========================================
+      assign sub_packs = '2 Packs'
+      assign one_time_packs = '1 Pack'
+      assign servings_onetime = base_servings | at_least: 1
+      assign servings_sub = base_servings | times: 2 | at_least: 1
+      assign sub_qty = 2
+      assign onetime_qty = 1
+
+      # One-Time: 1 Pack base price ($29.99)
+      assign onetime_price = current_variant.price
+      assign onetime_compare_price = current_variant.compare_at_price
+      assign onetime_serving_rate = onetime_price | times: 1.0 | divided_by: servings_onetime | floor | money
+
+      # Subscribe & Save: Locked 2-pack calculations (Price x 2 = $59.98, discounted total = $53.99)
+      assign sub_compare_price = current_variant.price | times: 2
+
+      if sub_plan != blank and sub_plan.price_adjustments.size > 0
+        assign adjustment = sub_plan.price_adjustments.first
+        if adjustment.value_type == 'percentage'
+          assign discount_percentage = adjustment.value
+          assign discount_factor = 100.0 | minus: discount_percentage | divided_by: 100.0
+          assign sub_price = sub_compare_price | times: discount_factor | round
+        elsif adjustment.value_type == 'fixed_amount'
+          assign discount_total = adjustment.value | times: 2
+          assign sub_price = sub_compare_price | minus: discount_total
+        elsif adjustment.value_type == 'price'
+          assign sub_price = adjustment.value | times: 2
+        else
+          assign sub_price = sub_compare_price
+        endif
+      elsif sub_allocation != blank
+        assign sub_price = sub_allocation.price | times: 2
+      else
+        # Default 10% discount ($59.98 -> $53.99)
+        assign discount_factor = 100.0 | minus: 10 | divided_by: 100.0
+        assign sub_price = sub_compare_price | times: discount_factor | round
+      endif
+
+      # Precise per-serving rate calculation ($53.99 / 30 -> $1.79)
+      assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
+    endif
+
+    # Plan details & frequency text
+    assign plan_name = sub_plan.name | default: 'ships every 4 weeks'
+    assign savings = current_prod.metafields.custom.savings.value | default: current_prod.metafields.custom.savings | default: 'save 10% + free shipping'
+  -%}
+
+  <fieldset class="ww-purchase-options ww-purchase-options--v2">
+    <legend class="visually-hidden">Purchase Options</legend>
+
+    {%- comment -%}
+      ======================================================
+      Option 1: Subscribe & Save
+      ======================================================
+    {%- endcomment -%}
+    <div
+      class="ww-sub-opt ww-sub-opt--best on"
+      data-option-type="subscription"
+      data-variant-id="{{ current_variant.id }}"
+      data-selling-plan-id="{{ sub_plan.id }}"
+      data-quantity="{{ sub_qty }}"
+    >
+      {%- if sub_plan.price_adjustments.size > 0 -%}
+        {%- if sub_plan.price_adjustments.first.value_type == 'percentage' -%}
+          <span class="ww-sub-badge"
+            >Most popular · save {{ sub_plan.price_adjustments.first.value }}% + free shipping</span
+          >
+        {%- else -%}
+          <span class="ww-sub-badge">Most popular · {{ savings }}</span>
+        {%- endif -%}
+      {%- endif -%}
+
+      <span class="ww-sub-opt__content">
+        <span class="ww-sub-opt__row">
+          <span class="ww-sub-opt__radio-bullet-wrapper">
+            <input
+              type="radio"
+              name="purchase_type_{{ block.id | default: current_prod.id }}"
+              value="subscription"
+              id="PurchaseOption-{{ block.id | default: current_prod.id }}-sub"
+              class="ww-sub-opt__radio-input"
+              data-variant-id="{{ current_variant.id }}"
+              data-selling-plan-id="{{ sub_plan.id }}"
+              data-quantity="{{ sub_qty }}"
+              data-price="{{ sub_price | money }}"
+              data-compare-price="{{ sub_compare_price | money }}"
+              aria-label="Subscribe and Save {{ sub_packs }}, {{ plan_name }}, {{ sub_price | money }}"
+              checked
+            >
+            <span class="ww-sub-opt__radio-bullet"></span>
+          </span>
+
+          <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-sub" class="ww-sub-opt__details">
+            <span class="ww-sub-opt__title">
+              Subscribe & Save
+              <span class="ww-sub-opt__pack-badge">{{ sub_packs | escape }}</span>
+            </span>
+            <span class="ww-sub-opt__servings">
+              <strong>{{ servings_sub }} servings · </strong>{{ plan_name }}
+            </span>
+
+            {%- if sub_plan.description != blank -%}
+              <span class="ww-sub-opt__plan-desc">{{ sub_plan.description }}</span>
+            {%- elsif sub_group.description != blank -%}
+              <span class="ww-sub-opt__perks">
+                <span class="ww-sub-opt__perk">{{ sub_group.description }}</span>
+              </span>
+            {%- else -%}
+              <span class="ww-sub-opt__perks">
+                <span class="ww-sub-opt__perk">Free Shipping on $50+</span>
+                <span class="ww-sub-opt__perk">Pause, skip, or cancel anytime</span>
+                <span class="ww-sub-opt__perk">Free shipping on all renewals</span>
+              </span>
+            {%- endif -%}
+          </label>
+
+          <span class="ww-sub-opt__price-container">
+            <span class="ww-sub-opt__price">
+              {{ sub_price | money }}
+              {%- if sub_compare_price > sub_price -%}
+                <s class="ww-sub-opt__compare-price">{{ sub_compare_price | money }}</s>
+              {%- endif -%}
+            </span>
+            <span class="ww-sub-opt__per-serving">{{ sub_serving_rate }}/serving</span>
+          </span>
+        </span>
+      </span>
+    </div>
+
+    {%- comment -%}
+      ======================================================
+      Option 2: One-Time Purchase
+      ======================================================
+    {%- endcomment -%}
+    <div
+      class="ww-sub-opt"
+      data-option-type="onetime"
+      data-variant-id="{{ current_variant.id }}"
+      data-selling-plan-id=""
+      data-quantity="{{ onetime_qty }}"
+    >
+      <span class="ww-sub-opt__content">
+        <span class="ww-sub-opt__row">
+          <span class="ww-sub-opt__radio-bullet-wrapper">
+            <input
+              type="radio"
+              name="purchase_type_{{ block.id | default: current_prod.id }}"
+              value="onetime"
+              id="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime"
+              class="ww-sub-opt__radio-input"
+              data-variant-id="{{ current_variant.id }}"
+              data-selling-plan-id=""
+              data-quantity="{{ onetime_qty }}"
+              data-price="{{ onetime_price | money }}"
+              data-compare-price="{% if onetime_compare_price > onetime_price %}{{ onetime_compare_price | money }}{% endif %}"
+              aria-label="One-Time Purchase {{ one_time_packs }}, {{ onetime_price | money }}"
+            >
+            <span class="ww-sub-opt__radio-bullet"></span>
+          </span>
+
+          <label for="PurchaseOption-{{ block.id | default: current_prod.id }}-onetime" class="ww-sub-opt__details">
+            <span class="ww-sub-opt__title">
+              One-Time Purchase
+              <span class="ww-sub-opt__pack-badge">{{ one_time_packs | escape }}</span>
+            </span>
+            <span class="ww-sub-opt__servings">{{ servings_onetime }} servings · delivered once</span>
+          </label>
+
+          <span class="ww-sub-opt__price-container">
+            <span class="ww-sub-opt__price">
+              {{ onetime_price | money }}
+              {%- if onetime_compare_price > onetime_price -%}
+                <s class="ww-sub-opt__compare-price">{{ onetime_compare_price | money }}</s>
+              {%- endif -%}
+            </span>
+            <span class="ww-sub-opt__per-serving">{{ onetime_serving_rate }}/serving</span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </fieldset>
+
+  {% style %}
+    .ww-purchase-options--v2 {
+      border: none;
+      padding: 0;
+      margin: 0 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: 2px solid rgba(44, 44, 44, 0.15);
+      border-radius: 12px;
+      background: var(--white, #fff);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt.on {
+      border-color: var(--orange, #e8632b);
+      background-color: var(--orange-pale, #fceee7);
+      box-shadow: 0 6px 20px rgba(232, 99, 43, 0.18);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-badge {
+      background-color: var(--orange-pale, #fceee7);
+      color: var(--orange, #e8632b);
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 8px 12px;
+      letter-spacing: 0.09em;
+      width: 100%;
+      box-sizing: border-box;
+      display: block;
+      line-height: 16px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt.on .ww-sub-badge {
+      background-color: var(--orange, #e8632b);
+      color: var(--white, #fff);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__content {
+      padding: 13px 15px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__radio-bullet-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__radio-input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      z-index: 1;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__radio-bullet {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(44, 44, 44, 0.15);
+      border-radius: 50%;
+      display: inline-block;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt.on .ww-sub-opt__radio-bullet {
+      border-color: var(--orange, #e8632b);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt.on .ww-sub-opt__radio-bullet::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--orange, #e8632b);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__details {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      margin-left: 0;
+      cursor: pointer;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--charcoal, #1a1a1a);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__pack-badge {
+      font-size: 0.66rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      letter-spacing: 0.09em;
+      border-radius: 20px;
+      line-height: 14px;
+      background-color: rgba(44, 44, 44, 0.1);
+      color: #5a5a5a;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt.on .ww-sub-opt__pack-badge {
+      background-color: var(--orange, #e8632b);
+      color: var(--white, #fff);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__servings {
+      font-size: 0.76rem;
+      margin-top: 2px;
+      line-height: 1.2;
+      color: var(--charcoal-light, #5a5a5a);
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__servings strong {
+      color: var(--charcoal, #1a1a1a);
+      font-weight: 700;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc {
+      font-size: 12px;
+      color: var(--charcoal-light, #5a5a5a);
+      line-height: 1.35;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc p {
+      margin-bottom: 0;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul,
+    .ww-purchase-options--v2 .ww-sub-opt__perks {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul li,
+    .ww-purchase-options--v2 .ww-sub-opt__perk {
+      font-size: 0.82rem;
+      color: var(--charcoal, #1a1a1a);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 15px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__plan-desc ul li::before {
+      content: '';
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e8632b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5 5L20 6.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 14px 14px;
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__price-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__price {
+      font-family: var(--font-primary, inherit);
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--charcoal, #1a1a1a);
+      white-space: nowrap;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__compare-price {
+      font-size: 14px;
+      text-decoration: line-through;
+      color: var(--charcoal-light, #5a5a5a);
+      font-weight: normal;
+      margin-left: 4px;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__per-serving {
+      font-size: 0.72rem;
+      line-height: 1.2;
+      color: var(--charcoal-light, #5a5a5a);
+    }
+
+    @media screen and (max-width: 420px) {
+      .ww-purchase-options--v2 .ww-sub-opt__row {
+        flex-wrap: wrap;
+      }
+      .ww-purchase-options--v2 .ww-sub-opt__radio-bullet-wrapper {
+        order: -2;
+      }
+      .ww-purchase-options--v2 .ww-sub-opt__details {
+        width: 100%;
+      }
+      .ww-purchase-options--v2 .ww-sub-opt__price-container {
+        order: -1;
+      }
+    }
+
+    @media (min-width: 1024px) and (min-height: 640px) {
+      .ww-purchase-options--v2 .ww-sub-opt__price {
+        font-size: 1.2rem;
+      }
+      .ww-purchase-options--v2 .ww-sub-opt__servings {
+        font-size: 0.72rem;
+      }
+      .ww-purchase-options--v2 .ww-sub-opt__content {
+        padding: 10px 12px 12px;
+      }
+    }
+  {% endstyle %}
+{%- endif -%}
