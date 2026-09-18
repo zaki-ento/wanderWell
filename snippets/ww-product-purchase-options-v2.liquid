@@ -220,9 +220,11 @@
           {%- comment -%}
             ======================================================
             Dynamic Cadence Selector: SHIPS EVERY (Dynamic Radio Pills)
+            Only displayed when there are more than 1 plan.
+            If only 1 plan exists, it remains default and this selector is hidden.
             ======================================================
           {%- endcomment -%}
-          {%- if total_plans > 1 or sub_plan != null -%}
+          {%- if total_plans > 1 -%}
             <div class="ww-sub-opt__freq-wrap" data-frequency-selector>
               <div class="ww-sub-opt__freq-title">SHIPS EVERY:</div>
               <div class="ww-sub-opt__freq-bar" role="radiogroup" aria-label="Ships every">
@@ -288,32 +290,6 @@
                     {%- assign plan_idx = plan_idx | plus: 1 -%}
                   {%- endfor -%}
                 {%- endfor -%}
-
-                {%- comment -%} Fallback if single plan found from allocation {%- endcomment -%}
-                {%- if total_plans == 0 and sub_plan != null -%}
-                  <label
-                    class="ww-sub-opt__freq-pill is-active"
-                    data-plan-id="{{ sub_plan.id }}"
-                    data-plan-name="{{ initial_plan_name | escape }}"
-                    data-price="{{ sub_price | money }}"
-                    data-compare-price="{% if sub_compare_price > sub_price %}{{ sub_compare_price | money }}{% endif %}"
-                    data-serving-rate="{{ sub_serving_rate }}/serving"
-                  >
-                    <input
-                      type="radio"
-                      name="subscription_frequency_{{ block.id | default: current_prod.id }}"
-                      value="{{ sub_plan.id }}"
-                      class="ww-sub-opt__freq-radio visually-hidden"
-                      data-plan-id="{{ sub_plan.id }}"
-                      data-plan-name="{{ initial_plan_name | escape }}"
-                      data-price="{{ sub_price | money }}"
-                      data-compare-price="{% if sub_compare_price > sub_price %}{{ sub_compare_price | money }}{% endif %}"
-                      data-serving-rate="{{ sub_serving_rate }}/serving"
-                      checked
-                    >
-                    <span class="ww-sub-opt__freq-text">{{ initial_plan_name }}</span>
-                  </label>
-                {%- endif -%}
               </div>
             </div>
           {%- endif -%}
