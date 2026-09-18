@@ -359,7 +359,6 @@
         "product_tab_i94QCt": {
           "type": "product_tab",
           "name": "Product Tab",
-          "disabled": true,
           "settings": {
             "product": "immune-support",
             "title": "{{ block.settings.product.title }}",
@@ -447,7 +446,7 @@
         "accordion_y9kEnR"
       ],
       "custom_css": [
-        ".ww-seg-wrap:not(:has(.ww-seg:nth-of-type(1))) {display: none;}"
+        ".ww-seg-wrap:not(:has(.ww-seg:nth-child(2))) {display: none;}"
       ],
       "settings": {
         "label": "Our Products",
