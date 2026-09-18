@@ -44,6 +44,13 @@
   fetchpriority="low"
 ></script>
 
+{{ 'ww-cart-upgrade.css' | asset_url | stylesheet_tag }}
+<script
+  src="{{ 'ww-cart-upgrade.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
 {% render 'text-component-shimmer-styles' %}
 
 <div
@@ -325,6 +332,7 @@
                       {% endif %}
                     </div>
                   </div>
+                  {% render 'ww-cart-upgrade', item: item, context: context %}
                 </td>
                 <td
                   class="cart-items__quantity"
