@@ -115,7 +115,9 @@ export class AnnouncementBar extends Component {
     }
 
     this.refs.slides?.forEach((slide, index) => {
-      slide.setAttribute('aria-hidden', `${index !== relativeIndex}`);
+      const isHidden = index !== relativeIndex;
+      slide.setAttribute('aria-hidden', `${isHidden}`);
+      slide.toggleAttribute('inert', isHidden);
     });
   }
 

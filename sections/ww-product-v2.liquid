@@ -946,6 +946,8 @@
                 <button
                   type="button"
                   class="ww-mob-carousel__dot {% if forloop.first %}is-active{% endif %}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
                   data-slide-index="{{ forloop.index0 }}"
                   aria-label="Go to product slide {{ forloop.index }}"
                 ></button>
@@ -1147,11 +1149,13 @@
 
         function setActiveDot(index) {
           dots.forEach(function (dot, i) {
-            if (i === index) {
+            var isActive = i === index;
+            if (isActive) {
               dot.classList.add('is-active');
             } else {
               dot.classList.remove('is-active');
             }
+            dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
           });
         }
 

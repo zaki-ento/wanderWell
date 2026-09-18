@@ -936,6 +936,7 @@ export class Slideshow extends Component {
       slides.forEach((slide) => {
         const isVisible = visibleSlides.includes(slide);
         slide.setAttribute('aria-hidden', `${!isVisible}`);
+        slide.toggleAttribute('inert', !isVisible);
       });
     });
 
