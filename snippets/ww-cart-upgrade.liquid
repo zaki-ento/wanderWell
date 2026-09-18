@@ -1,0 +1,165 @@
+{% comment %}
+  Snippet: WW Cart Upgrade
+  Description: Displays an upgrade card in the cart drawer when an item with `custom.upgrade_variant` metafield is present in the cart.
+  Follows WanderWell design system and Horizon upgrade-safe guidelines.
+{% endcomment %}
+
+{%- liquid
+  assign enable_cart_upgrade = settings.enable_cart_upgrade | default: true, allow_false: true
+-%}
+
+{%- if enable_cart_upgrade and cart.item_count > 0 -%}
+  {%- liquid
+    # Collect all product IDs currently in the cart to prevent recommending products already added
+    assign cart_product_ids = ''
+    for item in cart.items
+      assign cart_product_ids = cart_product_ids | append: item.product_id | append: ','
+    endfor
+    assign cart_product_ids_wrapped = ',' | append: cart_product_ids
+
+    assign found_upgrade_product = nil
+    assign found_parent_item = nil
+    assign found_upgrade_variant = nil
+    assign found_selling_plan_id = nil
+
+    for item in cart.items
+      assign raw_upgrade_metafield = item.product.metafields.custom.upgrade_variant.value | default: item.product.metafields.custom.upgrade_variant
+      if raw_upgrade_metafield != blank
+        if raw_upgrade_metafield.title != blank
+          # Single product reference
+          assign check_id = raw_upgrade_metafield.id | append: ''
+          assign check_id_pattern = ',' | append: check_id | append: ','
+          unless cart_product_ids_wrapped contains check_id_pattern
+            if raw_upgrade_metafield.available
+              assign found_upgrade_product = raw_upgrade_metafield
+              assign found_parent_item = item
+              assign found_upgrade_variant = raw_upgrade_metafield.selected_or_first_available_variant
+              break
+            endif
+          endunless
+        else
+          # List of product references
+          for cand_product in raw_upgrade_metafield
+            if cand_product != blank and cand_product.title != blank
+              assign check_id = cand_product.id | append: ''
+              assign check_id_pattern = ',' | append: check_id | append: ','
+              unless cart_product_ids_wrapped contains check_id_pattern
+                if cand_product.available
+                  assign found_upgrade_product = cand_product
+                  assign found_parent_item = item
+                  assign found_upgrade_variant = cand_product.selected_or_first_available_variant
+                  break
+                endif
+              endunless
+            endif
+          endfor
+          if found_upgrade_product != nil
+            break
+          endif
+        endif
+      endif
+    endfor
+  -%}
+
+  {%- if found_upgrade_product != nil and found_upgrade_variant != nil -%}
+    {%- liquid
+      # Check subscription compatibility if parent item has selling plan
+      if found_parent_item.selling_plan_allocation != blank and found_upgrade_product.selling_plan_groups.size > 0
+        assign parent_plan_id = found_parent_item.selling_plan_allocation.selling_plan.id
+        for group in found_upgrade_product.selling_plan_groups
+          for plan in group.selling_plans
+            if plan.id == parent_plan_id
+              assign found_selling_plan_id = plan.id
+              break
+            endif
+          endfor
+          if found_selling_plan_id != blank
+            break
+          endif
+        endfor
+        if found_selling_plan_id == blank and found_upgrade_product.selling_plan_groups[0].selling_plans.size > 0
+          assign found_selling_plan_id = found_upgrade_product.selling_plan_groups[0].selling_plans[0].id
+        endif
+      endif
+
+      # Determine display price
+      assign display_price = found_upgrade_variant.price | money
+      if found_selling_plan_id != blank
+        for alloc in found_upgrade_variant.selling_plan_allocations
+          if alloc.selling_plan.id == found_selling_plan_id
+            assign display_price = alloc.price | money
+            break
+          endif
+        endfor
+      endif
+
+      assign upgrade_badge = settings.cart_upgrade_label | default: 'UPGRADE'
+      assign upgrade_btn_text = settings.cart_upgrade_button_text | default: 'UPGRADE'
+      assign upgrade_action = settings.cart_upgrade_action | default: 'replace'
+    -%}
+
+    <div class="ww-cart-upgrade-wrap" data-hydration-key="ww-cart-upgrade-wrap">
+      <ww-cart-upgrade
+        class="ww-cart-upgrade"
+        data-upgrade-variant-id="{{ found_upgrade_variant.id }}"
+        data-parent-line-key="{{ found_parent_item.key }}"
+        data-parent-line-index="{{ found_parent_item.index | plus: 1 }}"
+        data-parent-quantity="{{ found_parent_item.quantity }}"
+        {% if found_selling_plan_id != blank %}
+          data-selling-plan-id="{{ found_selling_plan_id }}"
+        {% endif %}
+        data-upgrade-action="{{ upgrade_action }}"
+      >
+        <div class="ww-cart-upgrade__card">
+          <div class="ww-cart-upgrade__thumb">
+            {%- if found_upgrade_product.featured_image != blank -%}
+              {{
+                found_upgrade_product.featured_image
+                | image_url: width: 120
+                | image_tag:
+                  loading: 'lazy',
+                  class: 'ww-cart-upgrade__thumb-img',
+                  alt: found_upgrade_product.title | escape
+              }}
+            {%- else -%}
+              <div class="ww-cart-upgrade__thumb-fallback">
+                <span>{{ found_upgrade_product.title | escape }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="ww-cart-upgrade__info">
+            <span class="ww-cart-upgrade__label">
+              {{ upgrade_badge | escape }}
+            </span>
+            <div class="ww-cart-upgrade__title" title="{{ found_upgrade_product.title | escape }}">
+              {{ found_upgrade_product.title }}
+            </div>
+            <div class="ww-cart-upgrade__price">
+              {{ display_price }}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="ww-cart-upgrade__btn"
+            data-upgrade-button
+            aria-label="{{ upgrade_btn_text | escape }} to {{ found_upgrade_product.title | escape }}"
+          >
+            <span class="ww-cart-upgrade__btn-text">
+              {{ upgrade_btn_text | escape }}
+            </span>
+            <span class="ww-cart-upgrade__btn-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="ww-cart-upgrade__error" role="alert" aria-live="polite" hidden></div>
+      </ww-cart-upgrade>
+    </div>
+
+    <script
+      type="module"
+      src="{{ 'ww-cart-upgrade.js' | asset_url }}"
+      fetchpriority="low"
+    ></script>
+  {%- endif -%}
+{%- endif -%}

@@ -11,7 +11,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 | File | Category | Change Type | Reason for Modification |
 | :--- | :--- | :--- | :--- |
 | `layout/theme.liquid` | Core Layout | Enhancement | Font preloads (`sofia-pro`) and global popup (`ww-popup`) injection |
-| `snippets/cart-drawer.liquid` | Core Snippet | Bugfix / UX | Added `no-persist` attribute to prevent drawer reopening on page load |
+| `snippets/cart-drawer.liquid` | Core Snippet | Bugfix / UX / Feature | Added `no-persist` attribute to prevent drawer reopening and rendered `ww-cart-upgrade` |
 | `snippets/scripts.liquid` | Core Snippet | Bugfix / API | Appended `.js` to `cart_change_url` and `cart_update_url` for AJAX routing |
 | `snippets/cart-products.liquid` | Core Snippet | Business Logic / UX | Locked static quantity for subscription line items (`item.selling_plan_allocation`) |
 | `snippets/cart-summary.liquid` | Core Snippet | Feature / UI | Added `ww-cart-free-shipping` bar and `ww-payment-icons` |
@@ -58,17 +58,24 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ### 2. `snippets/cart-drawer.liquid`
 
-* **Lines Modified**: Line 46.
-* **Changes**: Added the `no-persist` attribute to `<theme-drawer id="cart-drawer">`:
-  ```liquid
-  <theme-drawer
-    id="cart-drawer"
-    data-skip-node-update
-    no-persist
-  >
-  ```
-* **Reason**: Prevents the cart drawer from remaining open after page navigation or hard refreshes when a customer previously interacted with the cart.
-* **Upgrade Safety Note**: Ensure `no-persist` is carried over if `cart-drawer.liquid` is updated in a future Horizon release.
+* **Lines Modified**: Line 46 and Line 118.
+* **Changes**:
+  1. Added the `no-persist` attribute to `<theme-drawer id="cart-drawer">`:
+     ```liquid
+     <theme-drawer
+       id="cart-drawer"
+       data-skip-node-update
+       no-persist
+     >
+     ```
+  2. Injected the custom upgrade card snippet between cart items and cart summary:
+     ```liquid
+     {% render 'ww-cart-upgrade' %}
+     ```
+* **Reason**:
+  1. Prevents the cart drawer from remaining open after page navigation or hard refreshes when a customer previously interacted with the cart.
+  2. Renders dynamic product upgrade offers in the cart drawer based on `custom.upgrade_variant` product metafield.
+* **Upgrade Safety Note**: Ensure both `no-persist` and `{% render 'ww-cart-upgrade' %}` are carried over if `cart-drawer.liquid` is updated in a future Horizon release.
 
 ---
 

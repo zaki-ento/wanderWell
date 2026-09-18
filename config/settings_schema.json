@@ -1536,6 +1536,45 @@
         "default": 50
       },
       {
+        "type": "header",
+        "content": "Cart Upgrade Offer"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_cart_upgrade",
+        "label": "Enable cart upgrade offer",
+        "default": true,
+        "info": "Displays an upgrade offer when a cart item has upgrade products defined in custom.upgrade_variant"
+      },
+      {
+        "type": "text",
+        "id": "cart_upgrade_label",
+        "label": "Upgrade badge text",
+        "default": "UPGRADE"
+      },
+      {
+        "type": "text",
+        "id": "cart_upgrade_button_text",
+        "label": "Upgrade button text",
+        "default": "UPGRADE"
+      },
+      {
+        "type": "select",
+        "id": "cart_upgrade_action",
+        "label": "Upgrade action",
+        "options": [
+          {
+            "value": "replace",
+            "label": "Replace parent product (Swap)"
+          },
+          {
+            "value": "add",
+            "label": "Add upgrade product (Keep parent)"
+          }
+        ],
+        "default": "replace"
+      },
+      {
         "type": "checkbox",
         "id": "show_cart_note",
         "label": "t:settings.seller_note",
