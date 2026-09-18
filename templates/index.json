@@ -359,7 +359,6 @@
         "product_tab_i94QCt": {
           "type": "product_tab",
           "name": "Product Tab",
-          "disabled": true,
           "settings": {
             "product": "immune-support",
             "title": "{{ block.settings.product.title }}",
@@ -390,7 +389,6 @@
         },
         "product_tab_6ncFYp": {
           "type": "product_tab",
-          "disabled": true,
           "settings": {
             "product": "the-travel-duo",
             "title": "{{ block.settings.product.title }}",
@@ -402,7 +400,6 @@
         "accordion_RaV7PR": {
           "type": "accordion",
           "name": "Duo Product",
-          "disabled": true,
           "settings": {
             "title": "what's inside",
             "items_count": "",
@@ -413,7 +410,6 @@
         "accordion_PHtdAa": {
           "type": "accordion",
           "name": "Duo Product",
-          "disabled": true,
           "settings": {
             "title": "Product Information",
             "items_count": "",
