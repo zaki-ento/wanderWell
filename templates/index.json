@@ -359,6 +359,7 @@
         "product_tab_i94QCt": {
           "type": "product_tab",
           "name": "Product Tab",
+          "disabled": true,
           "settings": {
             "product": "immune-support",
             "title": "{{ block.settings.product.title }}",
