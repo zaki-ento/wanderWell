@@ -1,65 +1,45 @@
 {% comment %}
   Snippet: WW Cart Upgrade / Upsell
-  Description: Displays a native upgrade/upsell card on cart line items.
-  Supports Product Reference, Variant Reference, List of Products, and List of Variants metafields.
-  Accepts:
-    - item: cart line item object (required)
-    - context: 'drawer' or 'page' (optional)
+  Description: Displays native upgrade/upsell card on cart line items.
+  Supports List of Products (custom.upgrade_variant), Single Product, or Variant metafields.
 {% endcomment %}
 
 {% liquid
-  # 1. Fetch metafield object from product or variant level
+  # 1. Access the metafield from product or variant
   assign metafield_obj = item.product.metafields.custom.upgrade_variant
   if metafield_obj == blank or metafield_obj.value == blank
     assign metafield_obj = item.variant.metafields.custom.upgrade_variant
   endif
 
-  # 2. Extract raw value (.value if present)
-  assign val = metafield_obj.value
-  if val == blank
-    assign val = metafield_obj
-  endif
+  assign val = metafield_obj.value | default: metafield_obj
 
-  # 3. Handle array/list vs single object
-  assign candidate = val
+  # 2. If val is a List / Array, pick the first item
+  assign upgrade_item = val
   if val.first != blank
-    assign candidate = val.first
+    assign upgrade_item = val.first
   endif
 
-  # 4. Resolve Product and Variant drops
-  assign target_product = nil
-  assign target_variant = nil
+  assign upgrade_product = nil
+  assign upgrade_variant = nil
 
-  if candidate != blank
-    if candidate.variants != blank
-      # Candidate is a Product Drop
-      assign target_product = candidate
-      assign target_variant = candidate.selected_or_first_available_variant | default: candidate.first_available_variant | default: candidate.variants.first
-    elsif candidate.product != blank
-      # Candidate is a Variant Drop
-      assign target_variant = candidate
-      assign target_product = candidate.product
-    elsif candidate.title != blank
-      # Candidate is a Product object fallback
-      assign target_product = candidate
-      assign target_variant = candidate.variants.first
-    else
-      # Candidate might be a handle string or ID
-      assign target_product = all_products[candidate]
-      if target_product != blank
-        assign target_variant = target_product.selected_or_first_available_variant | default: target_product.first_available_variant | default: target_product.variants.first
-      endif
+  if upgrade_item != blank
+    # If upgrade_item is a Product (has .variants or .first_available_variant)
+    if upgrade_item.variants != blank or upgrade_item.first_available_variant != blank
+      assign upgrade_product = upgrade_item
+      assign upgrade_variant = upgrade_item.selected_or_first_available_variant | default: upgrade_item.first_available_variant | default: upgrade_item.variants.first
+    # If upgrade_item is a Variant (has .product)
+    elsif upgrade_item.product != blank
+      assign upgrade_variant = upgrade_item
+      assign upgrade_product = upgrade_item.product
+    elsif upgrade_item.title != blank
+      assign upgrade_product = upgrade_item
+      assign upgrade_variant = upgrade_item.variants.first
     endif
   endif
 %}
 
-<!-- WW Upsell Debug: item={{ item.product.title | escape }} | metafield_found={% if metafield_obj != blank %}true{% else %}false{% endif %} | target_variant={% if target_variant != blank %}{{ target_variant.id }}{% else %}none{% endif %} -->
-
-{% if target_variant != blank and target_variant.id != item.variant.id %}
+{% if upgrade_variant != blank and upgrade_variant.id != item.variant.id %}
   {% liquid
-    assign upgrade_variant = target_variant
-    assign upgrade_product = target_product | default: target_variant.product
-
     assign upgrade_title = upgrade_product.title
     if upgrade_variant.title != 'Default Title' and upgrade_variant.title != blank and upgrade_variant.title != upgrade_product.title
       assign upgrade_title = upgrade_product.title | append: ' - ' | append: upgrade_variant.title
@@ -114,7 +94,7 @@
         <button
           type="button"
           class="cart-upsell-btn"
-          onclick="window.upgradeToDuo ? window.upgradeToDuo(this) : window.WanderWell.upgradeCartItem(this)"
+          onclick="window.WanderWell && window.WanderWell.upgradeCartItem(this)"
           aria-label="Upgrade to {{ upgrade_title | escape }}"
         >
           <span class="cart-upsell-btn-text">Upgrade</span>

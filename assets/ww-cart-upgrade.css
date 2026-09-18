@@ -1,12 +1,14 @@
 /* ==========================================================================
-   WanderWell Theme - Cart Line Item Upgrade / Upsell Component
+   WanderWell Theme - Bulletproof Cart Upgrade / Upsell Styles
    ========================================================================== */
 
 #cart-upsell,
 .cart-upsell-container {
-  width: 100%;
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
   margin-top: 10px;
   margin-bottom: 6px;
+  clear: both;
 }
 
 .cart-upsell-wrap {
@@ -130,7 +132,6 @@
   cursor: not-allowed;
 }
 
-/* Inline Spinner for Loading State */
 .cart-upsell-btn-spinner {
   width: 14px;
   height: 14px;
