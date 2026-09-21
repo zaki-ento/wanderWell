@@ -48,4 +48,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Close cart drawer when clicking outside on desktop
+  document.addEventListener('click', (e) => {
+    const cartDrawer = document.getElementById('cart-drawer');
+    if (!cartDrawer || !cartDrawer.hasAttribute('open')) return;
+
+    const panel = cartDrawer.querySelector('.theme-drawer__dialog');
+    if (!panel || !panel.open) return;
+
+    // If the click is inside the drawer panel, ignore
+    const rect = panel.getBoundingClientRect();
+    const isInsidePanel =
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom;
+
+    if (isInsidePanel) return;
+
+    // Ignore if clicking on drawer trigger or other modal dialogs
+    // @ts-ignore
+    if (e.target && (e.target.closest('[aria-controls="cart-drawer"]') || e.target.closest('[href="#cart-drawer"]') || e.target.closest('[data-testid="cart-drawer-trigger"]') || e.target.closest('dialog:not(.theme-drawer__dialog)'))) {
+      return;
+    }
+
+    // @ts-ignore
+    if (typeof cartDrawer.close === 'function') {
+      // @ts-ignore
+      cartDrawer.close();
+    }
+  });
+
 });
