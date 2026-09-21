@@ -278,6 +278,7 @@
                         name="subscription_frequency_{{ block.id | default: current_prod.id }}"
                         value="{{ plan.id }}"
                         class="ww-sub-opt__freq-radio visually-hidden"
+                        style="display: none;"
                         data-plan-id="{{ plan.id }}"
                         data-plan-name="{{ plan.name | escape }}"
                         data-price="{{ p_price | money }}"
@@ -597,6 +598,15 @@
     .ww-purchase-options--v2 .ww-sub-opt__freq-pill.is-active .ww-sub-opt__freq-text {
       color: var(--white, #fff);
       font-weight: 700;
+    }
+
+    .ww-purchase-options--v2 .ww-sub-opt__freq-radio {
+      display: none !important;
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      pointer-events: none !important;
     }
 
     .ww-purchase-options--v2 .ww-sub-opt__plan-desc {
