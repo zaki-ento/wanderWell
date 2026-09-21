@@ -21,12 +21,40 @@
       assign is_bundle = true
     endif
 
-    # 3. Identify First Appstle Selling Plan & Group
+    # 3. Identify Initial Selling Plan & Group (Prefer 3 months)
     assign sub_allocation = null
     assign sub_plan = null
     assign sub_group = null
 
-    if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+    for group in current_prod.selling_plan_groups
+      for plan in group.selling_plans
+        assign p_name_lower = plan.name | downcase
+        if p_name_lower contains '3 month' or p_name_lower contains '90 day' or p_name_lower contains '12 week'
+          assign sub_group = group
+          assign sub_plan = plan
+          break
+        endif
+      endfor
+      if sub_plan != null
+        break
+      endif
+    endfor
+
+    if sub_plan == null and current_prod.selling_plan_groups.size > 0
+      for group in current_prod.selling_plan_groups
+        if group.selling_plans.size >= 3
+          assign sub_group = group
+          assign sub_plan = group.selling_plans[2]
+          break
+        elsif group.selling_plans.size > 0
+          assign sub_group = group
+          assign sub_plan = group.selling_plans.last
+          break
+        endif
+      endfor
+    endif
+
+    if sub_plan == null and current_variant != blank and current_variant.selling_plan_allocations.size > 0
       assign sub_allocation = current_variant.selling_plan_allocations.first
       assign sub_plan = sub_allocation.selling_plan
       assign sub_group = sub_allocation.selling_plan_group
@@ -37,6 +65,15 @@
         if group.selling_plans.size > 0
           assign sub_group = group
           assign sub_plan = group.selling_plans.first
+          break
+        endif
+      endfor
+    endif
+
+    if current_variant != blank and sub_plan != null
+      for alloc in current_variant.selling_plan_allocations
+        if alloc.selling_plan.id == sub_plan.id
+          assign sub_allocation = alloc
           break
         endif
       endfor
@@ -141,7 +178,7 @@
       assign sub_serving_rate = sub_price | times: 1.0 | divided_by: servings_sub | floor | money
     endif
 
-    assign initial_plan_name = sub_plan.name | default: '1 Month'
+    assign initial_plan_name = sub_plan.name | default: '3 Months'
     assign savings = current_prod.metafields.custom.savings.value | default: current_prod.metafields.custom.savings | default: 'save 10% + free shipping'
 
     assign has_subscription = false
@@ -232,7 +269,9 @@
                 {%- for group in current_prod.selling_plan_groups -%}
                   {%- for plan in group.selling_plans -%}
                     {%- assign is_active_plan = false -%}
-                    {%- if plan_idx == 0 -%}
+                    {%- if sub_plan != null and plan.id == sub_plan.id -%}
+                      {%- assign is_active_plan = true -%}
+                    {%- elsif sub_plan == null and plan_idx == 0 -%}
                       {%- assign is_active_plan = true -%}
                     {%- endif -%}
 

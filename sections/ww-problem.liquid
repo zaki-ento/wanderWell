@@ -32,6 +32,16 @@
     mask-composite: intersect;
   }
 
+  @media (max-width: 768px) {
+    #wwWorld-{{ section.id }} {
+      left: -6%;
+      top: 2%;
+      width: 112%;
+      height: 96%;
+      opacity: .6;
+    }
+  }
+
   #wwWorld-{{ section.id }} path {
     fill: rgba(255, 255, 255, .045);
     stroke: rgba(255, 255, 255, .17);
@@ -41,7 +51,7 @@
   }
 {%- endstyle -%}
 
-<div id="ww-problem" class="problem section-{{ section.id }} ww-problem ww-problem-section" data-section-id="{{ section.id }}" {{ section.shopify_attributes }}>
+<div id="ww-problem" class="problem section-{{ section.id }} ww-problem ww-problem-section" data-section-id="{{ section.id }}" data-mobile-map-focus="{{ section.settings.mobile_map_focus | default: 'americas' }}" {{ section.shopify_attributes }}>
   <div class="container max-w-breakpoint-xl">
     <div class="problem-header ww-problem__header">
       {%- if section.settings.heading != blank -%}
@@ -582,6 +592,21 @@
       "step": 4,
       "unit": "px",
       "default": 72
+    },
+    {
+      "type": "header",
+      "content": "Map Settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_map_focus",
+      "label": "Mobile Map Focus",
+      "options": [
+        { "value": "americas", "label": "Americas (North & South America)" },
+        { "value": "world", "label": "Full World" }
+      ],
+      "default": "americas",
+      "info": "Centers the background map on the Americas for mobile portrait screens."
     }
   ],
   "blocks": [

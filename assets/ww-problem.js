@@ -19,9 +19,23 @@
     var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var bgGrid = section.querySelector('.ww-route-bg-grid'),
         bgBloom = section.querySelector('.ww-route-bg-bloom'),
-        world = document.getElementById('wwWorld-' + sectionId);
+        world = document.getElementById('wwWorld-' + sectionId),
+        mobileFocus = sectionEl.getAttribute('data-mobile-map-focus') || 'americas';
     // @ts-ignore
     var n = lines.length, L = 0, fracs = [], dots = [], active = -2, lastP = 0;
+
+    function applyWorldViewBox(width, height) {
+      if (!world) return;
+      var curW = width || window.innerWidth;
+      var curH = height || window.innerHeight;
+      var isMobile = (curW <= 768) || (curW <= 890 && curH > curW);
+
+      if (isMobile && mobileFocus === 'americas') {
+        world.setAttribute('viewBox', '100 20 460 640');
+      } else {
+        world.setAttribute('viewBox', '0 0 1400 700');
+      }
+    }
 
     // normalized coordinates path reference points
     var NORM = [[0.07,0.03],[0.58,0.11],[0.88,0.23],[0.34,0.33],[0.09,0.47],[0.44,0.57],[0.92,0.70],[0.52,0.85],[0.20,0.97]];
@@ -260,6 +274,7 @@
       });
 
       active = -2;
+      applyWorldViewBox(w, h);
       paint(currentIdx(lastP), lastP);
     }
 
@@ -325,6 +340,7 @@
           });
           // @ts-ignore
           world.appendChild(g);
+          applyWorldViewBox();
         })
         .catch(function(){});
     }
@@ -354,9 +370,12 @@
           total = track.offsetHeight - vh + lead;
       var p = total > 0 ? Math.min(1, Math.max(0, (-top + lead) / total)) : 0;
       lastP = p;
+      var isMobileScroll = window.innerWidth <= 768;
+      var moveX = isMobileScroll ? (p * -20).toFixed(1) : (p * -38).toFixed(1);
+      var moveY = isMobileScroll ? (p * -12).toFixed(1) : (p * -16).toFixed(1);
       // @ts-ignore
       if(bgGrid) bgGrid.style.transform = 'translate3d(0,' + (p * -26).toFixed(1) + 'px,0)';
-      if(world) world.style.transform = 'translate3d(' + (p * -38).toFixed(1) + 'px,' + (p * -16).toFixed(1) + 'px,0)';
+      if(world) world.style.transform = 'translate3d(' + moveX + 'px,' + moveY + 'px,0)';
       // @ts-ignore
       if(bgBloom) bgBloom.style.transform = 'translate3d(' + (p * 26).toFixed(1) + 'px,' + (p * 20).toFixed(1) + 'px,0)';
       paint(currentIdx(p), p);

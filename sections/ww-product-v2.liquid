@@ -579,12 +579,39 @@
                         assign is_bundle = true
                       endif
 
-                      # Initial selling plan
+                      # Initial selling plan (Prefer 3 months)
                       assign init_sub_plan_id = ''
-                      if current_variant != blank and current_variant.selling_plan_allocations.size > 0
-                        assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
-                      elsif current_prod.selling_plan_groups.size > 0
-                        assign init_sub_plan_id = current_prod.selling_plan_groups[0].selling_plans[0].id
+                      for group in current_prod.selling_plan_groups
+                        for plan in group.selling_plans
+                          assign p_name_lower = plan.name | downcase
+                          if p_name_lower contains '3 month' or p_name_lower contains '90 day' or p_name_lower contains '12 week'
+                            assign init_sub_plan_id = plan.id
+                            break
+                          endif
+                        endfor
+                        if init_sub_plan_id != ''
+                          break
+                        endif
+                      endfor
+
+                      if init_sub_plan_id == '' and current_prod.selling_plan_groups.size > 0
+                        for group in current_prod.selling_plan_groups
+                          if group.selling_plans.size >= 3
+                            assign init_sub_plan_id = group.selling_plans[2].id
+                            break
+                          elsif group.selling_plans.size > 0
+                            assign init_sub_plan_id = group.selling_plans.last.id
+                            break
+                          endif
+                        endfor
+                      endif
+
+                      if init_sub_plan_id == ''
+                        if current_variant != blank and current_variant.selling_plan_allocations.size > 0
+                          assign init_sub_plan_id = current_variant.selling_plan_allocations[0].selling_plan.id
+                        elsif current_prod.selling_plan_groups.size > 0
+                          assign init_sub_plan_id = current_prod.selling_plan_groups[0].selling_plans[0].id
+                        endif
                       endif
 
                       # Initial locked quantity for subscription (2 for simple product, 1 for bundle)
