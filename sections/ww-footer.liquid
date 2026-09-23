@@ -76,22 +76,37 @@
         {%- endif -%}
       </div>
       
-      <!-- Link Column Blocks -->
+      <!-- Link Column Blocks (Collapsible on Mobile) -->
       {%- for block in section.blocks -%}
         {%- if block.type == 'link_column' -%}
           <div class="ww-footer__col" {{ block.shopify_attributes }}>
             {%- if block.settings.title != blank -%}
-              <h4 class="ww-footer__col-heading">{{ block.settings.title | escape }}</h4>
+              <button
+                type="button"
+                class="ww-footer__col-header"
+                aria-expanded="false"
+                aria-controls="ww-footer-col-{{ block.id }}"
+              >
+                <span class="ww-footer__col-heading">{{ block.settings.title | escape }}</span>
+                <span class="ww-footer__col-icon" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="13" cy="13" r="12" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M9 11.5L13 15.5L17 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
             {%- endif -%}
             
             {%- if block.settings.menu != blank -%}
-              <ul class="ww-footer__col-list">
-                {%- for link in linklists[block.settings.menu].links -%}
-                  <li class="ww-footer__col-item">
-                    <a href="{{ link.url }}" class="ww-footer__col-link">{{ link.title | escape }}</a>
-                  </li>
-                {%- endfor -%}
-              </ul>
+              <div class="ww-footer__col-content" id="ww-footer-col-{{ block.id }}">
+                <ul class="ww-footer__col-list">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li class="ww-footer__col-item">
+                      <a href="{{ link.url }}" class="ww-footer__col-link">{{ link.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -281,6 +296,18 @@
   .ww-footer__col {
     padding-left: 48px;
   }
+  .ww-footer__col-header {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 18px;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: default;
+  }
   .ww-footer__col-heading {
     font-family: var(--font-tertiary);
     color: var(--charcoal);
@@ -288,8 +315,12 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    margin-bottom: 18px;
+    margin: 0;
     line-height: 1.6;
+    display: block;
+  }
+  .ww-footer__col-icon {
+    display: none;
   }
   .ww-footer__col-list {
     list-style: none;
@@ -301,6 +332,22 @@
   }
   .ww-footer__col-link:hover {
     color: var(--white);
+  }
+  @media (min-width: 769px) {
+    .ww-footer__col-content {
+      display: block !important;
+      grid-template-rows: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    .ww-footer__col-list {
+      opacity: 1 !important;
+      transform: none !important;
+      padding-bottom: 0 !important;
+    }
+    .ww-footer__col-header {
+      pointer-events: none;
+    }
   }
   .ww-footer__bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.32);
@@ -375,22 +422,147 @@
     }
   }
   @media (max-width: 768px) {
+    .ww-footer {
+      padding: 44px 0 28px;
+    }
+    .ww-footer__grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+    .ww-footer__brand {
+      margin-bottom: 32px;
+    }
+    .ww-footer__news-form {
+      max-width: 100%;
+    }
+    .ww-footer__col {
+      padding-left: 0;
+      border-bottom: 1px solid rgba(44, 44, 44, 0.22);
+    }
+    .ww-footer__col:first-of-type {
+      border-top: 1px solid rgba(44, 44, 44, 0.22);
+    }
+    .ww-footer__col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 18px 0;
+      margin: 0;
+      background: transparent;
+      border: none;
+      color: var(--charcoal);
+      cursor: pointer;
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ww-footer__col-heading {
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      line-height: 1;
+      margin: 0;
+    }
+    .ww-footer__col-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: var(--charcoal);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+    .ww-footer__col.is-open .ww-footer__col-icon {
+      transform: rotate(180deg);
+    }
+    .ww-footer__col-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .ww-footer__col.is-open .ww-footer__col-content {
+      grid-template-rows: 1fr;
+    }
+    .ww-footer__col-list {
+      min-height: 0;
+      padding-bottom: 0;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: padding-bottom 0.35s ease, opacity 0.3s ease, transform 0.3s ease;
+    }
+    .ww-footer__col.is-open .ww-footer__col-list {
+      padding-bottom: 20px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .ww-footer__col-item {
+      margin-bottom: 12px;
+    }
+    .ww-footer__col-item:last-child {
+      margin-bottom: 0;
+    }
     .ww-footer__bottom {
       flex-direction: column;
       align-items: flex-start;
     }
     .ww-footer__legal {
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
     }
   }
-
-  @media (max-width: 380px) {
-    .ww-footer__grid {
-      grid-template-columns: 1fr;
-    }  
-  }
 {% endstylesheet %}
+
+{% javascript %}
+  function initFooterAccordions() {
+    const footer = document.querySelector('.ww-footer');
+    if (!footer) return;
+
+    const cols = footer.querySelectorAll('.ww-footer__col');
+    cols.forEach(col => {
+      const btn = col.querySelector('.ww-footer__col-header');
+      if (!btn || btn.dataset.accordionInit === 'true') return;
+      btn.dataset.accordionInit = 'true';
+
+      btn.addEventListener('click', (e) => {
+        if (window.innerWidth > 768) return;
+        e.preventDefault();
+        
+        const isOpen = col.classList.contains('is-open');
+        if (isOpen) {
+          col.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          col.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFooterAccordions);
+  } else {
+    initFooterAccordions();
+  }
+
+  document.addEventListener('shopify:section:load', (e) => {
+    if (e.target.classList.contains('ww-section-footer') || e.target.querySelector('.ww-footer')) {
+      initFooterAccordions();
+    }
+  });
+
+  document.addEventListener('shopify:block:select', (e) => {
+    const col = e.target.closest('.ww-footer__col');
+    if (col && window.innerWidth <= 768) {
+      col.classList.add('is-open');
+      const btn = col.querySelector('.ww-footer__col-header');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+{% endjavascript %}
 
 {% schema %}
 {
