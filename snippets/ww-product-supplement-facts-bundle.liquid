@@ -15,6 +15,14 @@
   endif
 -%}
 
+{%- assign directions_mf = product.metafields.custom.directions -%}
+
+{%- if directions_mf != blank -%}
+  <div class="ww-detail-lede ww-rich-text" style="margin:0 0 20px">
+    {{ directions_mf | metafield_tag }}
+  </div>
+{%- endif -%}
+
 {%- if is_bundle -%}
   {%- assign uid = 'ww-sfb-' | append: product.id | default: 'bundle' -%}
 
