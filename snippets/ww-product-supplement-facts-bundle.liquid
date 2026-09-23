@@ -1,0 +1,260 @@
+{% comment %}
+  Snippet: WW Product Supplement Facts for Bundle
+  Renders togglable supplement facts panels for products inside a bundle dynamically from custom metafield references.
+  Accepts: product
+{% endcomment %}
+
+{%- liquid
+  assign is_bundle = false
+  assign bundle_items = product.metafields.custom.bundle_products.value
+
+  if bundle_items != blank
+    assign is_bundle = true
+  elsif product.metafields.custom.bundle_product_1.value != blank or product.metafields.custom.bundle_product_2.value != blank
+    assign is_bundle = true
+  endif
+-%}
+
+{%- if is_bundle -%}
+  {%- assign uid = 'ww-sfb-' | append: product.id | default: 'bundle' -%}
+
+  <div class="ww-sf-bundle" data-ww-bundle-facts>
+    {%- comment -%} Segmented Toggle Navigation Buttons {%- endcomment -%}
+    <div class="ww-sf-bundle-nav" role="tablist" aria-label="Supplement facts products">
+      {%- if bundle_items != blank -%}
+        {%- for bundle_prod in bundle_items -%}
+          {%- if bundle_prod != blank -%}
+            <button
+              type="button"
+              role="tab"
+              class="ww-sf-bundle-btn {% if forloop.first %}is-active{% endif %}"
+              data-target="{{ uid }}-panel-{{ forloop.index0 }}"
+              id="{{ uid }}-tab-{{ forloop.index0 }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="{{ uid }}-panel-{{ forloop.index0 }}"
+            >
+              <span>{{ bundle_prod.title | escape }}</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign prod_1 = product.metafields.custom.bundle_product_1.value -%}
+        {%- assign prod_2 = product.metafields.custom.bundle_product_2.value -%}
+
+        {%- if prod_1 != blank -%}
+          <button
+            type="button"
+            role="tab"
+            class="ww-sf-bundle-btn is-active"
+            data-target="{{ uid }}-panel-0"
+            id="{{ uid }}-tab-0"
+            aria-selected="true"
+            aria-controls="{{ uid }}-panel-0"
+          >
+            <span>{{ prod_1.title | escape }}</span>
+          </button>
+        {%- endif -%}
+
+        {%- if prod_2 != blank -%}
+          <button
+            type="button"
+            role="tab"
+            class="ww-sf-bundle-btn {% if prod_1 == blank %}is-active{% endif %}"
+            data-target="{{ uid }}-panel-1"
+            id="{{ uid }}-tab-1"
+            aria-selected="{% if prod_1 == blank %}true{% else %}false{% endif %}"
+            aria-controls="{{ uid }}-panel-1"
+          >
+            <span>{{ prod_2.title | escape }}</span>
+          </button>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Supplement Facts Panels for each product {%- endcomment -%}
+    <div class="ww-sf-bundle-panels">
+      {%- if bundle_items != blank -%}
+        {%- for bundle_prod in bundle_items -%}
+          {%- if bundle_prod != blank -%}
+            <div
+              class="ww-sf-bundle-panel {% if forloop.first %}is-active{% endif %}"
+              id="{{ uid }}-panel-{{ forloop.index0 }}"
+              role="tabpanel"
+              aria-labelledby="{{ uid }}-tab-{{ forloop.index0 }}"
+              {% unless forloop.first %}hidden style="display: none;"{% endunless %}
+            >
+              {%- capture facts_output -%}
+                {%- render 'ww-product-supplement-facts', product: bundle_prod -%}
+              {%- endcapture -%}
+              {%- if facts_output != blank -%}
+                {{ facts_output }}
+              {%- else -%}
+                <div class="ww-sf-empty">
+                  <p>Supplement facts for {{ bundle_prod.title | escape }} will be updated soon.</p>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign prod_1 = product.metafields.custom.bundle_product_1.value -%}
+        {%- assign prod_2 = product.metafields.custom.bundle_product_2.value -%}
+
+        {%- if prod_1 != blank -%}
+          <div
+            class="ww-sf-bundle-panel is-active"
+            id="{{ uid }}-panel-0"
+            role="tabpanel"
+            aria-labelledby="{{ uid }}-tab-0"
+          >
+            {%- capture facts_output_1 -%}
+              {%- render 'ww-product-supplement-facts', product: prod_1 -%}
+            {%- endcapture -%}
+            {%- if facts_output_1 != blank -%}
+              {{ facts_output_1 }}
+            {%- else -%}
+              <div class="ww-sf-empty">
+                <p>Supplement facts for {{ prod_1.title | escape }} will be updated soon.</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if prod_2 != blank -%}
+          <div
+            class="ww-sf-bundle-panel {% if prod_1 == blank %}is-active{% endif %}"
+            id="{{ uid }}-panel-1"
+            role="tabpanel"
+            aria-labelledby="{{ uid }}-tab-1"
+            {% if prod_1 != blank %}hidden style="display: none;"{% endif %}
+          >
+            {%- capture facts_output_2 -%}
+              {%- render 'ww-product-supplement-facts', product: prod_2 -%}
+            {%- endcapture -%}
+            {%- if facts_output_2 != blank -%}
+              {{ facts_output_2 }}
+            {%- else -%}
+              <div class="ww-sf-empty">
+                <p>Supplement facts for {{ prod_2.title | escape }} will be updated soon.</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <style>
+    .ww-sf-bundle {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+    .ww-sf-bundle-nav {
+      display: flex;
+      background-color: #F4EBE5;
+      border-radius: 9999px;
+      padding: 4px;
+      gap: 6px;
+      box-sizing: border-box;
+      width: 100%;
+      margin-bottom: 6px;
+    }
+    .ww-sf-bundle-btn {
+      flex: 1 1 0;
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      padding: 9px 14px;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      border: none;
+      font-family: var(--font-tertiary, sans-serif);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #5A5A5A;
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      text-align: center;
+      line-height: 1.25;
+      margin: 0;
+    }
+    .ww-sf-bundle-btn:hover:not(.is-active) {
+      background-color: rgba(232, 99, 43, 0.08);
+      color: #1A1A1A;
+    }
+    .ww-sf-bundle-btn.is-active {
+      background: linear-gradient(135deg, #CF592B 0%, #B84A22 100%);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(184, 74, 34, 0.25);
+    }
+    .ww-sf-bundle-panel {
+      display: none;
+    }
+    .ww-sf-bundle-panel.is-active {
+      display: block;
+      animation: ww-sf-fade 0.25s ease-out;
+    }
+    .ww-sf-empty {
+      padding: 16px 0;
+      color: var(--charcoal-light, #5A5A5A);
+      font-size: 0.92rem;
+      font-style: italic;
+    }
+    @keyframes ww-sf-fade {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <script>
+    (function() {
+      if (window.wwBundleFactsListenerAttached) return;
+      window.wwBundleFactsListenerAttached = true;
+
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.ww-sf-bundle-btn');
+        if (!btn) return;
+        var wrap = btn.closest('.ww-sf-bundle');
+        if (!wrap) return;
+
+        var targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+
+        var buttons = wrap.querySelectorAll('.ww-sf-bundle-btn');
+        var panels = wrap.querySelectorAll('.ww-sf-bundle-panel');
+
+        buttons.forEach(function(b) {
+          var active = (b === btn);
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        panels.forEach(function(p) {
+          var active = (p.id === targetId);
+          p.classList.toggle('is-active', active);
+          if (active) {
+            p.removeAttribute('hidden');
+            p.style.display = 'block';
+          } else {
+            p.setAttribute('hidden', '');
+            p.style.display = 'none';
+          }
+        });
+      });
+    })();
+  </script>
+
+{%- else -%}
+  {%- render 'ww-product-supplement-facts', product: product -%}
+{%- endif -%}

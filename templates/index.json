@@ -267,7 +267,7 @@
           "settings": {
             "title": "Product Information",
             "items_count": "",
-            "content_type": "supplement_facts",
+            "content_type": "supplement_facts_bundle",
             "content": ""
           }
         },
@@ -413,7 +413,7 @@
           "settings": {
             "title": "Product Information",
             "items_count": "",
-            "content_type": "supplement_facts",
+            "content_type": "supplement_facts_bundle",
             "content": ""
           }
         },

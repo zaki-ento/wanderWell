@@ -363,6 +363,11 @@
                       {%- render 'ww-product-supplement-facts', product: current_prod -%}
                     {%- endcapture -%}
                     {%- assign acc_content = rendered_snippet | strip -%}
+                  {%- elsif acc_type == 'supplement_facts_bundle' -%}
+                    {%- capture rendered_snippet -%}
+                      {%- render 'ww-product-supplement-facts-bundle', product: current_prod -%}
+                    {%- endcapture -%}
+                    {%- assign acc_content = rendered_snippet | strip -%}
                   {%- elsif acc_type == 'capsule_size' -%}
                     {%- capture rendered_snippet -%}
                       {%- render 'ww-product-capsule', product: current_prod -%}
@@ -706,6 +711,7 @@
             { "value": "ingredients", "label": "Ingredients list (Default Template)" },
             { "value": "bundle", "label": "What's Inside (Bundle Products)" },
             { "value": "supplement_facts", "label": "Product Information / Facts (Default Template)" },
+            { "value": "supplement_facts_bundle", "label": "Supplement Facts for Bundle (Dynamic)" },
             { "value": "capsule_size", "label": "Capsule Size Scale Graphic" },
             { "value": "custom", "label": "Custom HTML Override" }
           ],

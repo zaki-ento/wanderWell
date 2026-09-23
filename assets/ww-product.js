@@ -163,6 +163,44 @@
     });
   }
   
+  // Bundle supplement facts toggle tabs
+  function initBundleFacts() {
+    var bundles = document.querySelectorAll('.ww-sf-bundle');
+    bundles.forEach(function(bundle) {
+      if (bundle.hasAttribute('data-initialized')) return;
+      bundle.setAttribute('data-initialized', 'true');
+
+      var buttons = bundle.querySelectorAll('.ww-sf-bundle-btn');
+      var panels = bundle.querySelectorAll('.ww-sf-bundle-panel');
+
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var targetId = btn.getAttribute('data-target');
+          if (!targetId) return;
+
+          buttons.forEach(function(b) {
+            var active = (b === btn);
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+
+          panels.forEach(function(p) {
+            var active = (p.id === targetId);
+            p.classList.toggle('is-active', active);
+            if (active) {
+              p.removeAttribute('hidden');
+              p.style.display = 'block';
+            } else {
+              p.setAttribute('hidden', '');
+              p.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  }
+
   // Quantity steppers
   function initQuantity() {
     document.querySelectorAll('.ww-buy').forEach(function(buyBox) {
@@ -629,6 +667,7 @@
     initTabs();
     initGallery();
     initAccordions();
+    initBundleFacts();
     initQuantity();
     initStickyBar();
   }
