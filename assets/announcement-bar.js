@@ -31,6 +31,12 @@ export class AnnouncementBar extends Component {
     this.play();
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback?.();
+    this.suspend();
+    document.removeEventListener('visibilitychange', this.#handleVisibilityChange);
+  }
+
   next() {
     this.current += 1;
   }
@@ -46,17 +52,20 @@ export class AnnouncementBar extends Component {
   play(interval = this.autoplayInterval) {
     if (!this.autoplay) return;
 
+    this.suspend();
     this.paused = false;
 
     this.#interval = setInterval(() => {
-      if (this.matches(':hover') || document.hidden) return;
+      // Only pause on hover if device actually supports hover (avoids sticky hover on touchscreens)
+      const isHovered = window.matchMedia?.('(hover: hover)').matches && this.matches(':hover');
+      if (isHovered || document.hidden) return;
 
       this.next();
     }, interval);
   }
 
   /**
-   * Pauses automatic slide playback.
+   * Pauses automatic slide playback (user-initiated pause).
    */
   pause() {
     this.paused = true;
@@ -72,22 +81,23 @@ export class AnnouncementBar extends Component {
   }
 
   /**
-   * Suspends automatic slide playback.
+   * Suspends automatic slide playback (temporary suspension without toggling paused state).
    */
-  suspend() {
-    clearInterval(this.#interval);
-    this.#interval = undefined;
-  }
+  suspend = () => {
+    if (this.#interval !== undefined) {
+      clearInterval(this.#interval);
+      this.#interval = undefined;
+    }
+  };
 
   /**
-   * Resumes automatic slide playback if autoplay is enabled.
+   * Resumes automatic slide playback if autoplay is enabled and not manually paused.
    */
-  resume() {
+  resume = () => {
     if (!this.autoplay || this.paused) return;
 
-    this.pause();
     this.play();
-  }
+  };
 
   get autoplay() {
     return Boolean(this.autoplayInterval);
@@ -122,9 +132,15 @@ export class AnnouncementBar extends Component {
   }
 
   /**
-   * Pause the slideshow when the page is hidden.
+   * Temporarily suspend slideshow when tab is hidden, and resume when visible again.
    */
-  #handleVisibilityChange = () => (document.hidden ? this.pause() : this.resume());
+  #handleVisibilityChange = () => {
+    if (document.hidden) {
+      this.suspend();
+    } else if (!this.paused && this.autoplay) {
+      this.play();
+    }
+  };
 }
 
 if (!customElements.get('announcement-bar-component')) {

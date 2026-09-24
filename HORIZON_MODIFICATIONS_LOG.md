@@ -18,6 +18,7 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 | `snippets/header-actions.liquid` | Core Snippet | UI / Design | Updated avatar icon markup in `account_icon` capture to match 24x24 brand SVG |
 | `assets/cart-discount.js` | Core Asset | Bugfix / Resilience | Added optional chaining and fallback to `sectionRenderer` when section HTML is absent |
 | `assets/component-cart-items.js` | Core Asset | Bugfix / Resilience | Added fallback handling and `item_count` default when section HTML is absent |
+| `assets/announcement-bar.js` | Core Asset | Bugfix / Lifecycle | Fixed rotation freeze when idle/backgrounded by separating temporary suspension from manual pause |
 | `assets/product-form.js` | Core Asset | Formatting | Trailing newline normalization |
 | `assets/icon-cart.svg` | Core Asset / Icon | Brand Design | Replaced Horizon default cart icon with WanderWell v3 custom shopping cart SVG |
 | `assets/icon-account.svg` | Core Asset / Icon | Brand Design | Replaced Horizon default account icon with WanderWell v3 user avatar SVG |
@@ -219,7 +220,19 @@ Per our development guidelines ([AGENTS.md](../AGENTS.md)), modifications to Hor
 
 ---
 
-### 7. Brand Icon SVGs (`assets/icon-*.svg`)
+### 7. `assets/announcement-bar.js`
+
+* **Changes**:
+  1. Separated temporary background/tab-switch suspension (`suspend()`) from user-intended pause (`pause()`):
+     - Prevents `visibilitychange` from permanently setting `paused = true`.
+     - Automatically resumes rotation when the browser tab becomes visible again unless the customer explicitly clicked the pause toggle.
+  2. Fixed sticky touch `:hover` freeze: restricted hover detection to pointer devices supporting true hover (`(hover: hover)` media query) so mobile taps/scrolls do not halt slide rotation.
+  3. Bound callback arrow functions (`suspend`, `resume`) and added `disconnectedCallback` listener cleanup.
+* **Reason**: Announcement bar slide ticker previously stopped permanently whenever the user switched tabs, minimized the window, or let the device go idle.
+
+---
+
+### 8. Brand Icon SVGs (`assets/icon-*.svg`)
 
 * **`assets/icon-cart.svg`**: Updated with WanderWell v3 design icon (custom shopping cart path with 2 wheel circles).
 * **`assets/icon-account.svg`**: Updated with WanderWell v3 user avatar icon (`<circle cx="12" cy="8" r="4"/>` and `<path d="M4 21a8 8 0 0 1 16 0"/>`).
